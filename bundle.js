@@ -74,7 +74,7 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	var _react = __webpack_require__(2);
 
@@ -90,7 +90,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	_reactDom2.default.render(_react2.default.createElement(_root2.default, null), document.getElementById('app'));
+	_reactDom2.default.render(_react2.default.createElement(_root2.default, null), document.getElementById("app"));
 
 /***/ },
 /* 2 */
@@ -19015,7 +19015,7 @@
 /* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -19029,223 +19029,240 @@
 
 	var _example_components2 = _interopRequireDefault(_example_components);
 
-	var _hero_example = __webpack_require__(464);
+	var _hero_example = __webpack_require__(465);
 
 	var _hero_example2 = _interopRequireDefault(_hero_example);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
-	  displayName: 'root',
+	  displayName: "root",
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'div',
+	      "div",
 	      null,
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'hero' },
+	        "div",
+	        { className: "hero" },
 	        _react2.default.createElement(
-	          'div',
-	          { className: 'hero__content' },
+	          "div",
+	          { className: "hero__content" },
 	          _react2.default.createElement(
-	            'h1',
-	            { className: 'hero__title' },
-	            'ReactJS Datepicker'
+	            "h1",
+	            { className: "hero__title" },
+	            "ReactJS Datepicker"
 	          ),
 	          _react2.default.createElement(
-	            'div',
-	            { className: 'hero__crafted-by' },
-	            'Crafted by ',
-	            _react2.default.createElement('img', { src: 'images/logo.png', className: 'hero__image', alt: 'HackerOne', title: 'HackerOne' })
+	            "div",
+	            { className: "hero__crafted-by" },
+	            "Crafted by ",
+	            _react2.default.createElement("img", { src: "images/logo.png", className: "hero__image", alt: "HackerOne", title: "HackerOne" })
 	          ),
 	          _react2.default.createElement(
-	            'div',
-	            { className: 'hero__example' },
+	            "div",
+	            { className: "hero__example" },
 	            _react2.default.createElement(_hero_example2.default, null)
 	          )
 	        )
 	      ),
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'wrapper' },
+	        "div",
+	        { className: "wrapper" },
 	        _react2.default.createElement(
-	          'h1',
+	          "h1",
 	          null,
-	          'ReactJS Datepicker'
+	          "ReactJS Datepicker"
 	        ),
 	        _react2.default.createElement(
-	          'p',
+	          "p",
 	          null,
 	          _react2.default.createElement(
-	            'a',
-	            { href: 'http://badge.fury.io/bo/react-date-picker' },
-	            _react2.default.createElement('img', { src: 'https://badge.fury.io/bo/react-date-picker.svg', className: 'badge' })
+	            "a",
+	            { href: "http://badge.fury.io/bo/react-date-picker" },
+	            _react2.default.createElement("img", { src: "https://badge.fury.io/bo/react-date-picker.svg", className: "badge" })
 	          ),
 	          _react2.default.createElement(
-	            'a',
-	            { href: 'https://travis-ci.org/Hacker0x01/react-datepicker' },
-	            _react2.default.createElement('img', { src: 'https://travis-ci.org/Hacker0x01/react-datepicker.svg?branch=master', className: 'badge' })
+	            "a",
+	            { href: "https://travis-ci.org/Hacker0x01/react-datepicker" },
+	            _react2.default.createElement("img", { src: "https://travis-ci.org/Hacker0x01/react-datepicker.svg?branch=master", className: "badge" })
 	          ),
 	          _react2.default.createElement(
-	            'a',
-	            { href: 'https://david-dm.org/Hacker0x01/react-datepicker#info=devDependencies' },
-	            _react2.default.createElement('img', { src: 'https://david-dm.org/Hacker0x01/react-datepicker/dev-status.svg', className: 'badge' })
+	            "a",
+	            { href: "https://david-dm.org/Hacker0x01/react-datepicker#info=devDependencies" },
+	            _react2.default.createElement("img", { src: "https://david-dm.org/Hacker0x01/react-datepicker/dev-status.svg", className: "badge" })
 	          ),
 	          _react2.default.createElement(
-	            'a',
-	            { href: 'https://npmjs.org/package/react-datepicker?__hstc=72727564.ca821b01b5b29b1831f0936a681f0483.1428679773810.1435582678273.1438354735499.5&__hssc=72727564.1.1438354735499&__hsfp=2497064007' },
-	            _react2.default.createElement('img', { src: 'https://img.shields.io/npm/dm/react-datepicker.svg', className: 'badge' })
+	            "a",
+	            { href: "https://npmjs.org/package/react-datepicker" + "?__hstc=72727564.ca821b01b5b29b1831f0936a681f0483.1428679773810.1435582678273.1438354735499.5" + "&__hssc=72727564.1.1438354735499" + "&__hsfp=2497064007" },
+	            _react2.default.createElement("img", { src: "https://img.shields.io/npm/dm/react-datepicker.svg", className: "badge" })
 	          )
 	        ),
 	        _react2.default.createElement(
-	          'p',
+	          "p",
 	          null,
-	          'A simple and reusable datepicker component for React.'
+	          "A simple and reusable datepicker component for React."
 	        ),
 	        _react2.default.createElement(
-	          'h2',
+	          "h2",
 	          null,
-	          'Configuration'
+	          "Configuration"
 	        ),
 	        _react2.default.createElement(
-	          'ul',
+	          "ul",
 	          null,
 	          _react2.default.createElement(
-	            'li',
+	            "li",
 	            null,
-	            'Change date format by passing a different date format in the props: ',
+	            "Change date format by passing a different date format in the props:",
+	            " ",
 	            _react2.default.createElement(
-	              'code',
+	              "code",
 	              null,
-	              'dateFormat: "YYYY/MM/DD"'
+	              "dateFormat: \"YYYY/MM/DD\""
 	            )
 	          ),
 	          _react2.default.createElement(
-	            'li',
+	            "li",
 	            null,
-	            'Add placeholder text: placeholderText: \'Click to select a date\' (Defaults to the selected date when no placeholder text is added)'
-	          ),
-	          _react2.default.createElement(
-	            'li',
-	            null,
-	            'Give users a predefined date range: ',
+	            "Add placeholder text:",
+	            " ",
 	            _react2.default.createElement(
-	              'code',
+	              "code",
 	              null,
-	              'minDate: moment() & maxDate: moment().add(5, \'days\')'
+	              "placeholderText: 'Click to select a date'"
 	            ),
-	            ' (this gives users the ability to select a date between today and 5 days in the future)'
+	            " ",
+	            "(Defaults to the selected date when no placeholder text is added)"
 	          ),
 	          _react2.default.createElement(
-	            'li',
+	            "li",
 	            null,
-	            'Exclude a set of dates from those that are selectable: ',
+	            "Give users a predefined date range:",
+	            " ",
 	            _react2.default.createElement(
-	              'code',
+	              "code",
 	              null,
-	              'excludeDates: [ moment(), moment(\'2015-01-01\') ]'
+	              "minDate: moment() & maxDate: moment().add(5, 'days')"
 	            ),
-	            ' (prevent users from selecting today or Jan 1st, 2015)'
+	            " ",
+	            "(this gives users the ability to select a date between today and 5 days in the future)"
 	          ),
 	          _react2.default.createElement(
-	            'li',
+	            "li",
 	            null,
-	            'Set custom moment.js instance (could have defined custom locale settings): ',
+	            "Exclude a set of dates from those that are selectable:",
+	            " ",
 	            _react2.default.createElement(
-	              'code',
+	              "code",
 	              null,
-	              'moment: require(\'./foo/moment\')'
+	              "excludeDates: [ moment(), moment('2015-01-01') ]"
+	            ),
+	            " ",
+	            "(prevent users from selecting today or Jan 1st, 2015)"
+	          ),
+	          _react2.default.createElement(
+	            "li",
+	            null,
+	            "Set custom moment.js instance (could have defined custom locale settings):",
+	            " ",
+	            _react2.default.createElement(
+	              "code",
+	              null,
+	              "moment: require('./foo/moment')"
 	            )
 	          ),
 	          _react2.default.createElement(
-	            'li',
+	            "li",
 	            null,
-	            'Set custom locale settings for locale: ',
+	            "Set custom locale settings for locale: ",
 	            _react2.default.createElement(
-	              'code',
+	              "code",
 	              null,
-	              'locale: "cs"'
+	              "locale: \"cs\""
 	            )
 	          ),
 	          _react2.default.createElement(
-	            'li',
+	            "li",
 	            null,
-	            'Set date format for callendar: ',
+	            "Set date format for callendar: ",
 	            _react2.default.createElement(
-	              'code',
+	              "code",
 	              null,
-	              'dateFormatCalendar: "YYYY/MM/DD"'
+	              "dateFormatCalendar: \"YYYY/MM/DD\""
 	            )
 	          ),
 	          _react2.default.createElement(
-	            'li',
+	            "li",
 	            null,
-	            'Set custom weekdays (for locale days): ',
+	            "Set custom weekdays (for locale days):",
+	            " ",
 	            _react2.default.createElement(
-	              'code',
+	              "code",
 	              null,
-	              'weekdays: [\'Ne\', \'Po\', \'Út\', \'St\', \'Čt\', \'Pá\', \'So\']'
+	              "weekdays: ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So']"
 	            )
 	          )
 	        ),
 	        _react2.default.createElement(
-	          'h2',
+	          "h2",
 	          null,
-	          'Installation'
+	          "Installation"
 	        ),
 	        _react2.default.createElement(
-	          'p',
+	          "p",
 	          null,
-	          'Installing is really simple and can be done in multiple ways:'
+	          "Installing is really simple and can be done in multiple ways:"
 	        ),
 	        _react2.default.createElement(
-	          'ul',
+	          "ul",
 	          null,
 	          _react2.default.createElement(
-	            'li',
+	            "li",
 	            null,
-	            'Install with Bower: ',
+	            "Install with Bower: ",
 	            _react2.default.createElement(
-	              'code',
+	              "code",
 	              null,
-	              'bower install react-date-picker'
+	              "bower install react-date-picker"
 	            )
 	          ),
 	          _react2.default.createElement(
-	            'li',
+	            "li",
 	            null,
-	            'Install with npm: ',
+	            "Install with npm: ",
 	            _react2.default.createElement(
-	              'code',
+	              "code",
 	              null,
-	              'npm install react-datepicker --save'
+	              "npm install react-datepicker --save"
 	            )
 	          ),
 	          _react2.default.createElement(
-	            'li',
+	            "li",
 	            null,
-	            'Install with Bundler: ',
+	            "Install with Bundler: ",
 	            _react2.default.createElement(
-	              'code',
+	              "code",
 	              null,
-	              'bundle install rails-assets-react-date-picker'
+	              "bundle install rails-assets-react-date-picker"
 	            )
 	          )
 	        ),
 	        _react2.default.createElement(
-	          'h2',
+	          "h2",
 	          null,
-	          'License'
+	          "License"
 	        ),
 	        _react2.default.createElement(
-	          'p',
+	          "p",
 	          null,
-	          'Copyright (c) 2015 HackerOne Inc. and individual contributors. Licensed under MIT license, see LICENSE for the full license.'
+	          "Copyright (c) 2015 HackerOne Inc. and individual contributors.",
+	          " ",
+	          "Licensed under MIT license, see LICENSE for the full license."
 	        )
 	      ),
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'wrapper' },
+	        "div",
+	        { className: "wrapper" },
 	        _react2.default.createElement(_example_components2.default, null)
 	      )
 	    );
@@ -19256,7 +19273,7 @@
 /* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -19306,46 +19323,50 @@
 
 	var _exclude_dates2 = _interopRequireDefault(_exclude_dates);
 
-	var _disabled = __webpack_require__(456);
+	var _include_dates = __webpack_require__(456);
+
+	var _include_dates2 = _interopRequireDefault(_include_dates);
+
+	var _disabled = __webpack_require__(457);
 
 	var _disabled2 = _interopRequireDefault(_disabled);
 
-	var _clear_input = __webpack_require__(457);
+	var _clear_input = __webpack_require__(458);
 
 	var _clear_input2 = _interopRequireDefault(_clear_input);
 
-	var _on_blur_callbacks = __webpack_require__(458);
+	var _on_blur_callbacks = __webpack_require__(459);
 
 	var _on_blur_callbacks2 = _interopRequireDefault(_on_blur_callbacks);
 
-	var _weekdays = __webpack_require__(459);
+	var _weekdays = __webpack_require__(460);
 
 	var _weekdays2 = _interopRequireDefault(_weekdays);
 
-	var _placement = __webpack_require__(460);
+	var _placement = __webpack_require__(461);
 
 	var _placement2 = _interopRequireDefault(_placement);
 
-	var _date_range = __webpack_require__(461);
+	var _date_range = __webpack_require__(462);
 
 	var _date_range2 = _interopRequireDefault(_date_range);
 
-	__webpack_require__(462);
-
 	__webpack_require__(463);
+
+	__webpack_require__(464);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var CodeExampleComponent = _react2.default.createClass({
-	  displayName: 'CodeExampleComponent',
+	  displayName: "CodeExampleComponent",
 
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'div',
-	      { key: this.props.id, id: '#example-' + this.props.id, className: 'example' },
+	      "div",
+	      { key: this.props.id, id: "#example-" + this.props.id, className: "example" },
 	      _react2.default.createElement(
-	        'h2',
-	        { className: 'example__heading' },
+	        "h2",
+	        { className: "example__heading" },
 	        this.props.title
 	      ),
 	      this.props.children
@@ -19354,46 +19375,49 @@
 	});
 
 	exports.default = _react2.default.createClass({
-	  displayName: 'exampleComponents',
+	  displayName: "exampleComponents",
 
 	  examples: [{
-	    title: 'Default',
+	    title: "Default",
 	    component: _react2.default.createElement(_default2.default, null)
 	  }, {
-	    title: 'Custom date format',
+	    title: "Custom date format",
 	    component: _react2.default.createElement(_custom_date_format2.default, null)
 	  }, {
-	    title: 'Custom class name',
+	    title: "Custom class name",
 	    component: _react2.default.createElement(_custom_class_name2.default, null)
 	  }, {
-	    title: 'Placeholder text',
+	    title: "Placeholder text",
 	    component: _react2.default.createElement(_placeholder_text2.default, null)
 	  }, {
-	    title: 'Specific date range',
+	    title: "Specific date range",
 	    component: _react2.default.createElement(_specific_date_range2.default, null)
 	  }, {
-	    title: 'Custom start date',
+	    title: "Custom start date",
 	    component: _react2.default.createElement(_custom_start_date2.default, null)
 	  }, {
-	    title: 'Exclude dates',
+	    title: "Exclude dates",
 	    component: _react2.default.createElement(_exclude_dates2.default, null)
+	  }, {
+	    title: "Include dates",
+	    component: _react2.default.createElement(_include_dates2.default, null)
 	  }, {
 	    title: "Date Range",
 	    component: _react2.default.createElement(_date_range2.default, null)
 	  }, {
-	    title: 'Disable datepicker',
+	    title: "Disable datepicker",
 	    component: _react2.default.createElement(_disabled2.default, null)
 	  }, {
-	    title: 'Clear datepicker input',
+	    title: "Clear datepicker input",
 	    component: _react2.default.createElement(_clear_input2.default, null)
 	  }, {
-	    title: 'onBlur callbacks in console',
+	    title: "onBlur callbacks in console",
 	    component: _react2.default.createElement(_on_blur_callbacks2.default, null)
 	  }, {
-	    title: 'Custom weekdays',
+	    title: "Custom weekdays",
 	    component: _react2.default.createElement(_weekdays2.default, null)
 	  }, {
-	    title: 'Configure Popover Placement',
+	    title: "Configure Popover Placement",
 	    component: _react2.default.createElement(_placement2.default, null)
 	  }],
 
@@ -19404,7 +19428,7 @@
 	    return this.examples.map(function (example, index) {
 	      return _react2.default.createElement(
 	        CodeExampleComponent,
-	        { key: 'example-' + index, id: index, title: example.title },
+	        { key: "example-" + index, id: index, title: example.title },
 	        example.component
 	      );
 	    });
@@ -19412,11 +19436,11 @@
 	  renderLeftColumn: function renderLeftColumn() {
 	    return this.examples.map(function (example, index) {
 	      return _react2.default.createElement(
-	        'li',
-	        { className: 'examples__navigation-item', key: 'link-' + index },
+	        "li",
+	        { className: "examples__navigation-item", key: "link-" + index },
 	        _react2.default.createElement(
-	          'a',
-	          { href: '#example-' + index },
+	          "a",
+	          { href: "#example-" + index },
 	          example.title
 	        )
 	      );
@@ -19424,21 +19448,21 @@
 	  },
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'div',
+	      "div",
 	      null,
 	      _react2.default.createElement(
-	        'h1',
+	        "h1",
 	        null,
-	        'Examples'
+	        "Examples"
 	      ),
 	      _react2.default.createElement(
-	        'ul',
-	        { className: 'examples__navigation' },
+	        "ul",
+	        { className: "examples__navigation" },
 	        this.renderLeftColumn()
 	      ),
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'examples' },
+	        "div",
+	        { className: "examples" },
 	        this.renderExamples()
 	      )
 	    );
@@ -50280,7 +50304,7 @@
 /* 449 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -50301,7 +50325,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
-	  displayName: 'Default',
+	  displayName: "Default",
 
 	  getInitialState: function getInitialState() {
 	    return {
@@ -50315,26 +50339,26 @@
 	  },
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'div',
-	      { className: 'row' },
+	      "div",
+	      { className: "row" },
 	      _react2.default.createElement(
-	        'pre',
-	        { className: 'column example__code' },
+	        "pre",
+	        { className: "column example__code" },
 	        _react2.default.createElement(
-	          'code',
-	          { className: 'jsx' },
+	          "code",
+	          { className: "jsx" },
 	          "<DatePicker",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "selected={this.state.startDate}",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "onChange={this.handleChange} />"
 	        )
 	      ),
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'column' },
+	        "div",
+	        { className: "column" },
 	        _react2.default.createElement(_reactDatepicker2.default, {
 	          selected: this.state.startDate,
 	          onChange: this.handleChange })
@@ -50347,7 +50371,7 @@
 /* 450 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -50368,7 +50392,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
-	  displayName: 'CustomDateFormat',
+	  displayName: "CustomDateFormat",
 
 	  getInitialState: function getInitialState() {
 	    return {
@@ -50382,35 +50406,35 @@
 	  },
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'div',
-	      { className: 'row' },
+	      "div",
+	      { className: "row" },
 	      _react2.default.createElement(
-	        'pre',
-	        { className: 'column example__code' },
+	        "pre",
+	        { className: "column example__code" },
 	        _react2.default.createElement(
-	          'code',
-	          { className: 'jsx' },
+	          "code",
+	          { className: "jsx" },
 	          "<DatePicker",
-	          _react2.default.createElement('br', null),
+	          _react2.default.createElement("br", null),
 	          _react2.default.createElement(
-	            'strong',
+	            "strong",
 	            null,
-	            '    ',
+	            "    ",
 	            "dateFormat=\"YYYY/MM/DD\""
 	          ),
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "selected={this.state.startDate}",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "onChange={this.handleChange} />"
 	        )
 	      ),
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'column' },
+	        "div",
+	        { className: "column" },
 	        _react2.default.createElement(_reactDatepicker2.default, {
-	          dateFormat: 'YYYY/MM/DD',
+	          dateFormat: "YYYY/MM/DD",
 	          selected: this.state.startDate,
 	          onChange: this.handleChange })
 	      )
@@ -50422,7 +50446,7 @@
 /* 451 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -50443,7 +50467,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
-	  displayName: 'CustomClassName',
+	  displayName: "CustomClassName",
 
 	  getInitialState: function getInitialState() {
 	    return {
@@ -50457,34 +50481,34 @@
 	  },
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'div',
-	      { className: 'row' },
+	      "div",
+	      { className: "row" },
 	      _react2.default.createElement(
-	        'pre',
-	        { className: 'column example__code' },
+	        "pre",
+	        { className: "column example__code" },
 	        _react2.default.createElement(
-	          'code',
-	          { className: 'jsx' },
+	          "code",
+	          { className: "jsx" },
 	          "<DatePicker",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "selected={this.state.startDate}",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "onChange={this.handleChange}",
-	          ' ',
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          " ",
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "className='datepicker__input red-border' />"
 	        )
 	      ),
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'column' },
+	        "div",
+	        { className: "column" },
 	        _react2.default.createElement(_reactDatepicker2.default, {
 	          selected: this.state.startDate,
 	          onChange: this.handleChange,
-	          className: 'datepicker__input red-border' })
+	          className: "datepicker__input red-border" })
 	      )
 	    );
 	  }
@@ -50494,7 +50518,7 @@
 /* 452 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -50515,25 +50539,25 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
-	  displayName: 'PlaceholderText',
+	  displayName: "PlaceholderText",
 
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'div',
-	      { className: 'row' },
+	      "div",
+	      { className: "row" },
 	      _react2.default.createElement(
-	        'pre',
-	        { className: 'column example__code' },
+	        "pre",
+	        { className: "column example__code" },
 	        _react2.default.createElement(
-	          'code',
-	          { className: 'jsx' },
+	          "code",
+	          { className: "jsx" },
 	          "<DatePicker placeholderText=\"Click to select a date\" />"
 	        )
 	      ),
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'column' },
-	        _react2.default.createElement(_reactDatepicker2.default, { placeholderText: 'Click to select a date' })
+	        "div",
+	        { className: "column" },
+	        _react2.default.createElement(_reactDatepicker2.default, { placeholderText: "Click to select a date" })
 	      )
 	    );
 	  }
@@ -50543,7 +50567,7 @@
 /* 453 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -50564,7 +50588,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
-	  displayName: 'SpecificDateRange',
+	  displayName: "SpecificDateRange",
 
 	  getInitialState: function getInitialState() {
 	    return {
@@ -50578,49 +50602,49 @@
 	  },
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'div',
-	      { className: 'row' },
+	      "div",
+	      { className: "row" },
 	      _react2.default.createElement(
-	        'pre',
-	        { className: 'column example__code' },
+	        "pre",
+	        { className: "column example__code" },
 	        _react2.default.createElement(
-	          'code',
-	          { className: 'jsx' },
+	          "code",
+	          { className: "jsx" },
 	          "<DatePicker",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "selected={this.state.startDate}",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "onChange={this.handleChange}",
-	          _react2.default.createElement('br', null),
+	          _react2.default.createElement("br", null),
 	          _react2.default.createElement(
-	            'strong',
+	            "strong",
 	            null,
-	            '    ',
+	            "    ",
 	            "minDate={moment()}"
 	          ),
-	          _react2.default.createElement('br', null),
+	          _react2.default.createElement("br", null),
 	          _react2.default.createElement(
-	            'strong',
+	            "strong",
 	            null,
-	            '    ',
+	            "    ",
 	            "maxDate={moment().add(5, 'days')}"
 	          ),
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "placeholderText=\"Select a date between today and 5 days in the future\" />"
 	        )
 	      ),
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'column' },
+	        "div",
+	        { className: "column" },
 	        _react2.default.createElement(_reactDatepicker2.default, {
 	          selected: this.state.startDate,
 	          onChange: this.handleChange,
 	          minDate: (0, _moment2.default)(),
-	          maxDate: (0, _moment2.default)().add(5, 'days'),
-	          placeholderText: 'Select a date between today and 5 days in the future' })
+	          maxDate: (0, _moment2.default)().add(5, "days"),
+	          placeholderText: "Select a date between today and 5 days in the future" })
 	      )
 	    );
 	  }
@@ -50630,7 +50654,7 @@
 /* 454 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -50651,7 +50675,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
-	  displayName: 'CustomStartDate',
+	  displayName: "CustomStartDate",
 
 	  getInitialState: function getInitialState() {
 	    return {
@@ -50665,41 +50689,41 @@
 	  },
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'div',
-	      { className: 'row' },
+	      "div",
+	      { className: "row" },
 	      _react2.default.createElement(
-	        'pre',
-	        { className: 'column example__code' },
+	        "pre",
+	        { className: "column example__code" },
 	        _react2.default.createElement(
-	          'code',
-	          { className: 'jsx' },
+	          "code",
+	          { className: "jsx" },
 	          "<DatePicker",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "selected={this.state.startDate}",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "onChange={this.handleChange}",
-	          _react2.default.createElement('br', null),
+	          _react2.default.createElement("br", null),
 	          _react2.default.createElement(
-	            'strong',
+	            "strong",
 	            null,
-	            '    ',
+	            "    ",
 	            "weekStart='0'"
 	          ),
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "placeholderText='I start on Sunday!' />"
 	        )
 	      ),
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'column' },
+	        "div",
+	        { className: "column" },
 	        _react2.default.createElement(_reactDatepicker2.default, {
 	          selected: this.state.startDate,
 	          onChange: this.handleChange,
-	          weekStart: '0',
-	          placeholderText: 'I start on Sunday!' })
+	          weekStart: "0",
+	          placeholderText: "I start on Sunday!" })
 	      )
 	    );
 	  }
@@ -50709,7 +50733,7 @@
 /* 455 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -50730,7 +50754,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
-	  displayName: 'ExcludeDates',
+	  displayName: "ExcludeDates",
 
 	  getInitialState: function getInitialState() {
 	    return {
@@ -50744,41 +50768,41 @@
 	  },
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'div',
-	      { className: 'row' },
+	      "div",
+	      { className: "row" },
 	      _react2.default.createElement(
-	        'pre',
-	        { className: 'column example__code' },
+	        "pre",
+	        { className: "column example__code" },
 	        _react2.default.createElement(
-	          'code',
-	          { className: 'jsx' },
+	          "code",
+	          { className: "jsx" },
 	          "<DatePicker",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "selected={this.state.startDate}",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "onChange={this.handleChange}",
-	          _react2.default.createElement('br', null),
+	          _react2.default.createElement("br", null),
 	          _react2.default.createElement(
-	            'strong',
+	            "strong",
 	            null,
-	            '    ',
+	            "    ",
 	            "excludeDates={[moment(), moment().subtract(1, 'days')]}"
 	          ),
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "placeholderText=\"Select a date other than today or yesterday\" />"
 	        )
 	      ),
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'column' },
+	        "div",
+	        { className: "column" },
 	        _react2.default.createElement(_reactDatepicker2.default, {
 	          selected: this.state.startDate,
 	          onChange: this.handleChange,
-	          excludeDates: [(0, _moment2.default)(), (0, _moment2.default)().subtract(1, 'days')],
-	          placeholderText: 'Select a date other than today or yesterday' })
+	          excludeDates: [(0, _moment2.default)(), (0, _moment2.default)().subtract(1, "days")],
+	          placeholderText: "Select a date other than today or yesterday" })
 	      )
 	    );
 	  }
@@ -50788,7 +50812,7 @@
 /* 456 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -50809,7 +50833,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
-	  displayName: 'Disabled',
+	  displayName: "includeDates",
 
 	  getInitialState: function getInitialState() {
 	    return {
@@ -50823,42 +50847,41 @@
 	  },
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'div',
-	      { className: 'row' },
+	      "div",
+	      { className: "row" },
 	      _react2.default.createElement(
-	        'pre',
-	        { className: 'column example__code' },
+	        "pre",
+	        { className: "column example__code" },
 	        _react2.default.createElement(
-	          'code',
-	          { className: 'jsx' },
+	          "code",
+	          { className: "jsx" },
 	          "<DatePicker",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "selected={this.state.startDate}",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "onChange={this.handleChange}",
-	          _react2.default.createElement('br', null),
+	          _react2.default.createElement("br", null),
 	          _react2.default.createElement(
-	            'strong',
+	            "strong",
 	            null,
-	            '    ',
-	            "disabled={true}"
+	            "    ",
+	            "includeDates={[moment(), moment().add('days', 1)]}"
 	          ),
-	          _react2.default.createElement('br', null),
-	          '    ',
-	          "placeholderText='This is disabled'",
-	          ' />'
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "placeholderText=\"This only includes today and tomorrow\" />"
 	        )
 	      ),
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'column' },
+	        "div",
+	        { className: "column" },
 	        _react2.default.createElement(_reactDatepicker2.default, {
 	          selected: this.state.startDate,
 	          onChange: this.handleChange,
-	          disabled: true,
-	          placeholderText: 'This is disabled' })
+	          includeDates: [(0, _moment2.default)(), (0, _moment2.default)().add("days", 1)],
+	          placeholderText: "This only includes today and tomorrow" })
 	      )
 	    );
 	  }
@@ -50868,7 +50891,7 @@
 /* 457 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -50889,42 +50912,56 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
-	  displayName: 'Disabled',
+	  displayName: "Disabled",
 
 	  getInitialState: function getInitialState() {
 	    return {
-	      startDate: (0, _moment2.default)()
+	      startDate: null
 	    };
+	  },
+	  handleChange: function handleChange(date) {
+	    this.setState({
+	      startDate: date
+	    });
 	  },
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'div',
-	      { className: 'row' },
+	      "div",
+	      { className: "row" },
 	      _react2.default.createElement(
-	        'pre',
-	        { className: 'column example__code' },
+	        "pre",
+	        { className: "column example__code" },
 	        _react2.default.createElement(
-	          'code',
-	          { className: 'jsx' },
+	          "code",
+	          { className: "jsx" },
 	          "<DatePicker",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "selected={this.state.startDate}",
-	          _react2.default.createElement('br', null),
-	          '    ',
-	          "isClearable={true} />",
-	          _react2.default.createElement('br', null),
-	          '    ',
-	          "placeholderText='I have been cleared!' />"
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "onChange={this.handleChange}",
+	          _react2.default.createElement("br", null),
+	          _react2.default.createElement(
+	            "strong",
+	            null,
+	            "    ",
+	            "disabled={true}"
+	          ),
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "placeholderText='This is disabled'",
+	          " />"
 	        )
 	      ),
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'column' },
+	        "div",
+	        { className: "column" },
 	        _react2.default.createElement(_reactDatepicker2.default, {
 	          selected: this.state.startDate,
-	          isClearable: true,
-	          placeholderText: 'I have been cleared!' })
+	          onChange: this.handleChange,
+	          disabled: true,
+	          placeholderText: "This is disabled" })
 	      )
 	    );
 	  }
@@ -50934,7 +50971,7 @@
 /* 458 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -50955,7 +50992,73 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
-	  displayName: 'Disabled',
+	  displayName: "Disabled",
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      startDate: (0, _moment2.default)()
+	    };
+	  },
+	  render: function render() {
+	    return _react2.default.createElement(
+	      "div",
+	      { className: "row" },
+	      _react2.default.createElement(
+	        "pre",
+	        { className: "column example__code" },
+	        _react2.default.createElement(
+	          "code",
+	          { className: "jsx" },
+	          "<DatePicker",
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "selected={this.state.startDate}",
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "isClearable={true} />",
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "placeholderText='I have been cleared!' />"
+	        )
+	      ),
+	      _react2.default.createElement(
+	        "div",
+	        { className: "column" },
+	        _react2.default.createElement(_reactDatepicker2.default, {
+	          selected: this.state.startDate,
+	          isClearable: true,
+	          placeholderText: "I have been cleared!" })
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 459 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDatepicker = __webpack_require__(157);
+
+	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
+
+	var _moment = __webpack_require__(183);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _react2.default.createClass({
+	  displayName: "Disabled",
 
 	  getInitialState: function getInitialState() {
 	    return {
@@ -50971,151 +51074,79 @@
 
 	  handleOnBlur: function handleOnBlur(date) {
 	    if (date === null) {
-	      console.log('selected date: %s', date);
+	      console.log("selected date: %s", date);
 	    } else {
-	      console.log('selected date: %s', date.format('DD/MM/YYYY'));
+	      console.log("selected date: %s", date.format("DD/MM/YYYY"));
 	    }
 	  },
 
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'div',
-	      { className: 'row' },
+	      "div",
+	      { className: "row" },
 	      _react2.default.createElement(
-	        'pre',
-	        { className: 'column example__code' },
+	        "pre",
+	        { className: "column example__code" },
 	        _react2.default.createElement(
-	          'code',
-	          { className: 'js' },
+	          "code",
+	          { className: "js" },
 	          "handleOnBlur: function (date) {",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "if (date === null) {",
-	          _react2.default.createElement('br', null),
-	          '        ',
+	          _react2.default.createElement("br", null),
+	          "        ",
 	          "console.log('selected date: %s', date);",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "}",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "else {",
-	          _react2.default.createElement('br', null),
-	          '        ',
+	          _react2.default.createElement("br", null),
+	          "        ",
 	          "console.log('selected date: %s', date.format('DD/MM/YYYY'));",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "}",
-	          _react2.default.createElement('br', null),
+	          _react2.default.createElement("br", null),
 	          "};"
 	        ),
-	        _react2.default.createElement('br', null),
+	        _react2.default.createElement("br", null),
 	        _react2.default.createElement(
-	          'code',
-	          { className: 'jsx' },
+	          "code",
+	          { className: "jsx" },
 	          "<DatePicker",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "key='example9'",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "selected={this.state.startDate}",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "onChange={this.handleChange}",
-	          _react2.default.createElement('br', null),
+	          _react2.default.createElement("br", null),
 	          _react2.default.createElement(
-	            'strong',
+	            "strong",
 	            null,
-	            '    ',
+	            "    ",
 	            "onBlur={this.handleOnBlur}"
 	          ),
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "placeholderText=\"View blur callbacks in console\" />"
 	        )
 	      ),
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'column' },
+	        "div",
+	        { className: "column" },
 	        _react2.default.createElement(_reactDatepicker2.default, {
-	          key: 'example9',
+	          key: "example9",
 	          selected: this.state.startDate,
 	          onChange: this.handleChange,
 	          onBlur: this.handleOnBlur,
-	          placeholderText: 'View blur callbacks in console' })
-	      )
-	    );
-	  }
-	});
-
-/***/ },
-/* 459 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDatepicker = __webpack_require__(157);
-
-	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
-
-	var _moment = __webpack_require__(183);
-
-	var _moment2 = _interopRequireDefault(_moment);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = _react2.default.createClass({
-	  displayName: 'Weekdays',
-
-	  getInitialState: function getInitialState() {
-	    return {
-	      startDate: (0, _moment2.default)()
-	    };
-	  },
-	  handleChange: function handleChange(date) {
-	    this.setState({
-	      startDate: date
-	    });
-	  },
-	  render: function render() {
-	    return _react2.default.createElement(
-	      'div',
-	      { className: 'row' },
-	      _react2.default.createElement(
-	        'pre',
-	        { className: 'column example__code' },
-	        _react2.default.createElement(
-	          'code',
-	          { className: 'jsx' },
-	          "<DatePicker",
-	          _react2.default.createElement('br', null),
-	          '    ',
-	          "selected={this.state.startDate}",
-	          _react2.default.createElement('br', null),
-	          '    ',
-	          "onChange={this.handleChange}",
-	          ' ',
-	          _react2.default.createElement('br', null),
-	          '    ',
-	          "weekdays: ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So']"
-	        )
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'column' },
-	        _react2.default.createElement(_reactDatepicker2.default, {
-	          selected: this.state.startDate,
-	          onChange: this.handleChange,
-	          weekdays: ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So'] })
+	          placeholderText: "View blur callbacks in console" })
 	      )
 	    );
 	  }
@@ -51125,7 +51156,7 @@
 /* 460 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -51146,7 +51177,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
-	  displayName: 'Placement',
+	  displayName: "Weekdays",
 
 	  getInitialState: function getInitialState() {
 	    return {
@@ -51160,41 +51191,34 @@
 	  },
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'div',
-	      { className: 'row' },
+	      "div",
+	      { className: "row" },
 	      _react2.default.createElement(
-	        'pre',
-	        { className: 'column example__code' },
+	        "pre",
+	        { className: "column example__code" },
 	        _react2.default.createElement(
-	          'code',
-	          { className: 'jsx' },
+	          "code",
+	          { className: "jsx" },
 	          "<DatePicker",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "selected={this.state.startDate}",
-	          _react2.default.createElement('br', null),
-	          '    ',
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "onChange={this.handleChange}",
-	          _react2.default.createElement('br', null),
-	          '    ',
-	          "popoverAttachment='bottom center'",
-	          _react2.default.createElement('br', null),
-	          '    ',
-	          "popoverTargetAttachment='top center'",
-	          _react2.default.createElement('br', null),
-	          '    ',
-	          "popoverTargetOffset='0px 0px' />"
+	          " ",
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "weekdays: ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So']"
 	        )
 	      ),
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'column' },
+	        "div",
+	        { className: "column" },
 	        _react2.default.createElement(_reactDatepicker2.default, {
 	          selected: this.state.startDate,
 	          onChange: this.handleChange,
-	          popoverAttachment: 'bottom center',
-	          popoverTargetAttachment: 'top center',
-	          popoverTargetOffset: '0px 0px' })
+	          weekdays: ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"] })
 	      )
 	    );
 	  }
@@ -51202,6 +51226,85 @@
 
 /***/ },
 /* 461 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDatepicker = __webpack_require__(157);
+
+	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
+
+	var _moment = __webpack_require__(183);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _react2.default.createClass({
+	  displayName: "Placement",
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      startDate: (0, _moment2.default)()
+	    };
+	  },
+	  handleChange: function handleChange(date) {
+	    this.setState({
+	      startDate: date
+	    });
+	  },
+	  render: function render() {
+	    return _react2.default.createElement(
+	      "div",
+	      { className: "row" },
+	      _react2.default.createElement(
+	        "pre",
+	        { className: "column example__code" },
+	        _react2.default.createElement(
+	          "code",
+	          { className: "jsx" },
+	          "<DatePicker",
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "selected={this.state.startDate}",
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "onChange={this.handleChange}",
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "popoverAttachment='bottom center'",
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "popoverTargetAttachment='top center'",
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "popoverTargetOffset='0px 0px' />"
+	        )
+	      ),
+	      _react2.default.createElement(
+	        "div",
+	        { className: "column" },
+	        _react2.default.createElement(_reactDatepicker2.default, {
+	          selected: this.state.startDate,
+	          onChange: this.handleChange,
+	          popoverAttachment: "bottom center",
+	          popoverTargetAttachment: "top center",
+	          popoverTargetOffset: "0px 0px" })
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 462 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51263,18 +51366,18 @@
 	module.exports = DateRange;
 
 /***/ },
-/* 462 */
+/* 463 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 463 */
-462,
 /* 464 */
+463,
+/* 465 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -51295,7 +51398,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
-	  displayName: 'HeroExample',
+	  displayName: "HeroExample",
 
 	  getInitialState: function getInitialState() {
 	    return {
