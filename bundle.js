@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "/";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -77,9 +77,9 @@
 	'use strict';
 
 	var React = __webpack_require__(2);
-	var ReactDOM = __webpack_require__(158);
-	var ExampleComponents = __webpack_require__(159);
-	var HeroExample = __webpack_require__(404);
+	var ReactDOM = __webpack_require__(154);
+	var ExampleComponents = __webpack_require__(155);
+	var HeroExample = __webpack_require__(462);
 
 	ReactDOM.render(React.createElement(ExampleComponents, null), document.getElementById('datepicker-region'));
 	ReactDOM.render(React.createElement(HeroExample, null), document.getElementById('js-hero-example'));
@@ -111,11 +111,11 @@
 	'use strict';
 
 	var ReactDOM = __webpack_require__(4);
-	var ReactDOMServer = __webpack_require__(148);
-	var ReactIsomorphic = __webpack_require__(152);
+	var ReactDOMServer = __webpack_require__(144);
+	var ReactIsomorphic = __webpack_require__(148);
 
 	var assign = __webpack_require__(39);
-	var deprecated = __webpack_require__(157);
+	var deprecated = __webpack_require__(153);
 
 	// `version` will be added here by ReactIsomorphic.
 	var React = {};
@@ -134,6 +134,7 @@
 	});
 
 	React.__SECRET_DOM_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = ReactDOM;
+	React.__SECRET_DOM_SERVER_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = ReactDOMServer;
 
 	module.exports = React;
 
@@ -164,10 +165,10 @@
 	var ReactPerf = __webpack_require__(18);
 	var ReactReconciler = __webpack_require__(50);
 	var ReactUpdates = __webpack_require__(54);
-	var ReactVersion = __webpack_require__(146);
+	var ReactVersion = __webpack_require__(142);
 
 	var findDOMNode = __webpack_require__(91);
-	var renderSubtreeIntoContainer = __webpack_require__(147);
+	var renderSubtreeIntoContainer = __webpack_require__(143);
 	var warning = __webpack_require__(25);
 
 	ReactDefaultInjection.inject();
@@ -198,8 +199,8 @@
 	  });
 	}
 
-	if ((undefined) !== 'production') {
-	  var ExecutionEnvironment = __webpack_require__(9);
+	if (false) {
+	  var ExecutionEnvironment = require('fbjs/lib/ExecutionEnvironment');
 	  if (ExecutionEnvironment.canUseDOM && window.top === window.self) {
 
 	    // First check if devtools is not installed
@@ -214,7 +215,7 @@
 	    // information on preventing compatibility mode
 	    var ieCompatibilityMode = document.documentMode && document.documentMode < 8;
 
-	    (undefined) !== 'production' ? warning(!ieCompatibilityMode, 'Internet Explorer is running in compatibility mode; please add the ' + 'following tag to your HTML to prevent this from happening: ' + '<meta http-equiv="X-UA-Compatible" content="IE=edge" />') : undefined;
+	    process.env.NODE_ENV !== 'production' ? warning(!ieCompatibilityMode, 'Internet Explorer is running in compatibility mode; please add the ' + 'following tag to your HTML to prevent this from happening: ' + '<meta http-equiv="X-UA-Compatible" content="IE=edge" />') : undefined;
 
 	    var expectedFeatures = [
 	    // shims
@@ -342,7 +343,7 @@
 	   * @internal
 	   */
 	  mountComponent: function (rootID, transaction, context) {
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      if (context[validateDOMNesting.ancestorInfoContextKey]) {
 	        validateDOMNesting('span', null, context[validateDOMNesting.ancestorInfoContextKey]);
 	      }
@@ -479,7 +480,7 @@
 	        var updatedChild = update.parentNode.childNodes[updatedIndex];
 	        var parentID = update.parentID;
 
-	        !updatedChild ? (undefined) !== 'production' ? invariant(false, 'processUpdates(): Unable to find child %s of element. This ' + 'probably means the DOM was unexpectedly mutated (e.g., by the ' + 'browser), usually due to forgetting a <tbody> when using tables, ' + 'nesting tags like <form>, <p>, or <a>, or using non-SVG elements ' + 'in an <svg> parent. Try inspecting the child nodes of the element ' + 'with React ID `%s`.', updatedIndex, parentID) : invariant(false) : undefined;
+	        !updatedChild ?  false ? invariant(false, 'processUpdates(): Unable to find child %s of element. This ' + 'probably means the DOM was unexpectedly mutated (e.g., by the ' + 'browser), usually due to forgetting a <tbody> when using tables, ' + 'nesting tags like <form>, <p>, or <a>, or using non-SVG elements ' + 'in an <svg> parent. Try inspecting the child nodes of the element ' + 'with React ID `%s`.', updatedIndex, parentID) : invariant(false) : undefined;
 
 	        initialChildren = initialChildren || {};
 	        initialChildren[parentID] = initialChildren[parentID] || [];
@@ -590,12 +591,12 @@
 	   * @internal
 	   */
 	  dangerouslyRenderMarkup: function (markupList) {
-	    !ExecutionEnvironment.canUseDOM ? (undefined) !== 'production' ? invariant(false, 'dangerouslyRenderMarkup(...): Cannot render markup in a worker ' + 'thread. Make sure `window` and `document` are available globally ' + 'before requiring React when unit testing or use ' + 'ReactDOMServer.renderToString for server rendering.') : invariant(false) : undefined;
+	    !ExecutionEnvironment.canUseDOM ?  false ? invariant(false, 'dangerouslyRenderMarkup(...): Cannot render markup in a worker ' + 'thread. Make sure `window` and `document` are available globally ' + 'before requiring React when unit testing or use ' + 'ReactDOMServer.renderToString for server rendering.') : invariant(false) : undefined;
 	    var nodeName;
 	    var markupByNodeName = {};
 	    // Group markup by `nodeName` if a wrap is necessary, else by '*'.
 	    for (var i = 0; i < markupList.length; i++) {
-	      !markupList[i] ? (undefined) !== 'production' ? invariant(false, 'dangerouslyRenderMarkup(...): Missing markup.') : invariant(false) : undefined;
+	      !markupList[i] ?  false ? invariant(false, 'dangerouslyRenderMarkup(...): Missing markup.') : invariant(false) : undefined;
 	      nodeName = getNodeName(markupList[i]);
 	      nodeName = getMarkupWrap(nodeName) ? nodeName : '*';
 	      markupByNodeName[nodeName] = markupByNodeName[nodeName] || [];
@@ -637,14 +638,14 @@
 	          resultIndex = +renderNode.getAttribute(RESULT_INDEX_ATTR);
 	          renderNode.removeAttribute(RESULT_INDEX_ATTR);
 
-	          !!resultList.hasOwnProperty(resultIndex) ? (undefined) !== 'production' ? invariant(false, 'Danger: Assigning to an already-occupied result index.') : invariant(false) : undefined;
+	          !!resultList.hasOwnProperty(resultIndex) ?  false ? invariant(false, 'Danger: Assigning to an already-occupied result index.') : invariant(false) : undefined;
 
 	          resultList[resultIndex] = renderNode;
 
 	          // This should match resultList.length and markupList.length when
 	          // we're done.
 	          resultListAssignmentCount += 1;
-	        } else if ((undefined) !== 'production') {
+	        } else if (false) {
 	          console.error('Danger: Discarding unexpected node:', renderNode);
 	        }
 	      }
@@ -652,9 +653,9 @@
 
 	    // Although resultList was populated out of order, it should now be a dense
 	    // array.
-	    !(resultListAssignmentCount === resultList.length) ? (undefined) !== 'production' ? invariant(false, 'Danger: Did not assign to every index of resultList.') : invariant(false) : undefined;
+	    !(resultListAssignmentCount === resultList.length) ?  false ? invariant(false, 'Danger: Did not assign to every index of resultList.') : invariant(false) : undefined;
 
-	    !(resultList.length === markupList.length) ? (undefined) !== 'production' ? invariant(false, 'Danger: Expected markup to render %s nodes, but rendered %s.', markupList.length, resultList.length) : invariant(false) : undefined;
+	    !(resultList.length === markupList.length) ?  false ? invariant(false, 'Danger: Expected markup to render %s nodes, but rendered %s.', markupList.length, resultList.length) : invariant(false) : undefined;
 
 	    return resultList;
 	  },
@@ -668,9 +669,9 @@
 	   * @internal
 	   */
 	  dangerouslyReplaceNodeWithMarkup: function (oldChild, markup) {
-	    !ExecutionEnvironment.canUseDOM ? (undefined) !== 'production' ? invariant(false, 'dangerouslyReplaceNodeWithMarkup(...): Cannot render markup in a ' + 'worker thread. Make sure `window` and `document` are available ' + 'globally before requiring React when unit testing or use ' + 'ReactDOMServer.renderToString() for server rendering.') : invariant(false) : undefined;
-	    !markup ? (undefined) !== 'production' ? invariant(false, 'dangerouslyReplaceNodeWithMarkup(...): Missing markup.') : invariant(false) : undefined;
-	    !(oldChild.tagName.toLowerCase() !== 'html') ? (undefined) !== 'production' ? invariant(false, 'dangerouslyReplaceNodeWithMarkup(...): Cannot replace markup of the ' + '<html> node. This is because browser quirks make this unreliable ' + 'and/or slow. If you want to render to the root you must use ' + 'server rendering. See ReactDOMServer.renderToString().') : invariant(false) : undefined;
+	    !ExecutionEnvironment.canUseDOM ?  false ? invariant(false, 'dangerouslyReplaceNodeWithMarkup(...): Cannot render markup in a ' + 'worker thread. Make sure `window` and `document` are available ' + 'globally before requiring React when unit testing or use ' + 'ReactDOMServer.renderToString() for server rendering.') : invariant(false) : undefined;
+	    !markup ?  false ? invariant(false, 'dangerouslyReplaceNodeWithMarkup(...): Missing markup.') : invariant(false) : undefined;
+	    !(oldChild.tagName.toLowerCase() !== 'html') ?  false ? invariant(false, 'dangerouslyReplaceNodeWithMarkup(...): Cannot replace markup of the ' + '<html> node. This is because browser quirks make this unreliable ' + 'and/or slow. If you want to render to the root you must use ' + 'server rendering. See ReactDOMServer.renderToString().') : invariant(false) : undefined;
 
 	    var newChild;
 	    if (typeof markup === 'string') {
@@ -785,7 +786,7 @@
 	 */
 	function createNodesFromMarkup(markup, handleScript) {
 	  var node = dummyNode;
-	  !!!dummyNode ? (undefined) !== 'production' ? invariant(false, 'createNodesFromMarkup dummy not initialized') : invariant(false) : undefined;
+	  !!!dummyNode ?  false ? invariant(false, 'createNodesFromMarkup dummy not initialized') : invariant(false) : undefined;
 	  var nodeName = getNodeName(markup);
 
 	  var wrap = nodeName && getMarkupWrap(nodeName);
@@ -802,7 +803,7 @@
 
 	  var scripts = node.getElementsByTagName('script');
 	  if (scripts.length) {
-	    !handleScript ? (undefined) !== 'production' ? invariant(false, 'createNodesFromMarkup(...): Unexpected <script> element rendered.') : invariant(false) : undefined;
+	    !handleScript ?  false ? invariant(false, 'createNodesFromMarkup(...): Unexpected <script> element rendered.') : invariant(false) : undefined;
 	    createArrayFromMixed(scripts).forEach(handleScript);
 	  }
 
@@ -939,11 +940,11 @@
 
 	  // Some browse builtin objects can report typeof 'function' (e.g. NodeList in
 	  // old versions of Safari).
-	  !(!Array.isArray(obj) && (typeof obj === 'object' || typeof obj === 'function')) ? (undefined) !== 'production' ? invariant(false, 'toArray: Array-like object expected') : invariant(false) : undefined;
+	  !(!Array.isArray(obj) && (typeof obj === 'object' || typeof obj === 'function')) ?  false ? invariant(false, 'toArray: Array-like object expected') : invariant(false) : undefined;
 
-	  !(typeof length === 'number') ? (undefined) !== 'production' ? invariant(false, 'toArray: Object needs a length property') : invariant(false) : undefined;
+	  !(typeof length === 'number') ?  false ? invariant(false, 'toArray: Object needs a length property') : invariant(false) : undefined;
 
-	  !(length === 0 || length - 1 in obj) ? (undefined) !== 'production' ? invariant(false, 'toArray: Object should have keys for indices') : invariant(false) : undefined;
+	  !(length === 0 || length - 1 in obj) ?  false ? invariant(false, 'toArray: Object should have keys for indices') : invariant(false) : undefined;
 
 	  // Old IE doesn't give collections access to hasOwnProperty. Assume inputs
 	  // without method will throw during the slice call and skip straight to the
@@ -996,7 +997,7 @@
 	 */
 
 	var invariant = function (condition, format, a, b, c, d, e, f) {
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    if (format === undefined) {
 	      throw new Error('invariant requires an error message argument');
 	    }
@@ -1104,7 +1105,7 @@
 	 * @return {?array} Markup wrap configuration, if applicable.
 	 */
 	function getMarkupWrap(nodeName) {
-	  !!!dummyNode ? (undefined) !== 'production' ? invariant(false, 'Markup wrapping node not initialized') : invariant(false) : undefined;
+	  !!!dummyNode ?  false ? invariant(false, 'Markup wrapping node not initialized') : invariant(false) : undefined;
 	  if (!markupWrap.hasOwnProperty(nodeName)) {
 	    nodeName = '*';
 	  }
@@ -1242,7 +1243,7 @@
 	var keyMirror = function (obj) {
 	  var ret = {};
 	  var key;
-	  !(obj instanceof Object && !Array.isArray(obj)) ? (undefined) !== 'production' ? invariant(false, 'keyMirror(...): Argument must be an object.') : invariant(false) : undefined;
+	  !(obj instanceof Object && !Array.isArray(obj)) ?  false ? invariant(false, 'keyMirror(...): Argument must be an object.') : invariant(false) : undefined;
 	  for (key in obj) {
 	    if (!obj.hasOwnProperty(key)) {
 	      continue;
@@ -1295,7 +1296,7 @@
 	   * @param {object<string>} methodNames
 	   */
 	  measureMethods: function (object, objectName, methodNames) {
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      for (var key in methodNames) {
 	        if (!methodNames.hasOwnProperty(key)) {
 	          continue;
@@ -1314,7 +1315,7 @@
 	   * @return {function}
 	   */
 	  measure: function (objName, fnName, func) {
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      var measuredFunc = null;
 	      var wrapper = function () {
 	        if (ReactPerf.enableMeasure) {
@@ -1579,7 +1580,7 @@
 	    return true;
 	  }
 	  illegalAttributeNameCache[attributeName] = true;
-	  (undefined) !== 'production' ? warning(false, 'Invalid attribute name: `%s`', attributeName) : undefined;
+	   false ? warning(false, 'Invalid attribute name: `%s`', attributeName) : undefined;
 	  return false;
 	}
 
@@ -1587,7 +1588,7 @@
 	  return value == null || propertyInfo.hasBooleanValue && !value || propertyInfo.hasNumericValue && isNaN(value) || propertyInfo.hasPositiveNumericValue && value < 1 || propertyInfo.hasOverloadedBooleanValue && value === false;
 	}
 
-	if ((undefined) !== 'production') {
+	if (false) {
 	  var reactProps = {
 	    children: true,
 	    dangerouslySetInnerHTML: true,
@@ -1609,7 +1610,7 @@
 
 	    // For now, only warn when we have a suggested correction. This prevents
 	    // logging too much when using transferPropsTo.
-	    (undefined) !== 'production' ? warning(standardName == null, 'Unknown DOM property %s. Did you mean %s?', name, standardName) : undefined;
+	    process.env.NODE_ENV !== 'production' ? warning(standardName == null, 'Unknown DOM property %s. Did you mean %s?', name, standardName) : undefined;
 	  };
 	}
 
@@ -1655,7 +1656,7 @@
 	        return '';
 	      }
 	      return name + '=' + quoteAttributeValueForBrowser(value);
-	    } else if ((undefined) !== 'production') {
+	    } else if (false) {
 	      warnUnknownProperty(name);
 	    }
 	    return null;
@@ -1714,7 +1715,7 @@
 	      }
 	    } else if (DOMProperty.isCustomAttribute(name)) {
 	      DOMPropertyOperations.setValueForAttribute(node, name, value);
-	    } else if ((undefined) !== 'production') {
+	    } else if (false) {
 	      warnUnknownProperty(name);
 	    }
 	  },
@@ -1753,7 +1754,7 @@
 	      }
 	    } else if (DOMProperty.isCustomAttribute(name)) {
 	      node.removeAttribute(name);
-	    } else if ((undefined) !== 'production') {
+	    } else if (false) {
 	      warnUnknownProperty(name);
 	    }
 	  }
@@ -1846,7 +1847,7 @@
 	    }
 
 	    for (var propName in Properties) {
-	      !!DOMProperty.properties.hasOwnProperty(propName) ? (undefined) !== 'production' ? invariant(false, 'injectDOMPropertyConfig(...): You\'re trying to inject DOM property ' + '\'%s\' which has already been injected. You may be accidentally ' + 'injecting the same DOM property config twice, or you may be ' + 'injecting two configs that have conflicting property names.', propName) : invariant(false) : undefined;
+	      !!DOMProperty.properties.hasOwnProperty(propName) ?  false ? invariant(false, 'injectDOMPropertyConfig(...): You\'re trying to inject DOM property ' + '\'%s\' which has already been injected. You may be accidentally ' + 'injecting the same DOM property config twice, or you may be ' + 'injecting two configs that have conflicting property names.', propName) : invariant(false) : undefined;
 
 	      var lowerCased = propName.toLowerCase();
 	      var propConfig = Properties[propName];
@@ -1866,18 +1867,18 @@
 	        hasOverloadedBooleanValue: checkMask(propConfig, Injection.HAS_OVERLOADED_BOOLEAN_VALUE)
 	      };
 
-	      !(!propertyInfo.mustUseAttribute || !propertyInfo.mustUseProperty) ? (undefined) !== 'production' ? invariant(false, 'DOMProperty: Cannot require using both attribute and property: %s', propName) : invariant(false) : undefined;
-	      !(propertyInfo.mustUseProperty || !propertyInfo.hasSideEffects) ? (undefined) !== 'production' ? invariant(false, 'DOMProperty: Properties that have side effects must use property: %s', propName) : invariant(false) : undefined;
-	      !(propertyInfo.hasBooleanValue + propertyInfo.hasNumericValue + propertyInfo.hasOverloadedBooleanValue <= 1) ? (undefined) !== 'production' ? invariant(false, 'DOMProperty: Value can be one of boolean, overloaded boolean, or ' + 'numeric value, but not a combination: %s', propName) : invariant(false) : undefined;
+	      !(!propertyInfo.mustUseAttribute || !propertyInfo.mustUseProperty) ?  false ? invariant(false, 'DOMProperty: Cannot require using both attribute and property: %s', propName) : invariant(false) : undefined;
+	      !(propertyInfo.mustUseProperty || !propertyInfo.hasSideEffects) ?  false ? invariant(false, 'DOMProperty: Properties that have side effects must use property: %s', propName) : invariant(false) : undefined;
+	      !(propertyInfo.hasBooleanValue + propertyInfo.hasNumericValue + propertyInfo.hasOverloadedBooleanValue <= 1) ?  false ? invariant(false, 'DOMProperty: Value can be one of boolean, overloaded boolean, or ' + 'numeric value, but not a combination: %s', propName) : invariant(false) : undefined;
 
-	      if ((undefined) !== 'production') {
+	      if (false) {
 	        DOMProperty.getPossibleStandardName[lowerCased] = propName;
 	      }
 
 	      if (DOMAttributeNames.hasOwnProperty(propName)) {
 	        var attributeName = DOMAttributeNames[propName];
 	        propertyInfo.attributeName = attributeName;
-	        if ((undefined) !== 'production') {
+	        if (false) {
 	          DOMProperty.getPossibleStandardName[attributeName] = propName;
 	        }
 	      }
@@ -1960,7 +1961,7 @@
 	   * to warn in the case of missing properties. Available only in __DEV__.
 	   * @type {Object}
 	   */
-	  getPossibleStandardName: (undefined) !== 'production' ? {} : null,
+	  getPossibleStandardName:  false ? {} : null,
 
 	  /**
 	   * All of the isCustomAttribute() functions that have been injected.
@@ -2066,7 +2067,7 @@
 
 	var warning = emptyFunction;
 
-	if ((undefined) !== 'production') {
+	if (false) {
 	  warning = function (condition, format) {
 	    for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
 	      args[_key - 2] = arguments[_key];
@@ -2198,7 +2199,7 @@
 	   */
 	  updatePropertyByID: function (id, name, value) {
 	    var node = ReactMount.getNode(id);
-	    !!INVALID_PROPERTY_ERRORS.hasOwnProperty(name) ? (undefined) !== 'production' ? invariant(false, 'updatePropertyByID(...): %s', INVALID_PROPERTY_ERRORS[name]) : invariant(false) : undefined;
+	    !!INVALID_PROPERTY_ERRORS.hasOwnProperty(name) ?  false ? invariant(false, 'updatePropertyByID(...): %s', INVALID_PROPERTY_ERRORS[name]) : invariant(false) : undefined;
 
 	    // If we're updating to null or undefined, we should remove the property
 	    // from the DOM node instead of inadvertantly setting to a string. This
@@ -2301,7 +2302,7 @@
 	/** Mapping from reactRootID to `container` nodes. */
 	var containersByReactRootID = {};
 
-	if ((undefined) !== 'production') {
+	if (false) {
 	  /** __DEV__-only mapping from reactRootID to root elements. */
 	  var rootElementsByReactRootID = {};
 	}
@@ -2367,7 +2368,7 @@
 	    if (nodeCache.hasOwnProperty(id)) {
 	      var cached = nodeCache[id];
 	      if (cached !== node) {
-	        !!isValid(cached, id) ? (undefined) !== 'production' ? invariant(false, 'ReactMount: Two valid but unequal nodes with the same `%s`: %s', ATTR_NAME, id) : invariant(false) : undefined;
+	        !!isValid(cached, id) ?  false ? invariant(false, 'ReactMount: Two valid but unequal nodes with the same `%s`: %s', ATTR_NAME, id) : invariant(false) : undefined;
 
 	        nodeCache[id] = node;
 	      }
@@ -2445,7 +2446,7 @@
 	 */
 	function isValid(node, id) {
 	  if (node) {
-	    !(internalGetID(node) === id) ? (undefined) !== 'production' ? invariant(false, 'ReactMount: Unexpected modification of `%s`', ATTR_NAME) : invariant(false) : undefined;
+	    !(internalGetID(node) === id) ?  false ? invariant(false, 'ReactMount: Unexpected modification of `%s`', ATTR_NAME) : invariant(false) : undefined;
 
 	    var container = ReactMount.findReactContainerForID(id);
 	    if (container && containsNode(container, node)) {
@@ -2507,7 +2508,7 @@
 	      context[ownerDocumentContextKey] = container.ownerDocument;
 	    }
 	  }
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    if (context === emptyObject) {
 	      context = {};
 	    }
@@ -2619,7 +2620,7 @@
 	 */
 	var TopLevelWrapper = function () {};
 	TopLevelWrapper.prototype.isReactComponent = {};
-	if ((undefined) !== 'production') {
+	if (false) {
 	  TopLevelWrapper.displayName = 'TopLevelWrapper';
 	}
 	TopLevelWrapper.prototype.render = function () {
@@ -2679,7 +2680,7 @@
 	      }
 	    });
 
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      // Record the root element in case it later gets transplanted.
 	      rootElementsByReactRootID[getReactRootID(container)] = getReactRootElementInContainer(container);
 	    }
@@ -2695,7 +2696,7 @@
 	   * @return {string} reactRoot ID prefix
 	   */
 	  _registerComponent: function (nextComponent, container) {
-	    !(container && (container.nodeType === ELEMENT_NODE_TYPE || container.nodeType === DOC_NODE_TYPE || container.nodeType === DOCUMENT_FRAGMENT_NODE_TYPE)) ? (undefined) !== 'production' ? invariant(false, '_registerComponent(...): Target container is not a DOM element.') : invariant(false) : undefined;
+	    !(container && (container.nodeType === ELEMENT_NODE_TYPE || container.nodeType === DOC_NODE_TYPE || container.nodeType === DOCUMENT_FRAGMENT_NODE_TYPE)) ?  false ? invariant(false, '_registerComponent(...): Target container is not a DOM element.') : invariant(false) : undefined;
 
 	    ReactBrowserEventEmitter.ensureScrollValueMonitoring();
 
@@ -2715,7 +2716,7 @@
 	    // Various parts of our code (such as ReactCompositeComponent's
 	    // _renderValidatedComponent) assume that calls to render aren't nested;
 	    // verify that that's the case.
-	    (undefined) !== 'production' ? warning(ReactCurrentOwner.current == null, '_renderNewRootComponent(): Render methods should be a pure function ' + 'of props and state; triggering nested component updates from ' + 'render is not allowed. If necessary, trigger nested updates in ' + 'componentDidUpdate. Check the render method of %s.', ReactCurrentOwner.current && ReactCurrentOwner.current.getName() || 'ReactCompositeComponent') : undefined;
+	     false ? warning(ReactCurrentOwner.current == null, '_renderNewRootComponent(): Render methods should be a pure function ' + 'of props and state; triggering nested component updates from ' + 'render is not allowed. If necessary, trigger nested updates in ' + 'componentDidUpdate. Check the render method of %s.', ReactCurrentOwner.current && ReactCurrentOwner.current.getName() || 'ReactCompositeComponent') : undefined;
 
 	    var componentInstance = instantiateReactComponent(nextElement, null);
 	    var reactRootID = ReactMount._registerComponent(componentInstance, container);
@@ -2726,7 +2727,7 @@
 
 	    ReactUpdates.batchedUpdates(batchedMountComponentIntoNode, componentInstance, reactRootID, container, shouldReuseMarkup, context);
 
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      // Record the root element in case it later gets transplanted.
 	      rootElementsByReactRootID[reactRootID] = getReactRootElementInContainer(container);
 	    }
@@ -2748,16 +2749,16 @@
 	   * @return {ReactComponent} Component instance rendered in `container`.
 	   */
 	  renderSubtreeIntoContainer: function (parentComponent, nextElement, container, callback) {
-	    !(parentComponent != null && parentComponent._reactInternalInstance != null) ? (undefined) !== 'production' ? invariant(false, 'parentComponent must be a valid React Component') : invariant(false) : undefined;
+	    !(parentComponent != null && parentComponent._reactInternalInstance != null) ?  false ? invariant(false, 'parentComponent must be a valid React Component') : invariant(false) : undefined;
 	    return ReactMount._renderSubtreeIntoContainer(parentComponent, nextElement, container, callback);
 	  },
 
 	  _renderSubtreeIntoContainer: function (parentComponent, nextElement, container, callback) {
-	    !ReactElement.isValidElement(nextElement) ? (undefined) !== 'production' ? invariant(false, 'ReactDOM.render(): Invalid component element.%s', typeof nextElement === 'string' ? ' Instead of passing an element string, make sure to instantiate ' + 'it by passing it to React.createElement.' : typeof nextElement === 'function' ? ' Instead of passing a component class, make sure to instantiate ' + 'it by passing it to React.createElement.' :
+	    !ReactElement.isValidElement(nextElement) ?  false ? invariant(false, 'ReactDOM.render(): Invalid component element.%s', typeof nextElement === 'string' ? ' Instead of passing an element string, make sure to instantiate ' + 'it by passing it to React.createElement.' : typeof nextElement === 'function' ? ' Instead of passing a component class, make sure to instantiate ' + 'it by passing it to React.createElement.' :
 	    // Check if it quacks like an element
 	    nextElement != null && nextElement.props !== undefined ? ' This may be caused by unintentionally loading two independent ' + 'copies of React.' : '') : invariant(false) : undefined;
 
-	    (undefined) !== 'production' ? warning(!container || !container.tagName || container.tagName.toUpperCase() !== 'BODY', 'render(): Rendering components directly into document.body is ' + 'discouraged, since its children are often manipulated by third-party ' + 'scripts and browser extensions. This may lead to subtle ' + 'reconciliation issues. Try rendering into a container element created ' + 'for your app.') : undefined;
+	     false ? warning(!container || !container.tagName || container.tagName.toUpperCase() !== 'BODY', 'render(): Rendering components directly into document.body is ' + 'discouraged, since its children are often manipulated by third-party ' + 'scripts and browser extensions. This may lead to subtle ' + 'reconciliation issues. Try rendering into a container element created ' + 'for your app.') : undefined;
 
 	    var nextWrappedElement = new ReactElement(TopLevelWrapper, null, null, null, null, null, nextElement);
 
@@ -2782,14 +2783,14 @@
 	    var containerHasReactMarkup = reactRootElement && !!internalGetID(reactRootElement);
 	    var containerHasNonRootReactChild = hasNonRootReactChild(container);
 
-	    if ((undefined) !== 'production') {
-	      (undefined) !== 'production' ? warning(!containerHasNonRootReactChild, 'render(...): Replacing React-rendered children with a new root ' + 'component. If you intended to update the children of this node, ' + 'you should instead have the existing children update their state ' + 'and render the new components instead of calling ReactDOM.render.') : undefined;
+	    if (false) {
+	      process.env.NODE_ENV !== 'production' ? warning(!containerHasNonRootReactChild, 'render(...): Replacing React-rendered children with a new root ' + 'component. If you intended to update the children of this node, ' + 'you should instead have the existing children update their state ' + 'and render the new components instead of calling ReactDOM.render.') : undefined;
 
 	      if (!containerHasReactMarkup || reactRootElement.nextSibling) {
 	        var rootElementSibling = reactRootElement;
 	        while (rootElementSibling) {
 	          if (internalGetID(rootElementSibling)) {
-	            (undefined) !== 'production' ? warning(false, 'render(): Target node has markup rendered by React, but there ' + 'are unrelated nodes as well. This is most commonly caused by ' + 'white-space inserted around server-rendered markup.') : undefined;
+	            process.env.NODE_ENV !== 'production' ? warning(false, 'render(): Target node has markup rendered by React, but there ' + 'are unrelated nodes as well. This is most commonly caused by ' + 'white-space inserted around server-rendered markup.') : undefined;
 	            break;
 	          }
 	          rootElementSibling = rootElementSibling.nextSibling;
@@ -2855,9 +2856,9 @@
 	    // _renderValidatedComponent) assume that calls to render aren't nested;
 	    // verify that that's the case. (Strictly speaking, unmounting won't cause a
 	    // render but we still don't expect to be in a render call here.)
-	    (undefined) !== 'production' ? warning(ReactCurrentOwner.current == null, 'unmountComponentAtNode(): Render methods should be a pure function ' + 'of props and state; triggering nested component updates from render ' + 'is not allowed. If necessary, trigger nested updates in ' + 'componentDidUpdate. Check the render method of %s.', ReactCurrentOwner.current && ReactCurrentOwner.current.getName() || 'ReactCompositeComponent') : undefined;
+	     false ? warning(ReactCurrentOwner.current == null, 'unmountComponentAtNode(): Render methods should be a pure function ' + 'of props and state; triggering nested component updates from render ' + 'is not allowed. If necessary, trigger nested updates in ' + 'componentDidUpdate. Check the render method of %s.', ReactCurrentOwner.current && ReactCurrentOwner.current.getName() || 'ReactCompositeComponent') : undefined;
 
-	    !(container && (container.nodeType === ELEMENT_NODE_TYPE || container.nodeType === DOC_NODE_TYPE || container.nodeType === DOCUMENT_FRAGMENT_NODE_TYPE)) ? (undefined) !== 'production' ? invariant(false, 'unmountComponentAtNode(...): Target container is not a DOM element.') : invariant(false) : undefined;
+	    !(container && (container.nodeType === ELEMENT_NODE_TYPE || container.nodeType === DOC_NODE_TYPE || container.nodeType === DOCUMENT_FRAGMENT_NODE_TYPE)) ?  false ? invariant(false, 'unmountComponentAtNode(...): Target container is not a DOM element.') : invariant(false) : undefined;
 
 	    var reactRootID = getReactRootID(container);
 	    var component = instancesByReactRootID[reactRootID];
@@ -2870,8 +2871,8 @@
 	      var containerID = internalGetID(container);
 	      var isContainerReactRoot = containerID && containerID === ReactInstanceHandles.getReactRootIDFromNodeID(containerID);
 
-	      if ((undefined) !== 'production') {
-	        (undefined) !== 'production' ? warning(!containerHasNonRootReactChild, 'unmountComponentAtNode(): The node you\'re attempting to unmount ' + 'was rendered by React and is not a top-level container. %s', isContainerReactRoot ? 'You may have accidentally passed in a React root node instead ' + 'of its container.' : 'Instead, have the parent component update its state and ' + 'rerender in order to remove this component.') : undefined;
+	      if (false) {
+	        process.env.NODE_ENV !== 'production' ? warning(!containerHasNonRootReactChild, 'unmountComponentAtNode(): The node you\'re attempting to unmount ' + 'was rendered by React and is not a top-level container. %s', isContainerReactRoot ? 'You may have accidentally passed in a React root node instead ' + 'of its container.' : 'Instead, have the parent component update its state and ' + 'rerender in order to remove this component.') : undefined;
 	      }
 
 	      return false;
@@ -2879,7 +2880,7 @@
 	    ReactUpdates.batchedUpdates(unmountComponentFromNode, component, container);
 	    delete instancesByReactRootID[reactRootID];
 	    delete containersByReactRootID[reactRootID];
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      delete rootElementsByReactRootID[reactRootID];
 	    }
 	    return true;
@@ -2896,10 +2897,10 @@
 	    var reactRootID = ReactInstanceHandles.getReactRootIDFromNodeID(id);
 	    var container = containersByReactRootID[reactRootID];
 
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      var rootElement = rootElementsByReactRootID[reactRootID];
 	      if (rootElement && rootElement.parentNode !== container) {
-	        (undefined) !== 'production' ? warning(
+	        process.env.NODE_ENV !== 'production' ? warning(
 	        // Call internalGetID here because getID calls isValid which calls
 	        // findReactContainerForID (this function).
 	        internalGetID(rootElement) === reactRootID, 'ReactMount: Root element ID differed from reactRootID.') : undefined;
@@ -2911,7 +2912,7 @@
 	          // warning is when the container is empty.
 	          rootElementsByReactRootID[reactRootID] = containerChild;
 	        } else {
-	          (undefined) !== 'production' ? warning(false, 'ReactMount: Root element has been removed from its original ' + 'container. New container: %s', rootElement.parentNode) : undefined;
+	          process.env.NODE_ENV !== 'production' ? warning(false, 'ReactMount: Root element has been removed from its original ' + 'container. New container: %s', rootElement.parentNode) : undefined;
 	        }
 	      }
 	    }
@@ -2958,9 +2959,9 @@
 
 	    var deepestAncestor = findDeepestCachedAncestor(targetID) || ancestorNode;
 
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      // This will throw on the next line; give an early warning
-	      (undefined) !== 'production' ? warning(deepestAncestor != null, 'React can\'t find the root component node for data-reactid value ' + '`%s`. If you\'re seeing this message, it probably means that ' + 'you\'ve loaded two copies of React on the page. At this time, only ' + 'a single copy of React can be loaded at a time.', targetID) : undefined;
+	      process.env.NODE_ENV !== 'production' ? warning(deepestAncestor != null, 'React can\'t find the root component node for data-reactid value ' + '`%s`. If you\'re seeing this message, it probably means that ' + 'you\'ve loaded two copies of React on the page. At this time, only ' + 'a single copy of React can be loaded at a time.', targetID) : undefined;
 	    }
 
 	    firstChildren[0] = deepestAncestor.firstChild;
@@ -3012,11 +3013,11 @@
 
 	    firstChildren.length = 0;
 
-	     true ? (undefined) !== 'production' ? invariant(false, 'findComponentRoot(..., %s): Unable to find element. This probably ' + 'means the DOM was unexpectedly mutated (e.g., by the browser), ' + 'usually due to forgetting a <tbody> when using tables, nesting tags ' + 'like <form>, <p>, or <a>, or using non-SVG elements in an <svg> ' + 'parent. ' + 'Try inspecting the child nodes of the element with React ID `%s`.', targetID, ReactMount.getID(ancestorNode)) : invariant(false) : undefined;
+	     true ?  false ? invariant(false, 'findComponentRoot(..., %s): Unable to find element. This probably ' + 'means the DOM was unexpectedly mutated (e.g., by the browser), ' + 'usually due to forgetting a <tbody> when using tables, nesting tags ' + 'like <form>, <p>, or <a>, or using non-SVG elements in an <svg> ' + 'parent. ' + 'Try inspecting the child nodes of the element with React ID `%s`.', targetID, ReactMount.getID(ancestorNode)) : invariant(false) : undefined;
 	  },
 
 	  _mountImageIntoNode: function (markup, container, shouldReuseMarkup, transaction) {
-	    !(container && (container.nodeType === ELEMENT_NODE_TYPE || container.nodeType === DOC_NODE_TYPE || container.nodeType === DOCUMENT_FRAGMENT_NODE_TYPE)) ? (undefined) !== 'production' ? invariant(false, 'mountComponentIntoNode(...): Target container is not valid.') : invariant(false) : undefined;
+	    !(container && (container.nodeType === ELEMENT_NODE_TYPE || container.nodeType === DOC_NODE_TYPE || container.nodeType === DOCUMENT_FRAGMENT_NODE_TYPE)) ?  false ? invariant(false, 'mountComponentIntoNode(...): Target container is not valid.') : invariant(false) : undefined;
 
 	    if (shouldReuseMarkup) {
 	      var rootElement = getReactRootElementInContainer(container);
@@ -3030,7 +3031,7 @@
 	        rootElement.setAttribute(ReactMarkupChecksum.CHECKSUM_ATTR_NAME, checksum);
 
 	        var normalizedMarkup = markup;
-	        if ((undefined) !== 'production') {
+	        if (false) {
 	          // because rootMarkup is retrieved from the DOM, various normalizations
 	          // will have occurred which will not be present in `markup`. Here,
 	          // insert markup into a <div> or <iframe> depending on the container
@@ -3052,15 +3053,15 @@
 	        var diffIndex = firstDifferenceIndex(normalizedMarkup, rootMarkup);
 	        var difference = ' (client) ' + normalizedMarkup.substring(diffIndex - 20, diffIndex + 20) + '\n (server) ' + rootMarkup.substring(diffIndex - 20, diffIndex + 20);
 
-	        !(container.nodeType !== DOC_NODE_TYPE) ? (undefined) !== 'production' ? invariant(false, 'You\'re trying to render a component to the document using ' + 'server rendering but the checksum was invalid. This usually ' + 'means you rendered a different component type or props on ' + 'the client from the one on the server, or your render() ' + 'methods are impure. React cannot handle this case due to ' + 'cross-browser quirks by rendering at the document root. You ' + 'should look for environment dependent code in your components ' + 'and ensure the props are the same client and server side:\n%s', difference) : invariant(false) : undefined;
+	        !(container.nodeType !== DOC_NODE_TYPE) ?  false ? invariant(false, 'You\'re trying to render a component to the document using ' + 'server rendering but the checksum was invalid. This usually ' + 'means you rendered a different component type or props on ' + 'the client from the one on the server, or your render() ' + 'methods are impure. React cannot handle this case due to ' + 'cross-browser quirks by rendering at the document root. You ' + 'should look for environment dependent code in your components ' + 'and ensure the props are the same client and server side:\n%s', difference) : invariant(false) : undefined;
 
-	        if ((undefined) !== 'production') {
-	          (undefined) !== 'production' ? warning(false, 'React attempted to reuse markup in a container but the ' + 'checksum was invalid. This generally means that you are ' + 'using server rendering and the markup generated on the ' + 'server was not what the client was expecting. React injected ' + 'new markup to compensate which works but you have lost many ' + 'of the benefits of server rendering. Instead, figure out ' + 'why the markup being generated is different on the client ' + 'or server:\n%s', difference) : undefined;
+	        if (false) {
+	          process.env.NODE_ENV !== 'production' ? warning(false, 'React attempted to reuse markup in a container but the ' + 'checksum was invalid. This generally means that you are ' + 'using server rendering and the markup generated on the ' + 'server was not what the client was expecting. React injected ' + 'new markup to compensate which works but you have lost many ' + 'of the benefits of server rendering. Instead, figure out ' + 'why the markup being generated is different on the client ' + 'or server:\n%s', difference) : undefined;
 	        }
 	      }
 	    }
 
-	    !(container.nodeType !== DOC_NODE_TYPE) ? (undefined) !== 'production' ? invariant(false, 'You\'re trying to render a component to the document but ' + 'you didn\'t use server rendering. We can\'t do this ' + 'without using server rendering due to cross-browser quirks. ' + 'See ReactDOMServer.renderToString() for server rendering.') : invariant(false) : undefined;
+	    !(container.nodeType !== DOC_NODE_TYPE) ?  false ? invariant(false, 'You\'re trying to render a component to the document but ' + 'you didn\'t use server rendering. We can\'t do this ' + 'without using server rendering due to cross-browser quirks. ' + 'See ReactDOMServer.renderToString() for server rendering.') : invariant(false) : undefined;
 
 	    if (transaction.useCreateElement) {
 	      while (container.lastChild) {
@@ -3594,7 +3595,7 @@
 
 	function validateInstanceHandle() {
 	  var valid = InstanceHandle && InstanceHandle.traverseTwoPhase && InstanceHandle.traverseEnterLeave;
-	  (undefined) !== 'production' ? warning(valid, 'InstanceHandle not injected before use!') : undefined;
+	   false ? warning(valid, 'InstanceHandle not injected before use!') : undefined;
 	}
 
 	/**
@@ -3638,13 +3639,13 @@
 	     */
 	    injectInstanceHandle: function (InjectedInstanceHandle) {
 	      InstanceHandle = InjectedInstanceHandle;
-	      if ((undefined) !== 'production') {
+	      if (false) {
 	        validateInstanceHandle();
 	      }
 	    },
 
 	    getInstanceHandle: function () {
-	      if ((undefined) !== 'production') {
+	      if (false) {
 	        validateInstanceHandle();
 	      }
 	      return InstanceHandle;
@@ -3675,7 +3676,7 @@
 	   * @param {?function} listener The callback to store.
 	   */
 	  putListener: function (id, registrationName, listener) {
-	    !(typeof listener === 'function') ? (undefined) !== 'production' ? invariant(false, 'Expected %s listener to be a function, instead got type %s', registrationName, typeof listener) : invariant(false) : undefined;
+	    !(typeof listener === 'function') ?  false ? invariant(false, 'Expected %s listener to be a function, instead got type %s', registrationName, typeof listener) : invariant(false) : undefined;
 
 	    var bankForRegistrationName = listenerBank[registrationName] || (listenerBank[registrationName] = {});
 	    bankForRegistrationName[id] = listener;
@@ -3790,7 +3791,7 @@
 	    } else {
 	      forEachAccumulated(processingEventQueue, executeDispatchesAndReleaseTopLevel);
 	    }
-	    !!eventQueue ? (undefined) !== 'production' ? invariant(false, 'processEventQueue(): Additional events were enqueued while processing ' + 'an event queue. Support for this has not yet been implemented.') : invariant(false) : undefined;
+	    !!eventQueue ?  false ? invariant(false, 'processEventQueue(): Additional events were enqueued while processing ' + 'an event queue. Support for this has not yet been implemented.') : invariant(false) : undefined;
 	    // This would be a good time to rethrow if any of the event handlers threw.
 	    ReactErrorUtils.rethrowCaughtError();
 	  },
@@ -3853,15 +3854,15 @@
 	  for (var pluginName in namesToPlugins) {
 	    var PluginModule = namesToPlugins[pluginName];
 	    var pluginIndex = EventPluginOrder.indexOf(pluginName);
-	    !(pluginIndex > -1) ? (undefined) !== 'production' ? invariant(false, 'EventPluginRegistry: Cannot inject event plugins that do not exist in ' + 'the plugin ordering, `%s`.', pluginName) : invariant(false) : undefined;
+	    !(pluginIndex > -1) ?  false ? invariant(false, 'EventPluginRegistry: Cannot inject event plugins that do not exist in ' + 'the plugin ordering, `%s`.', pluginName) : invariant(false) : undefined;
 	    if (EventPluginRegistry.plugins[pluginIndex]) {
 	      continue;
 	    }
-	    !PluginModule.extractEvents ? (undefined) !== 'production' ? invariant(false, 'EventPluginRegistry: Event plugins must implement an `extractEvents` ' + 'method, but `%s` does not.', pluginName) : invariant(false) : undefined;
+	    !PluginModule.extractEvents ?  false ? invariant(false, 'EventPluginRegistry: Event plugins must implement an `extractEvents` ' + 'method, but `%s` does not.', pluginName) : invariant(false) : undefined;
 	    EventPluginRegistry.plugins[pluginIndex] = PluginModule;
 	    var publishedEvents = PluginModule.eventTypes;
 	    for (var eventName in publishedEvents) {
-	      !publishEventForPlugin(publishedEvents[eventName], PluginModule, eventName) ? (undefined) !== 'production' ? invariant(false, 'EventPluginRegistry: Failed to publish event `%s` for plugin `%s`.', eventName, pluginName) : invariant(false) : undefined;
+	      !publishEventForPlugin(publishedEvents[eventName], PluginModule, eventName) ?  false ? invariant(false, 'EventPluginRegistry: Failed to publish event `%s` for plugin `%s`.', eventName, pluginName) : invariant(false) : undefined;
 	    }
 	  }
 	}
@@ -3875,7 +3876,7 @@
 	 * @private
 	 */
 	function publishEventForPlugin(dispatchConfig, PluginModule, eventName) {
-	  !!EventPluginRegistry.eventNameDispatchConfigs.hasOwnProperty(eventName) ? (undefined) !== 'production' ? invariant(false, 'EventPluginHub: More than one plugin attempted to publish the same ' + 'event name, `%s`.', eventName) : invariant(false) : undefined;
+	  !!EventPluginRegistry.eventNameDispatchConfigs.hasOwnProperty(eventName) ?  false ? invariant(false, 'EventPluginHub: More than one plugin attempted to publish the same ' + 'event name, `%s`.', eventName) : invariant(false) : undefined;
 	  EventPluginRegistry.eventNameDispatchConfigs[eventName] = dispatchConfig;
 
 	  var phasedRegistrationNames = dispatchConfig.phasedRegistrationNames;
@@ -3903,7 +3904,7 @@
 	 * @private
 	 */
 	function publishRegistrationName(registrationName, PluginModule, eventName) {
-	  !!EventPluginRegistry.registrationNameModules[registrationName] ? (undefined) !== 'production' ? invariant(false, 'EventPluginHub: More than one plugin attempted to publish the same ' + 'registration name, `%s`.', registrationName) : invariant(false) : undefined;
+	  !!EventPluginRegistry.registrationNameModules[registrationName] ?  false ? invariant(false, 'EventPluginHub: More than one plugin attempted to publish the same ' + 'registration name, `%s`.', registrationName) : invariant(false) : undefined;
 	  EventPluginRegistry.registrationNameModules[registrationName] = PluginModule;
 	  EventPluginRegistry.registrationNameDependencies[registrationName] = PluginModule.eventTypes[eventName].dependencies;
 	}
@@ -3945,7 +3946,7 @@
 	   * @see {EventPluginHub.injection.injectEventPluginOrder}
 	   */
 	  injectEventPluginOrder: function (InjectedEventPluginOrder) {
-	    !!EventPluginOrder ? (undefined) !== 'production' ? invariant(false, 'EventPluginRegistry: Cannot inject event plugin ordering more than ' + 'once. You are likely trying to load more than one copy of React.') : invariant(false) : undefined;
+	    !!EventPluginOrder ?  false ? invariant(false, 'EventPluginRegistry: Cannot inject event plugin ordering more than ' + 'once. You are likely trying to load more than one copy of React.') : invariant(false) : undefined;
 	    // Clone the ordering so it cannot be dynamically mutated.
 	    EventPluginOrder = Array.prototype.slice.call(InjectedEventPluginOrder);
 	    recomputePluginOrdering();
@@ -3969,7 +3970,7 @@
 	      }
 	      var PluginModule = injectedNamesToPlugins[pluginName];
 	      if (!namesToPlugins.hasOwnProperty(pluginName) || namesToPlugins[pluginName] !== PluginModule) {
-	        !!namesToPlugins[pluginName] ? (undefined) !== 'production' ? invariant(false, 'EventPluginRegistry: Cannot inject two different event plugins ' + 'using the same name, `%s`.', pluginName) : invariant(false) : undefined;
+	        !!namesToPlugins[pluginName] ?  false ? invariant(false, 'EventPluginRegistry: Cannot inject two different event plugins ' + 'using the same name, `%s`.', pluginName) : invariant(false) : undefined;
 	        namesToPlugins[pluginName] = PluginModule;
 	        isOrderingDirty = true;
 	      }
@@ -4070,8 +4071,8 @@
 	  Mount: null,
 	  injectMount: function (InjectedMount) {
 	    injection.Mount = InjectedMount;
-	    if ((undefined) !== 'production') {
-	      (undefined) !== 'production' ? warning(InjectedMount && InjectedMount.getNode && InjectedMount.getID, 'EventPluginUtils.injection.injectMount(...): Injected Mount ' + 'module is missing getNode or getID.') : undefined;
+	    if (false) {
+	      process.env.NODE_ENV !== 'production' ? warning(InjectedMount && InjectedMount.getNode && InjectedMount.getID, 'EventPluginUtils.injection.injectMount(...): Injected Mount ' + 'module is missing getNode or getID.') : undefined;
 	    }
 	  }
 	};
@@ -4090,7 +4091,7 @@
 	}
 
 	var validateEventDispatches;
-	if ((undefined) !== 'production') {
+	if (false) {
 	  validateEventDispatches = function (event) {
 	    var dispatchListeners = event._dispatchListeners;
 	    var dispatchIDs = event._dispatchIDs;
@@ -4100,7 +4101,7 @@
 	    var IDsLen = idsIsArr ? dispatchIDs.length : dispatchIDs ? 1 : 0;
 	    var listenersLen = listenersIsArr ? dispatchListeners.length : dispatchListeners ? 1 : 0;
 
-	    (undefined) !== 'production' ? warning(idsIsArr === listenersIsArr && IDsLen === listenersLen, 'EventPluginUtils: Invalid `event`.') : undefined;
+	    process.env.NODE_ENV !== 'production' ? warning(idsIsArr === listenersIsArr && IDsLen === listenersLen, 'EventPluginUtils: Invalid `event`.') : undefined;
 	  };
 	}
 
@@ -4128,7 +4129,7 @@
 	function executeDispatchesInOrder(event, simulated) {
 	  var dispatchListeners = event._dispatchListeners;
 	  var dispatchIDs = event._dispatchIDs;
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    validateEventDispatches(event);
 	  }
 	  if (Array.isArray(dispatchListeners)) {
@@ -4156,7 +4157,7 @@
 	function executeDispatchesInOrderStopAtTrueImpl(event) {
 	  var dispatchListeners = event._dispatchListeners;
 	  var dispatchIDs = event._dispatchIDs;
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    validateEventDispatches(event);
 	  }
 	  if (Array.isArray(dispatchListeners)) {
@@ -4197,12 +4198,12 @@
 	 * @return {*} The return value of executing the single dispatch.
 	 */
 	function executeDirectDispatch(event) {
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    validateEventDispatches(event);
 	  }
 	  var dispatchListener = event._dispatchListeners;
 	  var dispatchID = event._dispatchIDs;
-	  !!Array.isArray(dispatchListener) ? (undefined) !== 'production' ? invariant(false, 'executeDirectDispatch(...): Invalid `event`.') : invariant(false) : undefined;
+	  !!Array.isArray(dispatchListener) ?  false ? invariant(false, 'executeDirectDispatch(...): Invalid `event`.') : invariant(false) : undefined;
 	  var res = dispatchListener ? dispatchListener(event, dispatchID) : null;
 	  event._dispatchListeners = null;
 	  event._dispatchIDs = null;
@@ -4303,7 +4304,7 @@
 	  }
 	};
 
-	if ((undefined) !== 'production') {
+	if (false) {
 	  /**
 	   * To help development we can get better devtools integration by simulating a
 	   * real browser event.
@@ -4312,11 +4313,12 @@
 	    var fakeNode = document.createElement('react');
 	    ReactErrorUtils.invokeGuardedCallback = function (name, func, a, b) {
 	      var boundFunc = func.bind(null, a, b);
-	      fakeNode.addEventListener(name, boundFunc, false);
+	      var evtType = 'react-' + name;
+	      fakeNode.addEventListener(evtType, boundFunc, false);
 	      var evt = document.createEvent('Event');
-	      evt.initEvent(name, false, false);
+	      evt.initEvent(evtType, false, false);
 	      fakeNode.dispatchEvent(evt);
-	      fakeNode.removeEventListener(name, boundFunc, false);
+	      fakeNode.removeEventListener(evtType, boundFunc, false);
 	    };
 	  }
 	}
@@ -4357,7 +4359,7 @@
 	 */
 
 	function accumulateInto(current, next) {
-	  !(next != null) ? (undefined) !== 'production' ? invariant(false, 'accumulateInto(...): Accumulated items must not be null or undefined.') : invariant(false) : undefined;
+	  !(next != null) ?  false ? invariant(false, 'accumulateInto(...): Accumulated items must not be null or undefined.') : invariant(false) : undefined;
 	  if (current == null) {
 	    return next;
 	  }
@@ -4702,7 +4704,7 @@
 	    _owner: owner
 	  };
 
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    // The validation flag is currently mutative. We put it on
 	    // an external backing store so that we can freeze the whole object.
 	    // This can be replaced with a WeakMap once they are implemented in
@@ -4817,7 +4819,7 @@
 	ReactElement.cloneAndReplaceProps = function (oldElement, newProps) {
 	  var newElement = ReactElement(oldElement.type, oldElement.key, oldElement.ref, oldElement._self, oldElement._source, oldElement._owner, newProps);
 
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    // If the key on the original is valid, then the clone is valid
 	    newElement._store.validated = oldElement._store.validated;
 	  }
@@ -4906,9 +4908,9 @@
 	'use strict';
 
 	var canDefineProperty = false;
-	if ((undefined) !== 'production') {
+	if (false) {
 	  try {
-	    Object.defineProperty({}, 'x', {});
+	    Object.defineProperty({}, 'x', { get: function () {} });
 	    canDefineProperty = true;
 	  } catch (x) {
 	    // IE will fail on defineProperty
@@ -5067,8 +5069,8 @@
 	 * @private
 	 */
 	function getNextDescendantID(ancestorID, destinationID) {
-	  !(isValidID(ancestorID) && isValidID(destinationID)) ? (undefined) !== 'production' ? invariant(false, 'getNextDescendantID(%s, %s): Received an invalid React DOM ID.', ancestorID, destinationID) : invariant(false) : undefined;
-	  !isAncestorIDOf(ancestorID, destinationID) ? (undefined) !== 'production' ? invariant(false, 'getNextDescendantID(...): React has made an invalid assumption about ' + 'the DOM hierarchy. Expected `%s` to be an ancestor of `%s`.', ancestorID, destinationID) : invariant(false) : undefined;
+	  !(isValidID(ancestorID) && isValidID(destinationID)) ?  false ? invariant(false, 'getNextDescendantID(%s, %s): Received an invalid React DOM ID.', ancestorID, destinationID) : invariant(false) : undefined;
+	  !isAncestorIDOf(ancestorID, destinationID) ?  false ? invariant(false, 'getNextDescendantID(...): React has made an invalid assumption about ' + 'the DOM hierarchy. Expected `%s` to be an ancestor of `%s`.', ancestorID, destinationID) : invariant(false) : undefined;
 	  if (ancestorID === destinationID) {
 	    return ancestorID;
 	  }
@@ -5110,7 +5112,7 @@
 	    }
 	  }
 	  var longestCommonID = oneID.substr(0, lastCommonMarkerIndex);
-	  !isValidID(longestCommonID) ? (undefined) !== 'production' ? invariant(false, 'getFirstCommonAncestorID(%s, %s): Expected a valid React DOM ID: %s', oneID, twoID, longestCommonID) : invariant(false) : undefined;
+	  !isValidID(longestCommonID) ?  false ? invariant(false, 'getFirstCommonAncestorID(%s, %s): Expected a valid React DOM ID: %s', oneID, twoID, longestCommonID) : invariant(false) : undefined;
 	  return longestCommonID;
 	}
 
@@ -5130,9 +5132,9 @@
 	function traverseParentPath(start, stop, cb, arg, skipFirst, skipLast) {
 	  start = start || '';
 	  stop = stop || '';
-	  !(start !== stop) ? (undefined) !== 'production' ? invariant(false, 'traverseParentPath(...): Cannot traverse from and to the same ID, `%s`.', start) : invariant(false) : undefined;
+	  !(start !== stop) ?  false ? invariant(false, 'traverseParentPath(...): Cannot traverse from and to the same ID, `%s`.', start) : invariant(false) : undefined;
 	  var traverseUp = isAncestorIDOf(stop, start);
-	  !(traverseUp || isAncestorIDOf(start, stop)) ? (undefined) !== 'production' ? invariant(false, 'traverseParentPath(%s, %s, ...): Cannot traverse from two IDs that do ' + 'not have a parent path.', start, stop) : invariant(false) : undefined;
+	  !(traverseUp || isAncestorIDOf(start, stop)) ?  false ? invariant(false, 'traverseParentPath(%s, %s, ...): Cannot traverse from two IDs that do ' + 'not have a parent path.', start, stop) : invariant(false) : undefined;
 	  // Traverse from `start` to `stop` one depth at a time.
 	  var depth = 0;
 	  var traverse = traverseUp ? getParentID : getNextDescendantID;
@@ -5145,7 +5147,7 @@
 	      // Only break //after// visiting `stop`.
 	      break;
 	    }
-	    !(depth++ < MAX_TREE_DEPTH) ? (undefined) !== 'production' ? invariant(false, 'traverseParentPath(%s, %s, ...): Detected an infinite loop while ' + 'traversing the React DOM ID tree. This may be due to malformed IDs: %s', start, stop, id) : invariant(false) : undefined;
+	    !(depth++ < MAX_TREE_DEPTH) ?  false ? invariant(false, 'traverseParentPath(%s, %s, ...): Detected an infinite loop while ' + 'traversing the React DOM ID tree. This may be due to malformed IDs: %s', start, stop, id) : invariant(false) : undefined;
 	  }
 	}
 
@@ -5725,7 +5727,7 @@
 	   * @internal
 	   */
 	  addComponentAsRefTo: function (component, ref, owner) {
-	    !ReactOwner.isValidOwner(owner) ? (undefined) !== 'production' ? invariant(false, 'addComponentAsRefTo(...): Only a ReactOwner can have refs. You might ' + 'be adding a ref to a component that was not created inside a component\'s ' + '`render` method, or you have multiple copies of React loaded ' + '(details: https://fb.me/react-refs-must-have-owner).') : invariant(false) : undefined;
+	    !ReactOwner.isValidOwner(owner) ?  false ? invariant(false, 'addComponentAsRefTo(...): Only a ReactOwner can have refs. You might ' + 'be adding a ref to a component that was not created inside a component\'s ' + '`render` method, or you have multiple copies of React loaded ' + '(details: https://fb.me/react-refs-must-have-owner).') : invariant(false) : undefined;
 	    owner.attachRef(ref, component);
 	  },
 
@@ -5739,7 +5741,7 @@
 	   * @internal
 	   */
 	  removeComponentAsRefFrom: function (component, ref, owner) {
-	    !ReactOwner.isValidOwner(owner) ? (undefined) !== 'production' ? invariant(false, 'removeComponentAsRefFrom(...): Only a ReactOwner can have refs. You might ' + 'be removing a ref to a component that was not created inside a component\'s ' + '`render` method, or you have multiple copies of React loaded ' + '(details: https://fb.me/react-refs-must-have-owner).') : invariant(false) : undefined;
+	    !ReactOwner.isValidOwner(owner) ?  false ? invariant(false, 'removeComponentAsRefFrom(...): Only a ReactOwner can have refs. You might ' + 'be removing a ref to a component that was not created inside a component\'s ' + '`render` method, or you have multiple copies of React loaded ' + '(details: https://fb.me/react-refs-must-have-owner).') : invariant(false) : undefined;
 	    // Check that `component` is still the current ref because we do not want to
 	    // detach the ref if another component stole it.
 	    if (owner.getPublicInstance().refs[ref] === component.getPublicInstance()) {
@@ -5784,17 +5786,17 @@
 	function getInternalInstanceReadyForUpdate(publicInstance, callerName) {
 	  var internalInstance = ReactInstanceMap.get(publicInstance);
 	  if (!internalInstance) {
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      // Only warn when we have a callerName. Otherwise we should be silent.
 	      // We're probably calling from enqueueCallback. We don't want to warn
 	      // there because we already warned for the corresponding lifecycle method.
-	      (undefined) !== 'production' ? warning(!callerName, '%s(...): Can only update a mounted or mounting component. ' + 'This usually means you called %s() on an unmounted component. ' + 'This is a no-op. Please check the code for the %s component.', callerName, callerName, publicInstance.constructor.displayName) : undefined;
+	      process.env.NODE_ENV !== 'production' ? warning(!callerName, '%s(...): Can only update a mounted or mounting component. ' + 'This usually means you called %s() on an unmounted component. ' + 'This is a no-op. Please check the code for the %s component.', callerName, callerName, publicInstance.constructor.displayName) : undefined;
 	    }
 	    return null;
 	  }
 
-	  if ((undefined) !== 'production') {
-	    (undefined) !== 'production' ? warning(ReactCurrentOwner.current == null, '%s(...): Cannot update during an existing state transition ' + '(such as within `render`). Render methods should be a pure function ' + 'of props and state.', callerName) : undefined;
+	  if (false) {
+	    process.env.NODE_ENV !== 'production' ? warning(ReactCurrentOwner.current == null, '%s(...): Cannot update during an existing state transition ' + '(such as within `render`). Render methods should be a pure function ' + 'of props and state.', callerName) : undefined;
 	  }
 
 	  return internalInstance;
@@ -5814,10 +5816,10 @@
 	   * @final
 	   */
 	  isMounted: function (publicInstance) {
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      var owner = ReactCurrentOwner.current;
 	      if (owner !== null) {
-	        (undefined) !== 'production' ? warning(owner._warnedAboutRefsInRender, '%s is accessing isMounted inside its render() function. ' + 'render() should be a pure function of props and state. It should ' + 'never access something that requires stale data from the previous ' + 'render, such as refs. Move this logic to componentDidMount and ' + 'componentDidUpdate instead.', owner.getName() || 'A component') : undefined;
+	        process.env.NODE_ENV !== 'production' ? warning(owner._warnedAboutRefsInRender, '%s is accessing isMounted inside its render() function. ' + 'render() should be a pure function of props and state. It should ' + 'never access something that requires stale data from the previous ' + 'render, such as refs. Move this logic to componentDidMount and ' + 'componentDidUpdate instead.', owner.getName() || 'A component') : undefined;
 	        owner._warnedAboutRefsInRender = true;
 	      }
 	    }
@@ -5841,7 +5843,7 @@
 	   * @internal
 	   */
 	  enqueueCallback: function (publicInstance, callback) {
-	    !(typeof callback === 'function') ? (undefined) !== 'production' ? invariant(false, 'enqueueCallback(...): You called `setProps`, `replaceProps`, ' + '`setState`, `replaceState`, or `forceUpdate` with a callback that ' + 'isn\'t callable.') : invariant(false) : undefined;
+	    !(typeof callback === 'function') ?  false ? invariant(false, 'enqueueCallback(...): You called `setProps`, `replaceProps`, ' + '`setState`, `replaceState`, or `forceUpdate` with a callback that ' + 'isn\'t callable.') : invariant(false) : undefined;
 	    var internalInstance = getInternalInstanceReadyForUpdate(publicInstance);
 
 	    // Previously we would throw an error if we didn't have an internal
@@ -5866,7 +5868,7 @@
 	  },
 
 	  enqueueCallbackInternal: function (internalInstance, callback) {
-	    !(typeof callback === 'function') ? (undefined) !== 'production' ? invariant(false, 'enqueueCallback(...): You called `setProps`, `replaceProps`, ' + '`setState`, `replaceState`, or `forceUpdate` with a callback that ' + 'isn\'t callable.') : invariant(false) : undefined;
+	    !(typeof callback === 'function') ?  false ? invariant(false, 'enqueueCallback(...): You called `setProps`, `replaceProps`, ' + '`setState`, `replaceState`, or `forceUpdate` with a callback that ' + 'isn\'t callable.') : invariant(false) : undefined;
 	    if (internalInstance._pendingCallbacks) {
 	      internalInstance._pendingCallbacks.push(callback);
 	    } else {
@@ -5964,7 +5966,7 @@
 
 	  enqueueSetPropsInternal: function (internalInstance, partialProps) {
 	    var topLevelWrapper = internalInstance._topLevelWrapper;
-	    !topLevelWrapper ? (undefined) !== 'production' ? invariant(false, 'setProps(...): You called `setProps` on a ' + 'component with a parent. This is an anti-pattern since props will ' + 'get reactively updated when rendered. Instead, change the owner\'s ' + '`render` method to pass the correct value as props to the component ' + 'where it is created.') : invariant(false) : undefined;
+	    !topLevelWrapper ?  false ? invariant(false, 'setProps(...): You called `setProps` on a ' + 'component with a parent. This is an anti-pattern since props will ' + 'get reactively updated when rendered. Instead, change the owner\'s ' + '`render` method to pass the correct value as props to the component ' + 'where it is created.') : invariant(false) : undefined;
 
 	    // Merge with the pending element if it exists, otherwise with existing
 	    // element props.
@@ -5993,7 +5995,7 @@
 
 	  enqueueReplacePropsInternal: function (internalInstance, props) {
 	    var topLevelWrapper = internalInstance._topLevelWrapper;
-	    !topLevelWrapper ? (undefined) !== 'production' ? invariant(false, 'replaceProps(...): You called `replaceProps` on a ' + 'component with a parent. This is an anti-pattern since props will ' + 'get reactively updated when rendered. Instead, change the owner\'s ' + '`render` method to pass the correct value as props to the component ' + 'where it is created.') : invariant(false) : undefined;
+	    !topLevelWrapper ?  false ? invariant(false, 'replaceProps(...): You called `replaceProps` on a ' + 'component with a parent. This is an anti-pattern since props will ' + 'get reactively updated when rendered. Instead, change the owner\'s ' + '`render` method to pass the correct value as props to the component ' + 'where it is created.') : invariant(false) : undefined;
 
 	    // Merge with the pending element if it exists, otherwise with existing
 	    // element props.
@@ -6046,7 +6048,7 @@
 	var batchingStrategy = null;
 
 	function ensureInjected() {
-	  !(ReactUpdates.ReactReconcileTransaction && batchingStrategy) ? (undefined) !== 'production' ? invariant(false, 'ReactUpdates: must inject a reconcile transaction class and batching ' + 'strategy') : invariant(false) : undefined;
+	  !(ReactUpdates.ReactReconcileTransaction && batchingStrategy) ?  false ? invariant(false, 'ReactUpdates: must inject a reconcile transaction class and batching ' + 'strategy') : invariant(false) : undefined;
 	}
 
 	var NESTED_UPDATES = {
@@ -6126,7 +6128,7 @@
 
 	function runBatchedUpdates(transaction) {
 	  var len = transaction.dirtyComponentsLength;
-	  !(len === dirtyComponents.length) ? (undefined) !== 'production' ? invariant(false, 'Expected flush transaction\'s stored dirty-components length (%s) to ' + 'match dirty-components array length (%s).', len, dirtyComponents.length) : invariant(false) : undefined;
+	  !(len === dirtyComponents.length) ?  false ? invariant(false, 'Expected flush transaction\'s stored dirty-components length (%s) to ' + 'match dirty-components array length (%s).', len, dirtyComponents.length) : invariant(false) : undefined;
 
 	  // Since reconciling a component higher in the owner hierarchy usually (not
 	  // always -- see shouldComponentUpdate()) will reconcile children, reconcile
@@ -6204,21 +6206,21 @@
 	 * if no updates are currently being performed.
 	 */
 	function asap(callback, context) {
-	  !batchingStrategy.isBatchingUpdates ? (undefined) !== 'production' ? invariant(false, 'ReactUpdates.asap: Can\'t enqueue an asap callback in a context where' + 'updates are not being batched.') : invariant(false) : undefined;
+	  !batchingStrategy.isBatchingUpdates ?  false ? invariant(false, 'ReactUpdates.asap: Can\'t enqueue an asap callback in a context where' + 'updates are not being batched.') : invariant(false) : undefined;
 	  asapCallbackQueue.enqueue(callback, context);
 	  asapEnqueued = true;
 	}
 
 	var ReactUpdatesInjection = {
 	  injectReconcileTransaction: function (ReconcileTransaction) {
-	    !ReconcileTransaction ? (undefined) !== 'production' ? invariant(false, 'ReactUpdates: must provide a reconcile transaction class') : invariant(false) : undefined;
+	    !ReconcileTransaction ?  false ? invariant(false, 'ReactUpdates: must provide a reconcile transaction class') : invariant(false) : undefined;
 	    ReactUpdates.ReactReconcileTransaction = ReconcileTransaction;
 	  },
 
 	  injectBatchingStrategy: function (_batchingStrategy) {
-	    !_batchingStrategy ? (undefined) !== 'production' ? invariant(false, 'ReactUpdates: must provide a batching strategy') : invariant(false) : undefined;
-	    !(typeof _batchingStrategy.batchedUpdates === 'function') ? (undefined) !== 'production' ? invariant(false, 'ReactUpdates: must provide a batchedUpdates() function') : invariant(false) : undefined;
-	    !(typeof _batchingStrategy.isBatchingUpdates === 'boolean') ? (undefined) !== 'production' ? invariant(false, 'ReactUpdates: must provide an isBatchingUpdates boolean attribute') : invariant(false) : undefined;
+	    !_batchingStrategy ?  false ? invariant(false, 'ReactUpdates: must provide a batching strategy') : invariant(false) : undefined;
+	    !(typeof _batchingStrategy.batchedUpdates === 'function') ?  false ? invariant(false, 'ReactUpdates: must provide a batchedUpdates() function') : invariant(false) : undefined;
+	    !(typeof _batchingStrategy.isBatchingUpdates === 'boolean') ?  false ? invariant(false, 'ReactUpdates: must provide an isBatchingUpdates boolean attribute') : invariant(false) : undefined;
 	    batchingStrategy = _batchingStrategy;
 	  }
 	};
@@ -6305,7 +6307,7 @@
 	    var callbacks = this._callbacks;
 	    var contexts = this._contexts;
 	    if (callbacks) {
-	      !(callbacks.length === contexts.length) ? (undefined) !== 'production' ? invariant(false, 'Mismatched list of contexts in callback queue') : invariant(false) : undefined;
+	      !(callbacks.length === contexts.length) ?  false ? invariant(false, 'Mismatched list of contexts in callback queue') : invariant(false) : undefined;
 	      this._callbacks = null;
 	      this._contexts = null;
 	      for (var i = 0; i < callbacks.length; i++) {
@@ -6422,7 +6424,7 @@
 
 	var standardReleaser = function (instance) {
 	  var Klass = this;
-	  !(instance instanceof Klass) ? (undefined) !== 'production' ? invariant(false, 'Trying to release an instance into a pool of a different type.') : invariant(false) : undefined;
+	  !(instance instanceof Klass) ?  false ? invariant(false, 'Trying to release an instance into a pool of a different type.') : invariant(false) : undefined;
 	  instance.destructor();
 	  if (Klass.instancePool.length < Klass.poolSize) {
 	    Klass.instancePool.push(instance);
@@ -6591,7 +6593,7 @@
 	   * @return {*} Return value from `method`.
 	   */
 	  perform: function (method, scope, a, b, c, d, e, f) {
-	    !!this.isInTransaction() ? (undefined) !== 'production' ? invariant(false, 'Transaction.perform(...): Cannot initialize a transaction when there ' + 'is already an outstanding transaction.') : invariant(false) : undefined;
+	    !!this.isInTransaction() ?  false ? invariant(false, 'Transaction.perform(...): Cannot initialize a transaction when there ' + 'is already an outstanding transaction.') : invariant(false) : undefined;
 	    var errorThrown;
 	    var ret;
 	    try {
@@ -6655,7 +6657,7 @@
 	   * invoked).
 	   */
 	  closeAll: function (startIndex) {
-	    !this.isInTransaction() ? (undefined) !== 'production' ? invariant(false, 'Transaction.closeAll(): Cannot close transaction when none are open.') : invariant(false) : undefined;
+	    !this.isInTransaction() ?  false ? invariant(false, 'Transaction.closeAll(): Cannot close transaction when none are open.') : invariant(false) : undefined;
 	    var transactionWrappers = this.transactionWrappers;
 	    for (var i = startIndex; i < transactionWrappers.length; i++) {
 	      var wrapper = transactionWrappers[i];
@@ -6718,7 +6720,7 @@
 
 	var emptyObject = {};
 
-	if ((undefined) !== 'production') {
+	if (false) {
 	  Object.freeze(emptyObject);
 	}
 
@@ -6909,7 +6911,7 @@
 	    instance = new ReactEmptyComponent(instantiateReactComponent);
 	  } else if (typeof node === 'object') {
 	    var element = node;
-	    !(element && (typeof element.type === 'function' || typeof element.type === 'string')) ? (undefined) !== 'production' ? invariant(false, 'Element type is invalid: expected a string (for built-in components) ' + 'or a class/function (for composite components) but got: %s.%s', element.type == null ? element.type : typeof element.type, getDeclarationErrorAddendum(element._owner)) : invariant(false) : undefined;
+	    !(element && (typeof element.type === 'function' || typeof element.type === 'string')) ?  false ? invariant(false, 'Element type is invalid: expected a string (for built-in components) ' + 'or a class/function (for composite components) but got: %s.%s', element.type == null ? element.type : typeof element.type, getDeclarationErrorAddendum(element._owner)) : invariant(false) : undefined;
 
 	    // Special case string values
 	    if (typeof element.type === 'string') {
@@ -6925,11 +6927,11 @@
 	  } else if (typeof node === 'string' || typeof node === 'number') {
 	    instance = ReactNativeComponent.createInstanceForText(node);
 	  } else {
-	     true ? (undefined) !== 'production' ? invariant(false, 'Encountered invalid React node of type %s', typeof node) : invariant(false) : undefined;
+	     true ?  false ? invariant(false, 'Encountered invalid React node of type %s', typeof node) : invariant(false) : undefined;
 	  }
 
-	  if ((undefined) !== 'production') {
-	    (undefined) !== 'production' ? warning(typeof instance.construct === 'function' && typeof instance.mountComponent === 'function' && typeof instance.receiveComponent === 'function' && typeof instance.unmountComponent === 'function', 'Only React Components can be mounted.') : undefined;
+	  if (false) {
+	    process.env.NODE_ENV !== 'production' ? warning(typeof instance.construct === 'function' && typeof instance.mountComponent === 'function' && typeof instance.receiveComponent === 'function' && typeof instance.unmountComponent === 'function', 'Only React Components can be mounted.') : undefined;
 	  }
 
 	  // Sets up the instance. This can probably just move into the constructor now.
@@ -6941,14 +6943,14 @@
 	  instance._mountIndex = 0;
 	  instance._mountImage = null;
 
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    instance._isOwnerNecessary = false;
 	    instance._warnedAboutRefsInRender = false;
 	  }
 
 	  // Internal instances should fully constructed at this point, so they should
 	  // not get any new fields added to them at this point.
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    if (Object.preventExtensions) {
 	      Object.preventExtensions(instance);
 	    }
@@ -7107,7 +7109,7 @@
 	    var canInstantiate = ('prototype' in Component);
 
 	    if (canInstantiate) {
-	      if ((undefined) !== 'production') {
+	      if (false) {
 	        ReactCurrentOwner.current = this;
 	        try {
 	          inst = new Component(publicProps, publicContext, ReactUpdateQueue);
@@ -7124,15 +7126,15 @@
 	      inst = new StatelessComponent(Component);
 	    }
 
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      // This will throw later in _renderValidatedComponent, but add an early
 	      // warning now to help debugging
 	      if (inst.render == null) {
-	        (undefined) !== 'production' ? warning(false, '%s(...): No `render` method found on the returned component ' + 'instance: you may have forgotten to define `render`, returned ' + 'null/false from a stateless component, or tried to render an ' + 'element whose type is a function that isn\'t a React component.', Component.displayName || Component.name || 'Component') : undefined;
+	        process.env.NODE_ENV !== 'production' ? warning(false, '%s(...): No `render` method found on the returned component ' + 'instance: you may have forgotten to define `render`, returned ' + 'null/false from a stateless component, or tried to render an ' + 'element whose type is a function that isn\'t a React component.', Component.displayName || Component.name || 'Component') : undefined;
 	      } else {
 	        // We support ES6 inheriting from React.Component, the module pattern,
 	        // and stateless components, but not ES6 classes that don't extend
-	        (undefined) !== 'production' ? warning(Component.prototype && Component.prototype.isReactComponent || !canInstantiate || !(inst instanceof Component), '%s(...): React component classes must extend React.Component.', Component.displayName || Component.name || 'Component') : undefined;
+	        process.env.NODE_ENV !== 'production' ? warning(Component.prototype && Component.prototype.isReactComponent || !canInstantiate || !(inst instanceof Component), '%s(...): React component classes must extend React.Component.', Component.displayName || Component.name || 'Component') : undefined;
 	      }
 	    }
 
@@ -7148,24 +7150,24 @@
 	    // Store a reference from the instance back to the internal representation
 	    ReactInstanceMap.set(inst, this);
 
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      // Since plain JS classes are defined without any special initialization
 	      // logic, we can not catch common errors early. Therefore, we have to
 	      // catch them here, at initialization time, instead.
-	      (undefined) !== 'production' ? warning(!inst.getInitialState || inst.getInitialState.isReactClassApproved, 'getInitialState was defined on %s, a plain JavaScript class. ' + 'This is only supported for classes created using React.createClass. ' + 'Did you mean to define a state property instead?', this.getName() || 'a component') : undefined;
-	      (undefined) !== 'production' ? warning(!inst.getDefaultProps || inst.getDefaultProps.isReactClassApproved, 'getDefaultProps was defined on %s, a plain JavaScript class. ' + 'This is only supported for classes created using React.createClass. ' + 'Use a static property to define defaultProps instead.', this.getName() || 'a component') : undefined;
-	      (undefined) !== 'production' ? warning(!inst.propTypes, 'propTypes was defined as an instance property on %s. Use a static ' + 'property to define propTypes instead.', this.getName() || 'a component') : undefined;
-	      (undefined) !== 'production' ? warning(!inst.contextTypes, 'contextTypes was defined as an instance property on %s. Use a ' + 'static property to define contextTypes instead.', this.getName() || 'a component') : undefined;
-	      (undefined) !== 'production' ? warning(typeof inst.componentShouldUpdate !== 'function', '%s has a method called ' + 'componentShouldUpdate(). Did you mean shouldComponentUpdate()? ' + 'The name is phrased as a question because the function is ' + 'expected to return a value.', this.getName() || 'A component') : undefined;
-	      (undefined) !== 'production' ? warning(typeof inst.componentDidUnmount !== 'function', '%s has a method called ' + 'componentDidUnmount(). But there is no such lifecycle method. ' + 'Did you mean componentWillUnmount()?', this.getName() || 'A component') : undefined;
-	      (undefined) !== 'production' ? warning(typeof inst.componentWillRecieveProps !== 'function', '%s has a method called ' + 'componentWillRecieveProps(). Did you mean componentWillReceiveProps()?', this.getName() || 'A component') : undefined;
+	      process.env.NODE_ENV !== 'production' ? warning(!inst.getInitialState || inst.getInitialState.isReactClassApproved, 'getInitialState was defined on %s, a plain JavaScript class. ' + 'This is only supported for classes created using React.createClass. ' + 'Did you mean to define a state property instead?', this.getName() || 'a component') : undefined;
+	      process.env.NODE_ENV !== 'production' ? warning(!inst.getDefaultProps || inst.getDefaultProps.isReactClassApproved, 'getDefaultProps was defined on %s, a plain JavaScript class. ' + 'This is only supported for classes created using React.createClass. ' + 'Use a static property to define defaultProps instead.', this.getName() || 'a component') : undefined;
+	      process.env.NODE_ENV !== 'production' ? warning(!inst.propTypes, 'propTypes was defined as an instance property on %s. Use a static ' + 'property to define propTypes instead.', this.getName() || 'a component') : undefined;
+	      process.env.NODE_ENV !== 'production' ? warning(!inst.contextTypes, 'contextTypes was defined as an instance property on %s. Use a ' + 'static property to define contextTypes instead.', this.getName() || 'a component') : undefined;
+	      process.env.NODE_ENV !== 'production' ? warning(typeof inst.componentShouldUpdate !== 'function', '%s has a method called ' + 'componentShouldUpdate(). Did you mean shouldComponentUpdate()? ' + 'The name is phrased as a question because the function is ' + 'expected to return a value.', this.getName() || 'A component') : undefined;
+	      process.env.NODE_ENV !== 'production' ? warning(typeof inst.componentDidUnmount !== 'function', '%s has a method called ' + 'componentDidUnmount(). But there is no such lifecycle method. ' + 'Did you mean componentWillUnmount()?', this.getName() || 'A component') : undefined;
+	      process.env.NODE_ENV !== 'production' ? warning(typeof inst.componentWillRecieveProps !== 'function', '%s has a method called ' + 'componentWillRecieveProps(). Did you mean componentWillReceiveProps()?', this.getName() || 'A component') : undefined;
 	    }
 
 	    var initialState = inst.state;
 	    if (initialState === undefined) {
 	      inst.state = initialState = null;
 	    }
-	    !(typeof initialState === 'object' && !Array.isArray(initialState)) ? (undefined) !== 'production' ? invariant(false, '%s.state: must be set to an object or null', this.getName() || 'ReactCompositeComponent') : invariant(false) : undefined;
+	    !(typeof initialState === 'object' && !Array.isArray(initialState)) ?  false ? invariant(false, '%s.state: must be set to an object or null', this.getName() || 'ReactCompositeComponent') : invariant(false) : undefined;
 
 	    this._pendingStateQueue = null;
 	    this._pendingReplaceState = false;
@@ -7271,7 +7273,7 @@
 	   */
 	  _processContext: function (context) {
 	    var maskedContext = this._maskContext(context);
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      var Component = this._currentElement.type;
 	      if (Component.contextTypes) {
 	        this._checkPropTypes(Component.contextTypes, maskedContext, ReactPropTypeLocations.context);
@@ -7290,12 +7292,12 @@
 	    var inst = this._instance;
 	    var childContext = inst.getChildContext && inst.getChildContext();
 	    if (childContext) {
-	      !(typeof Component.childContextTypes === 'object') ? (undefined) !== 'production' ? invariant(false, '%s.getChildContext(): childContextTypes must be defined in order to ' + 'use getChildContext().', this.getName() || 'ReactCompositeComponent') : invariant(false) : undefined;
-	      if ((undefined) !== 'production') {
+	      !(typeof Component.childContextTypes === 'object') ?  false ? invariant(false, '%s.getChildContext(): childContextTypes must be defined in order to ' + 'use getChildContext().', this.getName() || 'ReactCompositeComponent') : invariant(false) : undefined;
+	      if (false) {
 	        this._checkPropTypes(Component.childContextTypes, childContext, ReactPropTypeLocations.childContext);
 	      }
 	      for (var name in childContext) {
-	        !(name in Component.childContextTypes) ? (undefined) !== 'production' ? invariant(false, '%s.getChildContext(): key "%s" is not defined in childContextTypes.', this.getName() || 'ReactCompositeComponent', name) : invariant(false) : undefined;
+	        !(name in Component.childContextTypes) ?  false ? invariant(false, '%s.getChildContext(): key "%s" is not defined in childContextTypes.', this.getName() || 'ReactCompositeComponent', name) : invariant(false) : undefined;
 	      }
 	      return assign({}, currentContext, childContext);
 	    }
@@ -7312,7 +7314,7 @@
 	   * @private
 	   */
 	  _processProps: function (newProps) {
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      var Component = this._currentElement.type;
 	      if (Component.propTypes) {
 	        this._checkPropTypes(Component.propTypes, newProps, ReactPropTypeLocations.prop);
@@ -7339,7 +7341,7 @@
 	        try {
 	          // This is intentionally an invariant that gets caught. It's the same
 	          // behavior as without this statement except with a better message.
-	          !(typeof propTypes[propName] === 'function') ? (undefined) !== 'production' ? invariant(false, '%s: %s type `%s` is invalid; it must be a function, usually ' + 'from React.PropTypes.', componentName || 'React class', ReactPropTypeLocationNames[location], propName) : invariant(false) : undefined;
+	          !(typeof propTypes[propName] === 'function') ?  false ? invariant(false, '%s: %s type `%s` is invalid; it must be a function, usually ' + 'from React.PropTypes.', componentName || 'React class', ReactPropTypeLocationNames[location], propName) : invariant(false) : undefined;
 	          error = propTypes[propName](props, propName, componentName, location);
 	        } catch (ex) {
 	          error = ex;
@@ -7352,9 +7354,9 @@
 
 	          if (location === ReactPropTypeLocations.prop) {
 	            // Preface gives us something to blacklist in warning module
-	            (undefined) !== 'production' ? warning(false, 'Failed Composite propType: %s%s', error.message, addendum) : undefined;
+	             false ? warning(false, 'Failed Composite propType: %s%s', error.message, addendum) : undefined;
 	          } else {
-	            (undefined) !== 'production' ? warning(false, 'Failed Context Types: %s%s', error.message, addendum) : undefined;
+	             false ? warning(false, 'Failed Context Types: %s%s', error.message, addendum) : undefined;
 	          }
 	        }
 	      }
@@ -7428,8 +7430,8 @@
 
 	    var shouldUpdate = this._pendingForceUpdate || !inst.shouldComponentUpdate || inst.shouldComponentUpdate(nextProps, nextState, nextContext);
 
-	    if ((undefined) !== 'production') {
-	      (undefined) !== 'production' ? warning(typeof shouldUpdate !== 'undefined', '%s.shouldComponentUpdate(): Returned undefined instead of a ' + 'boolean value. Make sure to return true or false.', this.getName() || 'ReactCompositeComponent') : undefined;
+	    if (false) {
+	      process.env.NODE_ENV !== 'production' ? warning(typeof shouldUpdate !== 'undefined', '%s.shouldComponentUpdate(): Returned undefined instead of a ' + 'boolean value. Make sure to return true or false.', this.getName() || 'ReactCompositeComponent') : undefined;
 	    }
 
 	    if (shouldUpdate) {
@@ -7550,7 +7552,7 @@
 	  _renderValidatedComponentWithoutOwnerOrContext: function () {
 	    var inst = this._instance;
 	    var renderedComponent = inst.render();
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      // We allow auto-mocks to proceed as if they're returning null.
 	      if (typeof renderedComponent === 'undefined' && inst.render._isMockFunction) {
 	        // This is probably bad practice. Consider warning here and
@@ -7575,7 +7577,7 @@
 	    }
 	    !(
 	    // TODO: An `isValidNode` function would probably be more appropriate
-	    renderedComponent === null || renderedComponent === false || ReactElement.isValidElement(renderedComponent)) ? (undefined) !== 'production' ? invariant(false, '%s.render(): A valid ReactComponent must be returned. You may have ' + 'returned undefined, an array or some other invalid object.', this.getName() || 'ReactCompositeComponent') : invariant(false) : undefined;
+	    renderedComponent === null || renderedComponent === false || ReactElement.isValidElement(renderedComponent)) ?  false ? invariant(false, '%s.render(): A valid ReactComponent must be returned. You may have ' + 'returned undefined, an array or some other invalid object.', this.getName() || 'ReactCompositeComponent') : invariant(false) : undefined;
 	    return renderedComponent;
 	  },
 
@@ -7589,11 +7591,11 @@
 	   */
 	  attachRef: function (ref, component) {
 	    var inst = this.getPublicInstance();
-	    !(inst != null) ? (undefined) !== 'production' ? invariant(false, 'Stateless function components cannot have refs.') : invariant(false) : undefined;
+	    !(inst != null) ?  false ? invariant(false, 'Stateless function components cannot have refs.') : invariant(false) : undefined;
 	    var publicComponentInstance = component.getPublicInstance();
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      var componentName = component && component.getName ? component.getName() : 'a component';
-	      (undefined) !== 'production' ? warning(publicComponentInstance != null, 'Stateless function components cannot be given refs ' + '(See ref "%s" in %s created by %s). ' + 'Attempts to access this ref will fail.', ref, componentName, this.getName()) : undefined;
+	      process.env.NODE_ENV !== 'production' ? warning(publicComponentInstance != null, 'Stateless function components cannot be given refs ' + '(See ref "%s" in %s created by %s). ' + 'Attempts to access this ref will fail.', ref, componentName, this.getName()) : undefined;
 	    }
 	    var refs = inst.refs === emptyObject ? inst.refs = {} : inst.refs;
 	    refs[ref] = publicComponentInstance;
@@ -7702,7 +7704,7 @@
 
 	  injection: {
 	    injectEnvironment: function (environment) {
-	      !!injected ? (undefined) !== 'production' ? invariant(false, 'ReactCompositeComponent: injectEnvironment() can only be called once.') : invariant(false) : undefined;
+	      !!injected ?  false ? invariant(false, 'ReactCompositeComponent: injectEnvironment() can only be called once.') : invariant(false) : undefined;
 	      ReactComponentEnvironment.unmountIDFromEnvironment = environment.unmountIDFromEnvironment;
 	      ReactComponentEnvironment.replaceNodeWithMarkupByID = environment.replaceNodeWithMarkupByID;
 	      ReactComponentEnvironment.processChildrenUpdates = environment.processChildrenUpdates;
@@ -7760,7 +7762,7 @@
 
 	var ReactPropTypeLocationNames = {};
 
-	if ((undefined) !== 'production') {
+	if (false) {
 	  ReactPropTypeLocationNames = {
 	    prop: 'prop',
 	    context: 'context',
@@ -7943,7 +7945,7 @@
 	 * @return {function} The internal class constructor function.
 	 */
 	function createInternalComponent(element) {
-	  !genericComponentClass ? (undefined) !== 'production' ? invariant(false, 'There is no registered component for the tag %s', element.type) : invariant(false) : undefined;
+	  !genericComponentClass ?  false ? invariant(false, 'There is no registered component for the tag %s', element.type) : invariant(false) : undefined;
 	  return new genericComponentClass(element.type, element.props);
 	}
 
@@ -7996,7 +7998,7 @@
 
 	var validateDOMNesting = emptyFunction;
 
-	if ((undefined) !== 'production') {
+	if (false) {
 	  // This validation code was written based on the HTML5 parsing spec:
 	  // https://html.spec.whatwg.org/multipage/syntax.html#has-an-element-in-scope
 	  //
@@ -8319,9 +8321,9 @@
 	        if (ancestorTag === 'table' && childTag === 'tr') {
 	          info += ' Add a <tbody> to your code to match the DOM tree generated by ' + 'the browser.';
 	        }
-	        (undefined) !== 'production' ? warning(false, 'validateDOMNesting(...): <%s> cannot appear as a child of <%s>. ' + 'See %s.%s', childTag, ancestorTag, ownerInfo, info) : undefined;
+	        process.env.NODE_ENV !== 'production' ? warning(false, 'validateDOMNesting(...): <%s> cannot appear as a child of <%s>. ' + 'See %s.%s', childTag, ancestorTag, ownerInfo, info) : undefined;
 	      } else {
-	        (undefined) !== 'production' ? warning(false, 'validateDOMNesting(...): <%s> cannot appear as a descendant of ' + '<%s>. See %s.', childTag, ancestorTag, ownerInfo) : undefined;
+	        process.env.NODE_ENV !== 'production' ? warning(false, 'validateDOMNesting(...): <%s> cannot appear as a descendant of ' + '<%s>. See %s.', childTag, ancestorTag, ownerInfo) : undefined;
 	      }
 	    }
 	  };
@@ -8430,10 +8432,10 @@
 
 	  ReactInjection.Component.injectEnvironment(ReactComponentBrowserEnvironment);
 
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    var url = ExecutionEnvironment.canUseDOM && window.location.href || '';
 	    if (/[?&]react_perf\b/.test(url)) {
-	      var ReactDefaultPerf = __webpack_require__(142);
+	      var ReactDefaultPerf = require('./ReactDefaultPerf');
 	      ReactDefaultPerf.start();
 	    }
 	  }
@@ -8897,8 +8899,8 @@
 	 * "dispatch" object that pairs the event with the listener.
 	 */
 	function accumulateDirectionalDispatches(domID, upwards, event) {
-	  if ((undefined) !== 'production') {
-	    (undefined) !== 'production' ? warning(domID, 'Dispatching id must not be null') : undefined;
+	  if (false) {
+	    process.env.NODE_ENV !== 'production' ? warning(domID, 'Dispatching id must not be null') : undefined;
 	  }
 	  var phase = upwards ? PropagationPhases.bubbled : PropagationPhases.captured;
 	  var listener = listenerAtPhase(domID, event, phase);
@@ -9266,8 +9268,8 @@
 	  preventDefault: function () {
 	    this.defaultPrevented = true;
 	    var event = this.nativeEvent;
-	    if ((undefined) !== 'production') {
-	      (undefined) !== 'production' ? warning(event, 'This synthetic event is reused for performance reasons. If you\'re ' + 'seeing this, you\'re calling `preventDefault` on a ' + 'released/nullified synthetic event. This is a no-op. See ' + 'https://fb.me/react-event-pooling for more information.') : undefined;
+	    if (false) {
+	      process.env.NODE_ENV !== 'production' ? warning(event, 'This synthetic event is reused for performance reasons. If you\'re ' + 'seeing this, you\'re calling `preventDefault` on a ' + 'released/nullified synthetic event. This is a no-op. See ' + 'https://fb.me/react-event-pooling for more information.') : undefined;
 	    }
 	    if (!event) {
 	      return;
@@ -9283,8 +9285,8 @@
 
 	  stopPropagation: function () {
 	    var event = this.nativeEvent;
-	    if ((undefined) !== 'production') {
-	      (undefined) !== 'production' ? warning(event, 'This synthetic event is reused for performance reasons. If you\'re ' + 'seeing this, you\'re calling `stopPropagation` on a ' + 'released/nullified synthetic event. This is a no-op. See ' + 'https://fb.me/react-event-pooling for more information.') : undefined;
+	    if (false) {
+	      process.env.NODE_ENV !== 'production' ? warning(event, 'This synthetic event is reused for performance reasons. If you\'re ' + 'seeing this, you\'re calling `stopPropagation` on a ' + 'released/nullified synthetic event. This is a no-op. See ' + 'https://fb.me/react-event-pooling for more information.') : undefined;
 	    }
 	    if (!event) {
 	      return;
@@ -10324,6 +10326,7 @@
 	    icon: null,
 	    id: MUST_USE_PROPERTY,
 	    inputMode: MUST_USE_ATTRIBUTE,
+	    integrity: null,
 	    is: MUST_USE_ATTRIBUTE,
 	    keyParams: MUST_USE_ATTRIBUTE,
 	    keyType: MUST_USE_ATTRIBUTE,
@@ -10346,6 +10349,7 @@
 	    multiple: MUST_USE_PROPERTY | HAS_BOOLEAN_VALUE,
 	    muted: MUST_USE_PROPERTY | HAS_BOOLEAN_VALUE,
 	    name: null,
+	    nonce: MUST_USE_ATTRIBUTE,
 	    noValidate: HAS_BOOLEAN_VALUE,
 	    open: HAS_BOOLEAN_VALUE,
 	    optimum: null,
@@ -10357,6 +10361,7 @@
 	    readOnly: MUST_USE_PROPERTY | HAS_BOOLEAN_VALUE,
 	    rel: null,
 	    required: HAS_BOOLEAN_VALUE,
+	    reversed: HAS_BOOLEAN_VALUE,
 	    role: MUST_USE_ATTRIBUTE,
 	    rows: MUST_USE_ATTRIBUTE | HAS_POSITIVE_NUMERIC_VALUE,
 	    rowSpan: null,
@@ -10491,7 +10496,7 @@
 	   * @protected
 	   */
 	  getDOMNode: function () {
-	    (undefined) !== 'production' ? warning(this.constructor[didWarnKey], '%s.getDOMNode(...) is deprecated. Please use ' + 'ReactDOM.findDOMNode(instance) instead.', ReactInstanceMap.get(this).getName() || this.tagName || 'Unknown') : undefined;
+	     false ? warning(this.constructor[didWarnKey], '%s.getDOMNode(...) is deprecated. Please use ' + 'ReactDOM.findDOMNode(instance) instead.', ReactInstanceMap.get(this).getName() || this.tagName || 'Unknown') : undefined;
 	    this.constructor[didWarnKey] = true;
 	    return findDOMNode(this);
 	  }
@@ -10531,10 +10536,10 @@
 	 * @return {?DOMElement} The root node of this element.
 	 */
 	function findDOMNode(componentOrElement) {
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    var owner = ReactCurrentOwner.current;
 	    if (owner !== null) {
-	      (undefined) !== 'production' ? warning(owner._warnedAboutRefsInRender, '%s is accessing getDOMNode or findDOMNode inside its render(). ' + 'render() should be a pure function of props and state. It should ' + 'never access something that requires stale data from the previous ' + 'render, such as refs. Move this logic to componentDidMount and ' + 'componentDidUpdate instead.', owner.getName() || 'A component') : undefined;
+	      process.env.NODE_ENV !== 'production' ? warning(owner._warnedAboutRefsInRender, '%s is accessing getDOMNode or findDOMNode inside its render(). ' + 'render() should be a pure function of props and state. It should ' + 'never access something that requires stale data from the previous ' + 'render, such as refs. Move this logic to componentDidMount and ' + 'componentDidUpdate instead.', owner.getName() || 'A component') : undefined;
 	      owner._warnedAboutRefsInRender = true;
 	    }
 	  }
@@ -10547,8 +10552,8 @@
 	  if (ReactInstanceMap.has(componentOrElement)) {
 	    return ReactMount.getNodeFromInstance(componentOrElement);
 	  }
-	  !(componentOrElement.render == null || typeof componentOrElement.render !== 'function') ? (undefined) !== 'production' ? invariant(false, 'findDOMNode was called on an unmounted component.') : invariant(false) : undefined;
-	   true ? (undefined) !== 'production' ? invariant(false, 'Element appears to be neither ReactComponent nor DOMNode (keys: %s)', Object.keys(componentOrElement)) : invariant(false) : undefined;
+	  !(componentOrElement.render == null || typeof componentOrElement.render !== 'function') ?  false ? invariant(false, 'findDOMNode was called on an unmounted component.') : invariant(false) : undefined;
+	   true ?  false ? invariant(false, 'Element appears to be neither ReactComponent nor DOMNode (keys: %s)', Object.keys(componentOrElement)) : invariant(false) : undefined;
 	}
 
 	module.exports = findDOMNode;
@@ -10681,6 +10686,7 @@
 	// For quickly matching children type, to test if can be treated as content.
 	var CONTENT_TYPES = { 'string': true, 'number': true };
 
+	var CHILDREN = keyOf({ children: null });
 	var STYLE = keyOf({ style: null });
 	var HTML = keyOf({ __html: null });
 
@@ -10700,13 +10706,13 @@
 	}
 
 	var legacyPropsDescriptor;
-	if ((undefined) !== 'production') {
+	if (false) {
 	  legacyPropsDescriptor = {
 	    props: {
 	      enumerable: false,
 	      get: function () {
 	        var component = this._reactInternalComponent;
-	        (undefined) !== 'production' ? warning(false, 'ReactDOMComponent: Do not access .props of a DOM node; instead, ' + 'recreate the props as `render` did originally or read the DOM ' + 'properties/attributes directly from this node (e.g., ' + 'this.refs.box.className).%s', getDeclarationErrorAddendum(component)) : undefined;
+	        process.env.NODE_ENV !== 'production' ? warning(false, 'ReactDOMComponent: Do not access .props of a DOM node; instead, ' + 'recreate the props as `render` did originally or read the DOM ' + 'properties/attributes directly from this node (e.g., ' + 'this.refs.box.className).%s', getDeclarationErrorAddendum(component)) : undefined;
 	        return component._currentElement.props;
 	      }
 	    }
@@ -10714,32 +10720,32 @@
 	}
 
 	function legacyGetDOMNode() {
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    var component = this._reactInternalComponent;
-	    (undefined) !== 'production' ? warning(false, 'ReactDOMComponent: Do not access .getDOMNode() of a DOM node; ' + 'instead, use the node directly.%s', getDeclarationErrorAddendum(component)) : undefined;
+	    process.env.NODE_ENV !== 'production' ? warning(false, 'ReactDOMComponent: Do not access .getDOMNode() of a DOM node; ' + 'instead, use the node directly.%s', getDeclarationErrorAddendum(component)) : undefined;
 	  }
 	  return this;
 	}
 
 	function legacyIsMounted() {
 	  var component = this._reactInternalComponent;
-	  if ((undefined) !== 'production') {
-	    (undefined) !== 'production' ? warning(false, 'ReactDOMComponent: Do not access .isMounted() of a DOM node.%s', getDeclarationErrorAddendum(component)) : undefined;
+	  if (false) {
+	    process.env.NODE_ENV !== 'production' ? warning(false, 'ReactDOMComponent: Do not access .isMounted() of a DOM node.%s', getDeclarationErrorAddendum(component)) : undefined;
 	  }
 	  return !!component;
 	}
 
 	function legacySetStateEtc() {
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    var component = this._reactInternalComponent;
-	    (undefined) !== 'production' ? warning(false, 'ReactDOMComponent: Do not access .setState(), .replaceState(), or ' + '.forceUpdate() of a DOM node. This is a no-op.%s', getDeclarationErrorAddendum(component)) : undefined;
+	    process.env.NODE_ENV !== 'production' ? warning(false, 'ReactDOMComponent: Do not access .setState(), .replaceState(), or ' + '.forceUpdate() of a DOM node. This is a no-op.%s', getDeclarationErrorAddendum(component)) : undefined;
 	  }
 	}
 
 	function legacySetProps(partialProps, callback) {
 	  var component = this._reactInternalComponent;
-	  if ((undefined) !== 'production') {
-	    (undefined) !== 'production' ? warning(false, 'ReactDOMComponent: Do not access .setProps() of a DOM node. ' + 'Instead, call ReactDOM.render again at the top level.%s', getDeclarationErrorAddendum(component)) : undefined;
+	  if (false) {
+	    process.env.NODE_ENV !== 'production' ? warning(false, 'ReactDOMComponent: Do not access .setProps() of a DOM node. ' + 'Instead, call ReactDOM.render again at the top level.%s', getDeclarationErrorAddendum(component)) : undefined;
 	  }
 	  if (!component) {
 	    return;
@@ -10752,8 +10758,8 @@
 
 	function legacyReplaceProps(partialProps, callback) {
 	  var component = this._reactInternalComponent;
-	  if ((undefined) !== 'production') {
-	    (undefined) !== 'production' ? warning(false, 'ReactDOMComponent: Do not access .replaceProps() of a DOM node. ' + 'Instead, call ReactDOM.render again at the top level.%s', getDeclarationErrorAddendum(component)) : undefined;
+	  if (false) {
+	    process.env.NODE_ENV !== 'production' ? warning(false, 'ReactDOMComponent: Do not access .replaceProps() of a DOM node. ' + 'Instead, call ReactDOM.render again at the top level.%s', getDeclarationErrorAddendum(component)) : undefined;
 	  }
 	  if (!component) {
 	    return;
@@ -10813,7 +10819,7 @@
 
 	  styleMutationWarning[hash] = true;
 
-	  (undefined) !== 'production' ? warning(false, '`%s` was passed a style object that has previously been mutated. ' + 'Mutating `style` is deprecated. Consider cloning it beforehand. Check ' + 'the `render` %s. Previous style: %s. Mutated style: %s.', componentName, owner ? 'of `' + ownerName + '`' : 'using <' + componentName + '>', friendlyStringify(style1), friendlyStringify(style2)) : undefined;
+	   false ? warning(false, '`%s` was passed a style object that has previously been mutated. ' + 'Mutating `style` is deprecated. Consider cloning it beforehand. Check ' + 'the `render` %s. Previous style: %s. Mutated style: %s.', componentName, owner ? 'of `' + ownerName + '`' : 'using <' + componentName + '>', friendlyStringify(style1), friendlyStringify(style2)) : undefined;
 	}
 
 	/**
@@ -10825,27 +10831,27 @@
 	    return;
 	  }
 	  // Note the use of `==` which checks for null or undefined.
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    if (voidElementTags[component._tag]) {
-	      (undefined) !== 'production' ? warning(props.children == null && props.dangerouslySetInnerHTML == null, '%s is a void element tag and must not have `children` or ' + 'use `props.dangerouslySetInnerHTML`.%s', component._tag, component._currentElement._owner ? ' Check the render method of ' + component._currentElement._owner.getName() + '.' : '') : undefined;
+	      process.env.NODE_ENV !== 'production' ? warning(props.children == null && props.dangerouslySetInnerHTML == null, '%s is a void element tag and must not have `children` or ' + 'use `props.dangerouslySetInnerHTML`.%s', component._tag, component._currentElement._owner ? ' Check the render method of ' + component._currentElement._owner.getName() + '.' : '') : undefined;
 	    }
 	  }
 	  if (props.dangerouslySetInnerHTML != null) {
-	    !(props.children == null) ? (undefined) !== 'production' ? invariant(false, 'Can only set one of `children` or `props.dangerouslySetInnerHTML`.') : invariant(false) : undefined;
-	    !(typeof props.dangerouslySetInnerHTML === 'object' && HTML in props.dangerouslySetInnerHTML) ? (undefined) !== 'production' ? invariant(false, '`props.dangerouslySetInnerHTML` must be in the form `{__html: ...}`. ' + 'Please visit https://fb.me/react-invariant-dangerously-set-inner-html ' + 'for more information.') : invariant(false) : undefined;
+	    !(props.children == null) ?  false ? invariant(false, 'Can only set one of `children` or `props.dangerouslySetInnerHTML`.') : invariant(false) : undefined;
+	    !(typeof props.dangerouslySetInnerHTML === 'object' && HTML in props.dangerouslySetInnerHTML) ?  false ? invariant(false, '`props.dangerouslySetInnerHTML` must be in the form `{__html: ...}`. ' + 'Please visit https://fb.me/react-invariant-dangerously-set-inner-html ' + 'for more information.') : invariant(false) : undefined;
 	  }
-	  if ((undefined) !== 'production') {
-	    (undefined) !== 'production' ? warning(props.innerHTML == null, 'Directly setting property `innerHTML` is not permitted. ' + 'For more information, lookup documentation on `dangerouslySetInnerHTML`.') : undefined;
-	    (undefined) !== 'production' ? warning(!props.contentEditable || props.children == null, 'A component is `contentEditable` and contains `children` managed by ' + 'React. It is now your responsibility to guarantee that none of ' + 'those nodes are unexpectedly modified or duplicated. This is ' + 'probably not intentional.') : undefined;
+	  if (false) {
+	    process.env.NODE_ENV !== 'production' ? warning(props.innerHTML == null, 'Directly setting property `innerHTML` is not permitted. ' + 'For more information, lookup documentation on `dangerouslySetInnerHTML`.') : undefined;
+	    process.env.NODE_ENV !== 'production' ? warning(!props.contentEditable || props.children == null, 'A component is `contentEditable` and contains `children` managed by ' + 'React. It is now your responsibility to guarantee that none of ' + 'those nodes are unexpectedly modified or duplicated. This is ' + 'probably not intentional.') : undefined;
 	  }
-	  !(props.style == null || typeof props.style === 'object') ? (undefined) !== 'production' ? invariant(false, 'The `style` prop expects a mapping from style properties to values, ' + 'not a string. For example, style={{marginRight: spacing + \'em\'}} when ' + 'using JSX.%s', getDeclarationErrorAddendum(component)) : invariant(false) : undefined;
+	  !(props.style == null || typeof props.style === 'object') ?  false ? invariant(false, 'The `style` prop expects a mapping from style properties to values, ' + 'not a string. For example, style={{marginRight: spacing + \'em\'}} when ' + 'using JSX.%s', getDeclarationErrorAddendum(component)) : invariant(false) : undefined;
 	}
 
 	function enqueuePutListener(id, registrationName, listener, transaction) {
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    // IE8 has no API for event capturing and the `onScroll` event doesn't
 	    // bubble.
-	    (undefined) !== 'production' ? warning(registrationName !== 'onScroll' || isEventSupported('scroll', true), 'This browser doesn\'t support the `onScroll` event') : undefined;
+	    process.env.NODE_ENV !== 'production' ? warning(registrationName !== 'onScroll' || isEventSupported('scroll', true), 'This browser doesn\'t support the `onScroll` event') : undefined;
 	  }
 	  var container = ReactMount.findReactContainerForID(id);
 	  if (container) {
@@ -10896,9 +10902,9 @@
 	  var inst = this;
 	  // If a component renders to null or if another component fatals and causes
 	  // the state of the tree to be corrupted, `node` here can be null.
-	  !inst._rootNodeID ? (undefined) !== 'production' ? invariant(false, 'Must be mounted to trap events') : invariant(false) : undefined;
+	  !inst._rootNodeID ?  false ? invariant(false, 'Must be mounted to trap events') : invariant(false) : undefined;
 	  var node = ReactMount.getNode(inst._rootNodeID);
-	  !node ? (undefined) !== 'production' ? invariant(false, 'trapBubbledEvent(...): Requires node to be rendered.') : invariant(false) : undefined;
+	  !node ?  false ? invariant(false, 'trapBubbledEvent(...): Requires node to be rendered.') : invariant(false) : undefined;
 
 	  switch (inst._tag) {
 	    case 'iframe':
@@ -10978,7 +10984,7 @@
 
 	function validateDangerousTag(tag) {
 	  if (!hasOwnProperty.call(validatedTagCache, tag)) {
-	    !VALID_TAG_REGEX.test(tag) ? (undefined) !== 'production' ? invariant(false, 'Invalid tag: %s', tag) : invariant(false) : undefined;
+	    !VALID_TAG_REGEX.test(tag) ?  false ? invariant(false, 'Invalid tag: %s', tag) : invariant(false) : undefined;
 	    validatedTagCache[tag] = true;
 	  }
 	}
@@ -11019,7 +11025,7 @@
 	  this._wrapperState = null;
 	  this._topLevelWrapper = null;
 	  this._nodeWithLegacyProperties = null;
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    this._unprocessedContextDev = null;
 	    this._processedContextDev = null;
 	  }
@@ -11082,13 +11088,13 @@
 	    }
 
 	    assertValidProps(this, props);
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      if (context[validateDOMNesting.ancestorInfoContextKey]) {
 	        validateDOMNesting(this._tag, this, context[validateDOMNesting.ancestorInfoContextKey]);
 	      }
 	    }
 
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      this._unprocessedContextDev = context;
 	      this._processedContextDev = processChildContextDev(context, this);
 	      context = this._processedContextDev;
@@ -11161,7 +11167,7 @@
 	      } else {
 	        if (propKey === STYLE) {
 	          if (propValue) {
-	            if ((undefined) !== 'production') {
+	            if (false) {
 	              // See `_updateDOMProperties`. style block
 	              this._previousStyle = propValue;
 	            }
@@ -11171,7 +11177,9 @@
 	        }
 	        var markup = null;
 	        if (this._tag != null && isCustomComponent(this._tag, props)) {
-	          markup = DOMPropertyOperations.createMarkupForCustomAttribute(propKey, propValue);
+	          if (propKey !== CHILDREN) {
+	            markup = DOMPropertyOperations.createMarkupForCustomAttribute(propKey, propValue);
+	          }
 	        } else {
 	          markup = DOMPropertyOperations.createMarkupForProperty(propKey, propValue);
 	        }
@@ -11312,7 +11320,7 @@
 	        break;
 	    }
 
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      // If the context is reference-equal to the old one, pass down the same
 	      // processed object so the update bailout in ReactReconciler behaves
 	      // correctly (and identically in dev and prod). See #5005.
@@ -11394,7 +11402,7 @@
 	      }
 	      if (propKey === STYLE) {
 	        if (nextProp) {
-	          if ((undefined) !== 'production') {
+	          if (false) {
 	            checkAndWarnForMutatedStyle(this._previousStyleCopy, this._previousStyle, this);
 	            this._previousStyle = nextProp;
 	          }
@@ -11430,6 +11438,9 @@
 	      } else if (isCustomComponent(this._tag, nextProps)) {
 	        if (!node) {
 	          node = ReactMount.getNode(this._rootNodeID);
+	        }
+	        if (propKey === CHILDREN) {
+	          nextProp = null;
 	        }
 	        DOMPropertyOperations.setValueForAttribute(node, propKey, nextProp);
 	      } else if (DOMProperty.properties[propKey] || DOMProperty.isCustomAttribute(propKey)) {
@@ -11529,7 +11540,7 @@
 	         * take advantage of React's reconciliation for styling and <title>
 	         * management. So we just document it and throw in dangerous cases.
 	         */
-	         true ? (undefined) !== 'production' ? invariant(false, '<%s> tried to unmount. Because of cross-browser quirks it is ' + 'impossible to unmount some top-level components (eg <html>, ' + '<head>, and <body>) reliably and efficiently. To fix this, have a ' + 'single top-level component that never unmounts render these ' + 'elements.', this._tag) : invariant(false) : undefined;
+	         true ?  false ? invariant(false, '<%s> tried to unmount. Because of cross-browser quirks it is ' + 'impossible to unmount some top-level components (eg <html>, ' + '<head>, and <body>) reliably and efficiently. To fix this, have a ' + 'single top-level component that never unmounts render these ' + 'elements.', this._tag) : invariant(false) : undefined;
 	        break;
 	    }
 
@@ -11558,7 +11569,7 @@
 	      node.setProps = legacySetProps;
 	      node.replaceProps = legacyReplaceProps;
 
-	      if ((undefined) !== 'production') {
+	      if (false) {
 	        if (canDefineProperty) {
 	          Object.defineProperties(node, legacyPropsDescriptor);
 	        } else {
@@ -11706,7 +11717,7 @@
 	  }
 	}
 
-	if ((undefined) !== 'production') {
+	if (false) {
 	  // 'msTransform' is correct, but the other prefixes should be capitalized
 	  var badVendoredStyleNamePattern = /^(?:webkit|moz|o)[A-Z]/;
 
@@ -11722,7 +11733,7 @@
 	    }
 
 	    warnedStyleNames[name] = true;
-	    (undefined) !== 'production' ? warning(false, 'Unsupported style property %s. Did you mean %s?', name, camelizeStyleName(name)) : undefined;
+	    process.env.NODE_ENV !== 'production' ? warning(false, 'Unsupported style property %s. Did you mean %s?', name, camelizeStyleName(name)) : undefined;
 	  };
 
 	  var warnBadVendoredStyleName = function (name) {
@@ -11731,7 +11742,7 @@
 	    }
 
 	    warnedStyleNames[name] = true;
-	    (undefined) !== 'production' ? warning(false, 'Unsupported vendor-prefixed style property %s. Did you mean %s?', name, name.charAt(0).toUpperCase() + name.slice(1)) : undefined;
+	    process.env.NODE_ENV !== 'production' ? warning(false, 'Unsupported vendor-prefixed style property %s. Did you mean %s?', name, name.charAt(0).toUpperCase() + name.slice(1)) : undefined;
 	  };
 
 	  var warnStyleValueWithSemicolon = function (name, value) {
@@ -11740,7 +11751,7 @@
 	    }
 
 	    warnedStyleValues[value] = true;
-	    (undefined) !== 'production' ? warning(false, 'Style property values shouldn\'t contain a semicolon. ' + 'Try "%s: %s" instead.', name, value.replace(badStyleValueWithSemicolonPattern, '')) : undefined;
+	    process.env.NODE_ENV !== 'production' ? warning(false, 'Style property values shouldn\'t contain a semicolon. ' + 'Try "%s: %s" instead.', name, value.replace(badStyleValueWithSemicolonPattern, '')) : undefined;
 	  };
 
 	  /**
@@ -11782,7 +11793,7 @@
 	        continue;
 	      }
 	      var styleValue = styles[styleName];
-	      if ((undefined) !== 'production') {
+	      if (false) {
 	        warnValidStyle(styleName, styleValue);
 	      }
 	      if (styleValue != null) {
@@ -11806,7 +11817,7 @@
 	      if (!styles.hasOwnProperty(styleName)) {
 	        continue;
 	      }
-	      if ((undefined) !== 'production') {
+	      if (false) {
 	        warnValidStyle(styleName, styles[styleName]);
 	      }
 	      var styleValue = dangerousStyleValue(styleName, styles[styleName]);
@@ -12364,7 +12375,7 @@
 	  },
 
 	  mountWrapper: function (inst, props) {
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      LinkedValueUtils.checkPropTypes('input', props, inst._currentElement._owner);
 	    }
 
@@ -12440,9 +12451,9 @@
 	      // That's probably okay; we don't support it just as we don't support
 	      // mixing React with non-React.
 	      var otherID = ReactMount.getID(otherNode);
-	      !otherID ? (undefined) !== 'production' ? invariant(false, 'ReactDOMInput: Mixing React and non-React radio inputs with the ' + 'same `name` is not supported.') : invariant(false) : undefined;
+	      !otherID ?  false ? invariant(false, 'ReactDOMInput: Mixing React and non-React radio inputs with the ' + 'same `name` is not supported.') : invariant(false) : undefined;
 	      var otherInstance = instancesByReactID[otherID];
-	      !otherInstance ? (undefined) !== 'production' ? invariant(false, 'ReactDOMInput: Unknown radio button ID %s.', otherID) : invariant(false) : undefined;
+	      !otherInstance ?  false ? invariant(false, 'ReactDOMInput: Unknown radio button ID %s.', otherID) : invariant(false) : undefined;
 	      // If this is a controlled radio button group, forcing the input that
 	      // was previously checked to update will cause it to be come re-checked
 	      // as appropriate.
@@ -12490,16 +12501,16 @@
 	};
 
 	function _assertSingleLink(inputProps) {
-	  !(inputProps.checkedLink == null || inputProps.valueLink == null) ? (undefined) !== 'production' ? invariant(false, 'Cannot provide a checkedLink and a valueLink. If you want to use ' + 'checkedLink, you probably don\'t want to use valueLink and vice versa.') : invariant(false) : undefined;
+	  !(inputProps.checkedLink == null || inputProps.valueLink == null) ?  false ? invariant(false, 'Cannot provide a checkedLink and a valueLink. If you want to use ' + 'checkedLink, you probably don\'t want to use valueLink and vice versa.') : invariant(false) : undefined;
 	}
 	function _assertValueLink(inputProps) {
 	  _assertSingleLink(inputProps);
-	  !(inputProps.value == null && inputProps.onChange == null) ? (undefined) !== 'production' ? invariant(false, 'Cannot provide a valueLink and a value or onChange event. If you want ' + 'to use value or onChange, you probably don\'t want to use valueLink.') : invariant(false) : undefined;
+	  !(inputProps.value == null && inputProps.onChange == null) ?  false ? invariant(false, 'Cannot provide a valueLink and a value or onChange event. If you want ' + 'to use value or onChange, you probably don\'t want to use valueLink.') : invariant(false) : undefined;
 	}
 
 	function _assertCheckedLink(inputProps) {
 	  _assertSingleLink(inputProps);
-	  !(inputProps.checked == null && inputProps.onChange == null) ? (undefined) !== 'production' ? invariant(false, 'Cannot provide a checkedLink and a checked property or onChange event. ' + 'If you want to use checked or onChange, you probably don\'t want to ' + 'use checkedLink') : invariant(false) : undefined;
+	  !(inputProps.checked == null && inputProps.onChange == null) ?  false ? invariant(false, 'Cannot provide a checkedLink and a checked property or onChange event. ' + 'If you want to use checked or onChange, you probably don\'t want to ' + 'use checkedLink') : invariant(false) : undefined;
 	}
 
 	var propTypes = {
@@ -12545,7 +12556,7 @@
 	        loggedTypeFailures[error.message] = true;
 
 	        var addendum = getDeclarationErrorAddendum(owner);
-	        (undefined) !== 'production' ? warning(false, 'Failed form propType: %s%s', error.message, addendum) : undefined;
+	         false ? warning(false, 'Failed form propType: %s%s', error.message, addendum) : undefined;
 	      }
 	    }
 	  },
@@ -13031,8 +13042,8 @@
 	var ReactDOMOption = {
 	  mountWrapper: function (inst, props, context) {
 	    // TODO (yungsters): Remove support for `selected` in <option>.
-	    if ((undefined) !== 'production') {
-	      (undefined) !== 'production' ? warning(props.selected == null, 'Use the `defaultValue` or `value` props on <select> instead of ' + 'setting `selected` on <option>.') : undefined;
+	    if (false) {
+	      process.env.NODE_ENV !== 'production' ? warning(props.selected == null, 'Use the `defaultValue` or `value` props on <select> instead of ' + 'setting `selected` on <option>.') : undefined;
 	    }
 
 	    // Look up whether this option is 'selected' via context
@@ -13079,7 +13090,7 @@
 	      if (typeof child === 'string' || typeof child === 'number') {
 	        content += child;
 	      } else {
-	        (undefined) !== 'production' ? warning(false, 'Only strings and numbers are supported as <option> children.') : undefined;
+	         false ? warning(false, 'Only strings and numbers are supported as <option> children.') : undefined;
 	      }
 	    });
 
@@ -13410,8 +13421,8 @@
 	          subtreeCount += traverseAllChildrenImpl(child, nextName, callback, traverseContext);
 	        }
 	      } else {
-	        if ((undefined) !== 'production') {
-	          (undefined) !== 'production' ? warning(didWarnAboutMaps, 'Using Maps as children is not yet fully supported. It is an ' + 'experimental feature that might be removed. Convert it to a ' + 'sequence / iterable of keyed ReactElements instead.') : undefined;
+	        if (false) {
+	          process.env.NODE_ENV !== 'production' ? warning(didWarnAboutMaps, 'Using Maps as children is not yet fully supported. It is an ' + 'experimental feature that might be removed. Convert it to a ' + 'sequence / iterable of keyed ReactElements instead.') : undefined;
 	          didWarnAboutMaps = true;
 	        }
 	        // Iterator will provide entry [k,v] tuples rather than values.
@@ -13426,7 +13437,7 @@
 	      }
 	    } else if (type === 'object') {
 	      var addendum = '';
-	      if ((undefined) !== 'production') {
+	      if (false) {
 	        addendum = ' If you meant to render a collection of children, use an array ' + 'instead or wrap the object using createFragment(object) from the ' + 'React add-ons.';
 	        if (children._isReactElement) {
 	          addendum = ' It looks like you\'re using an element created by a different ' + 'version of React. Make sure to use only one copy of React.';
@@ -13439,7 +13450,7 @@
 	        }
 	      }
 	      var childrenString = String(children);
-	       true ? (undefined) !== 'production' ? invariant(false, 'Objects are not valid as a React child (found: %s).%s', childrenString === '[object Object]' ? 'object with keys {' + Object.keys(children).join(', ') + '}' : childrenString, addendum) : invariant(false) : undefined;
+	       true ?  false ? invariant(false, 'Objects are not valid as a React child (found: %s).%s', childrenString === '[object Object]' ? 'object with keys {' + Object.keys(children).join(', ') + '}' : childrenString, addendum) : invariant(false) : undefined;
 	    }
 	  }
 
@@ -13537,9 +13548,9 @@
 	      continue;
 	    }
 	    if (props.multiple) {
-	      (undefined) !== 'production' ? warning(Array.isArray(props[propName]), 'The `%s` prop supplied to <select> must be an array if ' + '`multiple` is true.%s', propName, getDeclarationErrorAddendum(owner)) : undefined;
+	       false ? warning(Array.isArray(props[propName]), 'The `%s` prop supplied to <select> must be an array if ' + '`multiple` is true.%s', propName, getDeclarationErrorAddendum(owner)) : undefined;
 	    } else {
-	      (undefined) !== 'production' ? warning(!Array.isArray(props[propName]), 'The `%s` prop supplied to <select> must be a scalar ' + 'value if `multiple` is false.%s', propName, getDeclarationErrorAddendum(owner)) : undefined;
+	       false ? warning(!Array.isArray(props[propName]), 'The `%s` prop supplied to <select> must be a scalar ' + 'value if `multiple` is false.%s', propName, getDeclarationErrorAddendum(owner)) : undefined;
 	    }
 	  }
 	}
@@ -13607,7 +13618,7 @@
 	  },
 
 	  mountWrapper: function (inst, props) {
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      checkSelectPropTypes(inst, props);
 	    }
 
@@ -13714,7 +13725,7 @@
 	 */
 	var ReactDOMTextarea = {
 	  getNativeProps: function (inst, props, context) {
-	    !(props.dangerouslySetInnerHTML == null) ? (undefined) !== 'production' ? invariant(false, '`dangerouslySetInnerHTML` does not make sense on <textarea>.') : invariant(false) : undefined;
+	    !(props.dangerouslySetInnerHTML == null) ?  false ? invariant(false, '`dangerouslySetInnerHTML` does not make sense on <textarea>.') : invariant(false) : undefined;
 
 	    // Always set children to the same thing. In IE9, the selection range will
 	    // get reset if `textContent` is mutated.
@@ -13729,7 +13740,7 @@
 	  },
 
 	  mountWrapper: function (inst, props) {
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      LinkedValueUtils.checkPropTypes('textarea', props, inst._currentElement._owner);
 	    }
 
@@ -13737,12 +13748,12 @@
 	    // TODO (yungsters): Remove support for children content in <textarea>.
 	    var children = props.children;
 	    if (children != null) {
-	      if ((undefined) !== 'production') {
-	        (undefined) !== 'production' ? warning(false, 'Use the `defaultValue` or `value` props instead of setting ' + 'children on <textarea>.') : undefined;
+	      if (false) {
+	        process.env.NODE_ENV !== 'production' ? warning(false, 'Use the `defaultValue` or `value` props instead of setting ' + 'children on <textarea>.') : undefined;
 	      }
-	      !(defaultValue == null) ? (undefined) !== 'production' ? invariant(false, 'If you supply `defaultValue` on a <textarea>, do not pass children.') : invariant(false) : undefined;
+	      !(defaultValue == null) ?  false ? invariant(false, 'If you supply `defaultValue` on a <textarea>, do not pass children.') : invariant(false) : undefined;
 	      if (Array.isArray(children)) {
-	        !(children.length <= 1) ? (undefined) !== 'production' ? invariant(false, '<textarea> can only have at most one child.') : invariant(false) : undefined;
+	        !(children.length <= 1) ?  false ? invariant(false, '<textarea> can only have at most one child.') : invariant(false) : undefined;
 	        children = children[0];
 	      }
 
@@ -13979,7 +13990,7 @@
 	  Mixin: {
 
 	    _reconcilerInstantiateChildren: function (nestedChildren, transaction, context) {
-	      if ((undefined) !== 'production') {
+	      if (false) {
 	        if (this._currentElement) {
 	          try {
 	            ReactCurrentOwner.current = this._currentElement._owner;
@@ -13994,7 +14005,7 @@
 
 	    _reconcilerUpdateChildren: function (prevChildren, nextNestedChildrenElements, transaction, context) {
 	      var nextChildren;
-	      if ((undefined) !== 'production') {
+	      if (false) {
 	        if (this._currentElement) {
 	          try {
 	            ReactCurrentOwner.current = this._currentElement._owner;
@@ -14312,8 +14323,8 @@
 	function instantiateChild(childInstances, child, name) {
 	  // We found a component instance.
 	  var keyUnique = childInstances[name] === undefined;
-	  if ((undefined) !== 'production') {
-	    (undefined) !== 'production' ? warning(keyUnique, 'flattenChildren(...): Encountered two children with the same key, ' + '`%s`. Child keys must be unique; when two children share a key, only ' + 'the first child will be used.', name) : undefined;
+	  if (false) {
+	    process.env.NODE_ENV !== 'production' ? warning(keyUnique, 'flattenChildren(...): Encountered two children with the same key, ' + '`%s`. Child keys must be unique; when two children share a key, only ' + 'the first child will be used.', name) : undefined;
 	  }
 	  if (child != null && keyUnique) {
 	    childInstances[name] = instantiateReactComponent(child, null);
@@ -14440,8 +14451,8 @@
 	  // We found a component instance.
 	  var result = traverseContext;
 	  var keyUnique = result[name] === undefined;
-	  if ((undefined) !== 'production') {
-	    (undefined) !== 'production' ? warning(keyUnique, 'flattenChildren(...): Encountered two children with the same key, ' + '`%s`. Child keys must be unique; when two children share a key, only ' + 'the first child will be used.', name) : undefined;
+	  if (false) {
+	    process.env.NODE_ENV !== 'production' ? warning(keyUnique, 'flattenChildren(...): Encountered two children with the same key, ' + '`%s`. Child keys must be unique; when two children share a key, only ' + 'the first child will be used.', name) : undefined;
 	  }
 	  if (keyUnique && child != null) {
 	    result[name] = child;
@@ -14810,7 +14821,7 @@
 	        }
 	      };
 	    } else {
-	      if ((undefined) !== 'production') {
+	      if (false) {
 	        console.error('Attempted to listen to events during the capture phase on a ' + 'browser that does not support the capture phase. Your application ' + 'will not receive some events.');
 	      }
 	      return {
@@ -14973,7 +14984,7 @@
 	function warnSetProps() {
 	  if (!warnedSetProps) {
 	    warnedSetProps = true;
-	    (undefined) !== 'production' ? warning(false, 'setProps(...) and replaceProps(...) are deprecated. ' + 'Instead, call render again at the top level.') : undefined;
+	     false ? warning(false, 'setProps(...) and replaceProps(...) are deprecated. ' + 'Instead, call render again at the top level.') : undefined;
 	  }
 	}
 
@@ -15243,13 +15254,13 @@
 	    }
 	  },
 	  childContextTypes: function (Constructor, childContextTypes) {
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      validateTypeDef(Constructor, childContextTypes, ReactPropTypeLocations.childContext);
 	    }
 	    Constructor.childContextTypes = assign({}, Constructor.childContextTypes, childContextTypes);
 	  },
 	  contextTypes: function (Constructor, contextTypes) {
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      validateTypeDef(Constructor, contextTypes, ReactPropTypeLocations.context);
 	    }
 	    Constructor.contextTypes = assign({}, Constructor.contextTypes, contextTypes);
@@ -15266,7 +15277,7 @@
 	    }
 	  },
 	  propTypes: function (Constructor, propTypes) {
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      validateTypeDef(Constructor, propTypes, ReactPropTypeLocations.prop);
 	    }
 	    Constructor.propTypes = assign({}, Constructor.propTypes, propTypes);
@@ -15282,7 +15293,7 @@
 	    if (typeDef.hasOwnProperty(propName)) {
 	      // use a warning instead of an invariant so components
 	      // don't show up in prod but not in __DEV__
-	      (undefined) !== 'production' ? warning(typeof typeDef[propName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'React.PropTypes.', Constructor.displayName || 'ReactClass', ReactPropTypeLocationNames[location], propName) : undefined;
+	       false ? warning(typeof typeDef[propName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'React.PropTypes.', Constructor.displayName || 'ReactClass', ReactPropTypeLocationNames[location], propName) : undefined;
 	    }
 	  }
 	}
@@ -15292,12 +15303,12 @@
 
 	  // Disallow overriding of base class methods unless explicitly allowed.
 	  if (ReactClassMixin.hasOwnProperty(name)) {
-	    !(specPolicy === SpecPolicy.OVERRIDE_BASE) ? (undefined) !== 'production' ? invariant(false, 'ReactClassInterface: You are attempting to override ' + '`%s` from your class specification. Ensure that your method names ' + 'do not overlap with React methods.', name) : invariant(false) : undefined;
+	    !(specPolicy === SpecPolicy.OVERRIDE_BASE) ?  false ? invariant(false, 'ReactClassInterface: You are attempting to override ' + '`%s` from your class specification. Ensure that your method names ' + 'do not overlap with React methods.', name) : invariant(false) : undefined;
 	  }
 
 	  // Disallow defining methods more than once unless explicitly allowed.
 	  if (proto.hasOwnProperty(name)) {
-	    !(specPolicy === SpecPolicy.DEFINE_MANY || specPolicy === SpecPolicy.DEFINE_MANY_MERGED) ? (undefined) !== 'production' ? invariant(false, 'ReactClassInterface: You are attempting to define ' + '`%s` on your component more than once. This conflict may be due ' + 'to a mixin.', name) : invariant(false) : undefined;
+	    !(specPolicy === SpecPolicy.DEFINE_MANY || specPolicy === SpecPolicy.DEFINE_MANY_MERGED) ?  false ? invariant(false, 'ReactClassInterface: You are attempting to define ' + '`%s` on your component more than once. This conflict may be due ' + 'to a mixin.', name) : invariant(false) : undefined;
 	  }
 	}
 
@@ -15310,8 +15321,8 @@
 	    return;
 	  }
 
-	  !(typeof spec !== 'function') ? (undefined) !== 'production' ? invariant(false, 'ReactClass: You\'re attempting to ' + 'use a component class as a mixin. Instead, just use a regular object.') : invariant(false) : undefined;
-	  !!ReactElement.isValidElement(spec) ? (undefined) !== 'production' ? invariant(false, 'ReactClass: You\'re attempting to ' + 'use a component as a mixin. Instead, just use a regular object.') : invariant(false) : undefined;
+	  !(typeof spec !== 'function') ?  false ? invariant(false, 'ReactClass: You\'re attempting to ' + 'use a component class as a mixin. Instead, just use a regular object.') : invariant(false) : undefined;
+	  !!ReactElement.isValidElement(spec) ?  false ? invariant(false, 'ReactClass: You\'re attempting to ' + 'use a component as a mixin. Instead, just use a regular object.') : invariant(false) : undefined;
 
 	  var proto = Constructor.prototype;
 
@@ -15358,7 +15369,7 @@
 	          var specPolicy = ReactClassInterface[name];
 
 	          // These cases should already be caught by validateMethodOverride.
-	          !(isReactClassMethod && (specPolicy === SpecPolicy.DEFINE_MANY_MERGED || specPolicy === SpecPolicy.DEFINE_MANY)) ? (undefined) !== 'production' ? invariant(false, 'ReactClass: Unexpected spec policy %s for key %s ' + 'when mixing in component specs.', specPolicy, name) : invariant(false) : undefined;
+	          !(isReactClassMethod && (specPolicy === SpecPolicy.DEFINE_MANY_MERGED || specPolicy === SpecPolicy.DEFINE_MANY)) ?  false ? invariant(false, 'ReactClass: Unexpected spec policy %s for key %s ' + 'when mixing in component specs.', specPolicy, name) : invariant(false) : undefined;
 
 	          // For methods which are defined more than once, call the existing
 	          // methods before calling the new property, merging if appropriate.
@@ -15369,7 +15380,7 @@
 	          }
 	        } else {
 	          proto[name] = property;
-	          if ((undefined) !== 'production') {
+	          if (false) {
 	            // Add verbose displayName to the function, which helps when looking
 	            // at profiling tools.
 	            if (typeof property === 'function' && spec.displayName) {
@@ -15393,10 +15404,10 @@
 	    }
 
 	    var isReserved = (name in RESERVED_SPEC_KEYS);
-	    !!isReserved ? (undefined) !== 'production' ? invariant(false, 'ReactClass: You are attempting to define a reserved ' + 'property, `%s`, that shouldn\'t be on the "statics" key. Define it ' + 'as an instance property instead; it will still be accessible on the ' + 'constructor.', name) : invariant(false) : undefined;
+	    !!isReserved ?  false ? invariant(false, 'ReactClass: You are attempting to define a reserved ' + 'property, `%s`, that shouldn\'t be on the "statics" key. Define it ' + 'as an instance property instead; it will still be accessible on the ' + 'constructor.', name) : invariant(false) : undefined;
 
 	    var isInherited = (name in Constructor);
-	    !!isInherited ? (undefined) !== 'production' ? invariant(false, 'ReactClass: You are attempting to define ' + '`%s` on your component more than once. This conflict may be ' + 'due to a mixin.', name) : invariant(false) : undefined;
+	    !!isInherited ?  false ? invariant(false, 'ReactClass: You are attempting to define ' + '`%s` on your component more than once. This conflict may be ' + 'due to a mixin.', name) : invariant(false) : undefined;
 	    Constructor[name] = property;
 	  }
 	}
@@ -15409,11 +15420,11 @@
 	 * @return {object} one after it has been mutated to contain everything in two.
 	 */
 	function mergeIntoWithNoDuplicateKeys(one, two) {
-	  !(one && two && typeof one === 'object' && typeof two === 'object') ? (undefined) !== 'production' ? invariant(false, 'mergeIntoWithNoDuplicateKeys(): Cannot merge non-objects.') : invariant(false) : undefined;
+	  !(one && two && typeof one === 'object' && typeof two === 'object') ?  false ? invariant(false, 'mergeIntoWithNoDuplicateKeys(): Cannot merge non-objects.') : invariant(false) : undefined;
 
 	  for (var key in two) {
 	    if (two.hasOwnProperty(key)) {
-	      !(one[key] === undefined) ? (undefined) !== 'production' ? invariant(false, 'mergeIntoWithNoDuplicateKeys(): ' + 'Tried to merge two objects with the same key: `%s`. This conflict ' + 'may be due to a mixin; in particular, this may be caused by two ' + 'getInitialState() or getDefaultProps() methods returning objects ' + 'with clashing keys.', key) : invariant(false) : undefined;
+	      !(one[key] === undefined) ?  false ? invariant(false, 'mergeIntoWithNoDuplicateKeys(): ' + 'Tried to merge two objects with the same key: `%s`. This conflict ' + 'may be due to a mixin; in particular, this may be caused by two ' + 'getInitialState() or getDefaultProps() methods returning objects ' + 'with clashing keys.', key) : invariant(false) : undefined;
 	      one[key] = two[key];
 	    }
 	  }
@@ -15468,7 +15479,7 @@
 	 */
 	function bindAutoBindMethod(component, method) {
 	  var boundMethod = method.bind(component);
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    boundMethod.__reactBoundContext = component;
 	    boundMethod.__reactBoundMethod = method;
 	    boundMethod.__reactBoundArguments = null;
@@ -15484,9 +15495,9 @@
 	      // ignore the value of "this" that the user is trying to use, so
 	      // let's warn.
 	      if (newThis !== component && newThis !== null) {
-	        (undefined) !== 'production' ? warning(false, 'bind(): React component methods may only be bound to the ' + 'component instance. See %s', componentName) : undefined;
+	        process.env.NODE_ENV !== 'production' ? warning(false, 'bind(): React component methods may only be bound to the ' + 'component instance. See %s', componentName) : undefined;
 	      } else if (!args.length) {
-	        (undefined) !== 'production' ? warning(false, 'bind(): You are binding a component method to the component. ' + 'React does this for you automatically in a high-performance ' + 'way, so you can safely remove this call. See %s', componentName) : undefined;
+	        process.env.NODE_ENV !== 'production' ? warning(false, 'bind(): You are binding a component method to the component. ' + 'React does this for you automatically in a high-performance ' + 'way, so you can safely remove this call. See %s', componentName) : undefined;
 	        return boundMethod;
 	      }
 	      var reboundMethod = _bind.apply(boundMethod, arguments);
@@ -15551,7 +15562,7 @@
 	   * @deprecated
 	   */
 	  setProps: function (partialProps, callback) {
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      warnSetProps();
 	    }
 	    this.updater.enqueueSetProps(this, partialProps);
@@ -15570,7 +15581,7 @@
 	   * @deprecated
 	   */
 	  replaceProps: function (newProps, callback) {
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      warnSetProps();
 	    }
 	    this.updater.enqueueReplaceProps(this, newProps);
@@ -15602,8 +15613,8 @@
 	      // This constructor is overridden by mocks. The argument is used
 	      // by mocks to assert on what gets mounted.
 
-	      if ((undefined) !== 'production') {
-	        (undefined) !== 'production' ? warning(this instanceof Constructor, 'Something is calling a React component directly. Use a factory or ' + 'JSX instead. See: https://fb.me/react-legacyfactory') : undefined;
+	      if (false) {
+	        process.env.NODE_ENV !== 'production' ? warning(this instanceof Constructor, 'Something is calling a React component directly. Use a factory or ' + 'JSX instead. See: https://fb.me/react-legacyfactory') : undefined;
 	      }
 
 	      // Wire up auto-binding
@@ -15622,7 +15633,7 @@
 	      // getInitialState and componentWillMount methods for initialization.
 
 	      var initialState = this.getInitialState ? this.getInitialState() : null;
-	      if ((undefined) !== 'production') {
+	      if (false) {
 	        // We allow auto-mocks to proceed as if they're returning null.
 	        if (typeof initialState === 'undefined' && this.getInitialState._isMockFunction) {
 	          // This is probably bad practice. Consider warning here and
@@ -15630,7 +15641,7 @@
 	          initialState = null;
 	        }
 	      }
-	      !(typeof initialState === 'object' && !Array.isArray(initialState)) ? (undefined) !== 'production' ? invariant(false, '%s.getInitialState(): must return an object or null', Constructor.displayName || 'ReactCompositeComponent') : invariant(false) : undefined;
+	      !(typeof initialState === 'object' && !Array.isArray(initialState)) ?  false ? invariant(false, '%s.getInitialState(): must return an object or null', Constructor.displayName || 'ReactCompositeComponent') : invariant(false) : undefined;
 
 	      this.state = initialState;
 	    };
@@ -15646,7 +15657,7 @@
 	      Constructor.defaultProps = Constructor.getDefaultProps();
 	    }
 
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      // This is a tag to indicate that the use of these method names is ok,
 	      // since it's used with createClass. If it's not, then it's likely a
 	      // mistake so we'll warn you to use the static property, property
@@ -15659,11 +15670,11 @@
 	      }
 	    }
 
-	    !Constructor.prototype.render ? (undefined) !== 'production' ? invariant(false, 'createClass(...): Class specification must implement a `render` method.') : invariant(false) : undefined;
+	    !Constructor.prototype.render ?  false ? invariant(false, 'createClass(...): Class specification must implement a `render` method.') : invariant(false) : undefined;
 
-	    if ((undefined) !== 'production') {
-	      (undefined) !== 'production' ? warning(!Constructor.prototype.componentShouldUpdate, '%s has a method called ' + 'componentShouldUpdate(). Did you mean shouldComponentUpdate()? ' + 'The name is phrased as a question because the function is ' + 'expected to return a value.', spec.displayName || 'A component') : undefined;
-	      (undefined) !== 'production' ? warning(!Constructor.prototype.componentWillRecieveProps, '%s has a method called ' + 'componentWillRecieveProps(). Did you mean componentWillReceiveProps()?', spec.displayName || 'A component') : undefined;
+	    if (false) {
+	      process.env.NODE_ENV !== 'production' ? warning(!Constructor.prototype.componentShouldUpdate, '%s has a method called ' + 'componentShouldUpdate(). Did you mean shouldComponentUpdate()? ' + 'The name is phrased as a question because the function is ' + 'expected to return a value.', spec.displayName || 'A component') : undefined;
+	      process.env.NODE_ENV !== 'production' ? warning(!Constructor.prototype.componentWillRecieveProps, '%s has a method called ' + 'componentWillRecieveProps(). Did you mean componentWillReceiveProps()?', spec.displayName || 'A component') : undefined;
 	    }
 
 	    // Reduce time spent doing lookups by setting these on the prototype.
@@ -15750,9 +15761,9 @@
 	 * @protected
 	 */
 	ReactComponent.prototype.setState = function (partialState, callback) {
-	  !(typeof partialState === 'object' || typeof partialState === 'function' || partialState == null) ? (undefined) !== 'production' ? invariant(false, 'setState(...): takes an object of state variables to update or a ' + 'function which returns an object of state variables.') : invariant(false) : undefined;
-	  if ((undefined) !== 'production') {
-	    (undefined) !== 'production' ? warning(partialState != null, 'setState(...): You passed an undefined or null state object; ' + 'instead, use forceUpdate().') : undefined;
+	  !(typeof partialState === 'object' || typeof partialState === 'function' || partialState == null) ?  false ? invariant(false, 'setState(...): takes an object of state variables to update or a ' + 'function which returns an object of state variables.') : invariant(false) : undefined;
+	  if (false) {
+	    process.env.NODE_ENV !== 'production' ? warning(partialState != null, 'setState(...): You passed an undefined or null state object; ' + 'instead, use forceUpdate().') : undefined;
 	  }
 	  this.updater.enqueueSetState(this, partialState);
 	  if (callback) {
@@ -15786,7 +15797,7 @@
 	 * we would like to deprecate them, we're not going to move them over to this
 	 * modern base class. Instead, we define a getter that warns if it's accessed.
 	 */
-	if ((undefined) !== 'production') {
+	if (false) {
 	  var deprecatedAPIs = {
 	    getDOMNode: ['getDOMNode', 'Use ReactDOM.findDOMNode(component) instead.'],
 	    isMounted: ['isMounted', 'Instead, make sure to clean up subscriptions and pending requests in ' + 'componentWillUnmount to prevent memory leaks.'],
@@ -15798,7 +15809,7 @@
 	    if (canDefineProperty) {
 	      Object.defineProperty(ReactComponent.prototype, methodName, {
 	        get: function () {
-	          (undefined) !== 'production' ? warning(false, '%s(...) is deprecated in plain JavaScript React classes. %s', info[0], info[1]) : undefined;
+	          process.env.NODE_ENV !== 'production' ? warning(false, '%s(...) is deprecated in plain JavaScript React classes. %s', info[0], info[1]) : undefined;
 	          return undefined;
 	        }
 	      });
@@ -15833,8 +15844,8 @@
 	var warning = __webpack_require__(25);
 
 	function warnTDZ(publicInstance, callerName) {
-	  if ((undefined) !== 'production') {
-	    (undefined) !== 'production' ? warning(false, '%s(...): Can only update a mounted or mounting component. ' + 'This usually means you called %s() on an unmounted component. ' + 'This is a no-op. Please check the code for the %s component.', callerName, callerName, publicInstance.constructor && publicInstance.constructor.displayName || '') : undefined;
+	  if (false) {
+	    process.env.NODE_ENV !== 'production' ? warning(false, '%s(...): Can only update a mounted or mounting component. ' + 'This usually means you called %s() on an unmounted component. ' + 'This is a no-op. Please check the code for the %s component.', callerName, callerName, publicInstance.constructor && publicInstance.constructor.displayName || '') : undefined;
 	  }
 	}
 
@@ -17356,7 +17367,7 @@
 	        EventConstructor = SyntheticClipboardEvent;
 	        break;
 	    }
-	    !EventConstructor ? (undefined) !== 'production' ? invariant(false, 'SimpleEventPlugin: Unhandled event type, `%s`.', topLevelType) : invariant(false) : undefined;
+	    !EventConstructor ?  false ? invariant(false, 'SimpleEventPlugin: Unhandled event type, `%s`.', topLevelType) : invariant(false) : undefined;
 	    var event = EventConstructor.getPooled(dispatchConfig, topLevelTargetID, nativeEvent, nativeEventTarget);
 	    EventPropagators.accumulateTwoPhaseDispatches(event);
 	    return event;
@@ -18012,514 +18023,6 @@
 
 /***/ },
 /* 142 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactDefaultPerf
-	 * @typechecks static-only
-	 */
-
-	'use strict';
-
-	var DOMProperty = __webpack_require__(23);
-	var ReactDefaultPerfAnalysis = __webpack_require__(143);
-	var ReactMount = __webpack_require__(28);
-	var ReactPerf = __webpack_require__(18);
-
-	var performanceNow = __webpack_require__(144);
-
-	function roundFloat(val) {
-	  return Math.floor(val * 100) / 100;
-	}
-
-	function addValue(obj, key, val) {
-	  obj[key] = (obj[key] || 0) + val;
-	}
-
-	var ReactDefaultPerf = {
-	  _allMeasurements: [], // last item in the list is the current one
-	  _mountStack: [0],
-	  _injected: false,
-
-	  start: function () {
-	    if (!ReactDefaultPerf._injected) {
-	      ReactPerf.injection.injectMeasure(ReactDefaultPerf.measure);
-	    }
-
-	    ReactDefaultPerf._allMeasurements.length = 0;
-	    ReactPerf.enableMeasure = true;
-	  },
-
-	  stop: function () {
-	    ReactPerf.enableMeasure = false;
-	  },
-
-	  getLastMeasurements: function () {
-	    return ReactDefaultPerf._allMeasurements;
-	  },
-
-	  printExclusive: function (measurements) {
-	    measurements = measurements || ReactDefaultPerf._allMeasurements;
-	    var summary = ReactDefaultPerfAnalysis.getExclusiveSummary(measurements);
-	    console.table(summary.map(function (item) {
-	      return {
-	        'Component class name': item.componentName,
-	        'Total inclusive time (ms)': roundFloat(item.inclusive),
-	        'Exclusive mount time (ms)': roundFloat(item.exclusive),
-	        'Exclusive render time (ms)': roundFloat(item.render),
-	        'Mount time per instance (ms)': roundFloat(item.exclusive / item.count),
-	        'Render time per instance (ms)': roundFloat(item.render / item.count),
-	        'Instances': item.count
-	      };
-	    }));
-	    // TODO: ReactDefaultPerfAnalysis.getTotalTime() does not return the correct
-	    // number.
-	  },
-
-	  printInclusive: function (measurements) {
-	    measurements = measurements || ReactDefaultPerf._allMeasurements;
-	    var summary = ReactDefaultPerfAnalysis.getInclusiveSummary(measurements);
-	    console.table(summary.map(function (item) {
-	      return {
-	        'Owner > component': item.componentName,
-	        'Inclusive time (ms)': roundFloat(item.time),
-	        'Instances': item.count
-	      };
-	    }));
-	    console.log('Total time:', ReactDefaultPerfAnalysis.getTotalTime(measurements).toFixed(2) + ' ms');
-	  },
-
-	  getMeasurementsSummaryMap: function (measurements) {
-	    var summary = ReactDefaultPerfAnalysis.getInclusiveSummary(measurements, true);
-	    return summary.map(function (item) {
-	      return {
-	        'Owner > component': item.componentName,
-	        'Wasted time (ms)': item.time,
-	        'Instances': item.count
-	      };
-	    });
-	  },
-
-	  printWasted: function (measurements) {
-	    measurements = measurements || ReactDefaultPerf._allMeasurements;
-	    console.table(ReactDefaultPerf.getMeasurementsSummaryMap(measurements));
-	    console.log('Total time:', ReactDefaultPerfAnalysis.getTotalTime(measurements).toFixed(2) + ' ms');
-	  },
-
-	  printDOM: function (measurements) {
-	    measurements = measurements || ReactDefaultPerf._allMeasurements;
-	    var summary = ReactDefaultPerfAnalysis.getDOMSummary(measurements);
-	    console.table(summary.map(function (item) {
-	      var result = {};
-	      result[DOMProperty.ID_ATTRIBUTE_NAME] = item.id;
-	      result.type = item.type;
-	      result.args = JSON.stringify(item.args);
-	      return result;
-	    }));
-	    console.log('Total time:', ReactDefaultPerfAnalysis.getTotalTime(measurements).toFixed(2) + ' ms');
-	  },
-
-	  _recordWrite: function (id, fnName, totalTime, args) {
-	    // TODO: totalTime isn't that useful since it doesn't count paints/reflows
-	    var writes = ReactDefaultPerf._allMeasurements[ReactDefaultPerf._allMeasurements.length - 1].writes;
-	    writes[id] = writes[id] || [];
-	    writes[id].push({
-	      type: fnName,
-	      time: totalTime,
-	      args: args
-	    });
-	  },
-
-	  measure: function (moduleName, fnName, func) {
-	    return function () {
-	      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	        args[_key] = arguments[_key];
-	      }
-
-	      var totalTime;
-	      var rv;
-	      var start;
-
-	      if (fnName === '_renderNewRootComponent' || fnName === 'flushBatchedUpdates') {
-	        // A "measurement" is a set of metrics recorded for each flush. We want
-	        // to group the metrics for a given flush together so we can look at the
-	        // components that rendered and the DOM operations that actually
-	        // happened to determine the amount of "wasted work" performed.
-	        ReactDefaultPerf._allMeasurements.push({
-	          exclusive: {},
-	          inclusive: {},
-	          render: {},
-	          counts: {},
-	          writes: {},
-	          displayNames: {},
-	          totalTime: 0,
-	          created: {}
-	        });
-	        start = performanceNow();
-	        rv = func.apply(this, args);
-	        ReactDefaultPerf._allMeasurements[ReactDefaultPerf._allMeasurements.length - 1].totalTime = performanceNow() - start;
-	        return rv;
-	      } else if (fnName === '_mountImageIntoNode' || moduleName === 'ReactBrowserEventEmitter' || moduleName === 'ReactDOMIDOperations' || moduleName === 'CSSPropertyOperations' || moduleName === 'DOMChildrenOperations' || moduleName === 'DOMPropertyOperations') {
-	        start = performanceNow();
-	        rv = func.apply(this, args);
-	        totalTime = performanceNow() - start;
-
-	        if (fnName === '_mountImageIntoNode') {
-	          var mountID = ReactMount.getID(args[1]);
-	          ReactDefaultPerf._recordWrite(mountID, fnName, totalTime, args[0]);
-	        } else if (fnName === 'dangerouslyProcessChildrenUpdates') {
-	          // special format
-	          args[0].forEach(function (update) {
-	            var writeArgs = {};
-	            if (update.fromIndex !== null) {
-	              writeArgs.fromIndex = update.fromIndex;
-	            }
-	            if (update.toIndex !== null) {
-	              writeArgs.toIndex = update.toIndex;
-	            }
-	            if (update.textContent !== null) {
-	              writeArgs.textContent = update.textContent;
-	            }
-	            if (update.markupIndex !== null) {
-	              writeArgs.markup = args[1][update.markupIndex];
-	            }
-	            ReactDefaultPerf._recordWrite(update.parentID, update.type, totalTime, writeArgs);
-	          });
-	        } else {
-	          // basic format
-	          var id = args[0];
-	          if (typeof id === 'object') {
-	            id = ReactMount.getID(args[0]);
-	          }
-	          ReactDefaultPerf._recordWrite(id, fnName, totalTime, Array.prototype.slice.call(args, 1));
-	        }
-	        return rv;
-	      } else if (moduleName === 'ReactCompositeComponent' && (fnName === 'mountComponent' || fnName === 'updateComponent' || // TODO: receiveComponent()?
-	      fnName === '_renderValidatedComponent')) {
-
-	        if (this._currentElement.type === ReactMount.TopLevelWrapper) {
-	          return func.apply(this, args);
-	        }
-
-	        var rootNodeID = fnName === 'mountComponent' ? args[0] : this._rootNodeID;
-	        var isRender = fnName === '_renderValidatedComponent';
-	        var isMount = fnName === 'mountComponent';
-
-	        var mountStack = ReactDefaultPerf._mountStack;
-	        var entry = ReactDefaultPerf._allMeasurements[ReactDefaultPerf._allMeasurements.length - 1];
-
-	        if (isRender) {
-	          addValue(entry.counts, rootNodeID, 1);
-	        } else if (isMount) {
-	          entry.created[rootNodeID] = true;
-	          mountStack.push(0);
-	        }
-
-	        start = performanceNow();
-	        rv = func.apply(this, args);
-	        totalTime = performanceNow() - start;
-
-	        if (isRender) {
-	          addValue(entry.render, rootNodeID, totalTime);
-	        } else if (isMount) {
-	          var subMountTime = mountStack.pop();
-	          mountStack[mountStack.length - 1] += totalTime;
-	          addValue(entry.exclusive, rootNodeID, totalTime - subMountTime);
-	          addValue(entry.inclusive, rootNodeID, totalTime);
-	        } else {
-	          addValue(entry.inclusive, rootNodeID, totalTime);
-	        }
-
-	        entry.displayNames[rootNodeID] = {
-	          current: this.getName(),
-	          owner: this._currentElement._owner ? this._currentElement._owner.getName() : '<root>'
-	        };
-
-	        return rv;
-	      } else {
-	        return func.apply(this, args);
-	      }
-	    };
-	  }
-	};
-
-	module.exports = ReactDefaultPerf;
-
-/***/ },
-/* 143 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactDefaultPerfAnalysis
-	 */
-
-	'use strict';
-
-	var assign = __webpack_require__(39);
-
-	// Don't try to save users less than 1.2ms (a number I made up)
-	var DONT_CARE_THRESHOLD = 1.2;
-	var DOM_OPERATION_TYPES = {
-	  '_mountImageIntoNode': 'set innerHTML',
-	  INSERT_MARKUP: 'set innerHTML',
-	  MOVE_EXISTING: 'move',
-	  REMOVE_NODE: 'remove',
-	  SET_MARKUP: 'set innerHTML',
-	  TEXT_CONTENT: 'set textContent',
-	  'setValueForProperty': 'update attribute',
-	  'setValueForAttribute': 'update attribute',
-	  'deleteValueForProperty': 'remove attribute',
-	  'dangerouslyReplaceNodeWithMarkupByID': 'replace'
-	};
-
-	function getTotalTime(measurements) {
-	  // TODO: return number of DOM ops? could be misleading.
-	  // TODO: measure dropped frames after reconcile?
-	  // TODO: log total time of each reconcile and the top-level component
-	  // class that triggered it.
-	  var totalTime = 0;
-	  for (var i = 0; i < measurements.length; i++) {
-	    var measurement = measurements[i];
-	    totalTime += measurement.totalTime;
-	  }
-	  return totalTime;
-	}
-
-	function getDOMSummary(measurements) {
-	  var items = [];
-	  measurements.forEach(function (measurement) {
-	    Object.keys(measurement.writes).forEach(function (id) {
-	      measurement.writes[id].forEach(function (write) {
-	        items.push({
-	          id: id,
-	          type: DOM_OPERATION_TYPES[write.type] || write.type,
-	          args: write.args
-	        });
-	      });
-	    });
-	  });
-	  return items;
-	}
-
-	function getExclusiveSummary(measurements) {
-	  var candidates = {};
-	  var displayName;
-
-	  for (var i = 0; i < measurements.length; i++) {
-	    var measurement = measurements[i];
-	    var allIDs = assign({}, measurement.exclusive, measurement.inclusive);
-
-	    for (var id in allIDs) {
-	      displayName = measurement.displayNames[id].current;
-
-	      candidates[displayName] = candidates[displayName] || {
-	        componentName: displayName,
-	        inclusive: 0,
-	        exclusive: 0,
-	        render: 0,
-	        count: 0
-	      };
-	      if (measurement.render[id]) {
-	        candidates[displayName].render += measurement.render[id];
-	      }
-	      if (measurement.exclusive[id]) {
-	        candidates[displayName].exclusive += measurement.exclusive[id];
-	      }
-	      if (measurement.inclusive[id]) {
-	        candidates[displayName].inclusive += measurement.inclusive[id];
-	      }
-	      if (measurement.counts[id]) {
-	        candidates[displayName].count += measurement.counts[id];
-	      }
-	    }
-	  }
-
-	  // Now make a sorted array with the results.
-	  var arr = [];
-	  for (displayName in candidates) {
-	    if (candidates[displayName].exclusive >= DONT_CARE_THRESHOLD) {
-	      arr.push(candidates[displayName]);
-	    }
-	  }
-
-	  arr.sort(function (a, b) {
-	    return b.exclusive - a.exclusive;
-	  });
-
-	  return arr;
-	}
-
-	function getInclusiveSummary(measurements, onlyClean) {
-	  var candidates = {};
-	  var inclusiveKey;
-
-	  for (var i = 0; i < measurements.length; i++) {
-	    var measurement = measurements[i];
-	    var allIDs = assign({}, measurement.exclusive, measurement.inclusive);
-	    var cleanComponents;
-
-	    if (onlyClean) {
-	      cleanComponents = getUnchangedComponents(measurement);
-	    }
-
-	    for (var id in allIDs) {
-	      if (onlyClean && !cleanComponents[id]) {
-	        continue;
-	      }
-
-	      var displayName = measurement.displayNames[id];
-
-	      // Inclusive time is not useful for many components without knowing where
-	      // they are instantiated. So we aggregate inclusive time with both the
-	      // owner and current displayName as the key.
-	      inclusiveKey = displayName.owner + ' > ' + displayName.current;
-
-	      candidates[inclusiveKey] = candidates[inclusiveKey] || {
-	        componentName: inclusiveKey,
-	        time: 0,
-	        count: 0
-	      };
-
-	      if (measurement.inclusive[id]) {
-	        candidates[inclusiveKey].time += measurement.inclusive[id];
-	      }
-	      if (measurement.counts[id]) {
-	        candidates[inclusiveKey].count += measurement.counts[id];
-	      }
-	    }
-	  }
-
-	  // Now make a sorted array with the results.
-	  var arr = [];
-	  for (inclusiveKey in candidates) {
-	    if (candidates[inclusiveKey].time >= DONT_CARE_THRESHOLD) {
-	      arr.push(candidates[inclusiveKey]);
-	    }
-	  }
-
-	  arr.sort(function (a, b) {
-	    return b.time - a.time;
-	  });
-
-	  return arr;
-	}
-
-	function getUnchangedComponents(measurement) {
-	  // For a given reconcile, look at which components did not actually
-	  // render anything to the DOM and return a mapping of their ID to
-	  // the amount of time it took to render the entire subtree.
-	  var cleanComponents = {};
-	  var dirtyLeafIDs = Object.keys(measurement.writes);
-	  var allIDs = assign({}, measurement.exclusive, measurement.inclusive);
-
-	  for (var id in allIDs) {
-	    var isDirty = false;
-	    // For each component that rendered, see if a component that triggered
-	    // a DOM op is in its subtree.
-	    for (var i = 0; i < dirtyLeafIDs.length; i++) {
-	      if (dirtyLeafIDs[i].indexOf(id) === 0) {
-	        isDirty = true;
-	        break;
-	      }
-	    }
-	    // check if component newly created
-	    if (measurement.created[id]) {
-	      isDirty = true;
-	    }
-	    if (!isDirty && measurement.counts[id] > 0) {
-	      cleanComponents[id] = true;
-	    }
-	  }
-	  return cleanComponents;
-	}
-
-	var ReactDefaultPerfAnalysis = {
-	  getExclusiveSummary: getExclusiveSummary,
-	  getInclusiveSummary: getInclusiveSummary,
-	  getDOMSummary: getDOMSummary,
-	  getTotalTime: getTotalTime
-	};
-
-	module.exports = ReactDefaultPerfAnalysis;
-
-/***/ },
-/* 144 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule performanceNow
-	 * @typechecks
-	 */
-
-	'use strict';
-
-	var performance = __webpack_require__(145);
-	var curPerformance = performance;
-
-	/**
-	 * Detect if we can use `window.performance.now()` and gracefully fallback to
-	 * `Date.now()` if it doesn't exist. We need to support Firefox < 15 for now
-	 * because of Facebook's testing infrastructure.
-	 */
-	if (!curPerformance || !curPerformance.now) {
-	  curPerformance = Date;
-	}
-
-	var performanceNow = curPerformance.now.bind(curPerformance);
-
-	module.exports = performanceNow;
-
-/***/ },
-/* 145 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule performance
-	 * @typechecks
-	 */
-
-	'use strict';
-
-	var ExecutionEnvironment = __webpack_require__(9);
-
-	var performance;
-
-	if (ExecutionEnvironment.canUseDOM) {
-	  performance = window.performance || window.msPerformance || window.webkitPerformance;
-	}
-
-	module.exports = performance || {};
-
-/***/ },
-/* 146 */
 /***/ function(module, exports) {
 
 	/**
@@ -18535,10 +18038,10 @@
 
 	'use strict';
 
-	module.exports = '0.14.1';
+	module.exports = '0.14.3';
 
 /***/ },
-/* 147 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18559,7 +18062,7 @@
 	module.exports = ReactMount.renderSubtreeIntoContainer;
 
 /***/ },
-/* 148 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18576,8 +18079,8 @@
 	'use strict';
 
 	var ReactDefaultInjection = __webpack_require__(71);
-	var ReactServerRendering = __webpack_require__(149);
-	var ReactVersion = __webpack_require__(146);
+	var ReactServerRendering = __webpack_require__(145);
+	var ReactVersion = __webpack_require__(142);
 
 	ReactDefaultInjection.inject();
 
@@ -18590,7 +18093,7 @@
 	module.exports = ReactDOMServer;
 
 /***/ },
-/* 149 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18610,8 +18113,8 @@
 	var ReactElement = __webpack_require__(42);
 	var ReactInstanceHandles = __webpack_require__(45);
 	var ReactMarkupChecksum = __webpack_require__(48);
-	var ReactServerBatchingStrategy = __webpack_require__(150);
-	var ReactServerRenderingTransaction = __webpack_require__(151);
+	var ReactServerBatchingStrategy = __webpack_require__(146);
+	var ReactServerRenderingTransaction = __webpack_require__(147);
 	var ReactUpdates = __webpack_require__(54);
 
 	var emptyObject = __webpack_require__(58);
@@ -18623,7 +18126,7 @@
 	 * @return {string} the HTML markup
 	 */
 	function renderToString(element) {
-	  !ReactElement.isValidElement(element) ? (undefined) !== 'production' ? invariant(false, 'renderToString(): You must pass a valid ReactElement.') : invariant(false) : undefined;
+	  !ReactElement.isValidElement(element) ?  false ? invariant(false, 'renderToString(): You must pass a valid ReactElement.') : invariant(false) : undefined;
 
 	  var transaction;
 	  try {
@@ -18651,7 +18154,7 @@
 	 * (for generating static pages)
 	 */
 	function renderToStaticMarkup(element) {
-	  !ReactElement.isValidElement(element) ? (undefined) !== 'production' ? invariant(false, 'renderToStaticMarkup(): You must pass a valid ReactElement.') : invariant(false) : undefined;
+	  !ReactElement.isValidElement(element) ?  false ? invariant(false, 'renderToStaticMarkup(): You must pass a valid ReactElement.') : invariant(false) : undefined;
 
 	  var transaction;
 	  try {
@@ -18678,7 +18181,7 @@
 	};
 
 /***/ },
-/* 150 */
+/* 146 */
 /***/ function(module, exports) {
 
 	/**
@@ -18706,7 +18209,7 @@
 	module.exports = ReactServerBatchingStrategy;
 
 /***/ },
-/* 151 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18798,7 +18301,7 @@
 	module.exports = ReactServerRenderingTransaction;
 
 /***/ },
-/* 152 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18817,20 +18320,20 @@
 	var ReactChildren = __webpack_require__(110);
 	var ReactComponent = __webpack_require__(123);
 	var ReactClass = __webpack_require__(122);
-	var ReactDOMFactories = __webpack_require__(153);
+	var ReactDOMFactories = __webpack_require__(149);
 	var ReactElement = __webpack_require__(42);
-	var ReactElementValidator = __webpack_require__(154);
+	var ReactElementValidator = __webpack_require__(150);
 	var ReactPropTypes = __webpack_require__(107);
-	var ReactVersion = __webpack_require__(146);
+	var ReactVersion = __webpack_require__(142);
 
 	var assign = __webpack_require__(39);
-	var onlyChild = __webpack_require__(156);
+	var onlyChild = __webpack_require__(152);
 
 	var createElement = ReactElement.createElement;
 	var createFactory = ReactElement.createFactory;
 	var cloneElement = ReactElement.cloneElement;
 
-	if ((undefined) !== 'production') {
+	if (false) {
 	  createElement = ReactElementValidator.createElement;
 	  createFactory = ReactElementValidator.createFactory;
 	  cloneElement = ReactElementValidator.cloneElement;
@@ -18877,7 +18380,7 @@
 	module.exports = React;
 
 /***/ },
-/* 153 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18895,9 +18398,9 @@
 	'use strict';
 
 	var ReactElement = __webpack_require__(42);
-	var ReactElementValidator = __webpack_require__(154);
+	var ReactElementValidator = __webpack_require__(150);
 
-	var mapObject = __webpack_require__(155);
+	var mapObject = __webpack_require__(151);
 
 	/**
 	 * Create a factory that creates HTML tag elements.
@@ -18906,7 +18409,7 @@
 	 * @private
 	 */
 	function createDOMFactory(tag) {
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    return ReactElementValidator.createFactory(tag);
 	  }
 	  return ReactElement.createFactory(tag);
@@ -19059,7 +18562,7 @@
 	module.exports = ReactDOMFactories;
 
 /***/ },
-/* 154 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19132,7 +18635,7 @@
 	    // we already showed the warning
 	    return;
 	  }
-	  (undefined) !== 'production' ? warning(false, 'Each child in an array or iterator should have a unique "key" prop.' + '%s%s%s', addenda.parentOrOwner || '', addenda.childOwner || '', addenda.url || '') : undefined;
+	   false ? warning(false, 'Each child in an array or iterator should have a unique "key" prop.' + '%s%s%s', addenda.parentOrOwner || '', addenda.childOwner || '', addenda.url || '') : undefined;
 	}
 
 	/**
@@ -19238,19 +18741,19 @@
 	      try {
 	        // This is intentionally an invariant that gets caught. It's the same
 	        // behavior as without this statement except with a better message.
-	        !(typeof propTypes[propName] === 'function') ? (undefined) !== 'production' ? invariant(false, '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'React.PropTypes.', componentName || 'React class', ReactPropTypeLocationNames[location], propName) : invariant(false) : undefined;
+	        !(typeof propTypes[propName] === 'function') ?  false ? invariant(false, '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'React.PropTypes.', componentName || 'React class', ReactPropTypeLocationNames[location], propName) : invariant(false) : undefined;
 	        error = propTypes[propName](props, propName, componentName, location);
 	      } catch (ex) {
 	        error = ex;
 	      }
-	      (undefined) !== 'production' ? warning(!error || error instanceof Error, '%s: type specification of %s `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', ReactPropTypeLocationNames[location], propName, typeof error) : undefined;
+	       false ? warning(!error || error instanceof Error, '%s: type specification of %s `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', ReactPropTypeLocationNames[location], propName, typeof error) : undefined;
 	      if (error instanceof Error && !(error.message in loggedTypeFailures)) {
 	        // Only monitor this failure once because there tends to be a lot of the
 	        // same error.
 	        loggedTypeFailures[error.message] = true;
 
 	        var addendum = getDeclarationErrorAddendum();
-	        (undefined) !== 'production' ? warning(false, 'Failed propType: %s%s', error.message, addendum) : undefined;
+	         false ? warning(false, 'Failed propType: %s%s', error.message, addendum) : undefined;
 	      }
 	    }
 	  }
@@ -19272,7 +18775,7 @@
 	    checkPropTypes(name, componentClass.propTypes, element.props, ReactPropTypeLocations.prop);
 	  }
 	  if (typeof componentClass.getDefaultProps === 'function') {
-	    (undefined) !== 'production' ? warning(componentClass.getDefaultProps.isReactClassApproved, 'getDefaultProps is only used on classic React.createClass ' + 'definitions. Use a static property named `defaultProps` instead.') : undefined;
+	     false ? warning(componentClass.getDefaultProps.isReactClassApproved, 'getDefaultProps is only used on classic React.createClass ' + 'definitions. Use a static property named `defaultProps` instead.') : undefined;
 	  }
 	}
 
@@ -19282,7 +18785,7 @@
 	    var validType = typeof type === 'string' || typeof type === 'function';
 	    // We warn in this case but don't throw. We expect the element creation to
 	    // succeed and there will likely be errors in render.
-	    (undefined) !== 'production' ? warning(validType, 'React.createElement: type should not be null, undefined, boolean, or ' + 'number. It should be a string (for DOM elements) or a ReactClass ' + '(for composite components).%s', getDeclarationErrorAddendum()) : undefined;
+	     false ? warning(validType, 'React.createElement: type should not be null, undefined, boolean, or ' + 'number. It should be a string (for DOM elements) or a ReactClass ' + '(for composite components).%s', getDeclarationErrorAddendum()) : undefined;
 
 	    var element = ReactElement.createElement.apply(this, arguments);
 
@@ -19313,12 +18816,12 @@
 	    // Legacy hook TODO: Warn if this is accessed
 	    validatedFactory.type = type;
 
-	    if ((undefined) !== 'production') {
+	    if (false) {
 	      if (canDefineProperty) {
 	        Object.defineProperty(validatedFactory, 'type', {
 	          enumerable: false,
 	          get: function () {
-	            (undefined) !== 'production' ? warning(false, 'Factory.type is deprecated. Access the class directly ' + 'before passing it to createFactory.') : undefined;
+	            process.env.NODE_ENV !== 'production' ? warning(false, 'Factory.type is deprecated. Access the class directly ' + 'before passing it to createFactory.') : undefined;
 	            Object.defineProperty(this, 'type', {
 	              value: type
 	            });
@@ -19345,7 +18848,7 @@
 	module.exports = ReactElementValidator;
 
 /***/ },
-/* 155 */
+/* 151 */
 /***/ function(module, exports) {
 
 	/**
@@ -19401,7 +18904,7 @@
 	module.exports = mapObject;
 
 /***/ },
-/* 156 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19432,14 +18935,14 @@
 	 * structure.
 	 */
 	function onlyChild(children) {
-	  !ReactElement.isValidElement(children) ? (undefined) !== 'production' ? invariant(false, 'onlyChild must be passed a children with exactly one child.') : invariant(false) : undefined;
+	  !ReactElement.isValidElement(children) ?  false ? invariant(false, 'onlyChild must be passed a children with exactly one child.') : invariant(false) : undefined;
 	  return children;
 	}
 
 	module.exports = onlyChild;
 
 /***/ },
-/* 157 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19471,9 +18974,9 @@
 	 */
 	function deprecated(fnName, newModule, newPackage, ctx, fn) {
 	  var warned = false;
-	  if ((undefined) !== 'production') {
+	  if (false) {
 	    var newFn = function () {
-	      (undefined) !== 'production' ? warning(warned,
+	      process.env.NODE_ENV !== 'production' ? warning(warned,
 	      // Require examples in this string must be split to prevent React's
 	      // build tools from mistaking them for real requires.
 	      // Otherwise the build tools will attempt to build a '%s' module.
@@ -19492,7 +18995,7 @@
 	module.exports = deprecated;
 
 /***/ },
-/* 158 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19501,31 +19004,31 @@
 
 
 /***/ },
-/* 159 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(2);
-	var DatePicker = __webpack_require__(160);
-	var moment = __webpack_require__(162);
-	var hljs = __webpack_require__(251);
+	var DatePicker = __webpack_require__(156);
+	var moment = __webpack_require__(182);
+	var hljs = __webpack_require__(305);
 
-	var Default = __webpack_require__(390);
-	var CustomDateFormat = __webpack_require__(391);
-	var CustomClassName = __webpack_require__(392);
-	var PlaceholderText = __webpack_require__(393);
-	var SpecificDateRange = __webpack_require__(394);
-	var CustomStartDate = __webpack_require__(395);
-	var ExcludeDates = __webpack_require__(396);
-	var Disabled = __webpack_require__(397);
-	var ClearInput = __webpack_require__(398);
-	var OnBlurCallbacks = __webpack_require__(399);
-	var Weekdays = __webpack_require__(400);
-	var Placement = __webpack_require__(401);
+	var Default = __webpack_require__(448);
+	var CustomDateFormat = __webpack_require__(449);
+	var CustomClassName = __webpack_require__(450);
+	var PlaceholderText = __webpack_require__(451);
+	var SpecificDateRange = __webpack_require__(452);
+	var CustomStartDate = __webpack_require__(453);
+	var ExcludeDates = __webpack_require__(454);
+	var Disabled = __webpack_require__(455);
+	var ClearInput = __webpack_require__(456);
+	var OnBlurCallbacks = __webpack_require__(457);
+	var Weekdays = __webpack_require__(458);
+	var Placement = __webpack_require__(459);
 
-	__webpack_require__(402);
-	__webpack_require__(403);
+	__webpack_require__(460);
+	__webpack_require__(461);
 
 	var CodeExampleComponent = React.createClass({
 	  displayName: 'CodeExampleComponent',
@@ -19642,1734 +19145,1339 @@
 	module.exports = exampleComponents;
 
 /***/ },
+/* 156 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _isEqual = __webpack_require__(157);
+
+	var _isEqual2 = _interopRequireDefault(_isEqual);
+
+	var _moment = __webpack_require__(182);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	var _date_input = __webpack_require__(270);
+
+	var _date_input2 = _interopRequireDefault(_date_input);
+
+	var _calendar = __webpack_require__(272);
+
+	var _calendar2 = _interopRequireDefault(_calendar);
+
+	var _date = __webpack_require__(271);
+
+	var _date2 = _interopRequireDefault(_date);
+
+	var _popover = __webpack_require__(303);
+
+	var _popover2 = _interopRequireDefault(_popover);
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var DatePicker = _react2.default.createClass({
+	  displayName: "DatePicker",
+
+	  propTypes: {
+	    weekdays: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.string),
+	    locale: _react2.default.PropTypes.string,
+	    dateFormatCalendar: _react2.default.PropTypes.string,
+	    disabled: _react2.default.PropTypes.bool,
+	    id: _react2.default.PropTypes.string,
+	    popoverAttachment: _react2.default.PropTypes.string,
+	    popoverTargetAttachment: _react2.default.PropTypes.string,
+	    popoverTargetOffset: _react2.default.PropTypes.string,
+	    weekStart: _react2.default.PropTypes.string,
+	    onChange: _react2.default.PropTypes.func.isRequired,
+	    onBlur: _react2.default.PropTypes.func,
+	    onFocus: _react2.default.PropTypes.func
+	  },
+
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      weekdays: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+	      locale: "en",
+	      dateFormatCalendar: "MMMM",
+	      moment: _moment2.default,
+	      onChange: function onChange() {},
+
+	      disabled: false,
+	      onFocus: function onFocus() {}
+	    };
+	  },
+	  getInitialState: function getInitialState() {
+	    return {
+	      focus: false,
+	      virtualFocus: false,
+	      selected: this.props.selected
+	    };
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    this.setState({
+	      selected: nextProps.selected
+	    });
+	  },
+	  shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
+	    return !((0, _isEqual2.default)(nextProps, this.props) && (0, _isEqual2.default)(nextState, this.state));
+	  },
+	  getValue: function getValue() {
+	    return this.state.selected;
+	  },
+	  handleFocus: function handleFocus() {
+	    this.props.onFocus();
+	    this.setState({
+	      focus: true
+	    });
+	  },
+	  handleBlur: function handleBlur() {
+	    var _this = this;
+
+	    this.setState({ virtualFocus: false }, function () {
+	      setTimeout(function () {
+	        if (!_this.state.virtualFocus && typeof _this.props.onBlur === "function") {
+	          _this.props.onBlur(_this.state.selected);
+	          _this.hideCalendar();
+	        }
+	      }, 200);
+	    });
+	  },
+	  hideCalendar: function hideCalendar() {
+	    var _this2 = this;
+
+	    setTimeout(function () {
+	      _this2.setState({
+	        focus: false
+	      });
+	    }, 0);
+	  },
+	  handleSelect: function handleSelect(date) {
+	    var _this3 = this;
+
+	    this.setSelected(date);
+
+	    setTimeout(function () {
+	      _this3.hideCalendar();
+	    }, 200);
+	  },
+	  setSelected: function setSelected(date) {
+	    var _this4 = this;
+
+	    this.setState({
+	      selected: date.moment()
+	    }, function () {
+	      _this4.props.onChange(_this4.state.selected);
+	    });
+	  },
+	  invalidateSelected: function invalidateSelected() {
+	    if (this.state.selected === null) return;
+	    this.props.onChange(null);
+	  },
+	  onInputClick: function onInputClick() {
+	    if (!this.state.virtualFocus) {
+	      return this.setState({
+	        focus: true,
+	        virtualFocus: true
+	      });
+	    }
+	    this.setState({ virtualFocus: false });
+	  },
+	  onClearClick: function onClearClick(event) {
+	    var _this5 = this;
+
+	    event.preventDefault();
+
+	    // Due to issues with IE onchange events sometimes this gets noisy, so skip if we've already cleared
+	    if (this.state.selected === null) return;
+
+	    this.setState({
+	      selected: null
+	    }, function () {
+	      _this5.props.onChange(null);
+	    });
+	  },
+	  calendar: function calendar() {
+	    if (this.state.focus) {
+	      return _react2.default.createElement(
+	        _popover2.default,
+	        {
+	          attachment: this.props.popoverAttachment,
+	          targetAttachment: this.props.popoverTargetAttachment,
+	          targetOffset: this.props.popoverTargetOffset,
+	          constraints: this.props.tetherConstraints },
+	        _react2.default.createElement(_calendar2.default, {
+	          ref: "calendar",
+	          weekdays: this.props.weekdays,
+	          locale: this.props.locale,
+	          moment: this.props.moment,
+	          dateFormat: this.props.dateFormatCalendar,
+	          selected: this.state.selected,
+	          onSelect: this.handleSelect,
+	          hideCalendar: this.hideCalendar,
+	          minDate: this.props.minDate,
+	          maxDate: this.props.maxDate,
+	          startDate: this.props.startDate,
+	          endDate: this.props.endDate,
+	          excludeDates: this.props.excludeDates,
+	          handleClick: this.onInputClick,
+	          includeDates: this.props.includeDates,
+	          weekStart: this.props.weekStart })
+	      );
+	    }
+	  },
+	  render: function render() {
+	    var clearButton = null;
+	    if (this.props.isClearable && this.state.selected != null) {
+	      clearButton = _react2.default.createElement("a", { className: "close-icon", href: "#", onClick: this.onClearClick });
+	    }
+
+	    return _react2.default.createElement(
+	      "div",
+	      { className: "datepicker__input-container" },
+	      _react2.default.createElement(_date_input2.default, {
+	        ref: "input",
+	        id: this.props.id,
+	        name: this.props.name,
+	        date: this.state.selected,
+	        dateFormat: this.props.dateFormat,
+	        focus: this.state.focus,
+	        onFocus: this.handleFocus,
+	        onBlur: this.handleBlur,
+	        handleClick: this.onInputClick,
+	        handleEnter: this.hideCalendar,
+	        setSelected: this.setSelected,
+	        invalidateSelected: this.invalidateSelected,
+	        hideCalendar: this.hideCalendar,
+	        placeholderText: this.props.placeholderText,
+	        disabled: this.props.disabled,
+	        className: this.props.className,
+	        title: this.props.title,
+	        readOnly: this.props.readOnly,
+	        required: this.props.required }),
+	      clearButton,
+	      this.props.disabled ? null : this.calendar()
+	    );
+	  }
+	});
+
+	module.exports = DatePicker;
+
+/***/ },
+/* 157 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseIsEqual = __webpack_require__(158),
+	    bindCallback = __webpack_require__(180);
+
+	/**
+	 * Performs a deep comparison between two values to determine if they are
+	 * equivalent. If `customizer` is provided it's invoked to compare values.
+	 * If `customizer` returns `undefined` comparisons are handled by the method
+	 * instead. The `customizer` is bound to `thisArg` and invoked with up to
+	 * three arguments: (value, other [, index|key]).
+	 *
+	 * **Note:** This method supports comparing arrays, booleans, `Date` objects,
+	 * numbers, `Object` objects, regexes, and strings. Objects are compared by
+	 * their own, not inherited, enumerable properties. Functions and DOM nodes
+	 * are **not** supported. Provide a customizer function to extend support
+	 * for comparing other values.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @alias eq
+	 * @category Lang
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @param {Function} [customizer] The function to customize value comparisons.
+	 * @param {*} [thisArg] The `this` binding of `customizer`.
+	 * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+	 * @example
+	 *
+	 * var object = { 'user': 'fred' };
+	 * var other = { 'user': 'fred' };
+	 *
+	 * object == other;
+	 * // => false
+	 *
+	 * _.isEqual(object, other);
+	 * // => true
+	 *
+	 * // using a customizer callback
+	 * var array = ['hello', 'goodbye'];
+	 * var other = ['hi', 'goodbye'];
+	 *
+	 * _.isEqual(array, other, function(value, other) {
+	 *   if (_.every([value, other], RegExp.prototype.test, /^h(?:i|ello)$/)) {
+	 *     return true;
+	 *   }
+	 * });
+	 * // => true
+	 */
+	function isEqual(value, other, customizer, thisArg) {
+	  customizer = typeof customizer == 'function' ? bindCallback(customizer, thisArg, 3) : undefined;
+	  var result = customizer ? customizer(value, other) : undefined;
+	  return  result === undefined ? baseIsEqual(value, other, customizer) : !!result;
+	}
+
+	module.exports = isEqual;
+
+
+/***/ },
+/* 158 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseIsEqualDeep = __webpack_require__(159),
+	    isObject = __webpack_require__(168),
+	    isObjectLike = __webpack_require__(169);
+
+	/**
+	 * The base implementation of `_.isEqual` without support for `this` binding
+	 * `customizer` functions.
+	 *
+	 * @private
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @param {Function} [customizer] The function to customize comparing values.
+	 * @param {boolean} [isLoose] Specify performing partial comparisons.
+	 * @param {Array} [stackA] Tracks traversed `value` objects.
+	 * @param {Array} [stackB] Tracks traversed `other` objects.
+	 * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+	 */
+	function baseIsEqual(value, other, customizer, isLoose, stackA, stackB) {
+	  if (value === other) {
+	    return true;
+	  }
+	  if (value == null || other == null || (!isObject(value) && !isObjectLike(other))) {
+	    return value !== value && other !== other;
+	  }
+	  return baseIsEqualDeep(value, other, baseIsEqual, customizer, isLoose, stackA, stackB);
+	}
+
+	module.exports = baseIsEqual;
+
+
+/***/ },
+/* 159 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var equalArrays = __webpack_require__(160),
+	    equalByTag = __webpack_require__(162),
+	    equalObjects = __webpack_require__(163),
+	    isArray = __webpack_require__(176),
+	    isTypedArray = __webpack_require__(179);
+
+	/** `Object#toString` result references. */
+	var argsTag = '[object Arguments]',
+	    arrayTag = '[object Array]',
+	    objectTag = '[object Object]';
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/**
+	 * A specialized version of `baseIsEqual` for arrays and objects which performs
+	 * deep comparisons and tracks traversed objects enabling objects with circular
+	 * references to be compared.
+	 *
+	 * @private
+	 * @param {Object} object The object to compare.
+	 * @param {Object} other The other object to compare.
+	 * @param {Function} equalFunc The function to determine equivalents of values.
+	 * @param {Function} [customizer] The function to customize comparing objects.
+	 * @param {boolean} [isLoose] Specify performing partial comparisons.
+	 * @param {Array} [stackA=[]] Tracks traversed `value` objects.
+	 * @param {Array} [stackB=[]] Tracks traversed `other` objects.
+	 * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+	 */
+	function baseIsEqualDeep(object, other, equalFunc, customizer, isLoose, stackA, stackB) {
+	  var objIsArr = isArray(object),
+	      othIsArr = isArray(other),
+	      objTag = arrayTag,
+	      othTag = arrayTag;
+
+	  if (!objIsArr) {
+	    objTag = objToString.call(object);
+	    if (objTag == argsTag) {
+	      objTag = objectTag;
+	    } else if (objTag != objectTag) {
+	      objIsArr = isTypedArray(object);
+	    }
+	  }
+	  if (!othIsArr) {
+	    othTag = objToString.call(other);
+	    if (othTag == argsTag) {
+	      othTag = objectTag;
+	    } else if (othTag != objectTag) {
+	      othIsArr = isTypedArray(other);
+	    }
+	  }
+	  var objIsObj = objTag == objectTag,
+	      othIsObj = othTag == objectTag,
+	      isSameTag = objTag == othTag;
+
+	  if (isSameTag && !(objIsArr || objIsObj)) {
+	    return equalByTag(object, other, objTag);
+	  }
+	  if (!isLoose) {
+	    var objIsWrapped = objIsObj && hasOwnProperty.call(object, '__wrapped__'),
+	        othIsWrapped = othIsObj && hasOwnProperty.call(other, '__wrapped__');
+
+	    if (objIsWrapped || othIsWrapped) {
+	      return equalFunc(objIsWrapped ? object.value() : object, othIsWrapped ? other.value() : other, customizer, isLoose, stackA, stackB);
+	    }
+	  }
+	  if (!isSameTag) {
+	    return false;
+	  }
+	  // Assume cyclic values are equal.
+	  // For more information on detecting circular references see https://es5.github.io/#JO.
+	  stackA || (stackA = []);
+	  stackB || (stackB = []);
+
+	  var length = stackA.length;
+	  while (length--) {
+	    if (stackA[length] == object) {
+	      return stackB[length] == other;
+	    }
+	  }
+	  // Add `object` and `other` to the stack of traversed objects.
+	  stackA.push(object);
+	  stackB.push(other);
+
+	  var result = (objIsArr ? equalArrays : equalObjects)(object, other, equalFunc, customizer, isLoose, stackA, stackB);
+
+	  stackA.pop();
+	  stackB.pop();
+
+	  return result;
+	}
+
+	module.exports = baseIsEqualDeep;
+
+
+/***/ },
 /* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
-	!function(t,e){ true?module.exports=e(__webpack_require__(2),__webpack_require__(158),__webpack_require__(161),__webpack_require__(162),__webpack_require__(250)):"function"==typeof define&&define.amd?define(["react","react-dom","tether","moment","react-onclickoutside"],e):"object"==typeof exports?exports.DatePicker=e(require("react"),require("react-dom"),require("tether"),require("moment"),require("react-onclickoutside")):t.DatePicker=e(t.React,t.ReactDOM,t.Tether,t.moment,t.OnClickOutside)}(this,function(t,e,n,r,o){return function(t){function e(r){if(n[r])return n[r].exports;var o=n[r]={exports:{},id:r,loaded:!1};return t[r].call(o.exports,o,o.exports,e),o.loaded=!0,o.exports}var n={};return e.m=t,e.c=n,e.p="",e(0)}([function(t,e,n){"use strict";var r=n(1),o=n(2),i=(n(5),n(6)),a=n(61),s=n(8),c=n(62),u=r.createClass({displayName:"DatePicker",propTypes:{weekdays:r.PropTypes.arrayOf(r.PropTypes.string),locale:r.PropTypes.string,dateFormatCalendar:r.PropTypes.string,popoverAttachment:r.PropTypes.string,popoverTargetAttachment:r.PropTypes.string,popoverTargetOffset:r.PropTypes.string,weekStart:r.PropTypes.string,onChange:r.PropTypes.func.isRequired,onBlur:r.PropTypes.func,onFocus:r.PropTypes.func},getDefaultProps:function(){return{weekdays:["Su","Mo","Tu","We","Th","Fr","Sa"],locale:"en",dateFormatCalendar:"MMMM YYYY",moment:s,onChange:function(){},disabled:!1,onFocus:function(){}}},getInitialState:function(){return{focus:!1,virtualFocus:!1,selected:this.props.selected}},componentWillReceiveProps:function(t){this.setState({selected:t.selected})},shouldComponentUpdate:function(t,e){return!(c(t,this.props)&&c(e,this.state))},getValue:function(){return this.state.selected},handleFocus:function(){this.props.onFocus(),this.setState({focus:!0})},handleBlur:function(){this.setState({virtualFocus:!1},function(){setTimeout(function(){this.state.virtualFocus||"function"!=typeof this.props.onBlur||(this.props.onBlur(this.state.selected),this.hideCalendar())}.bind(this),200)}.bind(this))},hideCalendar:function(){setTimeout(function(){this.setState({focus:!1})}.bind(this),0)},handleSelect:function(t){this.setSelected(t),setTimeout(function(){this.hideCalendar()}.bind(this),200)},setSelected:function(t){this.setState({selected:t.moment(),virtualFocus:!0},function(){this.props.onChange(this.state.selected)}.bind(this))},clearSelected:function(){null!==this.state.selected&&this.setState({selected:null},function(){this.props.onChange(null)}.bind(this))},onInputClick:function(){this.setState({focus:!0,virtualFocus:!0})},onClearClick:function(t){t.preventDefault(),this.clearSelected()},calendar:function(){return this.state.focus?r.createElement(o,{attachment:this.props.popoverAttachment,targetAttachment:this.props.popoverTargetAttachment,targetOffset:this.props.popoverTargetOffset,constraints:this.props.tetherConstraints},r.createElement(i,{weekdays:this.props.weekdays,locale:this.props.locale,moment:this.props.moment,dateFormat:this.props.dateFormatCalendar,selected:this.state.selected,onSelect:this.handleSelect,hideCalendar:this.hideCalendar,minDate:this.props.minDate,maxDate:this.props.maxDate,excludeDates:this.props.excludeDates,weekStart:this.props.weekStart})):void 0},render:function(){var t=null;return this.props.isClearable&&null!=this.state.selected&&(t=r.createElement("a",{className:"close-icon",href:"#",onClick:this.onClearClick})),r.createElement("div",{className:"datepicker__input-container"},r.createElement(a,{name:this.props.name,date:this.state.selected,dateFormat:this.props.dateFormat,focus:this.state.focus,onFocus:this.handleFocus,onBlur:this.handleBlur,handleClick:this.onInputClick,handleEnter:this.hideCalendar,setSelected:this.setSelected,clearSelected:this.clearSelected,hideCalendar:this.hideCalendar,placeholderText:this.props.placeholderText,disabled:this.props.disabled,className:this.props.className,title:this.props.title,readOnly:this.props.readOnly,required:this.props.required}),t,this.props.disabled?null:this.calendar())}});t.exports=u},function(e,n){e.exports=t},function(t,e,n){"use strict";var r=n(1),o=n(3),i=r.createClass({displayName:"Popover",propTypes:{attachment:r.PropTypes.string,targetAttachment:r.PropTypes.string,targetOffset:r.PropTypes.string},getDefaultProps:function(){return{attachment:"top left",constraints:[{to:"window",attachment:"together"}],targetAttachment:"bottom left",targetOffset:"10px 0"}},componentWillMount:function(){var t=document.createElement("span");t.className="datepicker__container",this._popoverElement=t,document.querySelector("body").appendChild(this._popoverElement)},componentDidMount:function(){this._renderPopover()},componentDidUpdate:function(){this._renderPopover()},_popoverComponent:function(){var t=this.props.className;return r.createElement("div",{className:t},this.props.children)},_tetherOptions:function(){return{element:this._popoverElement,target:this.refs.span.parentElement.querySelector("input"),attachment:this.props.attachment,targetAttachment:this.props.targetAttachment,targetOffset:this.props.targetOffset,optimizations:{moveElement:!1},constraints:this.props.constraints}},_renderPopover:function(){if(o.render(this._popoverComponent(),this._popoverElement),null!=this._tether)this._tether.setOptions(this._tetherOptions());else if(window&&document){var t=n(4);this._tether=new t(this._tetherOptions())}},componentWillUnmount:function(){this._tether.destroy(),o.unmountComponentAtNode(this._popoverElement),this._popoverElement.parentNode&&this._popoverElement.parentNode.removeChild(this._popoverElement)},render:function(){return r.createElement("span",{ref:"span"})}});t.exports=i},function(t,n){t.exports=e},function(t,e){t.exports=n},function(t,e){"use strict";function n(t){this._date=t}n.prototype.isBefore=function(t){return this._date.isBefore(t._date,"day")},n.prototype.isAfter=function(t){return this._date.isAfter(t._date,"day")},n.prototype.sameDay=function(t){return this._date.isSame(t._date,"day")},n.prototype.sameMonth=function(t){return this._date.isSame(t._date,"month")},n.prototype.day=function(){return this._date.date()},n.prototype.mapDaysInWeek=function(t){for(var e=[],r=this._date.clone(),o=0;7>o;o++){var i=new n(r.clone().add(o,"days"));e[o]=t(i,o)}return e},n.prototype.mapWeeksInMonth=function(t){for(var e=[],r=this._date.clone().startOf("month").startOf("week"),o=0;6>o;o++){var i=new n(r.clone().add(o,"weeks"));e[o]=t(i,o)}return e},n.prototype.weekInMonth=function(t){var e=this._date.clone(),n=this._date.clone().weekday(7);return e.isSame(t._date,"month")||n.isSame(t._date,"month")},n.prototype.format=function(){return this._date.format.apply(this._date,arguments)},n.prototype.localeFormat=function(){var t=Array.prototype.slice.call(arguments),e=t.shift();return this._date.locale(e).format.apply(this._date,t)},n.prototype.addMonth=function(){return new n(this._date.clone().add(1,"month"))},n.prototype.subtractMonth=function(){return new n(this._date.clone().subtract(1,"month"))},n.prototype.clone=function(){return new n(this._date.clone())},n.prototype.safeClone=function(t){return this._date?this.clone():(void 0===t&&(t=null),new n(t))},n.prototype.moment=function(){return this._date},t.exports=n},function(t,e,n){"use strict";var r=n(1),o=n(7),i=n(5),a=n(9),s=n(57),c=r.createClass({displayName:"Calendar",mixins:[n(60)],propTypes:{weekdays:r.PropTypes.array.isRequired,locale:r.PropTypes.string,moment:r.PropTypes.func.isRequired,dateFormat:r.PropTypes.string.isRequired,onSelect:r.PropTypes.func.isRequired,hideCalendar:r.PropTypes.func.isRequired,minDate:r.PropTypes.object,maxDate:r.PropTypes.object,excludeDates:r.PropTypes.array,weekStart:r.PropTypes.string.isRequired},handleClickOutside:function(){this.props.hideCalendar()},getInitialState:function(){return{date:new i(this.props.selected).safeClone(this.props.moment())}},getDefaultProps:function(){return{weekStart:"1"}},componentWillMount:function(){this.initializeMomentLocale()},componentWillReceiveProps:function(t){null!==t.selected&&t.selected!==this.props.selected&&this.setState({date:new i(t.selected).clone()})},initializeMomentLocale:function(){var t=this.props.weekdays.slice(0);t=t.concat(t.splice(0,this.props.weekStart)),this.props.moment.locale(this.props.locale,{week:{dow:this.props.weekStart},weekdaysMin:t})},increaseMonth:function(){this.setState({date:this.state.date.addMonth()})},decreaseMonth:function(){this.setState({date:this.state.date.subtractMonth()})},weeks:function(){return this.state.date.mapWeeksInMonth(this.renderWeek)},handleDayClick:function(t){this.props.onSelect(t)},renderWeek:function(t,e){return t.weekInMonth(this.state.date)?r.createElement("div",{key:e},this.days(t)):void 0},renderDay:function(t,e){var n,c,u=new i(this.props.minDate).safeClone(),p=new i(this.props.maxDate).safeClone();return this.props.excludeDates&&Array.isArray(this.props.excludeDates)&&(n=a(this.props.excludeDates,function(t){return new i(t).safeClone()})),c=t.isBefore(u)||t.isAfter(p)||s(n,function(e){return t.sameDay(e)}),r.createElement(o,{key:e,day:t,date:this.state.date,onClick:this.handleDayClick.bind(this,t),selected:new i(this.props.selected),disabled:c})},days:function(t){return t.mapDaysInWeek(this.renderDay)},header:function(){return this.props.moment.weekdaysMin().map(function(t,e){return r.createElement("div",{className:"datepicker__day",key:e},t)})},render:function(){return r.createElement("div",{className:"datepicker"},r.createElement("div",{className:"datepicker__triangle"}),r.createElement("div",{className:"datepicker__header"},r.createElement("a",{className:"datepicker__navigation datepicker__navigation--previous",onClick:this.decreaseMonth}),r.createElement("span",{className:"datepicker__current-month"},this.state.date.localeFormat(this.props.locale,this.props.dateFormat)),r.createElement("a",{className:"datepicker__navigation datepicker__navigation--next",onClick:this.increaseMonth}),r.createElement("div",null,this.header())),r.createElement("div",{className:"datepicker__month"},this.weeks()))}});t.exports=c},function(t,e,n){"use strict";var r=n(1),o=n(8),i=r.createClass({displayName:"Day",handleClick:function(t){this.props.disabled||this.props.onClick(t)},isWeekend:function(){var t=this.props.day.moment().weekday();return 5===t||6===t},render:function(){var t=["datepicker__day"];return this.props.disabled&&t.push("datepicker__day--disabled"),this.props.day.sameDay(this.props.selected)&&t.push("datepicker__day--selected"),this.props.day.sameDay(o())&&t.push("datepicker__day--today"),this.isWeekend()&&t.push("datepicker__day--weekend"),r.createElement("div",{className:t.join(" "),onClick:this.handleClick},this.props.day.day())}});t.exports=i},function(t,e){t.exports=r},function(t,e,n){function r(t,e,n){var r=s(t)?o:a;return e=i(e,n,3),r(t,e)}var o=n(10),i=n(11),a=n(51),s=n(32);t.exports=r},function(t,e){function n(t,e){for(var n=-1,r=t.length,o=Array(r);++n<r;)o[n]=e(t[n],n,t);return o}t.exports=n},function(t,e,n){function r(t,e,n){var r=typeof t;return"function"==r?void 0===e?t:a(t,e,n):null==t?s:"object"==r?o(t):void 0===e?c(t):i(t,e)}var o=n(12),i=n(40),a=n(47),s=n(48),c=n(49);t.exports=r},function(t,e,n){function r(t){var e=i(t);if(1==e.length&&e[0][2]){var n=e[0][0],r=e[0][1];return function(t){return null==t?!1:t[n]===r&&(void 0!==r||n in a(t))}}return function(t){return o(t,e)}}var o=n(13),i=n(37),a=n(36);t.exports=r},function(t,e,n){function r(t,e,n){var r=e.length,a=r,s=!n;if(null==t)return!a;for(t=i(t);r--;){var c=e[r];if(s&&c[2]?c[1]!==t[c[0]]:!(c[0]in t))return!1}for(;++r<a;){c=e[r];var u=c[0],p=t[u],l=c[1];if(s&&c[2]){if(void 0===p&&!(u in t))return!1}else{var f=n?n(p,l,u):void 0;if(!(void 0===f?o(l,p,n,!0):f))return!1}}return!0}var o=n(14),i=n(36);t.exports=r},function(t,e,n){function r(t,e,n,s,c,u){return t===e?!0:null==t||null==e||!i(t)&&!a(e)?t!==t&&e!==e:o(t,e,r,n,s,c,u)}var o=n(15),i=n(24),a=n(25);t.exports=r},function(t,e,n){function r(t,e,n,r,f,m,v){var y=s(t),g=s(e),x=p,b=p;y||(x=h.call(t),x==u?x=l:x!=l&&(y=c(t))),g||(b=h.call(e),b==u?b=l:b!=l&&(g=c(e)));var _=x==l,k=b==l,C=x==b;if(C&&!y&&!_)return i(t,e,x);if(!f){var w=_&&d.call(t,"__wrapped__"),j=k&&d.call(e,"__wrapped__");if(w||j)return n(w?t.value():t,j?e.value():e,r,f,m,v)}if(!C)return!1;m||(m=[]),v||(v=[]);for(var S=m.length;S--;)if(m[S]==t)return v[S]==e;m.push(t),v.push(e);var D=(y?o:a)(t,e,n,r,f,m,v);return m.pop(),v.pop(),D}var o=n(16),i=n(18),a=n(19),s=n(32),c=n(35),u="[object Arguments]",p="[object Array]",l="[object Object]",f=Object.prototype,d=f.hasOwnProperty,h=f.toString;t.exports=r},function(t,e,n){function r(t,e,n,r,i,a,s){var c=-1,u=t.length,p=e.length;if(u!=p&&!(i&&p>u))return!1;for(;++c<u;){var l=t[c],f=e[c],d=r?r(i?f:l,i?l:f,c):void 0;if(void 0!==d){if(d)continue;return!1}if(i){if(!o(e,function(t){return l===t||n(l,t,r,i,a,s)}))return!1}else if(l!==f&&!n(l,f,r,i,a,s))return!1}return!0}var o=n(17);t.exports=r},function(t,e){function n(t,e){for(var n=-1,r=t.length;++n<r;)if(e(t[n],n,t))return!0;return!1}t.exports=n},function(t,e){function n(t,e,n){switch(n){case r:case o:return+t==+e;case i:return t.name==e.name&&t.message==e.message;case a:return t!=+t?e!=+e:t==+e;case s:case c:return t==e+""}return!1}var r="[object Boolean]",o="[object Date]",i="[object Error]",a="[object Number]",s="[object RegExp]",c="[object String]";t.exports=n},function(t,e,n){function r(t,e,n,r,i,s,c){var u=o(t),p=u.length,l=o(e),f=l.length;if(p!=f&&!i)return!1;for(var d=p;d--;){var h=u[d];if(!(i?h in e:a.call(e,h)))return!1}for(var m=i;++d<p;){h=u[d];var v=t[h],y=e[h],g=r?r(i?y:v,i?v:y,h):void 0;if(!(void 0===g?n(v,y,r,i,s,c):g))return!1;m||(m="constructor"==h)}if(!m){var x=t.constructor,b=e.constructor;if(x!=b&&"constructor"in t&&"constructor"in e&&!("function"==typeof x&&x instanceof x&&"function"==typeof b&&b instanceof b))return!1}return!0}var o=n(20),i=Object.prototype,a=i.hasOwnProperty;t.exports=r},function(t,e,n){var r=n(21),o=n(26),i=n(24),a=n(30),s=r(Object,"keys"),c=s?function(t){var e=null==t?void 0:t.constructor;return"function"==typeof e&&e.prototype===t||"function"!=typeof t&&o(t)?a(t):i(t)?s(t):[]}:a;t.exports=c},function(t,e,n){function r(t,e){var n=null==t?void 0:t[e];return o(n)?n:void 0}var o=n(22);t.exports=r},function(t,e,n){function r(t){return null==t?!1:o(t)?p.test(c.call(t)):i(t)&&a.test(t)}var o=n(23),i=n(25),a=/^\[object .+?Constructor\]$/,s=Object.prototype,c=Function.prototype.toString,u=s.hasOwnProperty,p=RegExp("^"+c.call(u).replace(/[\\^$.*+?()[\]{}|]/g,"\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g,"$1.*?")+"$");t.exports=r},function(t,e,n){function r(t){return o(t)&&s.call(t)==i}var o=n(24),i="[object Function]",a=Object.prototype,s=a.toString;t.exports=r},function(t,e){function n(t){var e=typeof t;return!!t&&("object"==e||"function"==e)}t.exports=n},function(t,e){function n(t){return!!t&&"object"==typeof t}t.exports=n},function(t,e,n){function r(t){return null!=t&&i(o(t))}var o=n(27),i=n(29);t.exports=r},function(t,e,n){var r=n(28),o=r("length");t.exports=o},function(t,e){function n(t){return function(e){return null==e?void 0:e[t]}}t.exports=n},function(t,e){function n(t){return"number"==typeof t&&t>-1&&t%1==0&&r>=t}var r=9007199254740991;t.exports=n},function(t,e,n){function r(t){for(var e=c(t),n=e.length,r=n&&t.length,u=!!r&&s(r)&&(i(t)||o(t)),l=-1,f=[];++l<n;){var d=e[l];(u&&a(d,r)||p.call(t,d))&&f.push(d)}return f}var o=n(31),i=n(32),a=n(33),s=n(29),c=n(34),u=Object.prototype,p=u.hasOwnProperty;t.exports=r},function(t,e,n){function r(t){return i(t)&&o(t)&&s.call(t,"callee")&&!c.call(t,"callee")}var o=n(26),i=n(25),a=Object.prototype,s=a.hasOwnProperty,c=a.propertyIsEnumerable;t.exports=r},function(t,e,n){var r=n(21),o=n(29),i=n(25),a="[object Array]",s=Object.prototype,c=s.toString,u=r(Array,"isArray"),p=u||function(t){return i(t)&&o(t.length)&&c.call(t)==a};t.exports=p},function(t,e){function n(t,e){return t="number"==typeof t||r.test(t)?+t:-1,e=null==e?o:e,t>-1&&t%1==0&&e>t}var r=/^\d+$/,o=9007199254740991;t.exports=n},function(t,e,n){function r(t){if(null==t)return[];c(t)||(t=Object(t));var e=t.length;e=e&&s(e)&&(i(t)||o(t))&&e||0;for(var n=t.constructor,r=-1,u="function"==typeof n&&n.prototype===t,l=Array(e),f=e>0;++r<e;)l[r]=r+"";for(var d in t)f&&a(d,e)||"constructor"==d&&(u||!p.call(t,d))||l.push(d);return l}var o=n(31),i=n(32),a=n(33),s=n(29),c=n(24),u=Object.prototype,p=u.hasOwnProperty;t.exports=r},function(t,e,n){function r(t){return i(t)&&o(t.length)&&!!O[T.call(t)]}var o=n(29),i=n(25),a="[object Arguments]",s="[object Array]",c="[object Boolean]",u="[object Date]",p="[object Error]",l="[object Function]",f="[object Map]",d="[object Number]",h="[object Object]",m="[object RegExp]",v="[object Set]",y="[object String]",g="[object WeakMap]",x="[object ArrayBuffer]",b="[object Float32Array]",_="[object Float64Array]",k="[object Int8Array]",C="[object Int16Array]",w="[object Int32Array]",j="[object Uint8Array]",S="[object Uint8ClampedArray]",D="[object Uint16Array]",P="[object Uint32Array]",O={};O[b]=O[_]=O[k]=O[C]=O[w]=O[j]=O[S]=O[D]=O[P]=!0,O[a]=O[s]=O[x]=O[c]=O[u]=O[p]=O[l]=O[f]=O[d]=O[h]=O[m]=O[v]=O[y]=O[g]=!1;var E=Object.prototype,T=E.toString;t.exports=r},function(t,e,n){function r(t){return o(t)?t:Object(t)}var o=n(24);t.exports=r},function(t,e,n){function r(t){for(var e=i(t),n=e.length;n--;)e[n][2]=o(e[n][1]);return e}var o=n(38),i=n(39);t.exports=r},function(t,e,n){function r(t){return t===t&&!o(t)}var o=n(24);t.exports=r},function(t,e,n){function r(t){t=i(t);for(var e=-1,n=o(t),r=n.length,a=Array(r);++e<r;){var s=n[e];a[e]=[s,t[s]]}return a}var o=n(20),i=n(36);t.exports=r},function(t,e,n){function r(t,e){var n=s(t),r=c(t)&&u(e),d=t+"";return t=f(t),function(s){if(null==s)return!1;var c=d;if(s=l(s),(n||!r)&&!(c in s)){if(s=1==t.length?s:o(s,a(t,0,-1)),null==s)return!1;c=p(t),s=l(s)}return s[c]===e?void 0!==e||c in s:i(e,s[c],void 0,!0)}}var o=n(41),i=n(14),a=n(42),s=n(32),c=n(43),u=n(38),p=n(44),l=n(36),f=n(45);t.exports=r},function(t,e,n){function r(t,e,n){if(null!=t){void 0!==n&&n in o(t)&&(e=[n]);for(var r=0,i=e.length;null!=t&&i>r;)t=t[e[r++]];return r&&r==i?t:void 0}}var o=n(36);t.exports=r},function(t,e){function n(t,e,n){var r=-1,o=t.length;e=null==e?0:+e||0,0>e&&(e=-e>o?0:o+e),n=void 0===n||n>o?o:+n||0,0>n&&(n+=o),o=e>n?0:n-e>>>0,e>>>=0;for(var i=Array(o);++r<o;)i[r]=t[r+e];return i}t.exports=n},function(t,e,n){function r(t,e){var n=typeof t;if("string"==n&&s.test(t)||"number"==n)return!0;if(o(t))return!1;var r=!a.test(t);return r||null!=e&&t in i(e)}var o=n(32),i=n(36),a=/\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\n\\]|\\.)*?\1)\]/,s=/^\w*$/;t.exports=r},function(t,e){function n(t){var e=t?t.length:0;return e?t[e-1]:void 0}t.exports=n},function(t,e,n){function r(t){if(i(t))return t;var e=[];return o(t).replace(a,function(t,n,r,o){e.push(r?o.replace(s,"$1"):n||t)}),e}var o=n(46),i=n(32),a=/[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\n\\]|\\.)*?)\2)\]/g,s=/\\(\\)?/g;t.exports=r},function(t,e){function n(t){return null==t?"":t+""}t.exports=n},function(t,e,n){function r(t,e,n){if("function"!=typeof t)return o;if(void 0===e)return t;switch(n){case 1:return function(n){return t.call(e,n)};case 3:return function(n,r,o){return t.call(e,n,r,o)};case 4:return function(n,r,o,i){return t.call(e,n,r,o,i)};case 5:return function(n,r,o,i,a){return t.call(e,n,r,o,i,a)}}return function(){return t.apply(e,arguments)}}var o=n(48);t.exports=r},function(t,e){function n(t){return t}t.exports=n},function(t,e,n){function r(t){return a(t)?o(t):i(t)}var o=n(28),i=n(50),a=n(43);t.exports=r},function(t,e,n){function r(t){var e=t+"";return t=i(t),function(n){return o(n,t,e)}}var o=n(41),i=n(45);t.exports=r},function(t,e,n){function r(t,e){var n=-1,r=i(t)?Array(t.length):[];return o(t,function(t,o,i){r[++n]=e(t,o,i)}),r}var o=n(52),i=n(26);t.exports=r},function(t,e,n){var r=n(53),o=n(56),i=o(r);t.exports=i},function(t,e,n){function r(t,e){return o(t,e,i)}var o=n(54),i=n(20);t.exports=r},function(t,e,n){var r=n(55),o=r();t.exports=o},function(t,e,n){function r(t){return function(e,n,r){for(var i=o(e),a=r(e),s=a.length,c=t?s:-1;t?c--:++c<s;){var u=a[c];if(n(i[u],u,i)===!1)break}return e}}var o=n(36);t.exports=r},function(t,e,n){function r(t,e){return function(n,r){var s=n?o(n):0;if(!i(s))return t(n,r);for(var c=e?s:-1,u=a(n);(e?c--:++c<s)&&r(u[c],c,u)!==!1;);return n}}var o=n(27),i=n(29),a=n(36);t.exports=r},function(t,e,n){function r(t,e,n){var r=s(t)?o:a;return n&&c(t,e,n)&&(e=void 0),("function"!=typeof e||void 0!==n)&&(e=i(e,n,3)),r(t,e)}var o=n(17),i=n(11),a=n(58),s=n(32),c=n(59);t.exports=r},function(t,e,n){function r(t,e){var n;return o(t,function(t,r,o){return n=e(t,r,o),!n}),!!n}var o=n(52);t.exports=r},function(t,e,n){function r(t,e,n){if(!a(n))return!1;var r=typeof e;if("number"==r?o(n)&&i(e,n.length):"string"==r&&e in n){var s=n[e];return t===t?t===s:s!==s}return!1}var o=n(26),i=n(33),a=n(24);t.exports=r},function(t,e){t.exports=o},function(t,e,n){"use strict";var r=n(1),o=(n(3),n(5)),i=n(8),a=r.createClass({displayName:"DateInput",getDefaultProps:function(){return{dateFormat:"YYYY-MM-DD",className:"datepicker__input",onBlur:function(){}}},componentDidMount:function(){this.toggleFocus(this.props.focus)},componentWillReceiveProps:function(t){this.toggleFocus(t.focus)},toggleFocus:function(t){t?this.refs.input.focus():this.refs.input.blur()},handleChange:function(t){var e=t.target.value,n=i(e,this.props.dateFormat,!0);n.isValid()?this.props.setSelected(new o(n)):""===e&&this.props.clearSelected()},safeDateFormat:function(t){return t?t.format(this.props.dateFormat):null},handleKeyDown:function(t){switch(t.key){case"Enter":t.preventDefault(),this.props.handleEnter();break;case"Escape":t.preventDefault(),this.props.hideCalendar()}},handleClick:function(t){this.props.disabled||this.props.handleClick(t)},render:function(){return r.createElement("input",{ref:"input",type:"text",name:this.props.name,value:this.safeDateFormat(this.props.date),onClick:this.handleClick,onKeyDown:this.handleKeyDown,onFocus:this.props.onFocus,onBlur:this.props.onBlur,onChange:this.handleChange,className:this.props.className,disabled:this.props.disabled,placeholder:this.props.placeholderText,readOnly:this.props.readOnly,required:this.props.required})}});t.exports=a},function(t,e,n){function r(t,e,n,r){n="function"==typeof n?i(n,r,3):void 0;var a=n?n(t,e):void 0;return void 0===a?o(t,e,n):!!a}var o=n(14),i=n(47);t.exports=r}])});
+	var arraySome = __webpack_require__(161);
+
+	/**
+	 * A specialized version of `baseIsEqualDeep` for arrays with support for
+	 * partial deep comparisons.
+	 *
+	 * @private
+	 * @param {Array} array The array to compare.
+	 * @param {Array} other The other array to compare.
+	 * @param {Function} equalFunc The function to determine equivalents of values.
+	 * @param {Function} [customizer] The function to customize comparing arrays.
+	 * @param {boolean} [isLoose] Specify performing partial comparisons.
+	 * @param {Array} [stackA] Tracks traversed `value` objects.
+	 * @param {Array} [stackB] Tracks traversed `other` objects.
+	 * @returns {boolean} Returns `true` if the arrays are equivalent, else `false`.
+	 */
+	function equalArrays(array, other, equalFunc, customizer, isLoose, stackA, stackB) {
+	  var index = -1,
+	      arrLength = array.length,
+	      othLength = other.length;
+
+	  if (arrLength != othLength && !(isLoose && othLength > arrLength)) {
+	    return false;
+	  }
+	  // Ignore non-index properties.
+	  while (++index < arrLength) {
+	    var arrValue = array[index],
+	        othValue = other[index],
+	        result = customizer ? customizer(isLoose ? othValue : arrValue, isLoose ? arrValue : othValue, index) : undefined;
+
+	    if (result !== undefined) {
+	      if (result) {
+	        continue;
+	      }
+	      return false;
+	    }
+	    // Recursively compare arrays (susceptible to call stack limits).
+	    if (isLoose) {
+	      if (!arraySome(other, function(othValue) {
+	            return arrValue === othValue || equalFunc(arrValue, othValue, customizer, isLoose, stackA, stackB);
+	          })) {
+	        return false;
+	      }
+	    } else if (!(arrValue === othValue || equalFunc(arrValue, othValue, customizer, isLoose, stackA, stackB))) {
+	      return false;
+	    }
+	  }
+	  return true;
+	}
+
+	module.exports = equalArrays;
+
 
 /***/ },
 /* 161 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! tether 1.1.0 */
-
-	(function(root, factory) {
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  } else if (typeof exports === 'object') {
-	    module.exports = factory(require, exports, module);
-	  } else {
-	    root.Tether = factory();
-	  }
-	}(this, function(require, exports, module) {
-
-	'use strict';
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	var TetherBase = undefined;
-	if (typeof TetherBase === 'undefined') {
-	  TetherBase = { modules: [] };
-	}
-
-	function getScrollParent(el) {
-	  var _getComputedStyle = getComputedStyle(el);
-
-	  var position = _getComputedStyle.position;
-
-	  if (position === 'fixed') {
-	    return el;
-	  }
-
-	  var parent = el;
-	  while (parent = parent.parentNode) {
-	    var style = undefined;
-	    try {
-	      style = getComputedStyle(parent);
-	    } catch (err) {}
-
-	    if (typeof style === 'undefined' || style === null) {
-	      return parent;
-	    }
-
-	    var _style = style;
-	    var overflow = _style.overflow;
-	    var overflowX = _style.overflowX;
-	    var overflowY = _style.overflowY;
-
-	    if (/(auto|scroll)/.test(overflow + overflowY + overflowX)) {
-	      if (position !== 'absolute' || ['relative', 'absolute', 'fixed'].indexOf(style.position) >= 0) {
-	        return parent;
-	      }
-	    }
-	  }
-
-	  return document.body;
-	}
-
-	var uniqueId = (function () {
-	  var id = 0;
-	  return function () {
-	    return ++id;
-	  };
-	})();
-
-	var zeroPosCache = {};
-	var getOrigin = function getOrigin(doc) {
-	  // getBoundingClientRect is unfortunately too accurate.  It introduces a pixel or two of
-	  // jitter as the user scrolls that messes with our ability to detect if two positions
-	  // are equivilant or not.  We place an element at the top left of the page that will
-	  // get the same jitter, so we can cancel the two out.
-	  var node = doc._tetherZeroElement;
-	  if (typeof node === 'undefined') {
-	    node = doc.createElement('div');
-	    node.setAttribute('data-tether-id', uniqueId());
-	    extend(node.style, {
-	      top: 0,
-	      left: 0,
-	      position: 'absolute'
-	    });
-
-	    doc.body.appendChild(node);
-
-	    doc._tetherZeroElement = node;
-	  }
-
-	  var id = node.getAttribute('data-tether-id');
-	  if (typeof zeroPosCache[id] === 'undefined') {
-	    zeroPosCache[id] = {};
-
-	    var rect = node.getBoundingClientRect();
-	    for (var k in rect) {
-	      // Can't use extend, as on IE9, elements don't resolve to be hasOwnProperty
-	      zeroPosCache[id][k] = rect[k];
-	    }
-
-	    // Clear the cache when this position call is done
-	    defer(function () {
-	      delete zeroPosCache[id];
-	    });
-	  }
-
-	  return zeroPosCache[id];
-	};
-
-	function getBounds(el) {
-	  var doc = undefined;
-	  if (el === document) {
-	    doc = document;
-	    el = document.documentElement;
-	  } else {
-	    doc = el.ownerDocument;
-	  }
-
-	  var docEl = doc.documentElement;
-
-	  var box = {};
-	  // The original object returned by getBoundingClientRect is immutable, so we clone it
-	  // We can't use extend because the properties are not considered part of the object by hasOwnProperty in IE9
-	  var rect = el.getBoundingClientRect();
-	  for (var k in rect) {
-	    box[k] = rect[k];
-	  }
-
-	  var origin = getOrigin(doc);
-
-	  box.top -= origin.top;
-	  box.left -= origin.left;
-
-	  if (typeof box.width === 'undefined') {
-	    box.width = document.body.scrollWidth - box.left - box.right;
-	  }
-	  if (typeof box.height === 'undefined') {
-	    box.height = document.body.scrollHeight - box.top - box.bottom;
-	  }
-
-	  box.top = box.top - docEl.clientTop;
-	  box.left = box.left - docEl.clientLeft;
-	  box.right = doc.body.clientWidth - box.width - box.left;
-	  box.bottom = doc.body.clientHeight - box.height - box.top;
-
-	  return box;
-	}
-
-	function getOffsetParent(el) {
-	  return el.offsetParent || document.documentElement;
-	}
-
-	function getScrollBarSize() {
-	  var inner = document.createElement('div');
-	  inner.style.width = '100%';
-	  inner.style.height = '200px';
-
-	  var outer = document.createElement('div');
-	  extend(outer.style, {
-	    position: 'absolute',
-	    top: 0,
-	    left: 0,
-	    pointerEvents: 'none',
-	    visibility: 'hidden',
-	    width: '200px',
-	    height: '150px',
-	    overflow: 'hidden'
-	  });
-
-	  outer.appendChild(inner);
-
-	  document.body.appendChild(outer);
-
-	  var widthContained = inner.offsetWidth;
-	  outer.style.overflow = 'scroll';
-	  var widthScroll = inner.offsetWidth;
-
-	  if (widthContained === widthScroll) {
-	    widthScroll = outer.clientWidth;
-	  }
-
-	  document.body.removeChild(outer);
-
-	  var width = widthContained - widthScroll;
-
-	  return { width: width, height: width };
-	}
-
-	function extend() {
-	  var out = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-	  var args = [];
-
-	  Array.prototype.push.apply(args, arguments);
-
-	  args.slice(1).forEach(function (obj) {
-	    if (obj) {
-	      for (var key in obj) {
-	        if (({}).hasOwnProperty.call(obj, key)) {
-	          out[key] = obj[key];
-	        }
-	      }
-	    }
-	  });
-
-	  return out;
-	}
-
-	function removeClass(el, name) {
-	  if (typeof el.classList !== 'undefined') {
-	    name.split(' ').forEach(function (cls) {
-	      if (cls.trim()) {
-	        el.classList.remove(cls);
-	      }
-	    });
-	  } else {
-	    var regex = new RegExp('(^| )' + name.split(' ').join('|') + '( |$)', 'gi');
-	    var className = getClassName(el).replace(regex, ' ');
-	    setClassName(el, className);
-	  }
-	}
-
-	function addClass(el, name) {
-	  if (typeof el.classList !== 'undefined') {
-	    name.split(' ').forEach(function (cls) {
-	      if (cls.trim()) {
-	        el.classList.add(cls);
-	      }
-	    });
-	  } else {
-	    removeClass(el, name);
-	    var cls = getClassName(el) + (' ' + name);
-	    setClassName(el, cls);
-	  }
-	}
-
-	function hasClass(el, name) {
-	  if (typeof el.classList !== 'undefined') {
-	    return el.classList.contains(name);
-	  }
-	  var className = getClassName(el);
-	  return new RegExp('(^| )' + name + '( |$)', 'gi').test(className);
-	}
-
-	function getClassName(el) {
-	  if (el.className instanceof SVGAnimatedString) {
-	    return el.className.baseVal;
-	  }
-	  return el.className;
-	}
-
-	function setClassName(el, className) {
-	  el.setAttribute('class', className);
-	}
-
-	function updateClasses(el, add, all) {
-	  // Of the set of 'all' classes, we need the 'add' classes, and only the
-	  // 'add' classes to be set.
-	  all.forEach(function (cls) {
-	    if (add.indexOf(cls) === -1 && hasClass(el, cls)) {
-	      removeClass(el, cls);
-	    }
-	  });
-
-	  add.forEach(function (cls) {
-	    if (!hasClass(el, cls)) {
-	      addClass(el, cls);
-	    }
-	  });
-	}
-
-	var deferred = [];
-
-	var defer = function defer(fn) {
-	  deferred.push(fn);
-	};
-
-	var flush = function flush() {
-	  var fn = undefined;
-	  while (fn = deferred.pop()) {
-	    fn();
-	  }
-	};
-
-	var Evented = (function () {
-	  function Evented() {
-	    _classCallCheck(this, Evented);
-	  }
-
-	  _createClass(Evented, [{
-	    key: 'on',
-	    value: function on(event, handler, ctx) {
-	      var once = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
-
-	      if (typeof this.bindings === 'undefined') {
-	        this.bindings = {};
-	      }
-	      if (typeof this.bindings[event] === 'undefined') {
-	        this.bindings[event] = [];
-	      }
-	      this.bindings[event].push({ handler: handler, ctx: ctx, once: once });
-	    }
-	  }, {
-	    key: 'once',
-	    value: function once(event, handler, ctx) {
-	      this.on(event, handler, ctx, true);
-	    }
-	  }, {
-	    key: 'off',
-	    value: function off(event, handler) {
-	      if (typeof this.bindings !== 'undefined' && typeof this.bindings[event] !== 'undefined') {
-	        return;
-	      }
-
-	      if (typeof handler === 'undefined') {
-	        delete this.bindings[event];
-	      } else {
-	        var i = 0;
-	        while (i < this.bindings[event].length) {
-	          if (this.bindings[event][i].handler === handler) {
-	            this.bindings[event].splice(i, 1);
-	          } else {
-	            ++i;
-	          }
-	        }
-	      }
-	    }
-	  }, {
-	    key: 'trigger',
-	    value: function trigger(event) {
-	      if (typeof this.bindings !== 'undefined' && this.bindings[event]) {
-	        var i = 0;
-
-	        for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	          args[_key - 1] = arguments[_key];
-	        }
-
-	        while (i < this.bindings[event].length) {
-	          var _bindings$event$i = this.bindings[event][i];
-	          var handler = _bindings$event$i.handler;
-	          var ctx = _bindings$event$i.ctx;
-	          var once = _bindings$event$i.once;
-
-	          var context = ctx;
-	          if (typeof context === 'undefined') {
-	            context = this;
-	          }
-
-	          handler.apply(context, args);
-
-	          if (once) {
-	            this.bindings[event].splice(i, 1);
-	          } else {
-	            ++i;
-	          }
-	        }
-	      }
-	    }
-	  }]);
-
-	  return Evented;
-	})();
-
-	TetherBase.Utils = {
-	  getScrollParent: getScrollParent,
-	  getBounds: getBounds,
-	  getOffsetParent: getOffsetParent,
-	  extend: extend,
-	  addClass: addClass,
-	  removeClass: removeClass,
-	  hasClass: hasClass,
-	  updateClasses: updateClasses,
-	  defer: defer,
-	  flush: flush,
-	  uniqueId: uniqueId,
-	  Evented: Evented,
-	  getScrollBarSize: getScrollBarSize
-	};
-	/* globals TetherBase, performance */
-
-	'use strict';
-
-	var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	if (typeof TetherBase === 'undefined') {
-	  throw new Error('You must include the utils.js file before tether.js');
-	}
-
-	var _TetherBase$Utils = TetherBase.Utils;
-	var getScrollParent = _TetherBase$Utils.getScrollParent;
-	var getBounds = _TetherBase$Utils.getBounds;
-	var getOffsetParent = _TetherBase$Utils.getOffsetParent;
-	var extend = _TetherBase$Utils.extend;
-	var addClass = _TetherBase$Utils.addClass;
-	var removeClass = _TetherBase$Utils.removeClass;
-	var updateClasses = _TetherBase$Utils.updateClasses;
-	var defer = _TetherBase$Utils.defer;
-	var flush = _TetherBase$Utils.flush;
-	var getScrollBarSize = _TetherBase$Utils.getScrollBarSize;
-
-	function within(a, b) {
-	  var diff = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
-
-	  return a + diff >= b && b >= a - diff;
-	}
-
-	var transformKey = (function () {
-	  if (typeof document === 'undefined') {
-	    return '';
-	  }
-	  var el = document.createElement('div');
-
-	  var transforms = ['transform', 'webkitTransform', 'OTransform', 'MozTransform', 'msTransform'];
-	  for (var i = 0; i < transforms.length; ++i) {
-	    var key = transforms[i];
-	    if (el.style[key] !== undefined) {
-	      return key;
-	    }
-	  }
-	})();
-
-	var tethers = [];
-
-	var position = function position() {
-	  tethers.forEach(function (tether) {
-	    tether.position(false);
-	  });
-	  flush();
-	};
-
-	function now() {
-	  if (typeof performance !== 'undefined' && typeof performance.now !== 'undefined') {
-	    return performance.now();
-	  }
-	  return +new Date();
-	}
-
-	(function () {
-	  var lastCall = null;
-	  var lastDuration = null;
-	  var pendingTimeout = null;
-
-	  var tick = function tick() {
-	    if (typeof lastDuration !== 'undefined' && lastDuration > 16) {
-	      // We voluntarily throttle ourselves if we can't manage 60fps
-	      lastDuration = Math.min(lastDuration - 16, 250);
-
-	      // Just in case this is the last event, remember to position just once more
-	      pendingTimeout = setTimeout(tick, 250);
-	      return;
-	    }
-
-	    if (typeof lastCall !== 'undefined' && now() - lastCall < 10) {
-	      // Some browsers call events a little too frequently, refuse to run more than is reasonable
-	      return;
-	    }
-
-	    if (typeof pendingTimeout !== 'undefined') {
-	      clearTimeout(pendingTimeout);
-	      pendingTimeout = null;
-	    }
-
-	    lastCall = now();
-	    position();
-	    lastDuration = now() - lastCall;
-	  };
-
-	  if (typeof window !== 'undefined') {
-	    ['resize', 'scroll', 'touchmove'].forEach(function (event) {
-	      window.addEventListener(event, tick);
-	    });
-	  }
-	})();
-
-	var MIRROR_LR = {
-	  center: 'center',
-	  left: 'right',
-	  right: 'left'
-	};
-
-	var MIRROR_TB = {
-	  middle: 'middle',
-	  top: 'bottom',
-	  bottom: 'top'
-	};
-
-	var OFFSET_MAP = {
-	  top: 0,
-	  left: 0,
-	  middle: '50%',
-	  center: '50%',
-	  bottom: '100%',
-	  right: '100%'
-	};
-
-	var autoToFixedAttachment = function autoToFixedAttachment(attachment, relativeToAttachment) {
-	  var left = attachment.left;
-	  var top = attachment.top;
-
-	  if (left === 'auto') {
-	    left = MIRROR_LR[relativeToAttachment.left];
-	  }
-
-	  if (top === 'auto') {
-	    top = MIRROR_TB[relativeToAttachment.top];
-	  }
-
-	  return { left: left, top: top };
-	};
-
-	var attachmentToOffset = function attachmentToOffset(attachment) {
-	  var left = attachment.left;
-	  var top = attachment.top;
-
-	  if (typeof OFFSET_MAP[attachment.left] !== 'undefined') {
-	    left = OFFSET_MAP[attachment.left];
-	  }
-
-	  if (typeof OFFSET_MAP[attachment.top] !== 'undefined') {
-	    top = OFFSET_MAP[attachment.top];
-	  }
-
-	  return { left: left, top: top };
-	};
-
-	function addOffset() {
-	  var out = { top: 0, left: 0 };
-
-	  for (var _len = arguments.length, offsets = Array(_len), _key = 0; _key < _len; _key++) {
-	    offsets[_key] = arguments[_key];
-	  }
-
-	  offsets.forEach(function (_ref) {
-	    var top = _ref.top;
-	    var left = _ref.left;
-
-	    if (typeof top === 'string') {
-	      top = parseFloat(top, 10);
-	    }
-	    if (typeof left === 'string') {
-	      left = parseFloat(left, 10);
-	    }
-
-	    out.top += top;
-	    out.left += left;
-	  });
-
-	  return out;
-	}
-
-	function offsetToPx(offset, size) {
-	  if (typeof offset.left === 'string' && offset.left.indexOf('%') !== -1) {
-	    offset.left = parseFloat(offset.left, 10) / 100 * size.width;
-	  }
-	  if (typeof offset.top === 'string' && offset.top.indexOf('%') !== -1) {
-	    offset.top = parseFloat(offset.top, 10) / 100 * size.height;
-	  }
-
-	  return offset;
-	}
-
-	var parseOffset = function parseOffset(value) {
-	  var _value$split = value.split(' ');
-
-	  var _value$split2 = _slicedToArray(_value$split, 2);
-
-	  var top = _value$split2[0];
-	  var left = _value$split2[1];
-
-	  return { top: top, left: left };
-	};
-	var parseAttachment = parseOffset;
-
-	var TetherClass = (function () {
-	  function TetherClass(options) {
-	    var _this = this;
-
-	    _classCallCheck(this, TetherClass);
-
-	    this.position = this.position.bind(this);
-
-	    tethers.push(this);
-
-	    this.history = [];
-
-	    this.setOptions(options, false);
-
-	    TetherBase.modules.forEach(function (module) {
-	      if (typeof module.initialize !== 'undefined') {
-	        module.initialize.call(_this);
-	      }
-	    });
-
-	    this.position();
-	  }
-
-	  _createClass(TetherClass, [{
-	    key: 'getClass',
-	    value: function getClass() {
-	      var key = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
-	      var classes = this.options.classes;
-
-	      if (typeof classes !== 'undefined' && classes[key]) {
-	        return this.options.classes[key];
-	      } else if (this.options.classPrefix) {
-	        return this.options.classPrefix + '-' + key;
-	      } else {
-	        return key;
-	      }
-	    }
-	  }, {
-	    key: 'setOptions',
-	    value: function setOptions(options) {
-	      var _this2 = this;
-
-	      var pos = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
-
-	      var defaults = {
-	        offset: '0 0',
-	        targetOffset: '0 0',
-	        targetAttachment: 'auto auto',
-	        classPrefix: 'tether'
-	      };
-
-	      this.options = extend(defaults, options);
-
-	      var _options = this.options;
-	      var element = _options.element;
-	      var target = _options.target;
-	      var targetModifier = _options.targetModifier;
-
-	      this.element = element;
-	      this.target = target;
-	      this.targetModifier = targetModifier;
-
-	      if (this.target === 'viewport') {
-	        this.target = document.body;
-	        this.targetModifier = 'visible';
-	      } else if (this.target === 'scroll-handle') {
-	        this.target = document.body;
-	        this.targetModifier = 'scroll-handle';
-	      }
-
-	      ['element', 'target'].forEach(function (key) {
-	        if (typeof _this2[key] === 'undefined') {
-	          throw new Error('Tether Error: Both element and target must be defined');
-	        }
-
-	        if (typeof _this2[key].jquery !== 'undefined') {
-	          _this2[key] = _this2[key][0];
-	        } else if (typeof _this2[key] === 'string') {
-	          _this2[key] = document.querySelector(_this2[key]);
-	        }
-	      });
-
-	      addClass(this.element, this.getClass('element'));
-	      if (!(this.options.addTargetClasses === false)) {
-	        addClass(this.target, this.getClass('target'));
-	      }
-
-	      if (!this.options.attachment) {
-	        throw new Error('Tether Error: You must provide an attachment');
-	      }
-
-	      this.targetAttachment = parseAttachment(this.options.targetAttachment);
-	      this.attachment = parseAttachment(this.options.attachment);
-	      this.offset = parseOffset(this.options.offset);
-	      this.targetOffset = parseOffset(this.options.targetOffset);
-
-	      if (typeof this.scrollParent !== 'undefined') {
-	        this.disable();
-	      }
-
-	      if (this.targetModifier === 'scroll-handle') {
-	        this.scrollParent = this.target;
-	      } else {
-	        this.scrollParent = getScrollParent(this.target);
-	      }
-
-	      if (!(this.options.enabled === false)) {
-	        this.enable(pos);
-	      }
-	    }
-	  }, {
-	    key: 'getTargetBounds',
-	    value: function getTargetBounds() {
-	      if (typeof this.targetModifier !== 'undefined') {
-	        if (this.targetModifier === 'visible') {
-	          if (this.target === document.body) {
-	            return { top: pageYOffset, left: pageXOffset, height: innerHeight, width: innerWidth };
-	          } else {
-	            var bounds = getBounds(this.target);
-
-	            var out = {
-	              height: bounds.height,
-	              width: bounds.width,
-	              top: bounds.top,
-	              left: bounds.left
-	            };
-
-	            out.height = Math.min(out.height, bounds.height - (pageYOffset - bounds.top));
-	            out.height = Math.min(out.height, bounds.height - (bounds.top + bounds.height - (pageYOffset + innerHeight)));
-	            out.height = Math.min(innerHeight, out.height);
-	            out.height -= 2;
-
-	            out.width = Math.min(out.width, bounds.width - (pageXOffset - bounds.left));
-	            out.width = Math.min(out.width, bounds.width - (bounds.left + bounds.width - (pageXOffset + innerWidth)));
-	            out.width = Math.min(innerWidth, out.width);
-	            out.width -= 2;
-
-	            if (out.top < pageYOffset) {
-	              out.top = pageYOffset;
-	            }
-	            if (out.left < pageXOffset) {
-	              out.left = pageXOffset;
-	            }
-
-	            return out;
-	          }
-	        } else if (this.targetModifier === 'scroll-handle') {
-	          var bounds = undefined;
-	          var target = this.target;
-	          if (target === document.body) {
-	            target = document.documentElement;
-
-	            bounds = {
-	              left: pageXOffset,
-	              top: pageYOffset,
-	              height: innerHeight,
-	              width: innerWidth
-	            };
-	          } else {
-	            bounds = getBounds(target);
-	          }
-
-	          var style = getComputedStyle(target);
-
-	          var hasBottomScroll = target.scrollWidth > target.clientWidth || [style.overflow, style.overflowX].indexOf('scroll') >= 0 || this.target !== document.body;
-
-	          var scrollBottom = 0;
-	          if (hasBottomScroll) {
-	            scrollBottom = 15;
-	          }
-
-	          var height = bounds.height - parseFloat(style.borderTopWidth) - parseFloat(style.borderBottomWidth) - scrollBottom;
-
-	          var out = {
-	            width: 15,
-	            height: height * 0.975 * (height / target.scrollHeight),
-	            left: bounds.left + bounds.width - parseFloat(style.borderLeftWidth) - 15
-	          };
-
-	          var fitAdj = 0;
-	          if (height < 408 && this.target === document.body) {
-	            fitAdj = -0.00011 * Math.pow(height, 2) - 0.00727 * height + 22.58;
-	          }
-
-	          if (this.target !== document.body) {
-	            out.height = Math.max(out.height, 24);
-	          }
-
-	          var scrollPercentage = this.target.scrollTop / (target.scrollHeight - height);
-	          out.top = scrollPercentage * (height - out.height - fitAdj) + bounds.top + parseFloat(style.borderTopWidth);
-
-	          if (this.target === document.body) {
-	            out.height = Math.max(out.height, 24);
-	          }
-
-	          return out;
-	        }
-	      } else {
-	        return getBounds(this.target);
-	      }
-	    }
-	  }, {
-	    key: 'clearCache',
-	    value: function clearCache() {
-	      this._cache = {};
-	    }
-	  }, {
-	    key: 'cache',
-	    value: function cache(k, getter) {
-	      // More than one module will often need the same DOM info, so
-	      // we keep a cache which is cleared on each position call
-	      if (typeof this._cache === 'undefined') {
-	        this._cache = {};
-	      }
-
-	      if (typeof this._cache[k] === 'undefined') {
-	        this._cache[k] = getter.call(this);
-	      }
-
-	      return this._cache[k];
-	    }
-	  }, {
-	    key: 'enable',
-	    value: function enable() {
-	      var pos = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
-
-	      if (!(this.options.addTargetClasses === false)) {
-	        addClass(this.target, this.getClass('enabled'));
-	      }
-	      addClass(this.element, this.getClass('enabled'));
-	      this.enabled = true;
-
-	      if (this.scrollParent !== document) {
-	        this.scrollParent.addEventListener('scroll', this.position);
-	      }
-
-	      if (pos) {
-	        this.position();
-	      }
-	    }
-	  }, {
-	    key: 'disable',
-	    value: function disable() {
-	      removeClass(this.target, this.getClass('enabled'));
-	      removeClass(this.element, this.getClass('enabled'));
-	      this.enabled = false;
-
-	      if (typeof this.scrollParent !== 'undefined') {
-	        this.scrollParent.removeEventListener('scroll', this.position);
-	      }
-	    }
-	  }, {
-	    key: 'destroy',
-	    value: function destroy() {
-	      var _this3 = this;
-
-	      this.disable();
-
-	      tethers.forEach(function (tether, i) {
-	        if (tether === _this3) {
-	          tethers.splice(i, 1);
-	          return;
-	        }
-	      });
-	    }
-	  }, {
-	    key: 'updateAttachClasses',
-	    value: function updateAttachClasses(elementAttach, targetAttach) {
-	      var _this4 = this;
-
-	      elementAttach = elementAttach || this.attachment;
-	      targetAttach = targetAttach || this.targetAttachment;
-	      var sides = ['left', 'top', 'bottom', 'right', 'middle', 'center'];
-
-	      if (typeof this._addAttachClasses !== 'undefined' && this._addAttachClasses.length) {
-	        // updateAttachClasses can be called more than once in a position call, so
-	        // we need to clean up after ourselves such that when the last defer gets
-	        // ran it doesn't add any extra classes from previous calls.
-	        this._addAttachClasses.splice(0, this._addAttachClasses.length);
-	      }
-
-	      if (typeof this._addAttachClasses === 'undefined') {
-	        this._addAttachClasses = [];
-	      }
-	      var add = this._addAttachClasses;
-
-	      if (elementAttach.top) {
-	        add.push(this.getClass('element-attached') + '-' + elementAttach.top);
-	      }
-	      if (elementAttach.left) {
-	        add.push(this.getClass('element-attached') + '-' + elementAttach.left);
-	      }
-	      if (targetAttach.top) {
-	        add.push(this.getClass('target-attached') + '-' + targetAttach.top);
-	      }
-	      if (targetAttach.left) {
-	        add.push(this.getClass('target-attached') + '-' + targetAttach.left);
-	      }
-
-	      var all = [];
-	      sides.forEach(function (side) {
-	        all.push(_this4.getClass('element-attached') + '-' + side);
-	        all.push(_this4.getClass('target-attached') + '-' + side);
-	      });
-
-	      defer(function () {
-	        if (!(typeof _this4._addAttachClasses !== 'undefined')) {
-	          return;
-	        }
-
-	        updateClasses(_this4.element, _this4._addAttachClasses, all);
-	        if (!(_this4.options.addTargetClasses === false)) {
-	          updateClasses(_this4.target, _this4._addAttachClasses, all);
-	        }
-
-	        delete _this4._addAttachClasses;
-	      });
-	    }
-	  }, {
-	    key: 'position',
-	    value: function position() {
-	      var _this5 = this;
-
-	      var flushChanges = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
-
-	      // flushChanges commits the changes immediately, leave true unless you are positioning multiple
-	      // tethers (in which case call Tether.Utils.flush yourself when you're done)
-
-	      if (!this.enabled) {
-	        return;
-	      }
-
-	      this.clearCache();
-
-	      // Turn 'auto' attachments into the appropriate corner or edge
-	      var targetAttachment = autoToFixedAttachment(this.targetAttachment, this.attachment);
-
-	      this.updateAttachClasses(this.attachment, targetAttachment);
-
-	      var elementPos = this.cache('element-bounds', function () {
-	        return getBounds(_this5.element);
-	      });
-
-	      var width = elementPos.width;
-	      var height = elementPos.height;
-
-	      if (width === 0 && height === 0 && typeof this.lastSize !== 'undefined') {
-	        var _lastSize = this.lastSize;
-
-	        // We cache the height and width to make it possible to position elements that are
-	        // getting hidden.
-	        width = _lastSize.width;
-	        height = _lastSize.height;
-	      } else {
-	        this.lastSize = { width: width, height: height };
-	      }
-
-	      var targetPos = this.cache('target-bounds', function () {
-	        return _this5.getTargetBounds();
-	      });
-	      var targetSize = targetPos;
-
-	      // Get an actual px offset from the attachment
-	      var offset = offsetToPx(attachmentToOffset(this.attachment), { width: width, height: height });
-	      var targetOffset = offsetToPx(attachmentToOffset(targetAttachment), targetSize);
-
-	      var manualOffset = offsetToPx(this.offset, { width: width, height: height });
-	      var manualTargetOffset = offsetToPx(this.targetOffset, targetSize);
-
-	      // Add the manually provided offset
-	      offset = addOffset(offset, manualOffset);
-	      targetOffset = addOffset(targetOffset, manualTargetOffset);
-
-	      // It's now our goal to make (element position + offset) == (target position + target offset)
-	      var left = targetPos.left + targetOffset.left - offset.left;
-	      var top = targetPos.top + targetOffset.top - offset.top;
-
-	      for (var i = 0; i < TetherBase.modules.length; ++i) {
-	        var _module2 = TetherBase.modules[i];
-	        var ret = _module2.position.call(this, {
-	          left: left,
-	          top: top,
-	          targetAttachment: targetAttachment,
-	          targetPos: targetPos,
-	          elementPos: elementPos,
-	          offset: offset,
-	          targetOffset: targetOffset,
-	          manualOffset: manualOffset,
-	          manualTargetOffset: manualTargetOffset,
-	          scrollbarSize: scrollbarSize,
-	          attachment: this.attachment
-	        });
-
-	        if (ret === false) {
-	          return false;
-	        } else if (typeof ret === 'undefined' || typeof ret !== 'object') {
-	          continue;
-	        } else {
-	          top = ret.top;
-	          left = ret.left;
-	        }
-	      }
-
-	      // We describe the position three different ways to give the optimizer
-	      // a chance to decide the best possible way to position the element
-	      // with the fewest repaints.
-	      var next = {
-	        // It's position relative to the page (absolute positioning when
-	        // the element is a child of the body)
-	        page: {
-	          top: top,
-	          left: left
-	        },
-
-	        // It's position relative to the viewport (fixed positioning)
-	        viewport: {
-	          top: top - pageYOffset,
-	          bottom: pageYOffset - top - height + innerHeight,
-	          left: left - pageXOffset,
-	          right: pageXOffset - left - width + innerWidth
-	        }
-	      };
-
-	      var scrollbarSize = undefined;
-	      if (document.body.scrollWidth > window.innerWidth) {
-	        scrollbarSize = this.cache('scrollbar-size', getScrollBarSize);
-	        next.viewport.bottom -= scrollbarSize.height;
-	      }
-
-	      if (document.body.scrollHeight > window.innerHeight) {
-	        scrollbarSize = this.cache('scrollbar-size', getScrollBarSize);
-	        next.viewport.right -= scrollbarSize.width;
-	      }
-
-	      if (['', 'static'].indexOf(document.body.style.position) === -1 || ['', 'static'].indexOf(document.body.parentElement.style.position) === -1) {
-	        // Absolute positioning in the body will be relative to the page, not the 'initial containing block'
-	        next.page.bottom = document.body.scrollHeight - top - height;
-	        next.page.right = document.body.scrollWidth - left - width;
-	      }
-
-	      if (typeof this.options.optimizations !== 'undefined' && this.options.optimizations.moveElement !== false && !(typeof this.targetModifier !== 'undefined')) {
-	        (function () {
-	          var offsetParent = _this5.cache('target-offsetparent', function () {
-	            return getOffsetParent(_this5.target);
-	          });
-	          var offsetPosition = _this5.cache('target-offsetparent-bounds', function () {
-	            return getBounds(offsetParent);
-	          });
-	          var offsetParentStyle = getComputedStyle(offsetParent);
-	          var offsetParentSize = offsetPosition;
-
-	          var offsetBorder = {};
-	          ['Top', 'Left', 'Bottom', 'Right'].forEach(function (side) {
-	            offsetBorder[side.toLowerCase()] = parseFloat(offsetParentStyle['border' + side + 'Width']);
-	          });
-
-	          offsetPosition.right = document.body.scrollWidth - offsetPosition.left - offsetParentSize.width + offsetBorder.right;
-	          offsetPosition.bottom = document.body.scrollHeight - offsetPosition.top - offsetParentSize.height + offsetBorder.bottom;
-
-	          if (next.page.top >= offsetPosition.top + offsetBorder.top && next.page.bottom >= offsetPosition.bottom) {
-	            if (next.page.left >= offsetPosition.left + offsetBorder.left && next.page.right >= offsetPosition.right) {
-	              // We're within the visible part of the target's scroll parent
-	              var scrollTop = offsetParent.scrollTop;
-	              var scrollLeft = offsetParent.scrollLeft;
-
-	              // It's position relative to the target's offset parent (absolute positioning when
-	              // the element is moved to be a child of the target's offset parent).
-	              next.offset = {
-	                top: next.page.top - offsetPosition.top + scrollTop - offsetBorder.top,
-	                left: next.page.left - offsetPosition.left + scrollLeft - offsetBorder.left
-	              };
-	            }
-	          }
-	        })();
-	      }
-
-	      // We could also travel up the DOM and try each containing context, rather than only
-	      // looking at the body, but we're gonna get diminishing returns.
-
-	      this.move(next);
-
-	      this.history.unshift(next);
-
-	      if (this.history.length > 3) {
-	        this.history.pop();
-	      }
-
-	      if (flushChanges) {
-	        flush();
-	      }
-
+/***/ function(module, exports) {
+
+	/**
+	 * A specialized version of `_.some` for arrays without support for callback
+	 * shorthands and `this` binding.
+	 *
+	 * @private
+	 * @param {Array} array The array to iterate over.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @returns {boolean} Returns `true` if any element passes the predicate check,
+	 *  else `false`.
+	 */
+	function arraySome(array, predicate) {
+	  var index = -1,
+	      length = array.length;
+
+	  while (++index < length) {
+	    if (predicate(array[index], index, array)) {
 	      return true;
 	    }
-
-	    // THE ISSUE
-	  }, {
-	    key: 'move',
-	    value: function move(pos) {
-	      var _this6 = this;
-
-	      if (!(typeof this.element.parentNode !== 'undefined')) {
-	        return;
-	      }
-
-	      var same = {};
-
-	      for (var type in pos) {
-	        same[type] = {};
-
-	        for (var key in pos[type]) {
-	          var found = false;
-
-	          for (var i = 0; i < this.history.length; ++i) {
-	            var point = this.history[i];
-	            if (typeof point[type] !== 'undefined' && !within(point[type][key], pos[type][key])) {
-	              found = true;
-	              break;
-	            }
-	          }
-
-	          if (!found) {
-	            same[type][key] = true;
-	          }
-	        }
-	      }
-
-	      var css = { top: '', left: '', right: '', bottom: '' };
-
-	      var transcribe = function transcribe(_same, _pos) {
-	        var hasOptimizations = typeof _this6.options.optimizations !== 'undefined';
-	        var gpu = hasOptimizations ? _this6.options.optimizations.gpu : null;
-	        if (gpu !== false) {
-	          var yPos = undefined,
-	              xPos = undefined;
-	          if (_same.top) {
-	            css.top = 0;
-	            yPos = _pos.top;
-	          } else {
-	            css.bottom = 0;
-	            yPos = -_pos.bottom;
-	          }
-
-	          if (_same.left) {
-	            css.left = 0;
-	            xPos = _pos.left;
-	          } else {
-	            css.right = 0;
-	            xPos = -_pos.right;
-	          }
-
-	          css[transformKey] = 'translateX(' + Math.round(xPos) + 'px) translateY(' + Math.round(yPos) + 'px)';
-
-	          if (transformKey !== 'msTransform') {
-	            // The Z transform will keep this in the GPU (faster, and prevents artifacts),
-	            // but IE9 doesn't support 3d transforms and will choke.
-	            css[transformKey] += " translateZ(0)";
-	          }
-	        } else {
-	          if (_same.top) {
-	            css.top = _pos.top + 'px';
-	          } else {
-	            css.bottom = _pos.bottom + 'px';
-	          }
-
-	          if (_same.left) {
-	            css.left = _pos.left + 'px';
-	          } else {
-	            css.right = _pos.right + 'px';
-	          }
-	        }
-	      };
-
-	      var moved = false;
-	      if ((same.page.top || same.page.bottom) && (same.page.left || same.page.right)) {
-	        css.position = 'absolute';
-	        transcribe(same.page, pos.page);
-	      } else if ((same.viewport.top || same.viewport.bottom) && (same.viewport.left || same.viewport.right)) {
-	        css.position = 'fixed';
-	        transcribe(same.viewport, pos.viewport);
-	      } else if (typeof same.offset !== 'undefined' && same.offset.top && same.offset.left) {
-	        (function () {
-	          css.position = 'absolute';
-	          var offsetParent = _this6.cache('target-offsetparent', function () {
-	            return getOffsetParent(_this6.target);
-	          });
-
-	          if (getOffsetParent(_this6.element) !== offsetParent) {
-	            defer(function () {
-	              _this6.element.parentNode.removeChild(_this6.element);
-	              offsetParent.appendChild(_this6.element);
-	            });
-	          }
-
-	          transcribe(same.offset, pos.offset);
-	          moved = true;
-	        })();
-	      } else {
-	        css.position = 'absolute';
-	        transcribe({ top: true, left: true }, pos.page);
-	      }
-
-	      if (!moved) {
-	        var offsetParentIsBody = true;
-	        var currentNode = this.element.parentNode;
-	        while (currentNode && currentNode.tagName !== 'BODY') {
-	          if (getComputedStyle(currentNode).position !== 'static') {
-	            offsetParentIsBody = false;
-	            break;
-	          }
-
-	          currentNode = currentNode.parentNode;
-	        }
-
-	        if (!offsetParentIsBody) {
-	          this.element.parentNode.removeChild(this.element);
-	          document.body.appendChild(this.element);
-	        }
-	      }
-
-	      // Any css change will trigger a repaint, so let's avoid one if nothing changed
-	      var writeCSS = {};
-	      var write = false;
-	      for (var key in css) {
-	        var val = css[key];
-	        var elVal = this.element.style[key];
-
-	        if (elVal !== '' && val !== '' && ['top', 'left', 'bottom', 'right'].indexOf(key) >= 0) {
-	          elVal = parseFloat(elVal);
-	          val = parseFloat(val);
-	        }
-
-	        if (elVal !== val) {
-	          write = true;
-	          writeCSS[key] = val;
-	        }
-	      }
-
-	      if (write) {
-	        defer(function () {
-	          extend(_this6.element.style, writeCSS);
-	        });
-	      }
-	    }
-	  }]);
-
-	  return TetherClass;
-	})();
-
-	TetherClass.modules = [];
-
-	TetherBase.position = position;
-
-	var Tether = extend(TetherClass, TetherBase);
-	/* globals TetherBase */
-
-	'use strict';
-
-	var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
-
-	var _TetherBase$Utils = TetherBase.Utils;
-	var getBounds = _TetherBase$Utils.getBounds;
-	var extend = _TetherBase$Utils.extend;
-	var updateClasses = _TetherBase$Utils.updateClasses;
-	var defer = _TetherBase$Utils.defer;
-
-	var BOUNDS_FORMAT = ['left', 'top', 'right', 'bottom'];
-
-	function getBoundingRect(tether, to) {
-	  if (to === 'scrollParent') {
-	    to = tether.scrollParent;
-	  } else if (to === 'window') {
-	    to = [pageXOffset, pageYOffset, innerWidth + pageXOffset, innerHeight + pageYOffset];
 	  }
-
-	  if (to === document) {
-	    to = to.documentElement;
-	  }
-
-	  if (typeof to.nodeType !== 'undefined') {
-	    (function () {
-	      var size = getBounds(to);
-	      var pos = size;
-	      var style = getComputedStyle(to);
-
-	      to = [pos.left, pos.top, size.width + pos.left, size.height + pos.top];
-
-	      BOUNDS_FORMAT.forEach(function (side, i) {
-	        side = side[0].toUpperCase() + side.substr(1);
-	        if (side === 'Top' || side === 'Left') {
-	          to[i] += parseFloat(style['border' + side + 'Width']);
-	        } else {
-	          to[i] -= parseFloat(style['border' + side + 'Width']);
-	        }
-	      });
-	    })();
-	  }
-
-	  return to;
+	  return false;
 	}
 
-	TetherBase.modules.push({
-	  position: function position(_ref) {
-	    var _this = this;
-
-	    var top = _ref.top;
-	    var left = _ref.left;
-	    var targetAttachment = _ref.targetAttachment;
-
-	    if (!this.options.constraints) {
-	      return true;
-	    }
-
-	    var _cache = this.cache('element-bounds', function () {
-	      return getBounds(_this.element);
-	    });
-
-	    var height = _cache.height;
-	    var width = _cache.width;
-
-	    if (width === 0 && height === 0 && typeof this.lastSize !== 'undefined') {
-	      var _lastSize = this.lastSize;
-
-	      // Handle the item getting hidden as a result of our positioning without glitching
-	      // the classes in and out
-	      width = _lastSize.width;
-	      height = _lastSize.height;
-	    }
-
-	    var targetSize = this.cache('target-bounds', function () {
-	      return _this.getTargetBounds();
-	    });
-
-	    var targetHeight = targetSize.height;
-	    var targetWidth = targetSize.width;
-
-	    var allClasses = [this.getClass('pinned'), this.getClass('out-of-bounds')];
-
-	    this.options.constraints.forEach(function (constraint) {
-	      var outOfBoundsClass = constraint.outOfBoundsClass;
-	      var pinnedClass = constraint.pinnedClass;
-
-	      if (outOfBoundsClass) {
-	        allClasses.push(outOfBoundsClass);
-	      }
-	      if (pinnedClass) {
-	        allClasses.push(pinnedClass);
-	      }
-	    });
-
-	    allClasses.forEach(function (cls) {
-	      ['left', 'top', 'right', 'bottom'].forEach(function (side) {
-	        allClasses.push(cls + '-' + side);
-	      });
-	    });
-
-	    var addClasses = [];
-
-	    var tAttachment = extend({}, targetAttachment);
-	    var eAttachment = extend({}, this.attachment);
-
-	    this.options.constraints.forEach(function (constraint) {
-	      var to = constraint.to;
-	      var attachment = constraint.attachment;
-	      var pin = constraint.pin;
-
-	      if (typeof attachment === 'undefined') {
-	        attachment = '';
-	      }
-
-	      var changeAttachX = undefined,
-	          changeAttachY = undefined;
-	      if (attachment.indexOf(' ') >= 0) {
-	        var _attachment$split = attachment.split(' ');
-
-	        var _attachment$split2 = _slicedToArray(_attachment$split, 2);
-
-	        changeAttachY = _attachment$split2[0];
-	        changeAttachX = _attachment$split2[1];
-	      } else {
-	        changeAttachX = changeAttachY = attachment;
-	      }
-
-	      var bounds = getBoundingRect(_this, to);
-
-	      if (changeAttachY === 'target' || changeAttachY === 'both') {
-	        if (top < bounds[1] && tAttachment.top === 'top') {
-	          top += targetHeight;
-	          tAttachment.top = 'bottom';
-	        }
-
-	        if (top + height > bounds[3] && tAttachment.top === 'bottom') {
-	          top -= targetHeight;
-	          tAttachment.top = 'top';
-	        }
-	      }
-
-	      if (changeAttachY === 'together') {
-	        if (top < bounds[1] && tAttachment.top === 'top') {
-	          if (eAttachment.top === 'bottom') {
-	            top += targetHeight;
-	            tAttachment.top = 'bottom';
-
-	            top += height;
-	            eAttachment.top = 'top';
-	          } else if (eAttachment.top === 'top') {
-	            top += targetHeight;
-	            tAttachment.top = 'bottom';
-
-	            top -= height;
-	            eAttachment.top = 'bottom';
-	          }
-	        }
-
-	        if (top + height > bounds[3] && tAttachment.top === 'bottom') {
-	          if (eAttachment.top === 'top') {
-	            top -= targetHeight;
-	            tAttachment.top = 'top';
-
-	            top -= height;
-	            eAttachment.top = 'bottom';
-	          } else if (eAttachment.top === 'bottom') {
-	            top -= targetHeight;
-	            tAttachment.top = 'top';
-
-	            top += height;
-	            eAttachment.top = 'top';
-	          }
-	        }
-
-	        if (tAttachment.top === 'middle') {
-	          if (top + height > bounds[3] && eAttachment.top === 'top') {
-	            top -= height;
-	            eAttachment.top = 'bottom';
-	          } else if (top < bounds[1] && eAttachment.top === 'bottom') {
-	            top += height;
-	            eAttachment.top = 'top';
-	          }
-	        }
-	      }
-
-	      if (changeAttachX === 'target' || changeAttachX === 'both') {
-	        if (left < bounds[0] && tAttachment.left === 'left') {
-	          left += targetWidth;
-	          tAttachment.left = 'right';
-	        }
-
-	        if (left + width > bounds[2] && tAttachment.left === 'right') {
-	          left -= targetWidth;
-	          tAttachment.left = 'left';
-	        }
-	      }
-
-	      if (changeAttachX === 'together') {
-	        if (left < bounds[0] && tAttachment.left === 'left') {
-	          if (eAttachment.left === 'right') {
-	            left += targetWidth;
-	            tAttachment.left = 'right';
-
-	            left += width;
-	            eAttachment.left = 'left';
-	          } else if (eAttachment.left === 'left') {
-	            left += targetWidth;
-	            tAttachment.left = 'right';
-
-	            left -= width;
-	            eAttachment.left = 'right';
-	          }
-	        } else if (left + width > bounds[2] && tAttachment.left === 'right') {
-	          if (eAttachment.left === 'left') {
-	            left -= targetWidth;
-	            tAttachment.left = 'left';
-
-	            left -= width;
-	            eAttachment.left = 'right';
-	          } else if (eAttachment.left === 'right') {
-	            left -= targetWidth;
-	            tAttachment.left = 'left';
-
-	            left += width;
-	            eAttachment.left = 'left';
-	          }
-	        } else if (tAttachment.left === 'center') {
-	          if (left + width > bounds[2] && eAttachment.left === 'left') {
-	            left -= width;
-	            eAttachment.left = 'right';
-	          } else if (left < bounds[0] && eAttachment.left === 'right') {
-	            left += width;
-	            eAttachment.left = 'left';
-	          }
-	        }
-	      }
-
-	      if (changeAttachY === 'element' || changeAttachY === 'both') {
-	        if (top < bounds[1] && eAttachment.top === 'bottom') {
-	          top += height;
-	          eAttachment.top = 'top';
-	        }
-
-	        if (top + height > bounds[3] && eAttachment.top === 'top') {
-	          top -= height;
-	          eAttachment.top = 'bottom';
-	        }
-	      }
-
-	      if (changeAttachX === 'element' || changeAttachX === 'both') {
-	        if (left < bounds[0] && eAttachment.left === 'right') {
-	          left += width;
-	          eAttachment.left = 'left';
-	        }
-
-	        if (left + width > bounds[2] && eAttachment.left === 'left') {
-	          left -= width;
-	          eAttachment.left = 'right';
-	        }
-	      }
-
-	      if (typeof pin === 'string') {
-	        pin = pin.split(',').map(function (p) {
-	          return p.trim();
-	        });
-	      } else if (pin === true) {
-	        pin = ['top', 'left', 'right', 'bottom'];
-	      }
-
-	      pin = pin || [];
-
-	      var pinned = [];
-	      var oob = [];
-
-	      if (top < bounds[1]) {
-	        if (pin.indexOf('top') >= 0) {
-	          top = bounds[1];
-	          pinned.push('top');
-	        } else {
-	          oob.push('top');
-	        }
-	      }
-
-	      if (top + height > bounds[3]) {
-	        if (pin.indexOf('bottom') >= 0) {
-	          top = bounds[3] - height;
-	          pinned.push('bottom');
-	        } else {
-	          oob.push('bottom');
-	        }
-	      }
-
-	      if (left < bounds[0]) {
-	        if (pin.indexOf('left') >= 0) {
-	          left = bounds[0];
-	          pinned.push('left');
-	        } else {
-	          oob.push('left');
-	        }
-	      }
-
-	      if (left + width > bounds[2]) {
-	        if (pin.indexOf('right') >= 0) {
-	          left = bounds[2] - width;
-	          pinned.push('right');
-	        } else {
-	          oob.push('right');
-	        }
-	      }
-
-	      if (pinned.length) {
-	        (function () {
-	          var pinnedClass = undefined;
-	          if (typeof _this.options.pinnedClass !== 'undefined') {
-	            pinnedClass = _this.options.pinnedClass;
-	          } else {
-	            pinnedClass = _this.getClass('pinned');
-	          }
-
-	          addClasses.push(pinnedClass);
-	          pinned.forEach(function (side) {
-	            addClasses.push(pinnedClass + '-' + side);
-	          });
-	        })();
-	      }
-
-	      if (oob.length) {
-	        (function () {
-	          var oobClass = undefined;
-	          if (typeof _this.options.outOfBoundsClass !== 'undefined') {
-	            oobClass = _this.options.outOfBoundsClass;
-	          } else {
-	            oobClass = _this.getClass('out-of-bounds');
-	          }
-
-	          addClasses.push(oobClass);
-	          oob.forEach(function (side) {
-	            addClasses.push(oobClass + '-' + side);
-	          });
-	        })();
-	      }
-
-	      if (pinned.indexOf('left') >= 0 || pinned.indexOf('right') >= 0) {
-	        eAttachment.left = tAttachment.left = false;
-	      }
-	      if (pinned.indexOf('top') >= 0 || pinned.indexOf('bottom') >= 0) {
-	        eAttachment.top = tAttachment.top = false;
-	      }
-
-	      if (tAttachment.top !== targetAttachment.top || tAttachment.left !== targetAttachment.left || eAttachment.top !== _this.attachment.top || eAttachment.left !== _this.attachment.left) {
-	        _this.updateAttachClasses(eAttachment, tAttachment);
-	      }
-	    });
-
-	    defer(function () {
-	      if (!(_this.options.addTargetClasses === false)) {
-	        updateClasses(_this.target, addClasses, allClasses);
-	      }
-	      updateClasses(_this.element, addClasses, allClasses);
-	    });
-
-	    return { top: top, left: left };
-	  }
-	});
-	/* globals TetherBase */
-
-	'use strict';
-
-	var _TetherBase$Utils = TetherBase.Utils;
-	var getBounds = _TetherBase$Utils.getBounds;
-	var updateClasses = _TetherBase$Utils.updateClasses;
-	var defer = _TetherBase$Utils.defer;
-
-	TetherBase.modules.push({
-	  position: function position(_ref) {
-	    var _this = this;
-
-	    var top = _ref.top;
-	    var left = _ref.left;
-
-	    var _cache = this.cache('element-bounds', function () {
-	      return getBounds(_this.element);
-	    });
-
-	    var height = _cache.height;
-	    var width = _cache.width;
-
-	    var targetPos = this.getTargetBounds();
-
-	    var bottom = top + height;
-	    var right = left + width;
-
-	    var abutted = [];
-	    if (top <= targetPos.bottom && bottom >= targetPos.top) {
-	      ['left', 'right'].forEach(function (side) {
-	        var targetPosSide = targetPos[side];
-	        if (targetPosSide === left || targetPosSide === right) {
-	          abutted.push(side);
-	        }
-	      });
-	    }
-
-	    if (left <= targetPos.right && right >= targetPos.left) {
-	      ['top', 'bottom'].forEach(function (side) {
-	        var targetPosSide = targetPos[side];
-	        if (targetPosSide === top || targetPosSide === bottom) {
-	          abutted.push(side);
-	        }
-	      });
-	    }
-
-	    var allClasses = [];
-	    var addClasses = [];
-
-	    var sides = ['left', 'top', 'right', 'bottom'];
-	    allClasses.push(this.getClass('abutted'));
-	    sides.forEach(function (side) {
-	      allClasses.push(_this.getClass('abutted') + '-' + side);
-	    });
-
-	    if (abutted.length) {
-	      addClasses.push(this.getClass('abutted'));
-	    }
-
-	    abutted.forEach(function (side) {
-	      addClasses.push(_this.getClass('abutted') + '-' + side);
-	    });
-
-	    defer(function () {
-	      if (!(_this.options.addTargetClasses === false)) {
-	        updateClasses(_this.target, addClasses, allClasses);
-	      }
-	      updateClasses(_this.element, addClasses, allClasses);
-	    });
-
-	    return true;
-	  }
-	});
-	/* globals TetherBase */
-
-	'use strict';
-
-	var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
-
-	TetherBase.modules.push({
-	  position: function position(_ref) {
-	    var top = _ref.top;
-	    var left = _ref.left;
-
-	    if (!this.options.shift) {
-	      return;
-	    }
-
-	    var shift = this.options.shift;
-	    if (typeof this.options.shift === 'function') {
-	      shift = this.options.shift.call(this, { top: top, left: left });
-	    }
-
-	    var shiftTop = undefined,
-	        shiftLeft = undefined;
-	    if (typeof shift === 'string') {
-	      shift = shift.split(' ');
-	      shift[1] = shift[1] || shift[0];
-
-	      var _shift = shift;
-
-	      var _shift2 = _slicedToArray(_shift, 2);
-
-	      shiftTop = _shift2[0];
-	      shiftLeft = _shift2[1];
-
-	      shiftTop = parseFloat(shiftTop, 10);
-	      shiftLeft = parseFloat(shiftLeft, 10);
-	    } else {
-	      shiftTop = shift.top;
-	      shiftLeft = shift.left;
-	    }
-
-	    top += shiftTop;
-	    left += shiftLeft;
-
-	    return { top: top, left: left };
-	  }
-	});
-	return Tether;
-
-	}));
+	module.exports = arraySome;
 
 
 /***/ },
 /* 162 */
+/***/ function(module, exports) {
+
+	/** `Object#toString` result references. */
+	var boolTag = '[object Boolean]',
+	    dateTag = '[object Date]',
+	    errorTag = '[object Error]',
+	    numberTag = '[object Number]',
+	    regexpTag = '[object RegExp]',
+	    stringTag = '[object String]';
+
+	/**
+	 * A specialized version of `baseIsEqualDeep` for comparing objects of
+	 * the same `toStringTag`.
+	 *
+	 * **Note:** This function only supports comparing values with tags of
+	 * `Boolean`, `Date`, `Error`, `Number`, `RegExp`, or `String`.
+	 *
+	 * @private
+	 * @param {Object} object The object to compare.
+	 * @param {Object} other The other object to compare.
+	 * @param {string} tag The `toStringTag` of the objects to compare.
+	 * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+	 */
+	function equalByTag(object, other, tag) {
+	  switch (tag) {
+	    case boolTag:
+	    case dateTag:
+	      // Coerce dates and booleans to numbers, dates to milliseconds and booleans
+	      // to `1` or `0` treating invalid dates coerced to `NaN` as not equal.
+	      return +object == +other;
+
+	    case errorTag:
+	      return object.name == other.name && object.message == other.message;
+
+	    case numberTag:
+	      // Treat `NaN` vs. `NaN` as equal.
+	      return (object != +object)
+	        ? other != +other
+	        : object == +other;
+
+	    case regexpTag:
+	    case stringTag:
+	      // Coerce regexes to strings and treat strings primitives and string
+	      // objects as equal. See https://es5.github.io/#x15.10.6.4 for more details.
+	      return object == (other + '');
+	  }
+	  return false;
+	}
+
+	module.exports = equalByTag;
+
+
+/***/ },
+/* 163 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var keys = __webpack_require__(164);
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * A specialized version of `baseIsEqualDeep` for objects with support for
+	 * partial deep comparisons.
+	 *
+	 * @private
+	 * @param {Object} object The object to compare.
+	 * @param {Object} other The other object to compare.
+	 * @param {Function} equalFunc The function to determine equivalents of values.
+	 * @param {Function} [customizer] The function to customize comparing values.
+	 * @param {boolean} [isLoose] Specify performing partial comparisons.
+	 * @param {Array} [stackA] Tracks traversed `value` objects.
+	 * @param {Array} [stackB] Tracks traversed `other` objects.
+	 * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+	 */
+	function equalObjects(object, other, equalFunc, customizer, isLoose, stackA, stackB) {
+	  var objProps = keys(object),
+	      objLength = objProps.length,
+	      othProps = keys(other),
+	      othLength = othProps.length;
+
+	  if (objLength != othLength && !isLoose) {
+	    return false;
+	  }
+	  var index = objLength;
+	  while (index--) {
+	    var key = objProps[index];
+	    if (!(isLoose ? key in other : hasOwnProperty.call(other, key))) {
+	      return false;
+	    }
+	  }
+	  var skipCtor = isLoose;
+	  while (++index < objLength) {
+	    key = objProps[index];
+	    var objValue = object[key],
+	        othValue = other[key],
+	        result = customizer ? customizer(isLoose ? othValue : objValue, isLoose? objValue : othValue, key) : undefined;
+
+	    // Recursively compare objects (susceptible to call stack limits).
+	    if (!(result === undefined ? equalFunc(objValue, othValue, customizer, isLoose, stackA, stackB) : result)) {
+	      return false;
+	    }
+	    skipCtor || (skipCtor = key == 'constructor');
+	  }
+	  if (!skipCtor) {
+	    var objCtor = object.constructor,
+	        othCtor = other.constructor;
+
+	    // Non `Object` object instances with different constructors are not equal.
+	    if (objCtor != othCtor &&
+	        ('constructor' in object && 'constructor' in other) &&
+	        !(typeof objCtor == 'function' && objCtor instanceof objCtor &&
+	          typeof othCtor == 'function' && othCtor instanceof othCtor)) {
+	      return false;
+	    }
+	  }
+	  return true;
+	}
+
+	module.exports = equalObjects;
+
+
+/***/ },
+/* 164 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getNative = __webpack_require__(165),
+	    isArrayLike = __webpack_require__(170),
+	    isObject = __webpack_require__(168),
+	    shimKeys = __webpack_require__(174);
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeKeys = getNative(Object, 'keys');
+
+	/**
+	 * Creates an array of the own enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects. See the
+	 * [ES spec](http://ecma-international.org/ecma-262/6.0/#sec-object.keys)
+	 * for more details.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keys(new Foo);
+	 * // => ['a', 'b'] (iteration order is not guaranteed)
+	 *
+	 * _.keys('hi');
+	 * // => ['0', '1']
+	 */
+	var keys = !nativeKeys ? shimKeys : function(object) {
+	  var Ctor = object == null ? undefined : object.constructor;
+	  if ((typeof Ctor == 'function' && Ctor.prototype === object) ||
+	      (typeof object != 'function' && isArrayLike(object))) {
+	    return shimKeys(object);
+	  }
+	  return isObject(object) ? nativeKeys(object) : [];
+	};
+
+	module.exports = keys;
+
+
+/***/ },
+/* 165 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isNative = __webpack_require__(166);
+
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+	function getNative(object, key) {
+	  var value = object == null ? undefined : object[key];
+	  return isNative(value) ? value : undefined;
+	}
+
+	module.exports = getNative;
+
+
+/***/ },
+/* 166 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isFunction = __webpack_require__(167),
+	    isObjectLike = __webpack_require__(169);
+
+	/** Used to detect host constructors (Safari > 5). */
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to resolve the decompiled source of functions. */
+	var fnToString = Function.prototype.toString;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/** Used to detect if a method is native. */
+	var reIsNative = RegExp('^' +
+	  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
+	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+	);
+
+	/**
+	 * Checks if `value` is a native function.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+	 * @example
+	 *
+	 * _.isNative(Array.prototype.push);
+	 * // => true
+	 *
+	 * _.isNative(_);
+	 * // => false
+	 */
+	function isNative(value) {
+	  if (value == null) {
+	    return false;
+	  }
+	  if (isFunction(value)) {
+	    return reIsNative.test(fnToString.call(value));
+	  }
+	  return isObjectLike(value) && reIsHostCtor.test(value);
+	}
+
+	module.exports = isNative;
+
+
+/***/ },
+/* 167 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(168);
+
+	/** `Object#toString` result references. */
+	var funcTag = '[object Function]';
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in older versions of Chrome and Safari which return 'function' for regexes
+	  // and Safari 8 which returns 'object' for typed array constructors.
+	  return isObject(value) && objToString.call(value) == funcTag;
+	}
+
+	module.exports = isFunction;
+
+
+/***/ },
+/* 168 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	module.exports = isObject;
+
+
+/***/ },
+/* 169 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	module.exports = isObjectLike;
+
+
+/***/ },
+/* 170 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getLength = __webpack_require__(171),
+	    isLength = __webpack_require__(173);
+
+	/**
+	 * Checks if `value` is array-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(getLength(value));
+	}
+
+	module.exports = isArrayLike;
+
+
+/***/ },
+/* 171 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseProperty = __webpack_require__(172);
+
+	/**
+	 * Gets the "length" property value of `object`.
+	 *
+	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {*} Returns the "length" value.
+	 */
+	var getLength = baseProperty('length');
+
+	module.exports = getLength;
+
+
+/***/ },
+/* 172 */
+/***/ function(module, exports) {
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseProperty(key) {
+	  return function(object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	module.exports = baseProperty;
+
+
+/***/ },
+/* 173 */
+/***/ function(module, exports) {
+
+	/**
+	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	module.exports = isLength;
+
+
+/***/ },
+/* 174 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArguments = __webpack_require__(175),
+	    isArray = __webpack_require__(176),
+	    isIndex = __webpack_require__(177),
+	    isLength = __webpack_require__(173),
+	    keysIn = __webpack_require__(178);
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * A fallback implementation of `Object.keys` which creates an array of the
+	 * own enumerable property names of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 */
+	function shimKeys(object) {
+	  var props = keysIn(object),
+	      propsLength = props.length,
+	      length = propsLength && object.length;
+
+	  var allowIndexes = !!length && isLength(length) &&
+	    (isArray(object) || isArguments(object));
+
+	  var index = -1,
+	      result = [];
+
+	  while (++index < propsLength) {
+	    var key = props[index];
+	    if ((allowIndexes && isIndex(key, length)) || hasOwnProperty.call(object, key)) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+
+	module.exports = shimKeys;
+
+
+/***/ },
+/* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArrayLike = __webpack_require__(170),
+	    isObjectLike = __webpack_require__(169);
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/** Native method references. */
+	var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+	/**
+	 * Checks if `value` is classified as an `arguments` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isArguments(function() { return arguments; }());
+	 * // => true
+	 *
+	 * _.isArguments([1, 2, 3]);
+	 * // => false
+	 */
+	function isArguments(value) {
+	  return isObjectLike(value) && isArrayLike(value) &&
+	    hasOwnProperty.call(value, 'callee') && !propertyIsEnumerable.call(value, 'callee');
+	}
+
+	module.exports = isArguments;
+
+
+/***/ },
+/* 176 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getNative = __webpack_require__(165),
+	    isLength = __webpack_require__(173),
+	    isObjectLike = __webpack_require__(169);
+
+	/** `Object#toString` result references. */
+	var arrayTag = '[object Array]';
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeIsArray = getNative(Array, 'isArray');
+
+	/**
+	 * Checks if `value` is classified as an `Array` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isArray([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArray(function() { return arguments; }());
+	 * // => false
+	 */
+	var isArray = nativeIsArray || function(value) {
+	  return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
+	};
+
+	module.exports = isArray;
+
+
+/***/ },
+/* 177 */
+/***/ function(module, exports) {
+
+	/** Used to detect unsigned integer values. */
+	var reIsUint = /^\d+$/;
+
+	/**
+	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return value > -1 && value % 1 == 0 && value < length;
+	}
+
+	module.exports = isIndex;
+
+
+/***/ },
+/* 178 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArguments = __webpack_require__(175),
+	    isArray = __webpack_require__(176),
+	    isIndex = __webpack_require__(177),
+	    isLength = __webpack_require__(173),
+	    isObject = __webpack_require__(168);
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Creates an array of the own and inherited enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keysIn(new Foo);
+	 * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
+	 */
+	function keysIn(object) {
+	  if (object == null) {
+	    return [];
+	  }
+	  if (!isObject(object)) {
+	    object = Object(object);
+	  }
+	  var length = object.length;
+	  length = (length && isLength(length) &&
+	    (isArray(object) || isArguments(object)) && length) || 0;
+
+	  var Ctor = object.constructor,
+	      index = -1,
+	      isProto = typeof Ctor == 'function' && Ctor.prototype === object,
+	      result = Array(length),
+	      skipIndexes = length > 0;
+
+	  while (++index < length) {
+	    result[index] = (index + '');
+	  }
+	  for (var key in object) {
+	    if (!(skipIndexes && isIndex(key, length)) &&
+	        !(key == 'constructor' && (isProto || !hasOwnProperty.call(object, key)))) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+
+	module.exports = keysIn;
+
+
+/***/ },
+/* 179 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isLength = __webpack_require__(173),
+	    isObjectLike = __webpack_require__(169);
+
+	/** `Object#toString` result references. */
+	var argsTag = '[object Arguments]',
+	    arrayTag = '[object Array]',
+	    boolTag = '[object Boolean]',
+	    dateTag = '[object Date]',
+	    errorTag = '[object Error]',
+	    funcTag = '[object Function]',
+	    mapTag = '[object Map]',
+	    numberTag = '[object Number]',
+	    objectTag = '[object Object]',
+	    regexpTag = '[object RegExp]',
+	    setTag = '[object Set]',
+	    stringTag = '[object String]',
+	    weakMapTag = '[object WeakMap]';
+
+	var arrayBufferTag = '[object ArrayBuffer]',
+	    float32Tag = '[object Float32Array]',
+	    float64Tag = '[object Float64Array]',
+	    int8Tag = '[object Int8Array]',
+	    int16Tag = '[object Int16Array]',
+	    int32Tag = '[object Int32Array]',
+	    uint8Tag = '[object Uint8Array]',
+	    uint8ClampedTag = '[object Uint8ClampedArray]',
+	    uint16Tag = '[object Uint16Array]',
+	    uint32Tag = '[object Uint32Array]';
+
+	/** Used to identify `toStringTag` values of typed arrays. */
+	var typedArrayTags = {};
+	typedArrayTags[float32Tag] = typedArrayTags[float64Tag] =
+	typedArrayTags[int8Tag] = typedArrayTags[int16Tag] =
+	typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] =
+	typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] =
+	typedArrayTags[uint32Tag] = true;
+	typedArrayTags[argsTag] = typedArrayTags[arrayTag] =
+	typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] =
+	typedArrayTags[dateTag] = typedArrayTags[errorTag] =
+	typedArrayTags[funcTag] = typedArrayTags[mapTag] =
+	typedArrayTags[numberTag] = typedArrayTags[objectTag] =
+	typedArrayTags[regexpTag] = typedArrayTags[setTag] =
+	typedArrayTags[stringTag] = typedArrayTags[weakMapTag] = false;
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/**
+	 * Checks if `value` is classified as a typed array.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isTypedArray(new Uint8Array);
+	 * // => true
+	 *
+	 * _.isTypedArray([]);
+	 * // => false
+	 */
+	function isTypedArray(value) {
+	  return isObjectLike(value) && isLength(value.length) && !!typedArrayTags[objToString.call(value)];
+	}
+
+	module.exports = isTypedArray;
+
+
+/***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var identity = __webpack_require__(181);
+
+	/**
+	 * A specialized version of `baseCallback` which only supports `this` binding
+	 * and specifying the number of arguments to provide to `func`.
+	 *
+	 * @private
+	 * @param {Function} func The function to bind.
+	 * @param {*} thisArg The `this` binding of `func`.
+	 * @param {number} [argCount] The number of arguments to provide to `func`.
+	 * @returns {Function} Returns the callback.
+	 */
+	function bindCallback(func, thisArg, argCount) {
+	  if (typeof func != 'function') {
+	    return identity;
+	  }
+	  if (thisArg === undefined) {
+	    return func;
+	  }
+	  switch (argCount) {
+	    case 1: return function(value) {
+	      return func.call(thisArg, value);
+	    };
+	    case 3: return function(value, index, collection) {
+	      return func.call(thisArg, value, index, collection);
+	    };
+	    case 4: return function(accumulator, value, index, collection) {
+	      return func.call(thisArg, accumulator, value, index, collection);
+	    };
+	    case 5: return function(value, other, key, object, source) {
+	      return func.call(thisArg, value, other, key, object, source);
+	    };
+	  }
+	  return function() {
+	    return func.apply(thisArg, arguments);
+	  };
+	}
+
+	module.exports = bindCallback;
+
+
+/***/ },
+/* 181 */
+/***/ function(module, exports) {
+
+	/**
+	 * This method returns the first argument provided to it.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Utility
+	 * @param {*} value Any value.
+	 * @returns {*} Returns `value`.
+	 * @example
+	 *
+	 * var object = { 'user': 'fred' };
+	 *
+	 * _.identity(object) === object;
+	 * // => true
+	 */
+	function identity(value) {
+	  return value;
+	}
+
+	module.exports = identity;
+
+
+/***/ },
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {//! moment.js
@@ -21640,7 +20748,7 @@
 	                module && module.exports) {
 	            try {
 	                oldLocale = globalLocale._abbr;
-	                __webpack_require__(164)("./" + name);
+	                __webpack_require__(184)("./" + name);
 	                // because defineLocale currently also sets the global locale, we
 	                // want to undo that for lazy loaded locales
 	                locale_locales__getSetGlobalLocale(oldLocale);
@@ -24567,10 +23675,10 @@
 	    return _moment;
 
 	}));
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(163)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(183)(module)))
 
 /***/ },
-/* 163 */
+/* 183 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -24586,180 +23694,180 @@
 
 
 /***/ },
-/* 164 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./af": 165,
-		"./af.js": 165,
-		"./ar": 166,
-		"./ar-ma": 167,
-		"./ar-ma.js": 167,
-		"./ar-sa": 168,
-		"./ar-sa.js": 168,
-		"./ar-tn": 169,
-		"./ar-tn.js": 169,
-		"./ar.js": 166,
-		"./az": 170,
-		"./az.js": 170,
-		"./be": 171,
-		"./be.js": 171,
-		"./bg": 172,
-		"./bg.js": 172,
-		"./bn": 173,
-		"./bn.js": 173,
-		"./bo": 174,
-		"./bo.js": 174,
-		"./br": 175,
-		"./br.js": 175,
-		"./bs": 176,
-		"./bs.js": 176,
-		"./ca": 177,
-		"./ca.js": 177,
-		"./cs": 178,
-		"./cs.js": 178,
-		"./cv": 179,
-		"./cv.js": 179,
-		"./cy": 180,
-		"./cy.js": 180,
-		"./da": 181,
-		"./da.js": 181,
-		"./de": 182,
-		"./de-at": 183,
-		"./de-at.js": 183,
-		"./de.js": 182,
-		"./el": 184,
-		"./el.js": 184,
-		"./en-au": 185,
-		"./en-au.js": 185,
-		"./en-ca": 186,
-		"./en-ca.js": 186,
-		"./en-gb": 187,
-		"./en-gb.js": 187,
-		"./eo": 188,
-		"./eo.js": 188,
-		"./es": 189,
-		"./es.js": 189,
-		"./et": 190,
-		"./et.js": 190,
-		"./eu": 191,
-		"./eu.js": 191,
-		"./fa": 192,
-		"./fa.js": 192,
-		"./fi": 193,
-		"./fi.js": 193,
-		"./fo": 194,
-		"./fo.js": 194,
-		"./fr": 195,
-		"./fr-ca": 196,
-		"./fr-ca.js": 196,
-		"./fr.js": 195,
-		"./fy": 197,
-		"./fy.js": 197,
-		"./gl": 198,
-		"./gl.js": 198,
-		"./he": 199,
-		"./he.js": 199,
-		"./hi": 200,
-		"./hi.js": 200,
-		"./hr": 201,
-		"./hr.js": 201,
-		"./hu": 202,
-		"./hu.js": 202,
-		"./hy-am": 203,
-		"./hy-am.js": 203,
-		"./id": 204,
-		"./id.js": 204,
-		"./is": 205,
-		"./is.js": 205,
-		"./it": 206,
-		"./it.js": 206,
-		"./ja": 207,
-		"./ja.js": 207,
-		"./jv": 208,
-		"./jv.js": 208,
-		"./ka": 209,
-		"./ka.js": 209,
-		"./km": 210,
-		"./km.js": 210,
-		"./ko": 211,
-		"./ko.js": 211,
-		"./lb": 212,
-		"./lb.js": 212,
-		"./lt": 213,
-		"./lt.js": 213,
-		"./lv": 214,
-		"./lv.js": 214,
-		"./me": 215,
-		"./me.js": 215,
-		"./mk": 216,
-		"./mk.js": 216,
-		"./ml": 217,
-		"./ml.js": 217,
-		"./mr": 218,
-		"./mr.js": 218,
-		"./ms": 219,
-		"./ms-my": 220,
-		"./ms-my.js": 220,
-		"./ms.js": 219,
-		"./my": 221,
-		"./my.js": 221,
-		"./nb": 222,
-		"./nb.js": 222,
-		"./ne": 223,
-		"./ne.js": 223,
-		"./nl": 224,
-		"./nl.js": 224,
-		"./nn": 225,
-		"./nn.js": 225,
-		"./pl": 226,
-		"./pl.js": 226,
-		"./pt": 227,
-		"./pt-br": 228,
-		"./pt-br.js": 228,
-		"./pt.js": 227,
-		"./ro": 229,
-		"./ro.js": 229,
-		"./ru": 230,
-		"./ru.js": 230,
-		"./si": 231,
-		"./si.js": 231,
-		"./sk": 232,
-		"./sk.js": 232,
-		"./sl": 233,
-		"./sl.js": 233,
-		"./sq": 234,
-		"./sq.js": 234,
-		"./sr": 235,
-		"./sr-cyrl": 236,
-		"./sr-cyrl.js": 236,
-		"./sr.js": 235,
-		"./sv": 237,
-		"./sv.js": 237,
-		"./ta": 238,
-		"./ta.js": 238,
-		"./th": 239,
-		"./th.js": 239,
-		"./tl-ph": 240,
-		"./tl-ph.js": 240,
-		"./tr": 241,
-		"./tr.js": 241,
-		"./tzl": 242,
-		"./tzl.js": 242,
-		"./tzm": 243,
-		"./tzm-latn": 244,
-		"./tzm-latn.js": 244,
-		"./tzm.js": 243,
-		"./uk": 245,
-		"./uk.js": 245,
-		"./uz": 246,
-		"./uz.js": 246,
-		"./vi": 247,
-		"./vi.js": 247,
-		"./zh-cn": 248,
-		"./zh-cn.js": 248,
-		"./zh-tw": 249,
-		"./zh-tw.js": 249
+		"./af": 185,
+		"./af.js": 185,
+		"./ar": 186,
+		"./ar-ma": 187,
+		"./ar-ma.js": 187,
+		"./ar-sa": 188,
+		"./ar-sa.js": 188,
+		"./ar-tn": 189,
+		"./ar-tn.js": 189,
+		"./ar.js": 186,
+		"./az": 190,
+		"./az.js": 190,
+		"./be": 191,
+		"./be.js": 191,
+		"./bg": 192,
+		"./bg.js": 192,
+		"./bn": 193,
+		"./bn.js": 193,
+		"./bo": 194,
+		"./bo.js": 194,
+		"./br": 195,
+		"./br.js": 195,
+		"./bs": 196,
+		"./bs.js": 196,
+		"./ca": 197,
+		"./ca.js": 197,
+		"./cs": 198,
+		"./cs.js": 198,
+		"./cv": 199,
+		"./cv.js": 199,
+		"./cy": 200,
+		"./cy.js": 200,
+		"./da": 201,
+		"./da.js": 201,
+		"./de": 202,
+		"./de-at": 203,
+		"./de-at.js": 203,
+		"./de.js": 202,
+		"./el": 204,
+		"./el.js": 204,
+		"./en-au": 205,
+		"./en-au.js": 205,
+		"./en-ca": 206,
+		"./en-ca.js": 206,
+		"./en-gb": 207,
+		"./en-gb.js": 207,
+		"./eo": 208,
+		"./eo.js": 208,
+		"./es": 209,
+		"./es.js": 209,
+		"./et": 210,
+		"./et.js": 210,
+		"./eu": 211,
+		"./eu.js": 211,
+		"./fa": 212,
+		"./fa.js": 212,
+		"./fi": 213,
+		"./fi.js": 213,
+		"./fo": 214,
+		"./fo.js": 214,
+		"./fr": 215,
+		"./fr-ca": 216,
+		"./fr-ca.js": 216,
+		"./fr.js": 215,
+		"./fy": 217,
+		"./fy.js": 217,
+		"./gl": 218,
+		"./gl.js": 218,
+		"./he": 219,
+		"./he.js": 219,
+		"./hi": 220,
+		"./hi.js": 220,
+		"./hr": 221,
+		"./hr.js": 221,
+		"./hu": 222,
+		"./hu.js": 222,
+		"./hy-am": 223,
+		"./hy-am.js": 223,
+		"./id": 224,
+		"./id.js": 224,
+		"./is": 225,
+		"./is.js": 225,
+		"./it": 226,
+		"./it.js": 226,
+		"./ja": 227,
+		"./ja.js": 227,
+		"./jv": 228,
+		"./jv.js": 228,
+		"./ka": 229,
+		"./ka.js": 229,
+		"./km": 230,
+		"./km.js": 230,
+		"./ko": 231,
+		"./ko.js": 231,
+		"./lb": 232,
+		"./lb.js": 232,
+		"./lt": 233,
+		"./lt.js": 233,
+		"./lv": 234,
+		"./lv.js": 234,
+		"./me": 235,
+		"./me.js": 235,
+		"./mk": 236,
+		"./mk.js": 236,
+		"./ml": 237,
+		"./ml.js": 237,
+		"./mr": 238,
+		"./mr.js": 238,
+		"./ms": 239,
+		"./ms-my": 240,
+		"./ms-my.js": 240,
+		"./ms.js": 239,
+		"./my": 241,
+		"./my.js": 241,
+		"./nb": 242,
+		"./nb.js": 242,
+		"./ne": 243,
+		"./ne.js": 243,
+		"./nl": 244,
+		"./nl.js": 244,
+		"./nn": 245,
+		"./nn.js": 245,
+		"./pl": 246,
+		"./pl.js": 246,
+		"./pt": 247,
+		"./pt-br": 248,
+		"./pt-br.js": 248,
+		"./pt.js": 247,
+		"./ro": 249,
+		"./ro.js": 249,
+		"./ru": 250,
+		"./ru.js": 250,
+		"./si": 251,
+		"./si.js": 251,
+		"./sk": 252,
+		"./sk.js": 252,
+		"./sl": 253,
+		"./sl.js": 253,
+		"./sq": 254,
+		"./sq.js": 254,
+		"./sr": 255,
+		"./sr-cyrl": 256,
+		"./sr-cyrl.js": 256,
+		"./sr.js": 255,
+		"./sv": 257,
+		"./sv.js": 257,
+		"./ta": 258,
+		"./ta.js": 258,
+		"./th": 259,
+		"./th.js": 259,
+		"./tl-ph": 260,
+		"./tl-ph.js": 260,
+		"./tr": 261,
+		"./tr.js": 261,
+		"./tzl": 262,
+		"./tzl.js": 262,
+		"./tzm": 263,
+		"./tzm-latn": 264,
+		"./tzm-latn.js": 264,
+		"./tzm.js": 263,
+		"./uk": 265,
+		"./uk.js": 265,
+		"./uz": 266,
+		"./uz.js": 266,
+		"./vi": 267,
+		"./vi.js": 267,
+		"./zh-cn": 268,
+		"./zh-cn.js": 268,
+		"./zh-tw": 269,
+		"./zh-tw.js": 269
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -24772,11 +23880,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 164;
+	webpackContext.id = 184;
 
 
 /***/ },
-/* 165 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -24784,7 +23892,7 @@
 	//! author : Werner Mollentze : https://github.com/wernerm
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -24853,7 +23961,7 @@
 	}));
 
 /***/ },
-/* 166 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -24863,7 +23971,7 @@
 	//! Native plural forms: forabi https://github.com/forabi
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -24993,7 +24101,7 @@
 	}));
 
 /***/ },
-/* 167 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -25002,7 +24110,7 @@
 	//! author : Abdel Said : https://github.com/abdelsaid
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -25056,7 +24164,7 @@
 	}));
 
 /***/ },
-/* 168 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -25064,7 +24172,7 @@
 	//! author : Suhail Alkowaileet : https://github.com/xsoh
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -25163,14 +24271,14 @@
 	}));
 
 /***/ },
-/* 169 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
 	//! locale  : Tunisian Arabic (ar-tn)
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -25224,7 +24332,7 @@
 	}));
 
 /***/ },
-/* 170 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -25232,7 +24340,7 @@
 	//! author : topchiyev : https://github.com/topchiyev
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -25332,7 +24440,7 @@
 	}));
 
 /***/ },
-/* 171 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -25342,7 +24450,7 @@
 	//! Author : Menelion Elensúle : https://github.com/Oire
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -25483,7 +24591,7 @@
 	}));
 
 /***/ },
-/* 172 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -25491,7 +24599,7 @@
 	//! author : Krasen Borisov : https://github.com/kraz
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -25577,7 +24685,7 @@
 	}));
 
 /***/ },
-/* 173 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -25585,7 +24693,7 @@
 	//! author : Kaushik Gandhi : https://github.com/kaushikgandhi
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -25694,7 +24802,7 @@
 	}));
 
 /***/ },
-/* 174 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -25702,7 +24810,7 @@
 	//! author : Thupten N. Chakrishar : https://github.com/vajradog
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -25808,7 +24916,7 @@
 	}));
 
 /***/ },
-/* 175 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -25816,7 +24924,7 @@
 	//! author : Jean-Baptiste Le Duigou : https://github.com/jbleduigou
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -25919,7 +25027,7 @@
 	}));
 
 /***/ },
-/* 176 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -25928,7 +25036,7 @@
 	//! based on (hr) translation by Bojan Marković
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -26064,7 +25172,7 @@
 	}));
 
 /***/ },
-/* 177 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -26072,7 +25180,7 @@
 	//! author : Juan G. Hurtado : https://github.com/juanghurtado
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -26147,7 +25255,7 @@
 	}));
 
 /***/ },
-/* 178 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -26155,7 +25263,7 @@
 	//! author : petrbela : https://github.com/petrbela
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -26308,7 +25416,7 @@
 	}));
 
 /***/ },
-/* 179 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -26316,7 +25424,7 @@
 	//! author : Anatoly Mironov : https://github.com/mirontoli
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -26375,7 +25483,7 @@
 	}));
 
 /***/ },
-/* 180 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -26383,7 +25491,7 @@
 	//! author : Robert Allen
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -26458,7 +25566,7 @@
 	}));
 
 /***/ },
-/* 181 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -26466,7 +25574,7 @@
 	//! author : Ulrik Nielsen : https://github.com/mrbase
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -26522,7 +25630,7 @@
 	}));
 
 /***/ },
-/* 182 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -26531,7 +25639,7 @@
 	//! author: Menelion Elensúle: https://github.com/Oire
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -26601,7 +25709,7 @@
 	}));
 
 /***/ },
-/* 183 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -26611,7 +25719,7 @@
 	//! author : Martin Groller : https://github.com/MadMG
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -26681,7 +25789,7 @@
 	}));
 
 /***/ },
-/* 184 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -26689,7 +25797,7 @@
 	//! author : Aggelos Karalias : https://github.com/mehiel
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -26779,14 +25887,14 @@
 	}));
 
 /***/ },
-/* 185 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
 	//! locale : australian english (en-au)
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -26849,7 +25957,7 @@
 	}));
 
 /***/ },
-/* 186 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -26857,7 +25965,7 @@
 	//! author : Jonathan Abourbih : https://github.com/jonbca
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -26916,7 +26024,7 @@
 	}));
 
 /***/ },
-/* 187 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -26924,7 +26032,7 @@
 	//! author : Chris Gedrim : https://github.com/chrisgedrim
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -26987,7 +26095,7 @@
 	}));
 
 /***/ },
-/* 188 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -26997,7 +26105,7 @@
 	//!          Se ne, bonvolu korekti kaj avizi min por ke mi povas lerni!
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -27064,7 +26172,7 @@
 	}));
 
 /***/ },
-/* 189 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -27072,7 +26180,7 @@
 	//! author : Julio Napurí : https://github.com/julionc
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -27147,7 +26255,7 @@
 	}));
 
 /***/ },
-/* 190 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -27156,7 +26264,7 @@
 	//! improvements : Illimar Tambek : https://github.com/ragulka
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -27231,7 +26339,7 @@
 	}));
 
 /***/ },
-/* 191 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -27239,7 +26347,7 @@
 	//! author : Eneko Illarramendi : https://github.com/eillarra
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -27299,7 +26407,7 @@
 	}));
 
 /***/ },
-/* 192 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -27307,7 +26415,7 @@
 	//! author : Ebrahim Byagowi : https://github.com/ebraminio
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -27408,7 +26516,7 @@
 	}));
 
 /***/ },
-/* 193 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -27416,7 +26524,7 @@
 	//! author : Tarmo Aidantausta : https://github.com/bleadof
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -27519,7 +26627,7 @@
 	}));
 
 /***/ },
-/* 194 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -27527,7 +26635,7 @@
 	//! author : Ragnar Johannesen : https://github.com/ragnar123
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -27583,7 +26691,7 @@
 	}));
 
 /***/ },
-/* 195 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -27591,7 +26699,7 @@
 	//! author : John Fischer : https://github.com/jfroffice
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -27649,7 +26757,7 @@
 	}));
 
 /***/ },
-/* 196 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -27657,7 +26765,7 @@
 	//! author : Jonathan Abourbih : https://github.com/jonbca
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -27711,7 +26819,7 @@
 	}));
 
 /***/ },
-/* 197 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -27719,7 +26827,7 @@
 	//! author : Robin van der Vliet : https://github.com/robin0van0der0v
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -27786,7 +26894,7 @@
 	}));
 
 /***/ },
-/* 198 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -27794,7 +26902,7 @@
 	//! author : Juan G. Hurtado : https://github.com/juanghurtado
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -27865,7 +26973,7 @@
 	}));
 
 /***/ },
-/* 199 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -27875,7 +26983,7 @@
 	//! author : Tal Ater : https://github.com/TalAter
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -27951,7 +27059,7 @@
 	}));
 
 /***/ },
-/* 200 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -27959,7 +27067,7 @@
 	//! author : Mayank Singhal : https://github.com/mayanksinghal
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -28078,7 +27186,7 @@
 	}));
 
 /***/ },
-/* 201 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -28086,7 +27194,7 @@
 	//! author : Bojan Marković : https://github.com/bmarkovic
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -28222,7 +27330,7 @@
 	}));
 
 /***/ },
-/* 202 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -28230,7 +27338,7 @@
 	//! author : Adam Brunner : https://github.com/adambrunner
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -28335,7 +27443,7 @@
 	}));
 
 /***/ },
-/* 203 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -28343,7 +27451,7 @@
 	//! author : Armendarabyan : https://github.com/armendarabyan
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -28450,7 +27558,7 @@
 	}));
 
 /***/ },
-/* 204 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -28459,7 +27567,7 @@
 	//! reference: http://id.wikisource.org/wiki/Pedoman_Umum_Ejaan_Bahasa_Indonesia_yang_Disempurnakan
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -28537,7 +27645,7 @@
 	}));
 
 /***/ },
-/* 205 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -28545,7 +27653,7 @@
 	//! author : Hinrik Örn Sigurðsson : https://github.com/hinrik
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -28668,7 +27776,7 @@
 	}));
 
 /***/ },
-/* 206 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -28677,7 +27785,7 @@
 	//! author: Mattia Larentis: https://github.com/nostalgiaz
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -28742,7 +27850,7 @@
 	}));
 
 /***/ },
-/* 207 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -28750,7 +27858,7 @@
 	//! author : LI Long : https://github.com/baryon
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -28811,7 +27919,7 @@
 	}));
 
 /***/ },
-/* 208 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -28820,7 +27928,7 @@
 	//! reference: http://jv.wikipedia.org/wiki/Basa_Jawa
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -28898,7 +28006,7 @@
 	}));
 
 /***/ },
-/* 209 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -28906,7 +28014,7 @@
 	//! author : Irakli Janiashvili : https://github.com/irakli-janiashvili
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -29005,7 +28113,7 @@
 	}));
 
 /***/ },
-/* 210 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -29013,7 +28121,7 @@
 	//! author : Kruy Vanna : https://github.com/kruyvanna
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -29067,7 +28175,7 @@
 	}));
 
 /***/ },
-/* 211 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -29079,7 +28187,7 @@
 	//! - Jeeeyul Lee <jeeeyul@gmail.com>
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -29139,7 +28247,7 @@
 	}));
 
 /***/ },
-/* 212 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -29147,7 +28255,7 @@
 	//! author : mweimerskirch : https://github.com/mweimerskirch, David Raison : https://github.com/kwisatz
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -29277,7 +28385,7 @@
 	}));
 
 /***/ },
-/* 213 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -29285,7 +28393,7 @@
 	//! author : Mindaugas Mozūras : https://github.com/mmozuras
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -29406,7 +28514,7 @@
 	}));
 
 /***/ },
-/* 214 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -29415,7 +28523,7 @@
 	//! author : Jānis Elmeris : https://github.com/JanisE
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -29506,7 +28614,7 @@
 	}));
 
 /***/ },
-/* 215 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -29514,7 +28622,7 @@
 	//! author : Miodrag Nikač <miodrag@restartit.me> : https://github.com/miodragnikac
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -29619,7 +28727,7 @@
 	}));
 
 /***/ },
-/* 216 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -29627,7 +28735,7 @@
 	//! author : Borislav Mickov : https://github.com/B0k0
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -29713,7 +28821,7 @@
 	}));
 
 /***/ },
-/* 217 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -29721,7 +28829,7 @@
 	//! author : Floyd Pink : https://github.com/floydpink
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -29788,7 +28896,7 @@
 	}));
 
 /***/ },
-/* 218 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -29796,7 +28904,7 @@
 	//! author : Harshad Kale : https://github.com/kalehv
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -29913,7 +29021,7 @@
 	}));
 
 /***/ },
-/* 219 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -29921,7 +29029,7 @@
 	//! author : Weldan Jamili : https://github.com/weldan
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -29999,7 +29107,7 @@
 	}));
 
 /***/ },
-/* 220 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -30007,7 +29115,7 @@
 	//! author : Weldan Jamili : https://github.com/weldan
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -30085,7 +29193,7 @@
 	}));
 
 /***/ },
-/* 221 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -30093,7 +29201,7 @@
 	//! author : Squar team, mysquar.com
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -30182,7 +29290,7 @@
 	}));
 
 /***/ },
-/* 222 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -30191,7 +29299,7 @@
 	//!           Sigurd Gartmann : https://github.com/sigurdga
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -30247,7 +29355,7 @@
 	}));
 
 /***/ },
-/* 223 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -30255,7 +29363,7 @@
 	//! author : suvash : https://github.com/suvash
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -30374,7 +29482,7 @@
 	}));
 
 /***/ },
-/* 224 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -30382,7 +29490,7 @@
 	//! author : Joris Röling : https://github.com/jjupiter
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -30449,7 +29557,7 @@
 	}));
 
 /***/ },
-/* 225 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -30457,7 +29565,7 @@
 	//! author : https://github.com/mechuwind
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -30513,7 +29621,7 @@
 	}));
 
 /***/ },
-/* 226 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -30521,7 +29629,7 @@
 	//! author : Rafal Hirsz : https://github.com/evoL
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -30622,7 +29730,7 @@
 	}));
 
 /***/ },
-/* 227 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -30630,7 +29738,7 @@
 	//! author : Jefferson : https://github.com/jalex79
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -30690,7 +29798,7 @@
 	}));
 
 /***/ },
-/* 228 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -30698,7 +29806,7 @@
 	//! author : Caio Ribeiro Pereira : https://github.com/caio-ribeiro-pereira
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -30754,7 +29862,7 @@
 	}));
 
 /***/ },
-/* 229 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -30763,7 +29871,7 @@
 	//! author : Valentin Agachi : https://github.com/avaly
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -30832,7 +29940,7 @@
 	}));
 
 /***/ },
-/* 230 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -30841,7 +29949,7 @@
 	//! Author : Menelion Elensúle : https://github.com/Oire
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -31000,7 +30108,7 @@
 	}));
 
 /***/ },
-/* 231 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -31008,7 +30116,7 @@
 	//! author : Sampath Sitinamaluwa : https://github.com/sampathsris
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -31069,7 +30177,7 @@
 	}));
 
 /***/ },
-/* 232 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -31078,7 +30186,7 @@
 	//! based on work of petrbela : https://github.com/petrbela
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -31231,7 +30339,7 @@
 	}));
 
 /***/ },
-/* 233 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -31239,7 +30347,7 @@
 	//! author : Robert Sedovšek : https://github.com/sedovsek
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -31395,7 +30503,7 @@
 	}));
 
 /***/ },
-/* 234 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -31405,7 +30513,7 @@
 	//! author : Oerd Cukalla : https://github.com/oerd (fixes)
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -31468,7 +30576,7 @@
 	}));
 
 /***/ },
-/* 235 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -31476,7 +30584,7 @@
 	//! author : Milan Janačković<milanjanackovic@gmail.com> : https://github.com/milan-j
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -31580,7 +30688,7 @@
 	}));
 
 /***/ },
-/* 236 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -31588,7 +30696,7 @@
 	//! author : Milan Janačković<milanjanackovic@gmail.com> : https://github.com/milan-j
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -31692,7 +30800,7 @@
 	}));
 
 /***/ },
-/* 237 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -31700,7 +30808,7 @@
 	//! author : Jens Alm : https://github.com/ulmus
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -31763,7 +30871,7 @@
 	}));
 
 /***/ },
-/* 238 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -31771,7 +30879,7 @@
 	//! author : Arjunkumar Krishnamoorthy : https://github.com/tk120404
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -31862,7 +30970,7 @@
 	}));
 
 /***/ },
-/* 239 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -31870,7 +30978,7 @@
 	//! author : Kridsada Thanabulpong : https://github.com/sirn
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -31931,7 +31039,7 @@
 	}));
 
 /***/ },
-/* 240 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -31939,7 +31047,7 @@
 	//! author : Dan Hagman
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -31997,7 +31105,7 @@
 	}));
 
 /***/ },
-/* 241 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -32006,7 +31114,7 @@
 	//!           Burak Yiğit Kaya: https://github.com/BYK
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -32091,7 +31199,7 @@
 	}));
 
 /***/ },
-/* 242 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -32099,7 +31207,7 @@
 	//! author : Robin van der Vliet : https://github.com/robin0van0der0v with the help of Iustì Canun
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -32180,7 +31288,7 @@
 	}));
 
 /***/ },
-/* 243 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -32188,7 +31296,7 @@
 	//! author : Abdel Said : https://github.com/abdelsaid
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -32242,7 +31350,7 @@
 	}));
 
 /***/ },
-/* 244 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -32250,7 +31358,7 @@
 	//! author : Abdel Said : https://github.com/abdelsaid
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -32304,7 +31412,7 @@
 	}));
 
 /***/ },
-/* 245 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -32313,7 +31421,7 @@
 	//! Author : Menelion Elensúle : https://github.com/Oire
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -32461,7 +31569,7 @@
 	}));
 
 /***/ },
-/* 246 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -32469,7 +31577,7 @@
 	//! author : Sardor Muminov : https://github.com/muminoff
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -32523,7 +31631,7 @@
 	}));
 
 /***/ },
-/* 247 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -32531,7 +31639,7 @@
 	//! author : Bang Nguyen : https://github.com/bangnk
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -32593,7 +31701,7 @@
 	}));
 
 /***/ },
-/* 248 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -32602,7 +31710,7 @@
 	//! author : Zeno Zeng : https://github.com/zenozeng
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -32724,7 +31832,7 @@
 	}));
 
 /***/ },
-/* 249 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -32732,7 +31840,7 @@
 	//! author : Ben : https://github.com/ben-lin
 
 	(function (global, factory) {
-	    true ? factory(__webpack_require__(162)) :
+	    true ? factory(__webpack_require__(182)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -32829,10 +31937,1574 @@
 	}));
 
 /***/ },
-/* 250 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+	"use strict";
+
+	var _moment = __webpack_require__(182);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	var _date = __webpack_require__(271);
+
+	var _date2 = _interopRequireDefault(_date);
+
+	var _reactDom = __webpack_require__(154);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var DateInput = _react2.default.createClass({
+	  displayName: "DateInput",
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      dateFormat: "YYYY-MM-DD",
+	      className: "datepicker__input",
+	      onBlur: function onBlur() {}
+	    };
+	  },
+	  componentWillMount: function componentWillMount() {
+	    this.setState({
+	      maybeDate: this.safeDateFormat(this.props.date)
+	    });
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.toggleFocus(this.props.focus);
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps(newProps) {
+	    this.toggleFocus(newProps.focus);
+
+	    // If we're receiving a different date then apply it.
+	    // If we're receiving a null date continue displaying the
+	    // value currently in the textbox.
+	    if (newProps.date != null && newProps.date != this.props.date) {
+	      this.setState({
+	        maybeDate: this.safeDateFormat(newProps.date)
+	      });
+	    }
+	  },
+	  toggleFocus: function toggleFocus(focus) {
+	    if (focus) {
+	      this.refs.input.focus();
+	    } else {
+	      this.refs.input.blur();
+	    }
+	  },
+	  handleChange: function handleChange(event) {
+	    var value = event.target.value;
+	    var date = (0, _moment2.default)(value, this.props.dateFormat, true);
+
+	    if (date.isValid()) {
+	      this.props.setSelected(new _date2.default(date));
+	    } else {
+	      this.props.invalidateSelected();
+	    }
+
+	    this.setState({
+	      maybeDate: value
+	    });
+	  },
+	  safeDateFormat: function safeDateFormat(date) {
+	    return !!date ? date.format(this.props.dateFormat) : null;
+	  },
+	  handleKeyDown: function handleKeyDown(event) {
+	    switch (event.key) {
+	      case "Enter":
+	        event.preventDefault();
+	        this.props.handleEnter();
+	        break;
+	      case "Escape":
+	        event.preventDefault();
+	        this.props.hideCalendar();
+	        break;
+	    }
+	  },
+	  handleClick: function handleClick(event) {
+	    if (!this.props.disabled) {
+	      this.props.handleClick(event);
+	    }
+	  },
+	  render: function render() {
+	    return _react2.default.createElement("input", {
+	      ref: "input",
+	      type: "text",
+	      id: this.props.id,
+	      name: this.props.name,
+	      value: this.state.maybeDate,
+	      onClick: this.handleClick,
+	      onKeyDown: this.handleKeyDown,
+	      onFocus: this.props.onFocus,
+	      onBlur: this.props.onBlur,
+	      onChange: this.handleChange,
+	      className: this.props.className,
+	      disabled: this.props.disabled,
+	      placeholder: this.props.placeholderText,
+	      readOnly: this.props.readOnly,
+	      required: this.props.required });
+	  }
+	});
+
+	module.exports = DateInput;
+
+/***/ },
+/* 271 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	function DateUtil(date) {
+	  this._date = date;
+	}
+
+	DateUtil.prototype.isBefore = function (other) {
+	  return this._date.isBefore(other._date, "day");
+	};
+
+	DateUtil.prototype.isAfter = function (other) {
+	  return this._date.isAfter(other._date, "day");
+	};
+
+	DateUtil.prototype.sameDay = function (other) {
+	  return this._date.isSame(other._date, "day");
+	};
+
+	DateUtil.prototype.sameMonth = function (other) {
+	  return this._date.isSame(other._date, "month");
+	};
+
+	DateUtil.prototype.inRange = function (startDate, endDate) {
+	  if (!startDate || !endDate) return false;
+	  var before = startDate._date.startOf("day").subtract(1, "seconds");
+	  var after = endDate._date.startOf("day").add(1, "seconds");
+	  return this._date.isBetween(before, after);
+	};
+
+	DateUtil.prototype.day = function () {
+	  return this._date.date();
+	};
+
+	DateUtil.prototype.year = function () {
+	  return this._date.clone().year();
+	};
+
+	DateUtil.prototype.mapDaysInWeek = function (callback) {
+	  var week = [];
+	  var firstDay = this._date.clone();
+
+	  for (var i = 0; i < 7; i++) {
+	    var day = new DateUtil(firstDay.clone().add(i, "days"));
+
+	    week[i] = callback(day, i);
+	  }
+
+	  return week;
+	};
+
+	DateUtil.prototype.mapWeeksInMonth = function (callback) {
+	  var month = [];
+	  var firstDay = this._date.clone().startOf("month").startOf("week");
+
+	  for (var i = 0; i < 6; i++) {
+	    var weekStart = new DateUtil(firstDay.clone().add(i, "weeks"));
+
+	    month[i] = callback(weekStart, i);
+	  }
+
+	  return month;
+	};
+
+	DateUtil.prototype.weekInMonth = function (other) {
+	  var firstDayInWeek = this._date.clone();
+	  var lastDayInWeek = this._date.clone().weekday(7);
+
+	  return firstDayInWeek.isSame(other._date, "month") || lastDayInWeek.isSame(other._date, "month");
+	};
+
+	DateUtil.prototype.format = function () {
+	  return this._date.format.apply(this._date, arguments);
+	};
+
+	DateUtil.prototype.localeFormat = function () {
+	  var args = Array.prototype.slice.call(arguments);
+	  var locale = args.shift();
+	  return this._date.locale(locale).format.apply(this._date, args);
+	};
+
+	DateUtil.prototype.addMonth = function () {
+	  return new DateUtil(this._date.clone().add(1, "month"));
+	};
+
+	DateUtil.prototype.subtractMonth = function () {
+	  return new DateUtil(this._date.clone().subtract(1, "month"));
+	};
+
+	DateUtil.prototype.changeYear = function (year) {
+	  return new DateUtil(this._date.clone().set("year", year));
+	};
+
+	DateUtil.prototype.clone = function () {
+	  return new DateUtil(this._date.clone());
+	};
+
+	DateUtil.prototype.safeClone = function (alternative) {
+	  if (!!this._date) return this.clone();
+
+	  if (alternative === undefined) alternative = null;
+	  return new DateUtil(alternative);
+	};
+
+	DateUtil.prototype.moment = function () {
+	  return this._date;
+	};
+
+	module.exports = DateUtil;
+
+/***/ },
+/* 272 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _some = __webpack_require__(273);
+
+	var _some2 = _interopRequireDefault(_some);
+
+	var _map = __webpack_require__(297);
+
+	var _map2 = _interopRequireDefault(_map);
+
+	var _date = __webpack_require__(271);
+
+	var _date2 = _interopRequireDefault(_date);
+
+	var _year_dropdown = __webpack_require__(300);
+
+	var _year_dropdown2 = _interopRequireDefault(_year_dropdown);
+
+	var _day = __webpack_require__(301);
+
+	var _day2 = _interopRequireDefault(_day);
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Calendar = _react2.default.createClass({
+	  displayName: "Calendar",
+
+	  mixins: [__webpack_require__(302)],
+
+	  propTypes: {
+	    weekdays: _react2.default.PropTypes.array.isRequired,
+	    locale: _react2.default.PropTypes.string,
+	    moment: _react2.default.PropTypes.func.isRequired,
+	    dateFormat: _react2.default.PropTypes.string.isRequired,
+	    onSelect: _react2.default.PropTypes.func.isRequired,
+	    handleClick: _react2.default.PropTypes.func.isRequired,
+	    hideCalendar: _react2.default.PropTypes.func.isRequired,
+	    minDate: _react2.default.PropTypes.object,
+	    maxDate: _react2.default.PropTypes.object,
+	    startDate: _react2.default.PropTypes.object,
+	    endDate: _react2.default.PropTypes.object,
+	    excludeDates: _react2.default.PropTypes.array,
+	    includeDates: _react2.default.PropTypes.array,
+	    weekStart: _react2.default.PropTypes.string.isRequired
+	  },
+
+	  handleClickOutside: function handleClickOutside() {
+	    this.props.hideCalendar();
+	  },
+	  getInitialState: function getInitialState() {
+	    return {
+	      date: new _date2.default(this.props.selected).safeClone(this.props.moment())
+	    };
+	  },
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      weekStart: "1"
+	    };
+	  },
+	  componentWillMount: function componentWillMount() {
+	    this.initializeMomentLocale();
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    if (nextProps.selected === null) {
+	      return;
+	    }
+
+	    // When the selected date changed
+	    if (nextProps.selected !== this.props.selected) {
+	      this.setState({
+	        date: new _date2.default(nextProps.selected).clone()
+	      });
+	    }
+	  },
+	  initializeMomentLocale: function initializeMomentLocale() {
+	    var weekdays = this.props.weekdays.slice(0);
+	    weekdays = weekdays.concat(weekdays.splice(0, this.props.weekStart));
+
+	    this.props.moment.locale(this.props.locale, {
+	      week: {
+	        dow: this.props.weekStart
+	      },
+	      weekdaysMin: weekdays
+	    });
+	  },
+	  increaseMonth: function increaseMonth() {
+	    this.setState({
+	      date: this.state.date.addMonth()
+	    });
+	  },
+	  decreaseMonth: function decreaseMonth() {
+	    this.setState({
+	      date: this.state.date.subtractMonth()
+	    });
+	  },
+	  weeks: function weeks() {
+	    return this.state.date.mapWeeksInMonth(this.renderWeek);
+	  },
+	  handleDayClick: function handleDayClick(day) {
+	    this.props.onSelect(day);
+	  },
+	  changeYear: function changeYear(year) {
+	    this.setState({
+	      date: this.state.date.changeYear(year)
+	    });
+	  },
+	  renderWeek: function renderWeek(weekStart, key) {
+	    if (!weekStart.weekInMonth(this.state.date)) {
+	      return;
+	    }
+
+	    return _react2.default.createElement(
+	      "div",
+	      { key: key },
+	      this.days(weekStart)
+	    );
+	  },
+	  renderDay: function renderDay(day, key) {
+	    var minDate = new _date2.default(this.props.minDate).safeClone(),
+	        maxDate = new _date2.default(this.props.maxDate).safeClone(),
+	        excludeDates,
+	        includeDates,
+	        disabled,
+	        inRange = day.inRange(this.props.startDate, this.props.endDate);
+
+	    if (this.props.excludeDates && Array.isArray(this.props.excludeDates)) {
+	      excludeDates = (0, _map2.default)(this.props.excludeDates, function (date) {
+	        return new _date2.default(date).safeClone();
+	      });
+	    }
+
+	    if (this.props.includeDates && Array.isArray(this.props.includeDates)) {
+	      includeDates = (0, _map2.default)(this.props.includeDates, function (date) {
+	        return new _date2.default(date).safeClone();
+	      });
+	    }
+
+	    disabled = day.isBefore(minDate) || day.isAfter(maxDate) || (0, _some2.default)(excludeDates, function (xDay) {
+	      return day.sameDay(xDay);
+	    }) || includeDates && !(0, _some2.default)(includeDates, function (xDay) {
+	      return day.sameDay(xDay);
+	    });
+
+	    return _react2.default.createElement(_day2.default, {
+	      key: key,
+	      day: day,
+	      date: this.state.date,
+	      onClick: this.handleDayClick.bind(this, day),
+	      selected: new _date2.default(this.props.selected),
+	      inRange: inRange,
+	      disabled: disabled });
+	  },
+	  days: function days(weekStart) {
+	    return weekStart.mapDaysInWeek(this.renderDay);
+	  },
+	  header: function header() {
+	    return this.props.moment.weekdaysMin().map(function (day, key) {
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "datepicker__day", key: key },
+	        day
+	      );
+	    });
+	  },
+	  render: function render() {
+	    return _react2.default.createElement(
+	      "div",
+	      { className: "datepicker", onClick: this.props.handleClick },
+	      _react2.default.createElement("div", { className: "datepicker__triangle" }),
+	      _react2.default.createElement(
+	        "div",
+	        { className: "datepicker__header" },
+	        _react2.default.createElement("a", { className: "datepicker__navigation datepicker__navigation--previous",
+	          onClick: this.decreaseMonth }),
+	        _react2.default.createElement(
+	          "h2",
+	          { className: "datepicker__current-month" },
+	          this.state.date.localeFormat(this.props.locale, this.props.dateFormat)
+	        ),
+	        _react2.default.createElement(_year_dropdown2.default, {
+	          onChange: this.changeYear,
+	          year: this.state.date.year()
+	        }),
+	        _react2.default.createElement("a", { className: "datepicker__navigation datepicker__navigation--next",
+	          onClick: this.increaseMonth }),
+	        _react2.default.createElement(
+	          "div",
+	          null,
+	          this.header()
+	        )
+	      ),
+	      _react2.default.createElement(
+	        "div",
+	        { className: "datepicker__month" },
+	        this.weeks()
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Calendar;
+
+/***/ },
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var arraySome = __webpack_require__(161),
+	    baseCallback = __webpack_require__(274),
+	    baseSome = __webpack_require__(290),
+	    isArray = __webpack_require__(176),
+	    isIterateeCall = __webpack_require__(296);
+
+	/**
+	 * Checks if `predicate` returns truthy for **any** element of `collection`.
+	 * The function returns as soon as it finds a passing value and does not iterate
+	 * over the entire collection. The predicate is bound to `thisArg` and invoked
+	 * with three arguments: (value, index|key, collection).
+	 *
+	 * If a property name is provided for `predicate` the created `_.property`
+	 * style callback returns the property value of the given element.
+	 *
+	 * If a value is also provided for `thisArg` the created `_.matchesProperty`
+	 * style callback returns `true` for elements that have a matching property
+	 * value, else `false`.
+	 *
+	 * If an object is provided for `predicate` the created `_.matches` style
+	 * callback returns `true` for elements that have the properties of the given
+	 * object, else `false`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @alias any
+	 * @category Collection
+	 * @param {Array|Object|string} collection The collection to iterate over.
+	 * @param {Function|Object|string} [predicate=_.identity] The function invoked
+	 *  per iteration.
+	 * @param {*} [thisArg] The `this` binding of `predicate`.
+	 * @returns {boolean} Returns `true` if any element passes the predicate check,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.some([null, 0, 'yes', false], Boolean);
+	 * // => true
+	 *
+	 * var users = [
+	 *   { 'user': 'barney', 'active': true },
+	 *   { 'user': 'fred',   'active': false }
+	 * ];
+	 *
+	 * // using the `_.matches` callback shorthand
+	 * _.some(users, { 'user': 'barney', 'active': false });
+	 * // => false
+	 *
+	 * // using the `_.matchesProperty` callback shorthand
+	 * _.some(users, 'active', false);
+	 * // => true
+	 *
+	 * // using the `_.property` callback shorthand
+	 * _.some(users, 'active');
+	 * // => true
+	 */
+	function some(collection, predicate, thisArg) {
+	  var func = isArray(collection) ? arraySome : baseSome;
+	  if (thisArg && isIterateeCall(collection, predicate, thisArg)) {
+	    predicate = undefined;
+	  }
+	  if (typeof predicate != 'function' || thisArg !== undefined) {
+	    predicate = baseCallback(predicate, thisArg, 3);
+	  }
+	  return func(collection, predicate);
+	}
+
+	module.exports = some;
+
+
+/***/ },
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseMatches = __webpack_require__(275),
+	    baseMatchesProperty = __webpack_require__(281),
+	    bindCallback = __webpack_require__(180),
+	    identity = __webpack_require__(181),
+	    property = __webpack_require__(288);
+
+	/**
+	 * The base implementation of `_.callback` which supports specifying the
+	 * number of arguments to provide to `func`.
+	 *
+	 * @private
+	 * @param {*} [func=_.identity] The value to convert to a callback.
+	 * @param {*} [thisArg] The `this` binding of `func`.
+	 * @param {number} [argCount] The number of arguments to provide to `func`.
+	 * @returns {Function} Returns the callback.
+	 */
+	function baseCallback(func, thisArg, argCount) {
+	  var type = typeof func;
+	  if (type == 'function') {
+	    return thisArg === undefined
+	      ? func
+	      : bindCallback(func, thisArg, argCount);
+	  }
+	  if (func == null) {
+	    return identity;
+	  }
+	  if (type == 'object') {
+	    return baseMatches(func);
+	  }
+	  return thisArg === undefined
+	    ? property(func)
+	    : baseMatchesProperty(func, thisArg);
+	}
+
+	module.exports = baseCallback;
+
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseIsMatch = __webpack_require__(276),
+	    getMatchData = __webpack_require__(278),
+	    toObject = __webpack_require__(277);
+
+	/**
+	 * The base implementation of `_.matches` which does not clone `source`.
+	 *
+	 * @private
+	 * @param {Object} source The object of property values to match.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseMatches(source) {
+	  var matchData = getMatchData(source);
+	  if (matchData.length == 1 && matchData[0][2]) {
+	    var key = matchData[0][0],
+	        value = matchData[0][1];
+
+	    return function(object) {
+	      if (object == null) {
+	        return false;
+	      }
+	      return object[key] === value && (value !== undefined || (key in toObject(object)));
+	    };
+	  }
+	  return function(object) {
+	    return baseIsMatch(object, matchData);
+	  };
+	}
+
+	module.exports = baseMatches;
+
+
+/***/ },
+/* 276 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseIsEqual = __webpack_require__(158),
+	    toObject = __webpack_require__(277);
+
+	/**
+	 * The base implementation of `_.isMatch` without support for callback
+	 * shorthands and `this` binding.
+	 *
+	 * @private
+	 * @param {Object} object The object to inspect.
+	 * @param {Array} matchData The propery names, values, and compare flags to match.
+	 * @param {Function} [customizer] The function to customize comparing objects.
+	 * @returns {boolean} Returns `true` if `object` is a match, else `false`.
+	 */
+	function baseIsMatch(object, matchData, customizer) {
+	  var index = matchData.length,
+	      length = index,
+	      noCustomizer = !customizer;
+
+	  if (object == null) {
+	    return !length;
+	  }
+	  object = toObject(object);
+	  while (index--) {
+	    var data = matchData[index];
+	    if ((noCustomizer && data[2])
+	          ? data[1] !== object[data[0]]
+	          : !(data[0] in object)
+	        ) {
+	      return false;
+	    }
+	  }
+	  while (++index < length) {
+	    data = matchData[index];
+	    var key = data[0],
+	        objValue = object[key],
+	        srcValue = data[1];
+
+	    if (noCustomizer && data[2]) {
+	      if (objValue === undefined && !(key in object)) {
+	        return false;
+	      }
+	    } else {
+	      var result = customizer ? customizer(objValue, srcValue, key) : undefined;
+	      if (!(result === undefined ? baseIsEqual(srcValue, objValue, customizer, true) : result)) {
+	        return false;
+	      }
+	    }
+	  }
+	  return true;
+	}
+
+	module.exports = baseIsMatch;
+
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(168);
+
+	/**
+	 * Converts `value` to an object if it's not one.
+	 *
+	 * @private
+	 * @param {*} value The value to process.
+	 * @returns {Object} Returns the object.
+	 */
+	function toObject(value) {
+	  return isObject(value) ? value : Object(value);
+	}
+
+	module.exports = toObject;
+
+
+/***/ },
+/* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isStrictComparable = __webpack_require__(279),
+	    pairs = __webpack_require__(280);
+
+	/**
+	 * Gets the propery names, values, and compare flags of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the match data of `object`.
+	 */
+	function getMatchData(object) {
+	  var result = pairs(object),
+	      length = result.length;
+
+	  while (length--) {
+	    result[length][2] = isStrictComparable(result[length][1]);
+	  }
+	  return result;
+	}
+
+	module.exports = getMatchData;
+
+
+/***/ },
+/* 279 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(168);
+
+	/**
+	 * Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` if suitable for strict
+	 *  equality comparisons, else `false`.
+	 */
+	function isStrictComparable(value) {
+	  return value === value && !isObject(value);
+	}
+
+	module.exports = isStrictComparable;
+
+
+/***/ },
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var keys = __webpack_require__(164),
+	    toObject = __webpack_require__(277);
+
+	/**
+	 * Creates a two dimensional array of the key-value pairs for `object`,
+	 * e.g. `[[key1, value1], [key2, value2]]`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the new array of key-value pairs.
+	 * @example
+	 *
+	 * _.pairs({ 'barney': 36, 'fred': 40 });
+	 * // => [['barney', 36], ['fred', 40]] (iteration order is not guaranteed)
+	 */
+	function pairs(object) {
+	  object = toObject(object);
+
+	  var index = -1,
+	      props = keys(object),
+	      length = props.length,
+	      result = Array(length);
+
+	  while (++index < length) {
+	    var key = props[index];
+	    result[index] = [key, object[key]];
+	  }
+	  return result;
+	}
+
+	module.exports = pairs;
+
+
+/***/ },
+/* 281 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseGet = __webpack_require__(282),
+	    baseIsEqual = __webpack_require__(158),
+	    baseSlice = __webpack_require__(283),
+	    isArray = __webpack_require__(176),
+	    isKey = __webpack_require__(284),
+	    isStrictComparable = __webpack_require__(279),
+	    last = __webpack_require__(285),
+	    toObject = __webpack_require__(277),
+	    toPath = __webpack_require__(286);
+
+	/**
+	 * The base implementation of `_.matchesProperty` which does not clone `srcValue`.
+	 *
+	 * @private
+	 * @param {string} path The path of the property to get.
+	 * @param {*} srcValue The value to compare.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseMatchesProperty(path, srcValue) {
+	  var isArr = isArray(path),
+	      isCommon = isKey(path) && isStrictComparable(srcValue),
+	      pathKey = (path + '');
+
+	  path = toPath(path);
+	  return function(object) {
+	    if (object == null) {
+	      return false;
+	    }
+	    var key = pathKey;
+	    object = toObject(object);
+	    if ((isArr || !isCommon) && !(key in object)) {
+	      object = path.length == 1 ? object : baseGet(object, baseSlice(path, 0, -1));
+	      if (object == null) {
+	        return false;
+	      }
+	      key = last(path);
+	      object = toObject(object);
+	    }
+	    return object[key] === srcValue
+	      ? (srcValue !== undefined || (key in object))
+	      : baseIsEqual(srcValue, object[key], undefined, true);
+	  };
+	}
+
+	module.exports = baseMatchesProperty;
+
+
+/***/ },
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var toObject = __webpack_require__(277);
+
+	/**
+	 * The base implementation of `get` without support for string paths
+	 * and default values.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {Array} path The path of the property to get.
+	 * @param {string} [pathKey] The key representation of path.
+	 * @returns {*} Returns the resolved value.
+	 */
+	function baseGet(object, path, pathKey) {
+	  if (object == null) {
+	    return;
+	  }
+	  if (pathKey !== undefined && pathKey in toObject(object)) {
+	    path = [pathKey];
+	  }
+	  var index = 0,
+	      length = path.length;
+
+	  while (object != null && index < length) {
+	    object = object[path[index++]];
+	  }
+	  return (index && index == length) ? object : undefined;
+	}
+
+	module.exports = baseGet;
+
+
+/***/ },
+/* 283 */
+/***/ function(module, exports) {
+
+	/**
+	 * The base implementation of `_.slice` without an iteratee call guard.
+	 *
+	 * @private
+	 * @param {Array} array The array to slice.
+	 * @param {number} [start=0] The start position.
+	 * @param {number} [end=array.length] The end position.
+	 * @returns {Array} Returns the slice of `array`.
+	 */
+	function baseSlice(array, start, end) {
+	  var index = -1,
+	      length = array.length;
+
+	  start = start == null ? 0 : (+start || 0);
+	  if (start < 0) {
+	    start = -start > length ? 0 : (length + start);
+	  }
+	  end = (end === undefined || end > length) ? length : (+end || 0);
+	  if (end < 0) {
+	    end += length;
+	  }
+	  length = start > end ? 0 : ((end - start) >>> 0);
+	  start >>>= 0;
+
+	  var result = Array(length);
+	  while (++index < length) {
+	    result[index] = array[index + start];
+	  }
+	  return result;
+	}
+
+	module.exports = baseSlice;
+
+
+/***/ },
+/* 284 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArray = __webpack_require__(176),
+	    toObject = __webpack_require__(277);
+
+	/** Used to match property names within property paths. */
+	var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\n\\]|\\.)*?\1)\]/,
+	    reIsPlainProp = /^\w*$/;
+
+	/**
+	 * Checks if `value` is a property name and not a property path.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {Object} [object] The object to query keys on.
+	 * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
+	 */
+	function isKey(value, object) {
+	  var type = typeof value;
+	  if ((type == 'string' && reIsPlainProp.test(value)) || type == 'number') {
+	    return true;
+	  }
+	  if (isArray(value)) {
+	    return false;
+	  }
+	  var result = !reIsDeepProp.test(value);
+	  return result || (object != null && value in toObject(object));
+	}
+
+	module.exports = isKey;
+
+
+/***/ },
+/* 285 */
+/***/ function(module, exports) {
+
+	/**
+	 * Gets the last element of `array`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Array
+	 * @param {Array} array The array to query.
+	 * @returns {*} Returns the last element of `array`.
+	 * @example
+	 *
+	 * _.last([1, 2, 3]);
+	 * // => 3
+	 */
+	function last(array) {
+	  var length = array ? array.length : 0;
+	  return length ? array[length - 1] : undefined;
+	}
+
+	module.exports = last;
+
+
+/***/ },
+/* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseToString = __webpack_require__(287),
+	    isArray = __webpack_require__(176);
+
+	/** Used to match property names within property paths. */
+	var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\n\\]|\\.)*?)\2)\]/g;
+
+	/** Used to match backslashes in property paths. */
+	var reEscapeChar = /\\(\\)?/g;
+
+	/**
+	 * Converts `value` to property path array if it's not one.
+	 *
+	 * @private
+	 * @param {*} value The value to process.
+	 * @returns {Array} Returns the property path array.
+	 */
+	function toPath(value) {
+	  if (isArray(value)) {
+	    return value;
+	  }
+	  var result = [];
+	  baseToString(value).replace(rePropName, function(match, number, quote, string) {
+	    result.push(quote ? string.replace(reEscapeChar, '$1') : (number || match));
+	  });
+	  return result;
+	}
+
+	module.exports = toPath;
+
+
+/***/ },
+/* 287 */
+/***/ function(module, exports) {
+
+	/**
+	 * Converts `value` to a string if it's not one. An empty string is returned
+	 * for `null` or `undefined` values.
+	 *
+	 * @private
+	 * @param {*} value The value to process.
+	 * @returns {string} Returns the string.
+	 */
+	function baseToString(value) {
+	  return value == null ? '' : (value + '');
+	}
+
+	module.exports = baseToString;
+
+
+/***/ },
+/* 288 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseProperty = __webpack_require__(172),
+	    basePropertyDeep = __webpack_require__(289),
+	    isKey = __webpack_require__(284);
+
+	/**
+	 * Creates a function that returns the property value at `path` on a
+	 * given object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Utility
+	 * @param {Array|string} path The path of the property to get.
+	 * @returns {Function} Returns the new function.
+	 * @example
+	 *
+	 * var objects = [
+	 *   { 'a': { 'b': { 'c': 2 } } },
+	 *   { 'a': { 'b': { 'c': 1 } } }
+	 * ];
+	 *
+	 * _.map(objects, _.property('a.b.c'));
+	 * // => [2, 1]
+	 *
+	 * _.pluck(_.sortBy(objects, _.property(['a', 'b', 'c'])), 'a.b.c');
+	 * // => [1, 2]
+	 */
+	function property(path) {
+	  return isKey(path) ? baseProperty(path) : basePropertyDeep(path);
+	}
+
+	module.exports = property;
+
+
+/***/ },
+/* 289 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseGet = __webpack_require__(282),
+	    toPath = __webpack_require__(286);
+
+	/**
+	 * A specialized version of `baseProperty` which supports deep paths.
+	 *
+	 * @private
+	 * @param {Array|string} path The path of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function basePropertyDeep(path) {
+	  var pathKey = (path + '');
+	  path = toPath(path);
+	  return function(object) {
+	    return baseGet(object, path, pathKey);
+	  };
+	}
+
+	module.exports = basePropertyDeep;
+
+
+/***/ },
+/* 290 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseEach = __webpack_require__(291);
+
+	/**
+	 * The base implementation of `_.some` without support for callback shorthands
+	 * and `this` binding.
+	 *
+	 * @private
+	 * @param {Array|Object|string} collection The collection to iterate over.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @returns {boolean} Returns `true` if any element passes the predicate check,
+	 *  else `false`.
+	 */
+	function baseSome(collection, predicate) {
+	  var result;
+
+	  baseEach(collection, function(value, index, collection) {
+	    result = predicate(value, index, collection);
+	    return !result;
+	  });
+	  return !!result;
+	}
+
+	module.exports = baseSome;
+
+
+/***/ },
+/* 291 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseForOwn = __webpack_require__(292),
+	    createBaseEach = __webpack_require__(295);
+
+	/**
+	 * The base implementation of `_.forEach` without support for callback
+	 * shorthands and `this` binding.
+	 *
+	 * @private
+	 * @param {Array|Object|string} collection The collection to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Array|Object|string} Returns `collection`.
+	 */
+	var baseEach = createBaseEach(baseForOwn);
+
+	module.exports = baseEach;
+
+
+/***/ },
+/* 292 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseFor = __webpack_require__(293),
+	    keys = __webpack_require__(164);
+
+	/**
+	 * The base implementation of `_.forOwn` without support for callback
+	 * shorthands and `this` binding.
+	 *
+	 * @private
+	 * @param {Object} object The object to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Object} Returns `object`.
+	 */
+	function baseForOwn(object, iteratee) {
+	  return baseFor(object, iteratee, keys);
+	}
+
+	module.exports = baseForOwn;
+
+
+/***/ },
+/* 293 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var createBaseFor = __webpack_require__(294);
+
+	/**
+	 * The base implementation of `baseForIn` and `baseForOwn` which iterates
+	 * over `object` properties returned by `keysFunc` invoking `iteratee` for
+	 * each property. Iteratee functions may exit iteration early by explicitly
+	 * returning `false`.
+	 *
+	 * @private
+	 * @param {Object} object The object to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @param {Function} keysFunc The function to get the keys of `object`.
+	 * @returns {Object} Returns `object`.
+	 */
+	var baseFor = createBaseFor();
+
+	module.exports = baseFor;
+
+
+/***/ },
+/* 294 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var toObject = __webpack_require__(277);
+
+	/**
+	 * Creates a base function for `_.forIn` or `_.forInRight`.
+	 *
+	 * @private
+	 * @param {boolean} [fromRight] Specify iterating from right to left.
+	 * @returns {Function} Returns the new base function.
+	 */
+	function createBaseFor(fromRight) {
+	  return function(object, iteratee, keysFunc) {
+	    var iterable = toObject(object),
+	        props = keysFunc(object),
+	        length = props.length,
+	        index = fromRight ? length : -1;
+
+	    while ((fromRight ? index-- : ++index < length)) {
+	      var key = props[index];
+	      if (iteratee(iterable[key], key, iterable) === false) {
+	        break;
+	      }
+	    }
+	    return object;
+	  };
+	}
+
+	module.exports = createBaseFor;
+
+
+/***/ },
+/* 295 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getLength = __webpack_require__(171),
+	    isLength = __webpack_require__(173),
+	    toObject = __webpack_require__(277);
+
+	/**
+	 * Creates a `baseEach` or `baseEachRight` function.
+	 *
+	 * @private
+	 * @param {Function} eachFunc The function to iterate over a collection.
+	 * @param {boolean} [fromRight] Specify iterating from right to left.
+	 * @returns {Function} Returns the new base function.
+	 */
+	function createBaseEach(eachFunc, fromRight) {
+	  return function(collection, iteratee) {
+	    var length = collection ? getLength(collection) : 0;
+	    if (!isLength(length)) {
+	      return eachFunc(collection, iteratee);
+	    }
+	    var index = fromRight ? length : -1,
+	        iterable = toObject(collection);
+
+	    while ((fromRight ? index-- : ++index < length)) {
+	      if (iteratee(iterable[index], index, iterable) === false) {
+	        break;
+	      }
+	    }
+	    return collection;
+	  };
+	}
+
+	module.exports = createBaseEach;
+
+
+/***/ },
+/* 296 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArrayLike = __webpack_require__(170),
+	    isIndex = __webpack_require__(177),
+	    isObject = __webpack_require__(168);
+
+	/**
+	 * Checks if the provided arguments are from an iteratee call.
+	 *
+	 * @private
+	 * @param {*} value The potential iteratee value argument.
+	 * @param {*} index The potential iteratee index or key argument.
+	 * @param {*} object The potential iteratee object argument.
+	 * @returns {boolean} Returns `true` if the arguments are from an iteratee call, else `false`.
+	 */
+	function isIterateeCall(value, index, object) {
+	  if (!isObject(object)) {
+	    return false;
+	  }
+	  var type = typeof index;
+	  if (type == 'number'
+	      ? (isArrayLike(object) && isIndex(index, object.length))
+	      : (type == 'string' && index in object)) {
+	    var other = object[index];
+	    return value === value ? (value === other) : (other !== other);
+	  }
+	  return false;
+	}
+
+	module.exports = isIterateeCall;
+
+
+/***/ },
+/* 297 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var arrayMap = __webpack_require__(298),
+	    baseCallback = __webpack_require__(274),
+	    baseMap = __webpack_require__(299),
+	    isArray = __webpack_require__(176);
+
+	/**
+	 * Creates an array of values by running each element in `collection` through
+	 * `iteratee`. The `iteratee` is bound to `thisArg` and invoked with three
+	 * arguments: (value, index|key, collection).
+	 *
+	 * If a property name is provided for `iteratee` the created `_.property`
+	 * style callback returns the property value of the given element.
+	 *
+	 * If a value is also provided for `thisArg` the created `_.matchesProperty`
+	 * style callback returns `true` for elements that have a matching property
+	 * value, else `false`.
+	 *
+	 * If an object is provided for `iteratee` the created `_.matches` style
+	 * callback returns `true` for elements that have the properties of the given
+	 * object, else `false`.
+	 *
+	 * Many lodash methods are guarded to work as iteratees for methods like
+	 * `_.every`, `_.filter`, `_.map`, `_.mapValues`, `_.reject`, and `_.some`.
+	 *
+	 * The guarded methods are:
+	 * `ary`, `callback`, `chunk`, `clone`, `create`, `curry`, `curryRight`,
+	 * `drop`, `dropRight`, `every`, `fill`, `flatten`, `invert`, `max`, `min`,
+	 * `parseInt`, `slice`, `sortBy`, `take`, `takeRight`, `template`, `trim`,
+	 * `trimLeft`, `trimRight`, `trunc`, `random`, `range`, `sample`, `some`,
+	 * `sum`, `uniq`, and `words`
+	 *
+	 * @static
+	 * @memberOf _
+	 * @alias collect
+	 * @category Collection
+	 * @param {Array|Object|string} collection The collection to iterate over.
+	 * @param {Function|Object|string} [iteratee=_.identity] The function invoked
+	 *  per iteration.
+	 * @param {*} [thisArg] The `this` binding of `iteratee`.
+	 * @returns {Array} Returns the new mapped array.
+	 * @example
+	 *
+	 * function timesThree(n) {
+	 *   return n * 3;
+	 * }
+	 *
+	 * _.map([1, 2], timesThree);
+	 * // => [3, 6]
+	 *
+	 * _.map({ 'a': 1, 'b': 2 }, timesThree);
+	 * // => [3, 6] (iteration order is not guaranteed)
+	 *
+	 * var users = [
+	 *   { 'user': 'barney' },
+	 *   { 'user': 'fred' }
+	 * ];
+	 *
+	 * // using the `_.property` callback shorthand
+	 * _.map(users, 'user');
+	 * // => ['barney', 'fred']
+	 */
+	function map(collection, iteratee, thisArg) {
+	  var func = isArray(collection) ? arrayMap : baseMap;
+	  iteratee = baseCallback(iteratee, thisArg, 3);
+	  return func(collection, iteratee);
+	}
+
+	module.exports = map;
+
+
+/***/ },
+/* 298 */
+/***/ function(module, exports) {
+
+	/**
+	 * A specialized version of `_.map` for arrays without support for callback
+	 * shorthands and `this` binding.
+	 *
+	 * @private
+	 * @param {Array} array The array to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Array} Returns the new mapped array.
+	 */
+	function arrayMap(array, iteratee) {
+	  var index = -1,
+	      length = array.length,
+	      result = Array(length);
+
+	  while (++index < length) {
+	    result[index] = iteratee(array[index], index, array);
+	  }
+	  return result;
+	}
+
+	module.exports = arrayMap;
+
+
+/***/ },
+/* 299 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseEach = __webpack_require__(291),
+	    isArrayLike = __webpack_require__(170);
+
+	/**
+	 * The base implementation of `_.map` without support for callback shorthands
+	 * and `this` binding.
+	 *
+	 * @private
+	 * @param {Array|Object|string} collection The collection to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Array} Returns the new mapped array.
+	 */
+	function baseMap(collection, iteratee) {
+	  var index = -1,
+	      result = isArrayLike(collection) ? Array(collection.length) : [];
+
+	  baseEach(collection, function(value, key, collection) {
+	    result[++index] = iteratee(value, key, collection);
+	  });
+	  return result;
+	}
+
+	module.exports = baseMap;
+
+
+/***/ },
+/* 300 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _moment = __webpack_require__(182);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	var _date = __webpack_require__(271);
+
+	var _date2 = _interopRequireDefault(_date);
+
+	var _reactDom = __webpack_require__(154);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var DateInput = _react2.default.createClass({
+	  displayName: "DateInput",
+	  getInitialState: function getInitialState() {
+	    function generateYears(year) {
+	      var list = [];
+	      for (var i = 0; i < 5; i++) {
+	        list.push(year - i);
+	      }
+	      return list;
+	    }
+	    return {
+	      year: this.props.year,
+	      yearsList: generateYears(this.props.year),
+	      dropdownVisible: false
+	    };
+	  },
+	  renderReadView: function renderReadView() {
+	    return _react2.default.createElement(
+	      "div",
+	      { className: "datepicker__year-read-view", onClick: this.toggleDropdown },
+	      _react2.default.createElement(
+	        "span",
+	        { className: "datepicker__year-read-view--selected-year" },
+	        this.props.year
+	      ),
+	      _react2.default.createElement("span", { className: "datepicker__year-read-view--down-arrow" })
+	    );
+	  },
+	  renderDropdown: function renderDropdown() {
+	    return _react2.default.createElement(
+	      "div",
+	      { className: "datepicker__year-dropdown",
+	        value: this.props.year,
+	        onChange: this.onChange },
+	      this.renderOptions()
+	    );
+	  },
+	  renderOptions: function renderOptions() {
+	    var _this = this;
+
+	    var selectedYear = this.props.year;
+	    var options = this.state.yearsList.map(function (year) {
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "datepicker__year-option",
+	          key: year,
+	          onClick: _this.onChange.bind(_this, year) },
+	        selectedYear === year ? _react2.default.createElement(
+	          "span",
+	          { className: "datepicker__year-option--selected" },
+	          "✓"
+	        ) : "",
+	        year
+	      );
+	    });
+
+	    options.unshift(_react2.default.createElement(
+	      "div",
+	      { className: "datepicker__year-option",
+	        key: "upcoming",
+	        onClick: this.incrementYears },
+	      _react2.default.createElement("a", { className: "datepicker__navigation datepicker__navigation--years datepicker__navigation--years-upcoming" })
+	    ));
+	    options.push(_react2.default.createElement(
+	      "div",
+	      { className: "datepicker__year-option",
+	        key: "previous",
+	        onClick: this.decrementYears },
+	      _react2.default.createElement("a", { className: "datepicker__navigation datepicker__navigation--years datepicker__navigation--years-previous" })
+	    ));
+	    return options;
+	  },
+	  onChange: function onChange(year) {
+	    this.toggleDropdown();
+	    if (parseInt(year) === this.props.year) return;
+	    this.props.onChange(year);
+	  },
+	  toggleDropdown: function toggleDropdown() {
+	    this.setState({
+	      dropdownVisible: !this.state.dropdownVisible
+	    });
+	  },
+	  shiftYears: function shiftYears(amount) {
+	    var years = this.state.yearsList.map(function (year) {
+	      return year + amount;
+	    });
+
+	    this.setState({
+	      yearsList: years
+	    });
+	  },
+	  incrementYears: function incrementYears() {
+	    return this.shiftYears(1);
+	  },
+	  decrementYears: function decrementYears() {
+	    return this.shiftYears(-1);
+	  },
+	  render: function render() {
+	    return _react2.default.createElement(
+	      "div",
+	      null,
+	      this.state.dropdownVisible ? this.renderDropdown() : this.renderReadView()
+	    );
+	  }
+	});
+
+	module.exports = DateInput;
+
+/***/ },
+/* 301 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _moment = __webpack_require__(182);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Day = _react2.default.createClass({
+	  displayName: "Day",
+	  handleClick: function handleClick(event) {
+	    if (this.props.disabled) return;
+
+	    this.props.onClick(event);
+	  },
+	  isWeekend: function isWeekend() {
+	    var weekday = this.props.day.moment().weekday();
+	    return weekday === 5 || weekday === 6;
+	  },
+	  render: function render() {
+	    var classes = ["datepicker__day"];
+
+	    if (this.props.disabled) classes.push("datepicker__day--disabled");
+
+	    if (this.props.day.sameDay(this.props.selected)) classes.push("datepicker__day--selected");
+
+	    if (this.props.inRange) classes.push("datepicker__day--in-range");
+
+	    if (this.props.day.sameDay((0, _moment2.default)())) classes.push("datepicker__day--today");
+
+	    if (this.isWeekend()) classes.push("datepicker__day--weekend");
+
+	    return _react2.default.createElement(
+	      "div",
+	      { className: classes.join(" "), onClick: this.handleClick },
+	      this.props.day.day()
+	    );
+	  }
+	});
+
+	module.exports = Day;
+
+/***/ },
+/* 302 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {/**
 	 * A mixin for handling (effectively) onClickOutside for React components.
 	 * Note that we're not intercepting any events in this approach, and we're
 	 * not using double events for capturing and discarding in layers or wrappers.
@@ -32849,7 +33521,7 @@
 	(function (root, factory) {
 	  if (true) {
 	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(158)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(154)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if (typeof exports === 'object') {
 	    // Node. Note that this does not work with strict
 	    // CommonJS, but only CommonJS-like environments
@@ -32939,8 +33611,10 @@
 	     */
 	    enableOnClickOutside: function() {
 	      var fn = this.__outsideClickHandler;
-	      document.addEventListener("mousedown", fn);
-	      document.addEventListener("touchstart", fn);
+	      if (global.document != null) {
+	        document.addEventListener("mousedown", fn);
+	        document.addEventListener("touchstart", fn);
+	      }
 	    },
 
 	    /**
@@ -32949,162 +33623,1985 @@
 	     */
 	    disableOnClickOutside: function() {
 	      var fn = this.__outsideClickHandler;
-	      document.removeEventListener("mousedown", fn);
-	      document.removeEventListener("touchstart", fn);
+	      if (global.document != null) {
+	        document.removeEventListener("mousedown", fn);
+	        document.removeEventListener("touchstart", fn);
+	      }
 	    }
 	  };
 
 	}));
 
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 251 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var hljs = __webpack_require__(252);
+	"use strict";
 
-	hljs.registerLanguage('1c', __webpack_require__(253));
-	hljs.registerLanguage('accesslog', __webpack_require__(254));
-	hljs.registerLanguage('actionscript', __webpack_require__(255));
-	hljs.registerLanguage('apache', __webpack_require__(256));
-	hljs.registerLanguage('applescript', __webpack_require__(257));
-	hljs.registerLanguage('armasm', __webpack_require__(258));
-	hljs.registerLanguage('xml', __webpack_require__(259));
-	hljs.registerLanguage('asciidoc', __webpack_require__(260));
-	hljs.registerLanguage('aspectj', __webpack_require__(261));
-	hljs.registerLanguage('autohotkey', __webpack_require__(262));
-	hljs.registerLanguage('autoit', __webpack_require__(263));
-	hljs.registerLanguage('avrasm', __webpack_require__(264));
-	hljs.registerLanguage('axapta', __webpack_require__(265));
-	hljs.registerLanguage('bash', __webpack_require__(266));
-	hljs.registerLanguage('brainfuck', __webpack_require__(267));
-	hljs.registerLanguage('cal', __webpack_require__(268));
-	hljs.registerLanguage('capnproto', __webpack_require__(269));
-	hljs.registerLanguage('ceylon', __webpack_require__(270));
-	hljs.registerLanguage('clojure', __webpack_require__(271));
-	hljs.registerLanguage('clojure-repl', __webpack_require__(272));
-	hljs.registerLanguage('cmake', __webpack_require__(273));
-	hljs.registerLanguage('coffeescript', __webpack_require__(274));
-	hljs.registerLanguage('cpp', __webpack_require__(275));
-	hljs.registerLanguage('crmsh', __webpack_require__(276));
-	hljs.registerLanguage('crystal', __webpack_require__(277));
-	hljs.registerLanguage('cs', __webpack_require__(278));
-	hljs.registerLanguage('css', __webpack_require__(279));
-	hljs.registerLanguage('d', __webpack_require__(280));
-	hljs.registerLanguage('markdown', __webpack_require__(281));
-	hljs.registerLanguage('dart', __webpack_require__(282));
-	hljs.registerLanguage('delphi', __webpack_require__(283));
-	hljs.registerLanguage('diff', __webpack_require__(284));
-	hljs.registerLanguage('django', __webpack_require__(285));
-	hljs.registerLanguage('dns', __webpack_require__(286));
-	hljs.registerLanguage('dockerfile', __webpack_require__(287));
-	hljs.registerLanguage('dos', __webpack_require__(288));
-	hljs.registerLanguage('dust', __webpack_require__(289));
-	hljs.registerLanguage('elixir', __webpack_require__(290));
-	hljs.registerLanguage('elm', __webpack_require__(291));
-	hljs.registerLanguage('ruby', __webpack_require__(292));
-	hljs.registerLanguage('erb', __webpack_require__(293));
-	hljs.registerLanguage('erlang-repl', __webpack_require__(294));
-	hljs.registerLanguage('erlang', __webpack_require__(295));
-	hljs.registerLanguage('fix', __webpack_require__(296));
-	hljs.registerLanguage('fortran', __webpack_require__(297));
-	hljs.registerLanguage('fsharp', __webpack_require__(298));
-	hljs.registerLanguage('gams', __webpack_require__(299));
-	hljs.registerLanguage('gcode', __webpack_require__(300));
-	hljs.registerLanguage('gherkin', __webpack_require__(301));
-	hljs.registerLanguage('glsl', __webpack_require__(302));
-	hljs.registerLanguage('go', __webpack_require__(303));
-	hljs.registerLanguage('golo', __webpack_require__(304));
-	hljs.registerLanguage('gradle', __webpack_require__(305));
-	hljs.registerLanguage('groovy', __webpack_require__(306));
-	hljs.registerLanguage('haml', __webpack_require__(307));
-	hljs.registerLanguage('handlebars', __webpack_require__(308));
-	hljs.registerLanguage('haskell', __webpack_require__(309));
-	hljs.registerLanguage('haxe', __webpack_require__(310));
-	hljs.registerLanguage('http', __webpack_require__(311));
-	hljs.registerLanguage('inform7', __webpack_require__(312));
-	hljs.registerLanguage('ini', __webpack_require__(313));
-	hljs.registerLanguage('irpf90', __webpack_require__(314));
-	hljs.registerLanguage('java', __webpack_require__(315));
-	hljs.registerLanguage('javascript', __webpack_require__(316));
-	hljs.registerLanguage('json', __webpack_require__(317));
-	hljs.registerLanguage('julia', __webpack_require__(318));
-	hljs.registerLanguage('kotlin', __webpack_require__(319));
-	hljs.registerLanguage('lasso', __webpack_require__(320));
-	hljs.registerLanguage('less', __webpack_require__(321));
-	hljs.registerLanguage('lisp', __webpack_require__(322));
-	hljs.registerLanguage('livecodeserver', __webpack_require__(323));
-	hljs.registerLanguage('livescript', __webpack_require__(324));
-	hljs.registerLanguage('lua', __webpack_require__(325));
-	hljs.registerLanguage('makefile', __webpack_require__(326));
-	hljs.registerLanguage('mathematica', __webpack_require__(327));
-	hljs.registerLanguage('matlab', __webpack_require__(328));
-	hljs.registerLanguage('mel', __webpack_require__(329));
-	hljs.registerLanguage('mercury', __webpack_require__(330));
-	hljs.registerLanguage('mizar', __webpack_require__(331));
-	hljs.registerLanguage('perl', __webpack_require__(332));
-	hljs.registerLanguage('mojolicious', __webpack_require__(333));
-	hljs.registerLanguage('monkey', __webpack_require__(334));
-	hljs.registerLanguage('nginx', __webpack_require__(335));
-	hljs.registerLanguage('nimrod', __webpack_require__(336));
-	hljs.registerLanguage('nix', __webpack_require__(337));
-	hljs.registerLanguage('nsis', __webpack_require__(338));
-	hljs.registerLanguage('objectivec', __webpack_require__(339));
-	hljs.registerLanguage('ocaml', __webpack_require__(340));
-	hljs.registerLanguage('openscad', __webpack_require__(341));
-	hljs.registerLanguage('oxygene', __webpack_require__(342));
-	hljs.registerLanguage('parser3', __webpack_require__(343));
-	hljs.registerLanguage('pf', __webpack_require__(344));
-	hljs.registerLanguage('php', __webpack_require__(345));
-	hljs.registerLanguage('powershell', __webpack_require__(346));
-	hljs.registerLanguage('processing', __webpack_require__(347));
-	hljs.registerLanguage('profile', __webpack_require__(348));
-	hljs.registerLanguage('prolog', __webpack_require__(349));
-	hljs.registerLanguage('protobuf', __webpack_require__(350));
-	hljs.registerLanguage('puppet', __webpack_require__(351));
-	hljs.registerLanguage('python', __webpack_require__(352));
-	hljs.registerLanguage('q', __webpack_require__(353));
-	hljs.registerLanguage('r', __webpack_require__(354));
-	hljs.registerLanguage('rib', __webpack_require__(355));
-	hljs.registerLanguage('roboconf', __webpack_require__(356));
-	hljs.registerLanguage('rsl', __webpack_require__(357));
-	hljs.registerLanguage('ruleslanguage', __webpack_require__(358));
-	hljs.registerLanguage('rust', __webpack_require__(359));
-	hljs.registerLanguage('scala', __webpack_require__(360));
-	hljs.registerLanguage('scheme', __webpack_require__(361));
-	hljs.registerLanguage('scilab', __webpack_require__(362));
-	hljs.registerLanguage('scss', __webpack_require__(363));
-	hljs.registerLanguage('smali', __webpack_require__(364));
-	hljs.registerLanguage('smalltalk', __webpack_require__(365));
-	hljs.registerLanguage('sml', __webpack_require__(366));
-	hljs.registerLanguage('sqf', __webpack_require__(367));
-	hljs.registerLanguage('sql', __webpack_require__(368));
-	hljs.registerLanguage('stata', __webpack_require__(369));
-	hljs.registerLanguage('step21', __webpack_require__(370));
-	hljs.registerLanguage('stylus', __webpack_require__(371));
-	hljs.registerLanguage('swift', __webpack_require__(372));
-	hljs.registerLanguage('tcl', __webpack_require__(373));
-	hljs.registerLanguage('tex', __webpack_require__(374));
-	hljs.registerLanguage('thrift', __webpack_require__(375));
-	hljs.registerLanguage('tp', __webpack_require__(376));
-	hljs.registerLanguage('twig', __webpack_require__(377));
-	hljs.registerLanguage('typescript', __webpack_require__(378));
-	hljs.registerLanguage('vala', __webpack_require__(379));
-	hljs.registerLanguage('vbnet', __webpack_require__(380));
-	hljs.registerLanguage('vbscript', __webpack_require__(381));
-	hljs.registerLanguage('vbscript-html', __webpack_require__(382));
-	hljs.registerLanguage('verilog', __webpack_require__(383));
-	hljs.registerLanguage('vhdl', __webpack_require__(384));
-	hljs.registerLanguage('vim', __webpack_require__(385));
-	hljs.registerLanguage('x86asm', __webpack_require__(386));
-	hljs.registerLanguage('xl', __webpack_require__(387));
-	hljs.registerLanguage('xquery', __webpack_require__(388));
-	hljs.registerLanguage('zephir', __webpack_require__(389));
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(154);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Popover = _react2.default.createClass({
+	  displayName: "Popover",
+
+	  propTypes: {
+	    attachment: _react2.default.PropTypes.string,
+	    targetAttachment: _react2.default.PropTypes.string,
+	    targetOffset: _react2.default.PropTypes.string
+	  },
+
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      attachment: "top left",
+	      constraints: [{
+	        to: "window",
+	        attachment: "together"
+	      }],
+	      targetAttachment: "bottom left",
+	      targetOffset: "10px 0"
+	    };
+	  },
+	  componentWillMount: function componentWillMount() {
+	    var popoverContainer = document.createElement("span");
+	    popoverContainer.className = "datepicker__container";
+
+	    this._popoverElement = popoverContainer;
+
+	    document.querySelector("body").appendChild(this._popoverElement);
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this._renderPopover();
+	  },
+	  componentDidUpdate: function componentDidUpdate() {
+	    this._renderPopover();
+	  },
+	  _popoverComponent: function _popoverComponent() {
+	    var className = this.props.className;
+	    return _react2.default.createElement(
+	      "div",
+	      { className: className },
+	      this.props.children
+	    );
+	  },
+	  _tetherOptions: function _tetherOptions() {
+	    return {
+	      element: this._popoverElement,
+	      target: this.refs.span.parentElement.querySelector("input"),
+	      attachment: this.props.attachment,
+	      targetAttachment: this.props.targetAttachment,
+	      targetOffset: this.props.targetOffset,
+	      optimizations: {
+	        moveElement: false // Always moves to <body> anyway!
+	      },
+	      constraints: this.props.constraints
+	    };
+	  },
+	  _renderPopover: function _renderPopover() {
+	    _reactDom2.default.render(this._popoverComponent(), this._popoverElement);
+
+	    if (this._tether != null) {
+	      this._tether.setOptions(this._tetherOptions());
+	    } else if (window && document) {
+	      var Tether = __webpack_require__(304);
+	      this._tether = new Tether(this._tetherOptions());
+	    }
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this._tether.destroy();
+	    _reactDom2.default.unmountComponentAtNode(this._popoverElement);
+	    if (this._popoverElement.parentNode) {
+	      this._popoverElement.parentNode.removeChild(this._popoverElement);
+	    }
+	  },
+	  render: function render() {
+	    return _react2.default.createElement("span", { ref: "span" });
+	  }
+	});
+
+	module.exports = Popover;
+
+/***/ },
+/* 304 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! tether 1.1.0 */
+
+	(function(root, factory) {
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof exports === 'object') {
+	    module.exports = factory(require, exports, module);
+	  } else {
+	    root.Tether = factory();
+	  }
+	}(this, function(require, exports, module) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var TetherBase = undefined;
+	if (typeof TetherBase === 'undefined') {
+	  TetherBase = { modules: [] };
+	}
+
+	function getScrollParent(el) {
+	  var _getComputedStyle = getComputedStyle(el);
+
+	  var position = _getComputedStyle.position;
+
+	  if (position === 'fixed') {
+	    return el;
+	  }
+
+	  var parent = el;
+	  while (parent = parent.parentNode) {
+	    var style = undefined;
+	    try {
+	      style = getComputedStyle(parent);
+	    } catch (err) {}
+
+	    if (typeof style === 'undefined' || style === null) {
+	      return parent;
+	    }
+
+	    var _style = style;
+	    var overflow = _style.overflow;
+	    var overflowX = _style.overflowX;
+	    var overflowY = _style.overflowY;
+
+	    if (/(auto|scroll)/.test(overflow + overflowY + overflowX)) {
+	      if (position !== 'absolute' || ['relative', 'absolute', 'fixed'].indexOf(style.position) >= 0) {
+	        return parent;
+	      }
+	    }
+	  }
+
+	  return document.body;
+	}
+
+	var uniqueId = (function () {
+	  var id = 0;
+	  return function () {
+	    return ++id;
+	  };
+	})();
+
+	var zeroPosCache = {};
+	var getOrigin = function getOrigin(doc) {
+	  // getBoundingClientRect is unfortunately too accurate.  It introduces a pixel or two of
+	  // jitter as the user scrolls that messes with our ability to detect if two positions
+	  // are equivilant or not.  We place an element at the top left of the page that will
+	  // get the same jitter, so we can cancel the two out.
+	  var node = doc._tetherZeroElement;
+	  if (typeof node === 'undefined') {
+	    node = doc.createElement('div');
+	    node.setAttribute('data-tether-id', uniqueId());
+	    extend(node.style, {
+	      top: 0,
+	      left: 0,
+	      position: 'absolute'
+	    });
+
+	    doc.body.appendChild(node);
+
+	    doc._tetherZeroElement = node;
+	  }
+
+	  var id = node.getAttribute('data-tether-id');
+	  if (typeof zeroPosCache[id] === 'undefined') {
+	    zeroPosCache[id] = {};
+
+	    var rect = node.getBoundingClientRect();
+	    for (var k in rect) {
+	      // Can't use extend, as on IE9, elements don't resolve to be hasOwnProperty
+	      zeroPosCache[id][k] = rect[k];
+	    }
+
+	    // Clear the cache when this position call is done
+	    defer(function () {
+	      delete zeroPosCache[id];
+	    });
+	  }
+
+	  return zeroPosCache[id];
+	};
+
+	function getBounds(el) {
+	  var doc = undefined;
+	  if (el === document) {
+	    doc = document;
+	    el = document.documentElement;
+	  } else {
+	    doc = el.ownerDocument;
+	  }
+
+	  var docEl = doc.documentElement;
+
+	  var box = {};
+	  // The original object returned by getBoundingClientRect is immutable, so we clone it
+	  // We can't use extend because the properties are not considered part of the object by hasOwnProperty in IE9
+	  var rect = el.getBoundingClientRect();
+	  for (var k in rect) {
+	    box[k] = rect[k];
+	  }
+
+	  var origin = getOrigin(doc);
+
+	  box.top -= origin.top;
+	  box.left -= origin.left;
+
+	  if (typeof box.width === 'undefined') {
+	    box.width = document.body.scrollWidth - box.left - box.right;
+	  }
+	  if (typeof box.height === 'undefined') {
+	    box.height = document.body.scrollHeight - box.top - box.bottom;
+	  }
+
+	  box.top = box.top - docEl.clientTop;
+	  box.left = box.left - docEl.clientLeft;
+	  box.right = doc.body.clientWidth - box.width - box.left;
+	  box.bottom = doc.body.clientHeight - box.height - box.top;
+
+	  return box;
+	}
+
+	function getOffsetParent(el) {
+	  return el.offsetParent || document.documentElement;
+	}
+
+	function getScrollBarSize() {
+	  var inner = document.createElement('div');
+	  inner.style.width = '100%';
+	  inner.style.height = '200px';
+
+	  var outer = document.createElement('div');
+	  extend(outer.style, {
+	    position: 'absolute',
+	    top: 0,
+	    left: 0,
+	    pointerEvents: 'none',
+	    visibility: 'hidden',
+	    width: '200px',
+	    height: '150px',
+	    overflow: 'hidden'
+	  });
+
+	  outer.appendChild(inner);
+
+	  document.body.appendChild(outer);
+
+	  var widthContained = inner.offsetWidth;
+	  outer.style.overflow = 'scroll';
+	  var widthScroll = inner.offsetWidth;
+
+	  if (widthContained === widthScroll) {
+	    widthScroll = outer.clientWidth;
+	  }
+
+	  document.body.removeChild(outer);
+
+	  var width = widthContained - widthScroll;
+
+	  return { width: width, height: width };
+	}
+
+	function extend() {
+	  var out = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+	  var args = [];
+
+	  Array.prototype.push.apply(args, arguments);
+
+	  args.slice(1).forEach(function (obj) {
+	    if (obj) {
+	      for (var key in obj) {
+	        if (({}).hasOwnProperty.call(obj, key)) {
+	          out[key] = obj[key];
+	        }
+	      }
+	    }
+	  });
+
+	  return out;
+	}
+
+	function removeClass(el, name) {
+	  if (typeof el.classList !== 'undefined') {
+	    name.split(' ').forEach(function (cls) {
+	      if (cls.trim()) {
+	        el.classList.remove(cls);
+	      }
+	    });
+	  } else {
+	    var regex = new RegExp('(^| )' + name.split(' ').join('|') + '( |$)', 'gi');
+	    var className = getClassName(el).replace(regex, ' ');
+	    setClassName(el, className);
+	  }
+	}
+
+	function addClass(el, name) {
+	  if (typeof el.classList !== 'undefined') {
+	    name.split(' ').forEach(function (cls) {
+	      if (cls.trim()) {
+	        el.classList.add(cls);
+	      }
+	    });
+	  } else {
+	    removeClass(el, name);
+	    var cls = getClassName(el) + (' ' + name);
+	    setClassName(el, cls);
+	  }
+	}
+
+	function hasClass(el, name) {
+	  if (typeof el.classList !== 'undefined') {
+	    return el.classList.contains(name);
+	  }
+	  var className = getClassName(el);
+	  return new RegExp('(^| )' + name + '( |$)', 'gi').test(className);
+	}
+
+	function getClassName(el) {
+	  if (el.className instanceof SVGAnimatedString) {
+	    return el.className.baseVal;
+	  }
+	  return el.className;
+	}
+
+	function setClassName(el, className) {
+	  el.setAttribute('class', className);
+	}
+
+	function updateClasses(el, add, all) {
+	  // Of the set of 'all' classes, we need the 'add' classes, and only the
+	  // 'add' classes to be set.
+	  all.forEach(function (cls) {
+	    if (add.indexOf(cls) === -1 && hasClass(el, cls)) {
+	      removeClass(el, cls);
+	    }
+	  });
+
+	  add.forEach(function (cls) {
+	    if (!hasClass(el, cls)) {
+	      addClass(el, cls);
+	    }
+	  });
+	}
+
+	var deferred = [];
+
+	var defer = function defer(fn) {
+	  deferred.push(fn);
+	};
+
+	var flush = function flush() {
+	  var fn = undefined;
+	  while (fn = deferred.pop()) {
+	    fn();
+	  }
+	};
+
+	var Evented = (function () {
+	  function Evented() {
+	    _classCallCheck(this, Evented);
+	  }
+
+	  _createClass(Evented, [{
+	    key: 'on',
+	    value: function on(event, handler, ctx) {
+	      var once = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
+
+	      if (typeof this.bindings === 'undefined') {
+	        this.bindings = {};
+	      }
+	      if (typeof this.bindings[event] === 'undefined') {
+	        this.bindings[event] = [];
+	      }
+	      this.bindings[event].push({ handler: handler, ctx: ctx, once: once });
+	    }
+	  }, {
+	    key: 'once',
+	    value: function once(event, handler, ctx) {
+	      this.on(event, handler, ctx, true);
+	    }
+	  }, {
+	    key: 'off',
+	    value: function off(event, handler) {
+	      if (typeof this.bindings !== 'undefined' && typeof this.bindings[event] !== 'undefined') {
+	        return;
+	      }
+
+	      if (typeof handler === 'undefined') {
+	        delete this.bindings[event];
+	      } else {
+	        var i = 0;
+	        while (i < this.bindings[event].length) {
+	          if (this.bindings[event][i].handler === handler) {
+	            this.bindings[event].splice(i, 1);
+	          } else {
+	            ++i;
+	          }
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'trigger',
+	    value: function trigger(event) {
+	      if (typeof this.bindings !== 'undefined' && this.bindings[event]) {
+	        var i = 0;
+
+	        for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	          args[_key - 1] = arguments[_key];
+	        }
+
+	        while (i < this.bindings[event].length) {
+	          var _bindings$event$i = this.bindings[event][i];
+	          var handler = _bindings$event$i.handler;
+	          var ctx = _bindings$event$i.ctx;
+	          var once = _bindings$event$i.once;
+
+	          var context = ctx;
+	          if (typeof context === 'undefined') {
+	            context = this;
+	          }
+
+	          handler.apply(context, args);
+
+	          if (once) {
+	            this.bindings[event].splice(i, 1);
+	          } else {
+	            ++i;
+	          }
+	        }
+	      }
+	    }
+	  }]);
+
+	  return Evented;
+	})();
+
+	TetherBase.Utils = {
+	  getScrollParent: getScrollParent,
+	  getBounds: getBounds,
+	  getOffsetParent: getOffsetParent,
+	  extend: extend,
+	  addClass: addClass,
+	  removeClass: removeClass,
+	  hasClass: hasClass,
+	  updateClasses: updateClasses,
+	  defer: defer,
+	  flush: flush,
+	  uniqueId: uniqueId,
+	  Evented: Evented,
+	  getScrollBarSize: getScrollBarSize
+	};
+	/* globals TetherBase, performance */
+
+	'use strict';
+
+	var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	if (typeof TetherBase === 'undefined') {
+	  throw new Error('You must include the utils.js file before tether.js');
+	}
+
+	var _TetherBase$Utils = TetherBase.Utils;
+	var getScrollParent = _TetherBase$Utils.getScrollParent;
+	var getBounds = _TetherBase$Utils.getBounds;
+	var getOffsetParent = _TetherBase$Utils.getOffsetParent;
+	var extend = _TetherBase$Utils.extend;
+	var addClass = _TetherBase$Utils.addClass;
+	var removeClass = _TetherBase$Utils.removeClass;
+	var updateClasses = _TetherBase$Utils.updateClasses;
+	var defer = _TetherBase$Utils.defer;
+	var flush = _TetherBase$Utils.flush;
+	var getScrollBarSize = _TetherBase$Utils.getScrollBarSize;
+
+	function within(a, b) {
+	  var diff = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
+
+	  return a + diff >= b && b >= a - diff;
+	}
+
+	var transformKey = (function () {
+	  if (typeof document === 'undefined') {
+	    return '';
+	  }
+	  var el = document.createElement('div');
+
+	  var transforms = ['transform', 'webkitTransform', 'OTransform', 'MozTransform', 'msTransform'];
+	  for (var i = 0; i < transforms.length; ++i) {
+	    var key = transforms[i];
+	    if (el.style[key] !== undefined) {
+	      return key;
+	    }
+	  }
+	})();
+
+	var tethers = [];
+
+	var position = function position() {
+	  tethers.forEach(function (tether) {
+	    tether.position(false);
+	  });
+	  flush();
+	};
+
+	function now() {
+	  if (typeof performance !== 'undefined' && typeof performance.now !== 'undefined') {
+	    return performance.now();
+	  }
+	  return +new Date();
+	}
+
+	(function () {
+	  var lastCall = null;
+	  var lastDuration = null;
+	  var pendingTimeout = null;
+
+	  var tick = function tick() {
+	    if (typeof lastDuration !== 'undefined' && lastDuration > 16) {
+	      // We voluntarily throttle ourselves if we can't manage 60fps
+	      lastDuration = Math.min(lastDuration - 16, 250);
+
+	      // Just in case this is the last event, remember to position just once more
+	      pendingTimeout = setTimeout(tick, 250);
+	      return;
+	    }
+
+	    if (typeof lastCall !== 'undefined' && now() - lastCall < 10) {
+	      // Some browsers call events a little too frequently, refuse to run more than is reasonable
+	      return;
+	    }
+
+	    if (typeof pendingTimeout !== 'undefined') {
+	      clearTimeout(pendingTimeout);
+	      pendingTimeout = null;
+	    }
+
+	    lastCall = now();
+	    position();
+	    lastDuration = now() - lastCall;
+	  };
+
+	  if (typeof window !== 'undefined') {
+	    ['resize', 'scroll', 'touchmove'].forEach(function (event) {
+	      window.addEventListener(event, tick);
+	    });
+	  }
+	})();
+
+	var MIRROR_LR = {
+	  center: 'center',
+	  left: 'right',
+	  right: 'left'
+	};
+
+	var MIRROR_TB = {
+	  middle: 'middle',
+	  top: 'bottom',
+	  bottom: 'top'
+	};
+
+	var OFFSET_MAP = {
+	  top: 0,
+	  left: 0,
+	  middle: '50%',
+	  center: '50%',
+	  bottom: '100%',
+	  right: '100%'
+	};
+
+	var autoToFixedAttachment = function autoToFixedAttachment(attachment, relativeToAttachment) {
+	  var left = attachment.left;
+	  var top = attachment.top;
+
+	  if (left === 'auto') {
+	    left = MIRROR_LR[relativeToAttachment.left];
+	  }
+
+	  if (top === 'auto') {
+	    top = MIRROR_TB[relativeToAttachment.top];
+	  }
+
+	  return { left: left, top: top };
+	};
+
+	var attachmentToOffset = function attachmentToOffset(attachment) {
+	  var left = attachment.left;
+	  var top = attachment.top;
+
+	  if (typeof OFFSET_MAP[attachment.left] !== 'undefined') {
+	    left = OFFSET_MAP[attachment.left];
+	  }
+
+	  if (typeof OFFSET_MAP[attachment.top] !== 'undefined') {
+	    top = OFFSET_MAP[attachment.top];
+	  }
+
+	  return { left: left, top: top };
+	};
+
+	function addOffset() {
+	  var out = { top: 0, left: 0 };
+
+	  for (var _len = arguments.length, offsets = Array(_len), _key = 0; _key < _len; _key++) {
+	    offsets[_key] = arguments[_key];
+	  }
+
+	  offsets.forEach(function (_ref) {
+	    var top = _ref.top;
+	    var left = _ref.left;
+
+	    if (typeof top === 'string') {
+	      top = parseFloat(top, 10);
+	    }
+	    if (typeof left === 'string') {
+	      left = parseFloat(left, 10);
+	    }
+
+	    out.top += top;
+	    out.left += left;
+	  });
+
+	  return out;
+	}
+
+	function offsetToPx(offset, size) {
+	  if (typeof offset.left === 'string' && offset.left.indexOf('%') !== -1) {
+	    offset.left = parseFloat(offset.left, 10) / 100 * size.width;
+	  }
+	  if (typeof offset.top === 'string' && offset.top.indexOf('%') !== -1) {
+	    offset.top = parseFloat(offset.top, 10) / 100 * size.height;
+	  }
+
+	  return offset;
+	}
+
+	var parseOffset = function parseOffset(value) {
+	  var _value$split = value.split(' ');
+
+	  var _value$split2 = _slicedToArray(_value$split, 2);
+
+	  var top = _value$split2[0];
+	  var left = _value$split2[1];
+
+	  return { top: top, left: left };
+	};
+	var parseAttachment = parseOffset;
+
+	var TetherClass = (function () {
+	  function TetherClass(options) {
+	    var _this = this;
+
+	    _classCallCheck(this, TetherClass);
+
+	    this.position = this.position.bind(this);
+
+	    tethers.push(this);
+
+	    this.history = [];
+
+	    this.setOptions(options, false);
+
+	    TetherBase.modules.forEach(function (module) {
+	      if (typeof module.initialize !== 'undefined') {
+	        module.initialize.call(_this);
+	      }
+	    });
+
+	    this.position();
+	  }
+
+	  _createClass(TetherClass, [{
+	    key: 'getClass',
+	    value: function getClass() {
+	      var key = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
+	      var classes = this.options.classes;
+
+	      if (typeof classes !== 'undefined' && classes[key]) {
+	        return this.options.classes[key];
+	      } else if (this.options.classPrefix) {
+	        return this.options.classPrefix + '-' + key;
+	      } else {
+	        return key;
+	      }
+	    }
+	  }, {
+	    key: 'setOptions',
+	    value: function setOptions(options) {
+	      var _this2 = this;
+
+	      var pos = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+
+	      var defaults = {
+	        offset: '0 0',
+	        targetOffset: '0 0',
+	        targetAttachment: 'auto auto',
+	        classPrefix: 'tether'
+	      };
+
+	      this.options = extend(defaults, options);
+
+	      var _options = this.options;
+	      var element = _options.element;
+	      var target = _options.target;
+	      var targetModifier = _options.targetModifier;
+
+	      this.element = element;
+	      this.target = target;
+	      this.targetModifier = targetModifier;
+
+	      if (this.target === 'viewport') {
+	        this.target = document.body;
+	        this.targetModifier = 'visible';
+	      } else if (this.target === 'scroll-handle') {
+	        this.target = document.body;
+	        this.targetModifier = 'scroll-handle';
+	      }
+
+	      ['element', 'target'].forEach(function (key) {
+	        if (typeof _this2[key] === 'undefined') {
+	          throw new Error('Tether Error: Both element and target must be defined');
+	        }
+
+	        if (typeof _this2[key].jquery !== 'undefined') {
+	          _this2[key] = _this2[key][0];
+	        } else if (typeof _this2[key] === 'string') {
+	          _this2[key] = document.querySelector(_this2[key]);
+	        }
+	      });
+
+	      addClass(this.element, this.getClass('element'));
+	      if (!(this.options.addTargetClasses === false)) {
+	        addClass(this.target, this.getClass('target'));
+	      }
+
+	      if (!this.options.attachment) {
+	        throw new Error('Tether Error: You must provide an attachment');
+	      }
+
+	      this.targetAttachment = parseAttachment(this.options.targetAttachment);
+	      this.attachment = parseAttachment(this.options.attachment);
+	      this.offset = parseOffset(this.options.offset);
+	      this.targetOffset = parseOffset(this.options.targetOffset);
+
+	      if (typeof this.scrollParent !== 'undefined') {
+	        this.disable();
+	      }
+
+	      if (this.targetModifier === 'scroll-handle') {
+	        this.scrollParent = this.target;
+	      } else {
+	        this.scrollParent = getScrollParent(this.target);
+	      }
+
+	      if (!(this.options.enabled === false)) {
+	        this.enable(pos);
+	      }
+	    }
+	  }, {
+	    key: 'getTargetBounds',
+	    value: function getTargetBounds() {
+	      if (typeof this.targetModifier !== 'undefined') {
+	        if (this.targetModifier === 'visible') {
+	          if (this.target === document.body) {
+	            return { top: pageYOffset, left: pageXOffset, height: innerHeight, width: innerWidth };
+	          } else {
+	            var bounds = getBounds(this.target);
+
+	            var out = {
+	              height: bounds.height,
+	              width: bounds.width,
+	              top: bounds.top,
+	              left: bounds.left
+	            };
+
+	            out.height = Math.min(out.height, bounds.height - (pageYOffset - bounds.top));
+	            out.height = Math.min(out.height, bounds.height - (bounds.top + bounds.height - (pageYOffset + innerHeight)));
+	            out.height = Math.min(innerHeight, out.height);
+	            out.height -= 2;
+
+	            out.width = Math.min(out.width, bounds.width - (pageXOffset - bounds.left));
+	            out.width = Math.min(out.width, bounds.width - (bounds.left + bounds.width - (pageXOffset + innerWidth)));
+	            out.width = Math.min(innerWidth, out.width);
+	            out.width -= 2;
+
+	            if (out.top < pageYOffset) {
+	              out.top = pageYOffset;
+	            }
+	            if (out.left < pageXOffset) {
+	              out.left = pageXOffset;
+	            }
+
+	            return out;
+	          }
+	        } else if (this.targetModifier === 'scroll-handle') {
+	          var bounds = undefined;
+	          var target = this.target;
+	          if (target === document.body) {
+	            target = document.documentElement;
+
+	            bounds = {
+	              left: pageXOffset,
+	              top: pageYOffset,
+	              height: innerHeight,
+	              width: innerWidth
+	            };
+	          } else {
+	            bounds = getBounds(target);
+	          }
+
+	          var style = getComputedStyle(target);
+
+	          var hasBottomScroll = target.scrollWidth > target.clientWidth || [style.overflow, style.overflowX].indexOf('scroll') >= 0 || this.target !== document.body;
+
+	          var scrollBottom = 0;
+	          if (hasBottomScroll) {
+	            scrollBottom = 15;
+	          }
+
+	          var height = bounds.height - parseFloat(style.borderTopWidth) - parseFloat(style.borderBottomWidth) - scrollBottom;
+
+	          var out = {
+	            width: 15,
+	            height: height * 0.975 * (height / target.scrollHeight),
+	            left: bounds.left + bounds.width - parseFloat(style.borderLeftWidth) - 15
+	          };
+
+	          var fitAdj = 0;
+	          if (height < 408 && this.target === document.body) {
+	            fitAdj = -0.00011 * Math.pow(height, 2) - 0.00727 * height + 22.58;
+	          }
+
+	          if (this.target !== document.body) {
+	            out.height = Math.max(out.height, 24);
+	          }
+
+	          var scrollPercentage = this.target.scrollTop / (target.scrollHeight - height);
+	          out.top = scrollPercentage * (height - out.height - fitAdj) + bounds.top + parseFloat(style.borderTopWidth);
+
+	          if (this.target === document.body) {
+	            out.height = Math.max(out.height, 24);
+	          }
+
+	          return out;
+	        }
+	      } else {
+	        return getBounds(this.target);
+	      }
+	    }
+	  }, {
+	    key: 'clearCache',
+	    value: function clearCache() {
+	      this._cache = {};
+	    }
+	  }, {
+	    key: 'cache',
+	    value: function cache(k, getter) {
+	      // More than one module will often need the same DOM info, so
+	      // we keep a cache which is cleared on each position call
+	      if (typeof this._cache === 'undefined') {
+	        this._cache = {};
+	      }
+
+	      if (typeof this._cache[k] === 'undefined') {
+	        this._cache[k] = getter.call(this);
+	      }
+
+	      return this._cache[k];
+	    }
+	  }, {
+	    key: 'enable',
+	    value: function enable() {
+	      var pos = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+
+	      if (!(this.options.addTargetClasses === false)) {
+	        addClass(this.target, this.getClass('enabled'));
+	      }
+	      addClass(this.element, this.getClass('enabled'));
+	      this.enabled = true;
+
+	      if (this.scrollParent !== document) {
+	        this.scrollParent.addEventListener('scroll', this.position);
+	      }
+
+	      if (pos) {
+	        this.position();
+	      }
+	    }
+	  }, {
+	    key: 'disable',
+	    value: function disable() {
+	      removeClass(this.target, this.getClass('enabled'));
+	      removeClass(this.element, this.getClass('enabled'));
+	      this.enabled = false;
+
+	      if (typeof this.scrollParent !== 'undefined') {
+	        this.scrollParent.removeEventListener('scroll', this.position);
+	      }
+	    }
+	  }, {
+	    key: 'destroy',
+	    value: function destroy() {
+	      var _this3 = this;
+
+	      this.disable();
+
+	      tethers.forEach(function (tether, i) {
+	        if (tether === _this3) {
+	          tethers.splice(i, 1);
+	          return;
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'updateAttachClasses',
+	    value: function updateAttachClasses(elementAttach, targetAttach) {
+	      var _this4 = this;
+
+	      elementAttach = elementAttach || this.attachment;
+	      targetAttach = targetAttach || this.targetAttachment;
+	      var sides = ['left', 'top', 'bottom', 'right', 'middle', 'center'];
+
+	      if (typeof this._addAttachClasses !== 'undefined' && this._addAttachClasses.length) {
+	        // updateAttachClasses can be called more than once in a position call, so
+	        // we need to clean up after ourselves such that when the last defer gets
+	        // ran it doesn't add any extra classes from previous calls.
+	        this._addAttachClasses.splice(0, this._addAttachClasses.length);
+	      }
+
+	      if (typeof this._addAttachClasses === 'undefined') {
+	        this._addAttachClasses = [];
+	      }
+	      var add = this._addAttachClasses;
+
+	      if (elementAttach.top) {
+	        add.push(this.getClass('element-attached') + '-' + elementAttach.top);
+	      }
+	      if (elementAttach.left) {
+	        add.push(this.getClass('element-attached') + '-' + elementAttach.left);
+	      }
+	      if (targetAttach.top) {
+	        add.push(this.getClass('target-attached') + '-' + targetAttach.top);
+	      }
+	      if (targetAttach.left) {
+	        add.push(this.getClass('target-attached') + '-' + targetAttach.left);
+	      }
+
+	      var all = [];
+	      sides.forEach(function (side) {
+	        all.push(_this4.getClass('element-attached') + '-' + side);
+	        all.push(_this4.getClass('target-attached') + '-' + side);
+	      });
+
+	      defer(function () {
+	        if (!(typeof _this4._addAttachClasses !== 'undefined')) {
+	          return;
+	        }
+
+	        updateClasses(_this4.element, _this4._addAttachClasses, all);
+	        if (!(_this4.options.addTargetClasses === false)) {
+	          updateClasses(_this4.target, _this4._addAttachClasses, all);
+	        }
+
+	        delete _this4._addAttachClasses;
+	      });
+	    }
+	  }, {
+	    key: 'position',
+	    value: function position() {
+	      var _this5 = this;
+
+	      var flushChanges = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+
+	      // flushChanges commits the changes immediately, leave true unless you are positioning multiple
+	      // tethers (in which case call Tether.Utils.flush yourself when you're done)
+
+	      if (!this.enabled) {
+	        return;
+	      }
+
+	      this.clearCache();
+
+	      // Turn 'auto' attachments into the appropriate corner or edge
+	      var targetAttachment = autoToFixedAttachment(this.targetAttachment, this.attachment);
+
+	      this.updateAttachClasses(this.attachment, targetAttachment);
+
+	      var elementPos = this.cache('element-bounds', function () {
+	        return getBounds(_this5.element);
+	      });
+
+	      var width = elementPos.width;
+	      var height = elementPos.height;
+
+	      if (width === 0 && height === 0 && typeof this.lastSize !== 'undefined') {
+	        var _lastSize = this.lastSize;
+
+	        // We cache the height and width to make it possible to position elements that are
+	        // getting hidden.
+	        width = _lastSize.width;
+	        height = _lastSize.height;
+	      } else {
+	        this.lastSize = { width: width, height: height };
+	      }
+
+	      var targetPos = this.cache('target-bounds', function () {
+	        return _this5.getTargetBounds();
+	      });
+	      var targetSize = targetPos;
+
+	      // Get an actual px offset from the attachment
+	      var offset = offsetToPx(attachmentToOffset(this.attachment), { width: width, height: height });
+	      var targetOffset = offsetToPx(attachmentToOffset(targetAttachment), targetSize);
+
+	      var manualOffset = offsetToPx(this.offset, { width: width, height: height });
+	      var manualTargetOffset = offsetToPx(this.targetOffset, targetSize);
+
+	      // Add the manually provided offset
+	      offset = addOffset(offset, manualOffset);
+	      targetOffset = addOffset(targetOffset, manualTargetOffset);
+
+	      // It's now our goal to make (element position + offset) == (target position + target offset)
+	      var left = targetPos.left + targetOffset.left - offset.left;
+	      var top = targetPos.top + targetOffset.top - offset.top;
+
+	      for (var i = 0; i < TetherBase.modules.length; ++i) {
+	        var _module2 = TetherBase.modules[i];
+	        var ret = _module2.position.call(this, {
+	          left: left,
+	          top: top,
+	          targetAttachment: targetAttachment,
+	          targetPos: targetPos,
+	          elementPos: elementPos,
+	          offset: offset,
+	          targetOffset: targetOffset,
+	          manualOffset: manualOffset,
+	          manualTargetOffset: manualTargetOffset,
+	          scrollbarSize: scrollbarSize,
+	          attachment: this.attachment
+	        });
+
+	        if (ret === false) {
+	          return false;
+	        } else if (typeof ret === 'undefined' || typeof ret !== 'object') {
+	          continue;
+	        } else {
+	          top = ret.top;
+	          left = ret.left;
+	        }
+	      }
+
+	      // We describe the position three different ways to give the optimizer
+	      // a chance to decide the best possible way to position the element
+	      // with the fewest repaints.
+	      var next = {
+	        // It's position relative to the page (absolute positioning when
+	        // the element is a child of the body)
+	        page: {
+	          top: top,
+	          left: left
+	        },
+
+	        // It's position relative to the viewport (fixed positioning)
+	        viewport: {
+	          top: top - pageYOffset,
+	          bottom: pageYOffset - top - height + innerHeight,
+	          left: left - pageXOffset,
+	          right: pageXOffset - left - width + innerWidth
+	        }
+	      };
+
+	      var scrollbarSize = undefined;
+	      if (document.body.scrollWidth > window.innerWidth) {
+	        scrollbarSize = this.cache('scrollbar-size', getScrollBarSize);
+	        next.viewport.bottom -= scrollbarSize.height;
+	      }
+
+	      if (document.body.scrollHeight > window.innerHeight) {
+	        scrollbarSize = this.cache('scrollbar-size', getScrollBarSize);
+	        next.viewport.right -= scrollbarSize.width;
+	      }
+
+	      if (['', 'static'].indexOf(document.body.style.position) === -1 || ['', 'static'].indexOf(document.body.parentElement.style.position) === -1) {
+	        // Absolute positioning in the body will be relative to the page, not the 'initial containing block'
+	        next.page.bottom = document.body.scrollHeight - top - height;
+	        next.page.right = document.body.scrollWidth - left - width;
+	      }
+
+	      if (typeof this.options.optimizations !== 'undefined' && this.options.optimizations.moveElement !== false && !(typeof this.targetModifier !== 'undefined')) {
+	        (function () {
+	          var offsetParent = _this5.cache('target-offsetparent', function () {
+	            return getOffsetParent(_this5.target);
+	          });
+	          var offsetPosition = _this5.cache('target-offsetparent-bounds', function () {
+	            return getBounds(offsetParent);
+	          });
+	          var offsetParentStyle = getComputedStyle(offsetParent);
+	          var offsetParentSize = offsetPosition;
+
+	          var offsetBorder = {};
+	          ['Top', 'Left', 'Bottom', 'Right'].forEach(function (side) {
+	            offsetBorder[side.toLowerCase()] = parseFloat(offsetParentStyle['border' + side + 'Width']);
+	          });
+
+	          offsetPosition.right = document.body.scrollWidth - offsetPosition.left - offsetParentSize.width + offsetBorder.right;
+	          offsetPosition.bottom = document.body.scrollHeight - offsetPosition.top - offsetParentSize.height + offsetBorder.bottom;
+
+	          if (next.page.top >= offsetPosition.top + offsetBorder.top && next.page.bottom >= offsetPosition.bottom) {
+	            if (next.page.left >= offsetPosition.left + offsetBorder.left && next.page.right >= offsetPosition.right) {
+	              // We're within the visible part of the target's scroll parent
+	              var scrollTop = offsetParent.scrollTop;
+	              var scrollLeft = offsetParent.scrollLeft;
+
+	              // It's position relative to the target's offset parent (absolute positioning when
+	              // the element is moved to be a child of the target's offset parent).
+	              next.offset = {
+	                top: next.page.top - offsetPosition.top + scrollTop - offsetBorder.top,
+	                left: next.page.left - offsetPosition.left + scrollLeft - offsetBorder.left
+	              };
+	            }
+	          }
+	        })();
+	      }
+
+	      // We could also travel up the DOM and try each containing context, rather than only
+	      // looking at the body, but we're gonna get diminishing returns.
+
+	      this.move(next);
+
+	      this.history.unshift(next);
+
+	      if (this.history.length > 3) {
+	        this.history.pop();
+	      }
+
+	      if (flushChanges) {
+	        flush();
+	      }
+
+	      return true;
+	    }
+
+	    // THE ISSUE
+	  }, {
+	    key: 'move',
+	    value: function move(pos) {
+	      var _this6 = this;
+
+	      if (!(typeof this.element.parentNode !== 'undefined')) {
+	        return;
+	      }
+
+	      var same = {};
+
+	      for (var type in pos) {
+	        same[type] = {};
+
+	        for (var key in pos[type]) {
+	          var found = false;
+
+	          for (var i = 0; i < this.history.length; ++i) {
+	            var point = this.history[i];
+	            if (typeof point[type] !== 'undefined' && !within(point[type][key], pos[type][key])) {
+	              found = true;
+	              break;
+	            }
+	          }
+
+	          if (!found) {
+	            same[type][key] = true;
+	          }
+	        }
+	      }
+
+	      var css = { top: '', left: '', right: '', bottom: '' };
+
+	      var transcribe = function transcribe(_same, _pos) {
+	        var hasOptimizations = typeof _this6.options.optimizations !== 'undefined';
+	        var gpu = hasOptimizations ? _this6.options.optimizations.gpu : null;
+	        if (gpu !== false) {
+	          var yPos = undefined,
+	              xPos = undefined;
+	          if (_same.top) {
+	            css.top = 0;
+	            yPos = _pos.top;
+	          } else {
+	            css.bottom = 0;
+	            yPos = -_pos.bottom;
+	          }
+
+	          if (_same.left) {
+	            css.left = 0;
+	            xPos = _pos.left;
+	          } else {
+	            css.right = 0;
+	            xPos = -_pos.right;
+	          }
+
+	          css[transformKey] = 'translateX(' + Math.round(xPos) + 'px) translateY(' + Math.round(yPos) + 'px)';
+
+	          if (transformKey !== 'msTransform') {
+	            // The Z transform will keep this in the GPU (faster, and prevents artifacts),
+	            // but IE9 doesn't support 3d transforms and will choke.
+	            css[transformKey] += " translateZ(0)";
+	          }
+	        } else {
+	          if (_same.top) {
+	            css.top = _pos.top + 'px';
+	          } else {
+	            css.bottom = _pos.bottom + 'px';
+	          }
+
+	          if (_same.left) {
+	            css.left = _pos.left + 'px';
+	          } else {
+	            css.right = _pos.right + 'px';
+	          }
+	        }
+	      };
+
+	      var moved = false;
+	      if ((same.page.top || same.page.bottom) && (same.page.left || same.page.right)) {
+	        css.position = 'absolute';
+	        transcribe(same.page, pos.page);
+	      } else if ((same.viewport.top || same.viewport.bottom) && (same.viewport.left || same.viewport.right)) {
+	        css.position = 'fixed';
+	        transcribe(same.viewport, pos.viewport);
+	      } else if (typeof same.offset !== 'undefined' && same.offset.top && same.offset.left) {
+	        (function () {
+	          css.position = 'absolute';
+	          var offsetParent = _this6.cache('target-offsetparent', function () {
+	            return getOffsetParent(_this6.target);
+	          });
+
+	          if (getOffsetParent(_this6.element) !== offsetParent) {
+	            defer(function () {
+	              _this6.element.parentNode.removeChild(_this6.element);
+	              offsetParent.appendChild(_this6.element);
+	            });
+	          }
+
+	          transcribe(same.offset, pos.offset);
+	          moved = true;
+	        })();
+	      } else {
+	        css.position = 'absolute';
+	        transcribe({ top: true, left: true }, pos.page);
+	      }
+
+	      if (!moved) {
+	        var offsetParentIsBody = true;
+	        var currentNode = this.element.parentNode;
+	        while (currentNode && currentNode.tagName !== 'BODY') {
+	          if (getComputedStyle(currentNode).position !== 'static') {
+	            offsetParentIsBody = false;
+	            break;
+	          }
+
+	          currentNode = currentNode.parentNode;
+	        }
+
+	        if (!offsetParentIsBody) {
+	          this.element.parentNode.removeChild(this.element);
+	          document.body.appendChild(this.element);
+	        }
+	      }
+
+	      // Any css change will trigger a repaint, so let's avoid one if nothing changed
+	      var writeCSS = {};
+	      var write = false;
+	      for (var key in css) {
+	        var val = css[key];
+	        var elVal = this.element.style[key];
+
+	        if (elVal !== '' && val !== '' && ['top', 'left', 'bottom', 'right'].indexOf(key) >= 0) {
+	          elVal = parseFloat(elVal);
+	          val = parseFloat(val);
+	        }
+
+	        if (elVal !== val) {
+	          write = true;
+	          writeCSS[key] = val;
+	        }
+	      }
+
+	      if (write) {
+	        defer(function () {
+	          extend(_this6.element.style, writeCSS);
+	        });
+	      }
+	    }
+	  }]);
+
+	  return TetherClass;
+	})();
+
+	TetherClass.modules = [];
+
+	TetherBase.position = position;
+
+	var Tether = extend(TetherClass, TetherBase);
+	/* globals TetherBase */
+
+	'use strict';
+
+	var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+	var _TetherBase$Utils = TetherBase.Utils;
+	var getBounds = _TetherBase$Utils.getBounds;
+	var extend = _TetherBase$Utils.extend;
+	var updateClasses = _TetherBase$Utils.updateClasses;
+	var defer = _TetherBase$Utils.defer;
+
+	var BOUNDS_FORMAT = ['left', 'top', 'right', 'bottom'];
+
+	function getBoundingRect(tether, to) {
+	  if (to === 'scrollParent') {
+	    to = tether.scrollParent;
+	  } else if (to === 'window') {
+	    to = [pageXOffset, pageYOffset, innerWidth + pageXOffset, innerHeight + pageYOffset];
+	  }
+
+	  if (to === document) {
+	    to = to.documentElement;
+	  }
+
+	  if (typeof to.nodeType !== 'undefined') {
+	    (function () {
+	      var size = getBounds(to);
+	      var pos = size;
+	      var style = getComputedStyle(to);
+
+	      to = [pos.left, pos.top, size.width + pos.left, size.height + pos.top];
+
+	      BOUNDS_FORMAT.forEach(function (side, i) {
+	        side = side[0].toUpperCase() + side.substr(1);
+	        if (side === 'Top' || side === 'Left') {
+	          to[i] += parseFloat(style['border' + side + 'Width']);
+	        } else {
+	          to[i] -= parseFloat(style['border' + side + 'Width']);
+	        }
+	      });
+	    })();
+	  }
+
+	  return to;
+	}
+
+	TetherBase.modules.push({
+	  position: function position(_ref) {
+	    var _this = this;
+
+	    var top = _ref.top;
+	    var left = _ref.left;
+	    var targetAttachment = _ref.targetAttachment;
+
+	    if (!this.options.constraints) {
+	      return true;
+	    }
+
+	    var _cache = this.cache('element-bounds', function () {
+	      return getBounds(_this.element);
+	    });
+
+	    var height = _cache.height;
+	    var width = _cache.width;
+
+	    if (width === 0 && height === 0 && typeof this.lastSize !== 'undefined') {
+	      var _lastSize = this.lastSize;
+
+	      // Handle the item getting hidden as a result of our positioning without glitching
+	      // the classes in and out
+	      width = _lastSize.width;
+	      height = _lastSize.height;
+	    }
+
+	    var targetSize = this.cache('target-bounds', function () {
+	      return _this.getTargetBounds();
+	    });
+
+	    var targetHeight = targetSize.height;
+	    var targetWidth = targetSize.width;
+
+	    var allClasses = [this.getClass('pinned'), this.getClass('out-of-bounds')];
+
+	    this.options.constraints.forEach(function (constraint) {
+	      var outOfBoundsClass = constraint.outOfBoundsClass;
+	      var pinnedClass = constraint.pinnedClass;
+
+	      if (outOfBoundsClass) {
+	        allClasses.push(outOfBoundsClass);
+	      }
+	      if (pinnedClass) {
+	        allClasses.push(pinnedClass);
+	      }
+	    });
+
+	    allClasses.forEach(function (cls) {
+	      ['left', 'top', 'right', 'bottom'].forEach(function (side) {
+	        allClasses.push(cls + '-' + side);
+	      });
+	    });
+
+	    var addClasses = [];
+
+	    var tAttachment = extend({}, targetAttachment);
+	    var eAttachment = extend({}, this.attachment);
+
+	    this.options.constraints.forEach(function (constraint) {
+	      var to = constraint.to;
+	      var attachment = constraint.attachment;
+	      var pin = constraint.pin;
+
+	      if (typeof attachment === 'undefined') {
+	        attachment = '';
+	      }
+
+	      var changeAttachX = undefined,
+	          changeAttachY = undefined;
+	      if (attachment.indexOf(' ') >= 0) {
+	        var _attachment$split = attachment.split(' ');
+
+	        var _attachment$split2 = _slicedToArray(_attachment$split, 2);
+
+	        changeAttachY = _attachment$split2[0];
+	        changeAttachX = _attachment$split2[1];
+	      } else {
+	        changeAttachX = changeAttachY = attachment;
+	      }
+
+	      var bounds = getBoundingRect(_this, to);
+
+	      if (changeAttachY === 'target' || changeAttachY === 'both') {
+	        if (top < bounds[1] && tAttachment.top === 'top') {
+	          top += targetHeight;
+	          tAttachment.top = 'bottom';
+	        }
+
+	        if (top + height > bounds[3] && tAttachment.top === 'bottom') {
+	          top -= targetHeight;
+	          tAttachment.top = 'top';
+	        }
+	      }
+
+	      if (changeAttachY === 'together') {
+	        if (top < bounds[1] && tAttachment.top === 'top') {
+	          if (eAttachment.top === 'bottom') {
+	            top += targetHeight;
+	            tAttachment.top = 'bottom';
+
+	            top += height;
+	            eAttachment.top = 'top';
+	          } else if (eAttachment.top === 'top') {
+	            top += targetHeight;
+	            tAttachment.top = 'bottom';
+
+	            top -= height;
+	            eAttachment.top = 'bottom';
+	          }
+	        }
+
+	        if (top + height > bounds[3] && tAttachment.top === 'bottom') {
+	          if (eAttachment.top === 'top') {
+	            top -= targetHeight;
+	            tAttachment.top = 'top';
+
+	            top -= height;
+	            eAttachment.top = 'bottom';
+	          } else if (eAttachment.top === 'bottom') {
+	            top -= targetHeight;
+	            tAttachment.top = 'top';
+
+	            top += height;
+	            eAttachment.top = 'top';
+	          }
+	        }
+
+	        if (tAttachment.top === 'middle') {
+	          if (top + height > bounds[3] && eAttachment.top === 'top') {
+	            top -= height;
+	            eAttachment.top = 'bottom';
+	          } else if (top < bounds[1] && eAttachment.top === 'bottom') {
+	            top += height;
+	            eAttachment.top = 'top';
+	          }
+	        }
+	      }
+
+	      if (changeAttachX === 'target' || changeAttachX === 'both') {
+	        if (left < bounds[0] && tAttachment.left === 'left') {
+	          left += targetWidth;
+	          tAttachment.left = 'right';
+	        }
+
+	        if (left + width > bounds[2] && tAttachment.left === 'right') {
+	          left -= targetWidth;
+	          tAttachment.left = 'left';
+	        }
+	      }
+
+	      if (changeAttachX === 'together') {
+	        if (left < bounds[0] && tAttachment.left === 'left') {
+	          if (eAttachment.left === 'right') {
+	            left += targetWidth;
+	            tAttachment.left = 'right';
+
+	            left += width;
+	            eAttachment.left = 'left';
+	          } else if (eAttachment.left === 'left') {
+	            left += targetWidth;
+	            tAttachment.left = 'right';
+
+	            left -= width;
+	            eAttachment.left = 'right';
+	          }
+	        } else if (left + width > bounds[2] && tAttachment.left === 'right') {
+	          if (eAttachment.left === 'left') {
+	            left -= targetWidth;
+	            tAttachment.left = 'left';
+
+	            left -= width;
+	            eAttachment.left = 'right';
+	          } else if (eAttachment.left === 'right') {
+	            left -= targetWidth;
+	            tAttachment.left = 'left';
+
+	            left += width;
+	            eAttachment.left = 'left';
+	          }
+	        } else if (tAttachment.left === 'center') {
+	          if (left + width > bounds[2] && eAttachment.left === 'left') {
+	            left -= width;
+	            eAttachment.left = 'right';
+	          } else if (left < bounds[0] && eAttachment.left === 'right') {
+	            left += width;
+	            eAttachment.left = 'left';
+	          }
+	        }
+	      }
+
+	      if (changeAttachY === 'element' || changeAttachY === 'both') {
+	        if (top < bounds[1] && eAttachment.top === 'bottom') {
+	          top += height;
+	          eAttachment.top = 'top';
+	        }
+
+	        if (top + height > bounds[3] && eAttachment.top === 'top') {
+	          top -= height;
+	          eAttachment.top = 'bottom';
+	        }
+	      }
+
+	      if (changeAttachX === 'element' || changeAttachX === 'both') {
+	        if (left < bounds[0] && eAttachment.left === 'right') {
+	          left += width;
+	          eAttachment.left = 'left';
+	        }
+
+	        if (left + width > bounds[2] && eAttachment.left === 'left') {
+	          left -= width;
+	          eAttachment.left = 'right';
+	        }
+	      }
+
+	      if (typeof pin === 'string') {
+	        pin = pin.split(',').map(function (p) {
+	          return p.trim();
+	        });
+	      } else if (pin === true) {
+	        pin = ['top', 'left', 'right', 'bottom'];
+	      }
+
+	      pin = pin || [];
+
+	      var pinned = [];
+	      var oob = [];
+
+	      if (top < bounds[1]) {
+	        if (pin.indexOf('top') >= 0) {
+	          top = bounds[1];
+	          pinned.push('top');
+	        } else {
+	          oob.push('top');
+	        }
+	      }
+
+	      if (top + height > bounds[3]) {
+	        if (pin.indexOf('bottom') >= 0) {
+	          top = bounds[3] - height;
+	          pinned.push('bottom');
+	        } else {
+	          oob.push('bottom');
+	        }
+	      }
+
+	      if (left < bounds[0]) {
+	        if (pin.indexOf('left') >= 0) {
+	          left = bounds[0];
+	          pinned.push('left');
+	        } else {
+	          oob.push('left');
+	        }
+	      }
+
+	      if (left + width > bounds[2]) {
+	        if (pin.indexOf('right') >= 0) {
+	          left = bounds[2] - width;
+	          pinned.push('right');
+	        } else {
+	          oob.push('right');
+	        }
+	      }
+
+	      if (pinned.length) {
+	        (function () {
+	          var pinnedClass = undefined;
+	          if (typeof _this.options.pinnedClass !== 'undefined') {
+	            pinnedClass = _this.options.pinnedClass;
+	          } else {
+	            pinnedClass = _this.getClass('pinned');
+	          }
+
+	          addClasses.push(pinnedClass);
+	          pinned.forEach(function (side) {
+	            addClasses.push(pinnedClass + '-' + side);
+	          });
+	        })();
+	      }
+
+	      if (oob.length) {
+	        (function () {
+	          var oobClass = undefined;
+	          if (typeof _this.options.outOfBoundsClass !== 'undefined') {
+	            oobClass = _this.options.outOfBoundsClass;
+	          } else {
+	            oobClass = _this.getClass('out-of-bounds');
+	          }
+
+	          addClasses.push(oobClass);
+	          oob.forEach(function (side) {
+	            addClasses.push(oobClass + '-' + side);
+	          });
+	        })();
+	      }
+
+	      if (pinned.indexOf('left') >= 0 || pinned.indexOf('right') >= 0) {
+	        eAttachment.left = tAttachment.left = false;
+	      }
+	      if (pinned.indexOf('top') >= 0 || pinned.indexOf('bottom') >= 0) {
+	        eAttachment.top = tAttachment.top = false;
+	      }
+
+	      if (tAttachment.top !== targetAttachment.top || tAttachment.left !== targetAttachment.left || eAttachment.top !== _this.attachment.top || eAttachment.left !== _this.attachment.left) {
+	        _this.updateAttachClasses(eAttachment, tAttachment);
+	      }
+	    });
+
+	    defer(function () {
+	      if (!(_this.options.addTargetClasses === false)) {
+	        updateClasses(_this.target, addClasses, allClasses);
+	      }
+	      updateClasses(_this.element, addClasses, allClasses);
+	    });
+
+	    return { top: top, left: left };
+	  }
+	});
+	/* globals TetherBase */
+
+	'use strict';
+
+	var _TetherBase$Utils = TetherBase.Utils;
+	var getBounds = _TetherBase$Utils.getBounds;
+	var updateClasses = _TetherBase$Utils.updateClasses;
+	var defer = _TetherBase$Utils.defer;
+
+	TetherBase.modules.push({
+	  position: function position(_ref) {
+	    var _this = this;
+
+	    var top = _ref.top;
+	    var left = _ref.left;
+
+	    var _cache = this.cache('element-bounds', function () {
+	      return getBounds(_this.element);
+	    });
+
+	    var height = _cache.height;
+	    var width = _cache.width;
+
+	    var targetPos = this.getTargetBounds();
+
+	    var bottom = top + height;
+	    var right = left + width;
+
+	    var abutted = [];
+	    if (top <= targetPos.bottom && bottom >= targetPos.top) {
+	      ['left', 'right'].forEach(function (side) {
+	        var targetPosSide = targetPos[side];
+	        if (targetPosSide === left || targetPosSide === right) {
+	          abutted.push(side);
+	        }
+	      });
+	    }
+
+	    if (left <= targetPos.right && right >= targetPos.left) {
+	      ['top', 'bottom'].forEach(function (side) {
+	        var targetPosSide = targetPos[side];
+	        if (targetPosSide === top || targetPosSide === bottom) {
+	          abutted.push(side);
+	        }
+	      });
+	    }
+
+	    var allClasses = [];
+	    var addClasses = [];
+
+	    var sides = ['left', 'top', 'right', 'bottom'];
+	    allClasses.push(this.getClass('abutted'));
+	    sides.forEach(function (side) {
+	      allClasses.push(_this.getClass('abutted') + '-' + side);
+	    });
+
+	    if (abutted.length) {
+	      addClasses.push(this.getClass('abutted'));
+	    }
+
+	    abutted.forEach(function (side) {
+	      addClasses.push(_this.getClass('abutted') + '-' + side);
+	    });
+
+	    defer(function () {
+	      if (!(_this.options.addTargetClasses === false)) {
+	        updateClasses(_this.target, addClasses, allClasses);
+	      }
+	      updateClasses(_this.element, addClasses, allClasses);
+	    });
+
+	    return true;
+	  }
+	});
+	/* globals TetherBase */
+
+	'use strict';
+
+	var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+	TetherBase.modules.push({
+	  position: function position(_ref) {
+	    var top = _ref.top;
+	    var left = _ref.left;
+
+	    if (!this.options.shift) {
+	      return;
+	    }
+
+	    var shift = this.options.shift;
+	    if (typeof this.options.shift === 'function') {
+	      shift = this.options.shift.call(this, { top: top, left: left });
+	    }
+
+	    var shiftTop = undefined,
+	        shiftLeft = undefined;
+	    if (typeof shift === 'string') {
+	      shift = shift.split(' ');
+	      shift[1] = shift[1] || shift[0];
+
+	      var _shift = shift;
+
+	      var _shift2 = _slicedToArray(_shift, 2);
+
+	      shiftTop = _shift2[0];
+	      shiftLeft = _shift2[1];
+
+	      shiftTop = parseFloat(shiftTop, 10);
+	      shiftLeft = parseFloat(shiftLeft, 10);
+	    } else {
+	      shiftTop = shift.top;
+	      shiftLeft = shift.left;
+	    }
+
+	    top += shiftTop;
+	    left += shiftLeft;
+
+	    return { top: top, left: left };
+	  }
+	});
+	return Tether;
+
+	}));
+
+
+/***/ },
+/* 305 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var hljs = __webpack_require__(306);
+
+	hljs.registerLanguage('1c', __webpack_require__(307));
+	hljs.registerLanguage('accesslog', __webpack_require__(308));
+	hljs.registerLanguage('actionscript', __webpack_require__(309));
+	hljs.registerLanguage('apache', __webpack_require__(310));
+	hljs.registerLanguage('applescript', __webpack_require__(311));
+	hljs.registerLanguage('armasm', __webpack_require__(312));
+	hljs.registerLanguage('xml', __webpack_require__(313));
+	hljs.registerLanguage('asciidoc', __webpack_require__(314));
+	hljs.registerLanguage('aspectj', __webpack_require__(315));
+	hljs.registerLanguage('autohotkey', __webpack_require__(316));
+	hljs.registerLanguage('autoit', __webpack_require__(317));
+	hljs.registerLanguage('avrasm', __webpack_require__(318));
+	hljs.registerLanguage('axapta', __webpack_require__(319));
+	hljs.registerLanguage('bash', __webpack_require__(320));
+	hljs.registerLanguage('brainfuck', __webpack_require__(321));
+	hljs.registerLanguage('cal', __webpack_require__(322));
+	hljs.registerLanguage('capnproto', __webpack_require__(323));
+	hljs.registerLanguage('ceylon', __webpack_require__(324));
+	hljs.registerLanguage('clojure', __webpack_require__(325));
+	hljs.registerLanguage('clojure-repl', __webpack_require__(326));
+	hljs.registerLanguage('cmake', __webpack_require__(327));
+	hljs.registerLanguage('coffeescript', __webpack_require__(328));
+	hljs.registerLanguage('cos', __webpack_require__(329));
+	hljs.registerLanguage('cpp', __webpack_require__(330));
+	hljs.registerLanguage('crmsh', __webpack_require__(331));
+	hljs.registerLanguage('crystal', __webpack_require__(332));
+	hljs.registerLanguage('cs', __webpack_require__(333));
+	hljs.registerLanguage('css', __webpack_require__(334));
+	hljs.registerLanguage('d', __webpack_require__(335));
+	hljs.registerLanguage('markdown', __webpack_require__(336));
+	hljs.registerLanguage('dart', __webpack_require__(337));
+	hljs.registerLanguage('delphi', __webpack_require__(338));
+	hljs.registerLanguage('diff', __webpack_require__(339));
+	hljs.registerLanguage('django', __webpack_require__(340));
+	hljs.registerLanguage('dns', __webpack_require__(341));
+	hljs.registerLanguage('dockerfile', __webpack_require__(342));
+	hljs.registerLanguage('dos', __webpack_require__(343));
+	hljs.registerLanguage('dust', __webpack_require__(344));
+	hljs.registerLanguage('elixir', __webpack_require__(345));
+	hljs.registerLanguage('elm', __webpack_require__(346));
+	hljs.registerLanguage('ruby', __webpack_require__(347));
+	hljs.registerLanguage('erb', __webpack_require__(348));
+	hljs.registerLanguage('erlang-repl', __webpack_require__(349));
+	hljs.registerLanguage('erlang', __webpack_require__(350));
+	hljs.registerLanguage('fix', __webpack_require__(351));
+	hljs.registerLanguage('fortran', __webpack_require__(352));
+	hljs.registerLanguage('fsharp', __webpack_require__(353));
+	hljs.registerLanguage('gams', __webpack_require__(354));
+	hljs.registerLanguage('gcode', __webpack_require__(355));
+	hljs.registerLanguage('gherkin', __webpack_require__(356));
+	hljs.registerLanguage('glsl', __webpack_require__(357));
+	hljs.registerLanguage('go', __webpack_require__(358));
+	hljs.registerLanguage('golo', __webpack_require__(359));
+	hljs.registerLanguage('gradle', __webpack_require__(360));
+	hljs.registerLanguage('groovy', __webpack_require__(361));
+	hljs.registerLanguage('haml', __webpack_require__(362));
+	hljs.registerLanguage('handlebars', __webpack_require__(363));
+	hljs.registerLanguage('haskell', __webpack_require__(364));
+	hljs.registerLanguage('haxe', __webpack_require__(365));
+	hljs.registerLanguage('hsp', __webpack_require__(366));
+	hljs.registerLanguage('http', __webpack_require__(367));
+	hljs.registerLanguage('inform7', __webpack_require__(368));
+	hljs.registerLanguage('ini', __webpack_require__(369));
+	hljs.registerLanguage('irpf90', __webpack_require__(370));
+	hljs.registerLanguage('java', __webpack_require__(371));
+	hljs.registerLanguage('javascript', __webpack_require__(372));
+	hljs.registerLanguage('json', __webpack_require__(373));
+	hljs.registerLanguage('julia', __webpack_require__(374));
+	hljs.registerLanguage('kotlin', __webpack_require__(375));
+	hljs.registerLanguage('lasso', __webpack_require__(376));
+	hljs.registerLanguage('less', __webpack_require__(377));
+	hljs.registerLanguage('lisp', __webpack_require__(378));
+	hljs.registerLanguage('livecodeserver', __webpack_require__(379));
+	hljs.registerLanguage('livescript', __webpack_require__(380));
+	hljs.registerLanguage('lua', __webpack_require__(381));
+	hljs.registerLanguage('makefile', __webpack_require__(382));
+	hljs.registerLanguage('mathematica', __webpack_require__(383));
+	hljs.registerLanguage('matlab', __webpack_require__(384));
+	hljs.registerLanguage('mel', __webpack_require__(385));
+	hljs.registerLanguage('mercury', __webpack_require__(386));
+	hljs.registerLanguage('mipsasm', __webpack_require__(387));
+	hljs.registerLanguage('mizar', __webpack_require__(388));
+	hljs.registerLanguage('perl', __webpack_require__(389));
+	hljs.registerLanguage('mojolicious', __webpack_require__(390));
+	hljs.registerLanguage('monkey', __webpack_require__(391));
+	hljs.registerLanguage('nginx', __webpack_require__(392));
+	hljs.registerLanguage('nimrod', __webpack_require__(393));
+	hljs.registerLanguage('nix', __webpack_require__(394));
+	hljs.registerLanguage('nsis', __webpack_require__(395));
+	hljs.registerLanguage('objectivec', __webpack_require__(396));
+	hljs.registerLanguage('ocaml', __webpack_require__(397));
+	hljs.registerLanguage('openscad', __webpack_require__(398));
+	hljs.registerLanguage('oxygene', __webpack_require__(399));
+	hljs.registerLanguage('parser3', __webpack_require__(400));
+	hljs.registerLanguage('pf', __webpack_require__(401));
+	hljs.registerLanguage('php', __webpack_require__(402));
+	hljs.registerLanguage('powershell', __webpack_require__(403));
+	hljs.registerLanguage('processing', __webpack_require__(404));
+	hljs.registerLanguage('profile', __webpack_require__(405));
+	hljs.registerLanguage('prolog', __webpack_require__(406));
+	hljs.registerLanguage('protobuf', __webpack_require__(407));
+	hljs.registerLanguage('puppet', __webpack_require__(408));
+	hljs.registerLanguage('python', __webpack_require__(409));
+	hljs.registerLanguage('q', __webpack_require__(410));
+	hljs.registerLanguage('r', __webpack_require__(411));
+	hljs.registerLanguage('rib', __webpack_require__(412));
+	hljs.registerLanguage('roboconf', __webpack_require__(413));
+	hljs.registerLanguage('rsl', __webpack_require__(414));
+	hljs.registerLanguage('ruleslanguage', __webpack_require__(415));
+	hljs.registerLanguage('rust', __webpack_require__(416));
+	hljs.registerLanguage('scala', __webpack_require__(417));
+	hljs.registerLanguage('scheme', __webpack_require__(418));
+	hljs.registerLanguage('scilab', __webpack_require__(419));
+	hljs.registerLanguage('scss', __webpack_require__(420));
+	hljs.registerLanguage('smali', __webpack_require__(421));
+	hljs.registerLanguage('smalltalk', __webpack_require__(422));
+	hljs.registerLanguage('sml', __webpack_require__(423));
+	hljs.registerLanguage('sqf', __webpack_require__(424));
+	hljs.registerLanguage('sql', __webpack_require__(425));
+	hljs.registerLanguage('stata', __webpack_require__(426));
+	hljs.registerLanguage('step21', __webpack_require__(427));
+	hljs.registerLanguage('stylus', __webpack_require__(428));
+	hljs.registerLanguage('swift', __webpack_require__(429));
+	hljs.registerLanguage('tcl', __webpack_require__(430));
+	hljs.registerLanguage('tex', __webpack_require__(431));
+	hljs.registerLanguage('thrift', __webpack_require__(432));
+	hljs.registerLanguage('tp', __webpack_require__(433));
+	hljs.registerLanguage('twig', __webpack_require__(434));
+	hljs.registerLanguage('typescript', __webpack_require__(435));
+	hljs.registerLanguage('vala', __webpack_require__(436));
+	hljs.registerLanguage('vbnet', __webpack_require__(437));
+	hljs.registerLanguage('vbscript', __webpack_require__(438));
+	hljs.registerLanguage('vbscript-html', __webpack_require__(439));
+	hljs.registerLanguage('verilog', __webpack_require__(440));
+	hljs.registerLanguage('vhdl', __webpack_require__(441));
+	hljs.registerLanguage('vim', __webpack_require__(442));
+	hljs.registerLanguage('x86asm', __webpack_require__(443));
+	hljs.registerLanguage('xl', __webpack_require__(444));
+	hljs.registerLanguage('xquery', __webpack_require__(445));
+	hljs.registerLanguage('yaml', __webpack_require__(446));
+	hljs.registerLanguage('zephir', __webpack_require__(447));
 
 	module.exports = hljs;
 
 /***/ },
-/* 252 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -33121,12 +35618,12 @@
 	  } else {
 	    // Export hljs globally even when using AMD for cases when this script
 	    // is loaded with others that may still expect a global hljs.
-	    window.hljs = factory({});
+	    self.hljs = factory({});
 
 	    // Finally register the global hljs with AMD.
 	    if(typeof define === 'function' && define.amd) {
 	      define('hljs', [], function() {
-	        return window.hljs;
+	        return self.hljs;
 	      });
 	    }
 	  }
@@ -33781,7 +36278,7 @@
 	  hljs.IDENT_RE = '[a-zA-Z]\\w*';
 	  hljs.UNDERSCORE_IDENT_RE = '[a-zA-Z_]\\w*';
 	  hljs.NUMBER_RE = '\\b\\d+(\\.\\d+)?';
-	  hljs.C_NUMBER_RE = '(\\b0[xX][a-fA-F0-9]+|(\\b\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)'; // 0x..., 0..., decimal, float
+	  hljs.C_NUMBER_RE = '(-?)(\\b0[xX][a-fA-F0-9]+|(\\b\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)'; // 0x..., 0..., decimal, float
 	  hljs.BINARY_NUMBER_RE = '\\b(0b[01]+)'; // 0b...
 	  hljs.RE_STARTERS_RE = '!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|-|-=|/=|/|:|;|<<|<<=|<=|<|===|==|=|>>>=|>>=|>=|>>>|>>|>|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~';
 
@@ -33881,7 +36378,7 @@
 
 
 /***/ },
-/* 253 */
+/* 307 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs){
@@ -33914,7 +36411,7 @@
 	    'стрколичествострок стрполучитьстроку  стрчисловхождений сформироватьпозициюдокумента ' +
 	    'счетпокоду текущаядата текущеевремя типзначения типзначениястр удалитьобъекты ' +
 	    'установитьтана установитьтапо фиксшаблон формат цел шаблон';
-	  var DQUOTE =  {className: 'dquote',  begin: '""'};
+	  var DQUOTE =  {begin: '""'};
 	  var STR_START = {
 	      className: 'string',
 	      begin: '"', end: '"|$',
@@ -33940,38 +36437,31 @@
 	        lexemes: IDENT_RE_RU,
 	        keywords: 'процедура функция',
 	        contains: [
-	          hljs.inherit(hljs.TITLE_MODE, {begin: IDENT_RE_RU}),
 	          {
-	            className: 'tail',
-	            endsWithParent: true,
-	            contains: [
-	              {
-	                className: 'params',
-	                begin: '\\(', end: '\\)',
-	                lexemes: IDENT_RE_RU,
-	                keywords: 'знач',
-	                contains: [STR_START, STR_CONT]
-	              },
-	              {
-	                className: 'export',
-	                begin: 'экспорт', endsWithParent: true,
-	                lexemes: IDENT_RE_RU,
-	                keywords: 'экспорт',
-	                contains: [hljs.C_LINE_COMMENT_MODE]
-	              }
-	            ]
+	            begin: 'экспорт', endsWithParent: true,
+	            lexemes: IDENT_RE_RU,
+	            keywords: 'экспорт',
+	            contains: [hljs.C_LINE_COMMENT_MODE]
 	          },
-	          hljs.C_LINE_COMMENT_MODE
+	          {
+	            className: 'params',
+	            begin: '\\(', end: '\\)',
+	            lexemes: IDENT_RE_RU,
+	            keywords: 'знач',
+	            contains: [STR_START, STR_CONT]
+	          },
+	          hljs.C_LINE_COMMENT_MODE,
+	          hljs.inherit(hljs.TITLE_MODE, {begin: IDENT_RE_RU})
 	        ]
 	      },
-	      {className: 'preprocessor', begin: '#', end: '$'},
-	      {className: 'date', begin: '\'\\d{2}\\.\\d{2}\\.(\\d{2}|\\d{4})\''}
+	      {className: 'meta', begin: '#', end: '$'},
+	      {className: 'number', begin: '\'\\d{2}\\.\\d{2}\\.(\\d{2}|\\d{4})\''} // date
 	    ]
 	  };
 	};
 
 /***/ },
-/* 254 */
+/* 308 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34013,7 +36503,7 @@
 	};
 
 /***/ },
-/* 255 */
+/* 309 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34043,7 +36533,7 @@
 	      hljs.C_BLOCK_COMMENT_MODE,
 	      hljs.C_NUMBER_MODE,
 	      {
-	        className: 'package',
+	        className: 'class',
 	        beginKeywords: 'package', end: '{',
 	        contains: [hljs.TITLE_MODE]
 	      },
@@ -34058,8 +36548,9 @@
 	        ]
 	      },
 	      {
-	        className: 'preprocessor',
-	        beginKeywords: 'import include', end: ';'
+	        className: 'meta',
+	        beginKeywords: 'import include', end: ';',
+	        keywords: {'meta-keyword': 'import include'}
 	      },
 	      {
 	        className: 'function',
@@ -34079,10 +36570,7 @@
 	            ]
 	          },
 	          {
-	            className: 'type',
-	            begin: ':',
-	            end: IDENT_FUNC_RETURN_TYPE_RE,
-	            relevance: 10
+	            begin: ':\\s*' + IDENT_FUNC_RETURN_TYPE_RE
 	          }
 	        ]
 	      }
@@ -34092,7 +36580,7 @@
 	};
 
 /***/ },
-/* 256 */
+/* 310 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34102,15 +36590,15 @@
 	    case_insensitive: true,
 	    contains: [
 	      hljs.HASH_COMMENT_MODE,
-	      {className: 'tag', begin: '</?', end: '>'},
+	      {className: 'section', begin: '</?', end: '>'},
 	      {
-	        className: 'keyword',
+	        className: 'attribute',
 	        begin: /\w+/,
 	        relevance: 0,
 	        // keywords aren’t needed for highlighting per se, they only boost relevance
 	        // for a very generally defined mode (starts with a word, ends with line-end
 	        keywords: {
-	          common:
+	          nomarkup:
 	            'order deny allow setenv rewriterule rewriteengine rewritecond documentroot ' +
 	            'sethandler errordocument loadmodule options header listen serverroot ' +
 	            'servername'
@@ -34123,11 +36611,11 @@
 	          },
 	          contains: [
 	            {
-	              className: 'sqbracket',
+	              className: 'meta',
 	              begin: '\\s\\[', end: '\\]$'
 	            },
 	            {
-	              className: 'cbracket',
+	              className: 'variable',
 	              begin: '[\\$%]\\{', end: '\\}',
 	              contains: ['self', NUMBER]
 	            },
@@ -34142,7 +36630,7 @@
 	};
 
 /***/ },
-/* 257 */
+/* 311 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34180,15 +36668,13 @@
 	        'sixth some tell tenth that the|0 then third through thru ' +
 	        'timeout times to transaction try until where while whose with ' +
 	        'without',
-	      constant:
+	      literal:
 	        'AppleScript false linefeed return pi quote result space tab true',
-	      type:
+	      built_in:
 	        'alias application boolean class constant date file integer list ' +
-	        'number real record string text',
-	      command:
+	        'number real record string text ' +
 	        'activate beep count delay launch log offset read round ' +
-	        'run say summarize write',
-	      property:
+	        'run say summarize write ' +
 	        'character characters contents day frontmost id item length ' +
 	        'month name paragraph paragraphs rest reverse running time version ' +
 	        'weekday word words year'
@@ -34197,11 +36683,7 @@
 	      STRING,
 	      hljs.C_NUMBER_MODE,
 	      {
-	        className: 'type',
-	        begin: '\\bPOSIX file\\b'
-	      },
-	      {
-	        className: 'command',
+	        className: 'built_in',
 	        begin:
 	          '\\b(clipboard info|the clipboard|info for|list (disks|folder)|' +
 	          'mount volume|path to|(close|open for) access|(get|set) eof|' +
@@ -34214,7 +36696,7 @@
 	          'display (alert|dialog))\\b|^\\s*return\\b'
 	      },
 	      {
-	        className: 'constant',
+	        className: 'literal',
 	        begin:
 	          '\\b(text item delimiters|current application|missing value)\\b'
 	      },
@@ -34224,15 +36706,10 @@
 	          '\\b(apart from|aside from|instead of|out of|greater than|' +
 	          "isn't|(doesn't|does not) (equal|come before|come after|contain)|" +
 	          '(greater|less) than( or equal)?|(starts?|ends|begins?) with|' +
-	          'contained by|comes (before|after)|a (ref|reference))\\b'
+	          'contained by|comes (before|after)|a (ref|reference)|POSIX file|' +
+	          'POSIX path|(date|time) string|quoted form)\\b'
 	      },
 	      {
-	        className: 'property',
-	        begin:
-	          '\\b(POSIX path|(date|time) string|quoted form)\\b'
-	      },
-	      {
-	        className: 'function_start',
 	        beginKeywords: 'on',
 	        illegal: '[${=;\\n]',
 	        contains: [hljs.UNDERSCORE_TITLE_MODE, PARAMS]
@@ -34243,7 +36720,7 @@
 	};
 
 /***/ },
-/* 258 */
+/* 312 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34253,7 +36730,12 @@
 	    aliases: ['arm'],
 	    lexemes: '\\.?' + hljs.IDENT_RE,
 	    keywords: {
-	      literal:
+	      meta:
+	        //GNU preprocs
+	        '.2byte .4byte .align .ascii .asciz .balign .byte .code .data .else .end .endif .endm .endr .equ .err .exitm .extern .global .hword .if .ifdef .ifndef .include .irp .long .macro .rept .req .section .set .skip .space .text .word .arm .thumb .code16 .code32 .force_thumb .thumb_func .ltorg '+
+	        //ARM directives
+	        'ALIAS ALIGN ARM AREA ASSERT ATTR CN CODE CODE16 CODE32 COMMON CP DATA DCB DCD DCDU DCDO DCFD DCFDU DCI DCQ DCQU DCW DCWU DN ELIF ELSE END ENDFUNC ENDIF ENDP ENTRY EQU EXPORT EXPORTAS EXTERN FIELD FILL FUNCTION GBLA GBLL GBLS GET GLOBAL IF IMPORT INCBIN INCLUDE INFO KEEP LCLA LCLL LCLS LTORG MACRO MAP MEND MEXIT NOFP OPT PRESERVE8 PROC QN READONLY RELOC REQUIRE REQUIRE8 RLIST FN ROUT SETA SETL SETS SN SPACE SUBT THUMB THUMBX TTL WHILE WEND ',
+	      built_in:
 	        'r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 '+ //standard registers
 	        'pc lr sp ip sl sb fp '+ //typical regs plus backward compatibility
 	        'a1 a2 a3 a4 v1 v2 v3 v4 v5 v6 v7 v8 f0 f1 f2 f3 f4 f5 f6 f7 '+ //more regs and fp
@@ -34269,14 +36751,9 @@
 	        's0 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s15 '+
 	        's16 s17 s18 s19 s20 s21 s22 s23 s24 s25 s26 s27 s28 s29 s30 s31 '+
 	        'd0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 '+
-	        'd16 d17 d18 d19 d20 d21 d22 d23 d24 d25 d26 d27 d28 d29 d30 d31 ',
-	    preprocessor:
-	        //GNU preprocs
-	        '.2byte .4byte .align .ascii .asciz .balign .byte .code .data .else .end .endif .endm .endr .equ .err .exitm .extern .global .hword .if .ifdef .ifndef .include .irp .long .macro .rept .req .section .set .skip .space .text .word .arm .thumb .code16 .code32 .force_thumb .thumb_func .ltorg '+
-	        //ARM directives
-	        'ALIAS ALIGN ARM AREA ASSERT ATTR CN CODE CODE16 CODE32 COMMON CP DATA DCB DCD DCDU DCDO DCFD DCFDU DCI DCQ DCQU DCW DCWU DN ELIF ELSE END ENDFUNC ENDIF ENDP ENTRY EQU EXPORT EXPORTAS EXTERN FIELD FILL FUNCTION GBLA GBLL GBLS GET GLOBAL IF IMPORT INCBIN INCLUDE INFO KEEP LCLA LCLL LCLS LTORG MACRO MAP MEND MEXIT NOFP OPT PRESERVE8 PROC QN READONLY RELOC REQUIRE REQUIRE8 RLIST FN ROUT SETA SETL SETS SN SPACE SUBT THUMB THUMBX TTL WHILE WEND ',
-	    built_in:
-	        '{PC} {VAR} {TRUE} {FALSE} {OPT} {CONFIG} {ENDIAN} {CODESIZE} {CPU} {FPU} {ARCHITECTURE} {PCSTOREOFFSET} {ARMASM_VERSION} {INTER} {ROPI} {RWPI} {SWST} {NOSWST} . @ '
+	        'd16 d17 d18 d19 d20 d21 d22 d23 d24 d25 d26 d27 d28 d29 d30 d31 ' +
+
+	        '{PC} {VAR} {TRUE} {FALSE} {OPT} {CONFIG} {ENDIAN} {CODESIZE} {CPU} {FPU} {ARCHITECTURE} {PCSTOREOFFSET} {ARMASM_VERSION} {INTER} {ROPI} {RWPI} {SWST} {NOSWST} . @'
 	    },
 	    contains: [
 	      {
@@ -34326,7 +36803,7 @@
 	        relevance: 0
 	      },
 	      {
-	        className: 'label',
+	        className: 'symbol',
 	        variants: [
 	            {begin: '^[a-z_\\.\\$][a-z0-9_\\.\\$]+'}, //ARM syntax
 	            {begin: '^\\s*[a-z_\\.\\$][a-z0-9_\\.\\$]+:'}, //GNU ARM syntax
@@ -34339,7 +36816,7 @@
 	};
 
 /***/ },
-/* 259 */
+/* 313 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34355,7 +36832,7 @@
 	    contains: [
 	      PHP,
 	      {
-	        className: 'attribute',
+	        className: 'attr',
 	        begin: XML_IDENT_RE,
 	        relevance: 0
 	      },
@@ -34364,7 +36841,7 @@
 	        relevance: 0,
 	        contains: [
 	          {
-	            className: 'value',
+	            className: 'string',
 	            contains: [PHP],
 	            variants: [
 	              {begin: /"/, end: /"/},
@@ -34381,7 +36858,7 @@
 	    case_insensitive: true,
 	    contains: [
 	      {
-	        className: 'doctype',
+	        className: 'meta',
 	        begin: '<!DOCTYPE', end: '>',
 	        relevance: 10,
 	        contains: [{begin: '\\[', end: '\\]'}]
@@ -34394,7 +36871,6 @@
 	        }
 	      ),
 	      {
-	        className: 'cdata',
 	        begin: '<\\!\\[CDATA\\[', end: '\\]\\]>',
 	        relevance: 10
 	      },
@@ -34407,27 +36883,27 @@
 	        by hljs.subMode() that tests lexemes outside the stream.
 	        */
 	        begin: '<style(?=\\s|>|$)', end: '>',
-	        keywords: {title: 'style'},
+	        keywords: {name: 'style'},
 	        contains: [TAG_INTERNALS],
 	        starts: {
 	          end: '</style>', returnEnd: true,
-	          subLanguage: 'css'
+	          subLanguage: ['css', 'xml']
 	        }
 	      },
 	      {
 	        className: 'tag',
 	        // See the comment in the <style tag about the lookahead pattern
 	        begin: '<script(?=\\s|>|$)', end: '>',
-	        keywords: {title: 'script'},
+	        keywords: {name: 'script'},
 	        contains: [TAG_INTERNALS],
 	        starts: {
 	          end: '\<\/script\>', returnEnd: true,
-	          subLanguage: ['actionscript', 'javascript', 'handlebars']
+	          subLanguage: ['actionscript', 'javascript', 'handlebars', 'xml']
 	        }
 	      },
 	      PHP,
 	      {
-	        className: 'pi',
+	        className: 'meta',
 	        begin: /<\?\w+/, end: /\?>/,
 	        relevance: 10
 	      },
@@ -34436,7 +36912,7 @@
 	        begin: '</?', end: '/?>',
 	        contains: [
 	          {
-	            className: 'title', begin: /[^ \/><\n\t]+/, relevance: 0
+	            className: 'name', begin: /[^\/><\s]+/, relevance: 0
 	          },
 	          TAG_INTERNALS
 	        ]
@@ -34446,7 +36922,7 @@
 	};
 
 /***/ },
-/* 260 */
+/* 314 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34485,18 +36961,16 @@
 	      },
 	      // headings
 	      {
-	        className: 'header',
-	        begin: '^(={1,5}) .+?( \\1)?$',
-	        relevance: 10
-	      },
-	      {
-	        className: 'header',
-	        begin: '^[^\\[\\]\\n]+?\\n[=\\-~\\^\\+]{2,}$',
-	        relevance: 10
+	        className: 'section',
+	        relevance: 10,
+	        variants: [
+	          {begin: '^(={1,5}) .+?( \\1)?$'},
+	          {begin: '^[^\\[\\]\\n]+?\\n[=\\-~\\^\\+]{2,}$'},
+	        ]
 	      },
 	      // document attributes
 	      {
-	        className: 'attribute',
+	        className: 'meta',
 	        begin: '^:.+?:',
 	        end: '\\s',
 	        excludeEnd: true,
@@ -34504,13 +36978,13 @@
 	      },
 	      // block attributes
 	      {
-	        className: 'attribute',
+	        className: 'meta',
 	        begin: '^\\[.+?\\]$',
 	        relevance: 0
 	      },
 	      // quoteblocks
 	      {
-	        className: 'blockquote',
+	        className: 'quote',
 	        begin: '^_{4,}\\n',
 	        end: '\\n_{4,}$',
 	        relevance: 10
@@ -34542,7 +37016,7 @@
 	      },
 	      // admonition
 	      {
-	        className: 'label',
+	        className: 'symbol',
 	        begin: '^(NOTE|TIP|IMPORTANT|WARNING|CAUTION):\\s+',
 	        relevance: 10
 	      },
@@ -34585,7 +37059,7 @@
 	      },
 	      // inline smart quotes
 	      {
-	        className: 'smartquote',
+	        className: 'string',
 	        variants: [
 	          {begin: "``.+?''"},
 	          {begin: "`.+?'"}
@@ -34606,7 +37080,6 @@
 	      },
 	      // horizontal rules
 	      {
-	        className: 'horizontal_rule',
 	        begin: '^\'{3,}[ \\t]*$',
 	        relevance: 10
 	      },
@@ -34616,18 +37089,17 @@
 	        returnBegin: true,
 	        contains: [
 	          {
-	            //className: 'macro',
 	            begin: '(link|image:?):',
 	            relevance: 0
 	          },
 	          {
-	            className: 'link_url',
+	            className: 'link',
 	            begin: '\\w',
 	            end: '[^\\[]+',
 	            relevance: 0
 	          },
 	          {
-	            className: 'link_label',
+	            className: 'string',
 	            begin: '\\[',
 	            end: '\\]',
 	            excludeBegin: true,
@@ -34642,7 +37114,7 @@
 	};
 
 /***/ },
-/* 261 */
+/* 315 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -34665,10 +37137,16 @@
 	        '\\*/',
 	        {
 	          relevance : 0,
-	          contains : [{
-	            className : 'doctag',
-	            begin : '@[A-Za-z]+'
-	          }]
+	          contains : [
+	            {
+	              // eat up @'s in emails to prevent them to be recognized as doctags
+	              begin: /\w+@/, relevance: 0
+	            },
+	            {
+	              className : 'doctag',
+	              begin : '@[A-Za-z]+'
+	            }
+	          ]
 	        }
 	      ),
 	      hljs.C_LINE_COMMENT_MODE,
@@ -34676,7 +37154,7 @@
 	      hljs.APOS_STRING_MODE,
 	      hljs.QUOTE_STRING_MODE,
 	      {
-	        className : 'aspect',
+	        className : 'class',
 	        beginKeywords : 'aspect',
 	        end : /[{;=]/,
 	        excludeEnd : true,
@@ -34776,7 +37254,7 @@
 	      hljs.C_NUMBER_MODE,
 	      {
 	        // annotation is also used in this language
-	        className : 'annotation',
+	        className : 'meta',
 	        begin : '@[A-Za-z]+'
 	      }
 	    ]
@@ -34784,55 +37262,42 @@
 	};
 
 /***/ },
-/* 262 */
+/* 316 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  var BACKTICK_ESCAPE = {
-	    className: 'escape',
-	    begin: '`[\\s\\S]'
+	    begin: /`[\s\S]/
 	  };
-	  var COMMENTS = hljs.COMMENT(
-	    ';',
-	    '$',
-	    {
-	      relevance: 0
-	    }
-	  );
-	  var BUILT_IN = [
-	    {
-	      className: 'built_in',
-	      begin: 'A_[a-zA-Z0-9]+'
-	    },
-	    {
-	      className: 'built_in',
-	      beginKeywords: 'ComSpec Clipboard ClipboardAll ErrorLevel'
-	    }
-	  ];
 
 	  return {
 	    case_insensitive: true,
 	    keywords: {
 	      keyword: 'Break Continue Else Gosub If Loop Return While',
-	      literal: 'A true false NOT AND OR'
+	      literal: 'A true false NOT AND OR',
+	      built_in: 'ComSpec Clipboard ClipboardAll ErrorLevel',
 	    },
-	    contains: BUILT_IN.concat([
+	    contains: [
+	      {
+	        className: 'built_in',
+	        begin: 'A_[a-zA-Z0-9]+'
+	      },
 	      BACKTICK_ESCAPE,
 	      hljs.inherit(hljs.QUOTE_STRING_MODE, {contains: [BACKTICK_ESCAPE]}),
-	      COMMENTS,
+	      hljs.COMMENT(';', '$', {relevance: 0}),
 	      {
 	        className: 'number',
 	        begin: hljs.NUMBER_RE,
 	        relevance: 0
 	      },
 	      {
-	        className: 'var_expand', // FIXME
+	        className: 'variable', // FIXME
 	        begin: '%', end: '%',
 	        illegal: '\\n',
 	        contains: [BACKTICK_ESCAPE]
 	      },
 	      {
-	        className: 'label',
+	        className: 'symbol',
 	        contains: [BACKTICK_ESCAPE],
 	        variants: [
 	          {begin: '^[^\\n";]+::(?!=)'},
@@ -34842,15 +37307,14 @@
 	      },
 	      {
 	        // consecutive commas, not for highlighting but just for relevance
-	        begin: ',\\s*,',
-	        relevance: 10
+	        begin: ',\\s*,'
 	      }
-	    ])
+	    ]
 	  }
 	};
 
 /***/ },
-/* 263 */
+/* 317 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36462,7 +38926,6 @@
 	        },
 
 	        VARIABLE = {
-	            className: 'variable',
 	            begin: '\\$[A-z0-9_]+'
 	        },
 
@@ -36490,10 +38953,10 @@
 	        },
 
 	        PREPROCESSOR = {
-	            className: 'preprocessor',
+	            className: 'meta',
 	            begin: '#',
 	            end: '$',
-	            keywords: 'include include-once NoTrayIcon OnAutoItStartRegister RequireAdmin pragma ' +
+	            keywords: {'meta-keyword': 'include include-once NoTrayIcon OnAutoItStartRegister RequireAdmin pragma ' +
 	                'Au3Stripper_Ignore_Funcs Au3Stripper_Ignore_Variables ' +
 	                'Au3Stripper_Off Au3Stripper_On Au3Stripper_Parameters ' +
 	                'AutoIt3Wrapper_Add_Constants AutoIt3Wrapper_Au3Check_Parameters ' +
@@ -36523,16 +38986,17 @@
 	                'AutoIt3Wrapper_UPX_Parameters AutoIt3Wrapper_UseUPX ' +
 	                'AutoIt3Wrapper_UseX64 AutoIt3Wrapper_Version ' +
 	                'AutoIt3Wrapper_Versioning AutoIt3Wrapper_Versioning_Parameters ' +
-	                'Tidy_Off Tidy_On Tidy_Parameters EndRegion Region',
+	                'Tidy_Off Tidy_On Tidy_Parameters EndRegion Region'},
 	            contains: [{
 	                    begin: /\\\n/,
 	                    relevance: 0
 	                }, {
 	                    beginKeywords: 'include',
+	                    keywords: {'meta-keyword': 'include'},
 	                    end: '$',
 	                    contains: [
 	                        STRING, {
-	                            className: 'string',
+	                            className: 'meta-string',
 	                            variants: [{
 	                                begin: '<',
 	                                end: '>'
@@ -36560,7 +39024,7 @@
 	        },
 
 	        CONSTANT = {
-	            className: 'constant',
+	            className: 'symbol',
 	            // begin: '@',
 	            // end: '$',
 	            // keywords: 'AppDataCommonDir AppDataDir AutoItExe AutoItPID AutoItVersion AutoItX64 COM_EventObj CommonFilesDir Compiled ComputerName ComSpec CPUArch CR CRLF DesktopCommonDir DesktopDepth DesktopDir DesktopHeight DesktopRefresh DesktopWidth DocumentsCommonDir error exitCode exitMethod extended FavoritesCommonDir FavoritesDir GUI_CtrlHandle GUI_CtrlId GUI_DragFile GUI_DragId GUI_DropId GUI_WinHandle HomeDrive HomePath HomeShare HotKeyPressed HOUR IPAddress1 IPAddress2 IPAddress3 IPAddress4 KBLayout LF LocalAppDataDir LogonDNSDomain LogonDomain LogonServer MDAY MIN MON MSEC MUILang MyDocumentsDir NumParams OSArch OSBuild OSLang OSServicePack OSType OSVersion ProgramFilesDir ProgramsCommonDir ProgramsDir ScriptDir ScriptFullPath ScriptLineNumber ScriptName SEC StartMenuCommonDir StartMenuDir StartupCommonDir StartupDir SW_DISABLE SW_ENABLE SW_HIDE SW_LOCK SW_MAXIMIZE SW_MINIMIZE SW_RESTORE SW_SHOW SW_SHOWDEFAULT SW_SHOWMAXIMIZED SW_SHOWMINIMIZED SW_SHOWMINNOACTIVE SW_SHOWNA SW_SHOWNOACTIVATE SW_SHOWNORMAL SW_UNLOCK SystemDir TAB TempDir TRAY_ID TrayIconFlashing TrayIconVisible UserName UserProfileDir WDAY WindowsDir WorkingDir YDAY YEAR',
@@ -36572,7 +39036,6 @@
 	            className: 'function',
 	            beginKeywords: 'Func',
 	            end: '$',
-	            excludeEnd: true,
 	            illegal: '\\$|\\[|%',
 	            contains: [
 	                hljs.UNDERSCORE_TITLE_MODE, {
@@ -36609,7 +39072,7 @@
 	};
 
 /***/ },
-/* 264 */
+/* 318 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36639,7 +39102,7 @@
 	        'ocr1bh ocr1bl icr1h icr1l tccr2 tcnt2 ocr2 ocdr wdtcr sfior eearh eearl eedr eecr ' +
 	        'porta ddra pina portb ddrb pinb portc ddrc pinc portd ddrd pind spdr spsr spcr udr0 ' +
 	        'ucsr0a ucsr0b ubrr0l acsr admux adcsr adch adcl porte ddre pine pinf',
-	      preprocessor:
+	      meta:
 	        '.byte .cseg .db .def .device .dseg .dw .endmacro .equ .eseg .exit .include .list ' +
 	        '.listmac .macro .nolist .org .set'
 	    },
@@ -36664,10 +39127,10 @@
 	        begin: '\'', end: '[^\\\\]\'',
 	        illegal: '[^\\\\][^\']'
 	      },
-	      {className: 'label',  begin: '^[A-Za-z0-9_.$]+:'},
-	      {className: 'preprocessor', begin: '#', end: '$'},
+	      {className: 'symbol',  begin: '^[A-Za-z0-9_.$]+:'},
+	      {className: 'meta', begin: '#', end: '$'},
 	      {  // подстановка в «.macro»
-	        className: 'localvars',
+	        className: 'subst',
 	        begin: '@[0-9]+'
 	      }
 	    ]
@@ -36675,7 +39138,7 @@
 	};
 
 /***/ },
-/* 265 */
+/* 319 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36693,7 +39156,7 @@
 	      hljs.QUOTE_STRING_MODE,
 	      hljs.C_NUMBER_MODE,
 	      {
-	        className: 'preprocessor',
+	        className: 'meta',
 	        begin: '#', end: '$'
 	      },
 	      {
@@ -36710,7 +39173,7 @@
 	};
 
 /***/ },
-/* 266 */
+/* 320 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36764,12 +39227,12 @@
 	        'pushd pushln rehash sched setcap setopt stat suspend ttyctl unfunction unhash unlimit ' +
 	        'unsetopt vared wait whence where which zcompile zformat zftp zle zmodload zparseopts zprof ' +
 	        'zpty zregexparse zsocket zstyle ztcp',
-	      operator:
+	      _:
 	        '-ne -eq -lt -gt -f -d -e -s -l -a' // relevance booster
 	    },
 	    contains: [
 	      {
-	        className: 'shebang',
+	        className: 'meta',
 	        begin: /^#![^\n]+sh\s*$/,
 	        relevance: 10
 	      },
@@ -36781,7 +39244,6 @@
 	        relevance: 0
 	      },
 	      hljs.HASH_COMMENT_MODE,
-	      hljs.NUMBER_MODE,
 	      QUOTE_STRING,
 	      APOS_STRING,
 	      VAR
@@ -36790,7 +39252,7 @@
 	};
 
 /***/ },
-/* 267 */
+/* 321 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs){
@@ -36831,7 +39293,7 @@
 	};
 
 /***/ },
-/* 268 */
+/* 322 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36865,12 +39327,12 @@
 	    className: 'string', begin: /(#\d+)+/
 	  };
 	  var DATE = {
-	      className: 'date',
+	      className: 'number',
 	      begin: '\\b\\d+(\\.\\d+)?(DT|D|T)',
 	      relevance: 0
 	  };
 	  var DBL_QUOTED_VARIABLE = {
-	      className: 'variable',
+	      className: 'string', // not a string technically but makes sense to be highlighted in the same style
 	      begin: '"',
 	      end: '"'
 	  };
@@ -36915,7 +39377,7 @@
 	};
 
 /***/ },
-/* 269 */
+/* 323 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36935,12 +39397,12 @@
 	      hljs.NUMBER_MODE,
 	      hljs.HASH_COMMENT_MODE,
 	      {
-	        className: 'shebang',
+	        className: 'meta',
 	        begin: /@0x[\w\d]{16};/,
 	        illegal: /\n/
 	      },
 	      {
-	        className: 'number',
+	        className: 'symbol',
 	        begin: /@\d+\b/
 	      },
 	      {
@@ -36968,7 +39430,7 @@
 	};
 
 /***/ },
-/* 270 */
+/* 324 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36985,7 +39447,6 @@
 	  // 7.4.2 Documentation
 	  var DOCUMENTATION =
 	    'doc by license see throws tagged';
-	  var LANGUAGE_ANNOTATIONS = DECLARATION_MODIFIERS + ' ' + DOCUMENTATION;
 	  var SUBST = {
 	    className: 'subst', excludeBegin: true, excludeEnd: true,
 	    begin: /``/, end: /``/,
@@ -37023,8 +39484,8 @@
 
 	  return {
 	    keywords: {
-	      keyword: KEYWORDS,
-	      annotation: LANGUAGE_ANNOTATIONS
+	      keyword: KEYWORDS + ' ' + DECLARATION_MODIFIERS,
+	      meta: DOCUMENTATION
 	    },
 	    illegal: '\\$[^01]|#[^0-9a-fA-F]',
 	    contains: [
@@ -37032,7 +39493,7 @@
 	      hljs.COMMENT('/\\*', '\\*/', {contains: ['self']}),
 	      {
 	        // compiler annotation
-	        className: 'annotation',
+	        className: 'meta',
 	        begin: '@[a-z]\\w*(?:\\:\"[^\"]*\")?'
 	      }
 	    ].concat(EXPRESSIONS)
@@ -37040,12 +39501,12 @@
 	};
 
 /***/ },
-/* 271 */
+/* 325 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  var keywords = {
-	    built_in:
+	    'builtin-name':
 	      // Clojure keywords
 	      'def defonce cond apply if-not if-let if not not= = < > <= >= == + / * - rem '+
 	      'quot neg? pos? delay? symbol? keyword? true? false? integer? empty? coll? list? '+
@@ -37101,7 +39562,6 @@
 	    begin: /\b(true|false|nil)\b/
 	  };
 	  var COLLECTION = {
-	    className: 'collection',
 	    begin: '[\\[\\{]', end: '[\\]\\}]'
 	  };
 	  var HINT = {
@@ -37110,11 +39570,10 @@
 	  };
 	  var HINT_COL = hljs.COMMENT('\\^\\{', '\\}');
 	  var KEY = {
-	    className: 'attribute',
+	    className: 'symbol',
 	    begin: '[:]' + SYMBOL_RE
 	  };
 	  var LIST = {
-	    className: 'list',
 	    begin: '\\(', end: '\\)'
 	  };
 	  var BODY = {
@@ -37124,7 +39583,7 @@
 	  var NAME = {
 	    keywords: keywords,
 	    lexemes: SYMBOL_RE,
-	    className: 'keyword', begin: SYMBOL_RE,
+	    className: 'name', begin: SYMBOL_RE,
 	    starts: BODY
 	  };
 	  var DEFAULT_CONTAINS = [LIST, STRING, HINT, HINT_COL, COMMENT, KEY, COLLECTION, NUMBER, LITERAL, SYMBOL];
@@ -37141,14 +39600,14 @@
 	};
 
 /***/ },
-/* 272 */
+/* 326 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  return {
 	    contains: [
 	      {
-	        className: 'prompt',
+	        className: 'meta',
 	        begin: /^([\w.-]+|\s*#_)=>/,
 	        starts: {
 	          end: /$/,
@@ -37160,7 +39619,7 @@
 	};
 
 /***/ },
-/* 273 */
+/* 327 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37186,13 +39645,12 @@
 	        'while build_name exec_program export_library_dependencies install_files ' +
 	        'install_programs install_targets link_libraries make_directory remove subdir_depends ' +
 	        'subdirs use_mangled_mesa utility_source variable_requires write_file ' +
-	        'qt5_use_modules qt5_use_package qt5_wrap_cpp on off true false and or',
-	      operator:
+	        'qt5_use_modules qt5_use_package qt5_wrap_cpp on off true false and or ' +
 	        'equal less greater strless strgreater strequal matches'
 	    },
 	    contains: [
 	      {
-	        className: 'envvar',
+	        className: 'variable',
 	        begin: '\\${', end: '}'
 	      },
 	      hljs.HASH_COMMENT_MODE,
@@ -37203,7 +39661,7 @@
 	};
 
 /***/ },
-/* 274 */
+/* 328 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37271,8 +39729,7 @@
 	      ]
 	    },
 	    {
-	      className: 'property',
-	      begin: '@' + JS_IDENT_RE
+	      begin: '@' + JS_IDENT_RE // relevance booster
 	    },
 	    {
 	      begin: '`', end: '`',
@@ -37338,7 +39795,6 @@
 	        ]
 	      },
 	      {
-	        className: 'attribute',
 	        begin: JS_IDENT_RE + ':', end: ':',
 	        returnBegin: true, returnEnd: true,
 	        relevance: 0
@@ -37348,7 +39804,134 @@
 	};
 
 /***/ },
-/* 275 */
+/* 329 */
+/***/ function(module, exports) {
+
+	module.exports = function cos (hljs) {
+
+	  var STRINGS = {
+	    className: 'string',
+	    variants: [
+	      {
+	        begin: '"',
+	        end: '"',
+	        contains: [{ // escaped
+	          begin: "\"\"",
+	          relevance: 0
+	        }]
+	      }
+	    ]
+	  };
+
+	  var NUMBERS = {
+	    className: "number",
+	    begin: "\\b(\\d+(\\.\\d*)?|\\.\\d+)",
+	    relevance: 0
+	  };
+
+	  var METHOD_TITLE = hljs.IDENT_RE + "\\s*\\(";
+
+	  var COS_KEYWORDS = {
+	    keyword: [
+
+	      "break", "catch", "close", "continue", "do", "d", "else",
+	      "elseif", "for", "goto", "halt", "hang", "h", "if", "job",
+	      "j", "kill", "k", "lock", "l", "merge", "new", "open", "quit",
+	      "q", "read", "r", "return", "set", "s", "tcommit", "throw",
+	      "trollback", "try", "tstart", "use", "view", "while", "write",
+	      "w", "xecute", "x", "zkill", "znspace", "zn", "ztrap", "zwrite",
+	      "zw", "zzdump", "zzwrite", "print", "zbreak", "zinsert", "zload",
+	      "zprint", "zremove", "zsave", "zzprint", "mv", "mvcall", "mvcrt",
+	      "mvdim", "mvprint", "zquit", "zsync", "ascii"
+
+	      // registered function - no need in them due to all functions are highlighted,
+	      // but I'll just leave this here.
+
+	      //"$bit", "$bitcount",
+	      //"$bitfind", "$bitlogic", "$case", "$char", "$classmethod", "$classname",
+	      //"$compile", "$data", "$decimal", "$double", "$extract", "$factor",
+	      //"$find", "$fnumber", "$get", "$increment", "$inumber", "$isobject",
+	      //"$isvaliddouble", "$isvalidnum", "$justify", "$length", "$list",
+	      //"$listbuild", "$listdata", "$listfind", "$listfromstring", "$listget",
+	      //"$listlength", "$listnext", "$listsame", "$listtostring", "$listvalid",
+	      //"$locate", "$match", "$method", "$name", "$nconvert", "$next",
+	      //"$normalize", "$now", "$number", "$order", "$parameter", "$piece",
+	      //"$prefetchoff", "$prefetchon", "$property", "$qlength", "$qsubscript",
+	      //"$query", "$random", "$replace", "$reverse", "$sconvert", "$select",
+	      //"$sortbegin", "$sortend", "$stack", "$text", "$translate", "$view",
+	      //"$wascii", "$wchar", "$wextract", "$wfind", "$wiswide", "$wlength",
+	      //"$wreverse", "$xecute", "$zabs", "$zarccos", "$zarcsin", "$zarctan",
+	      //"$zcos", "$zcot", "$zcsc", "$zdate", "$zdateh", "$zdatetime",
+	      //"$zdatetimeh", "$zexp", "$zhex", "$zln", "$zlog", "$zpower", "$zsec",
+	      //"$zsin", "$zsqr", "$ztan", "$ztime", "$ztimeh", "$zboolean",
+	      //"$zconvert", "$zcrc", "$zcyc", "$zdascii", "$zdchar", "$zf",
+	      //"$ziswide", "$zlascii", "$zlchar", "$zname", "$zposition", "$zqascii",
+	      //"$zqchar", "$zsearch", "$zseek", "$zstrip", "$zwascii", "$zwchar",
+	      //"$zwidth", "$zwpack", "$zwbpack", "$zwunpack", "$zwbunpack", "$zzenkaku",
+	      //"$change", "$mv", "$mvat", "$mvfmt", "$mvfmts", "$mviconv",
+	      //"$mviconvs", "$mvinmat", "$mvlover", "$mvoconv", "$mvoconvs", "$mvraise",
+	      //"$mvtrans", "$mvv", "$mvname", "$zbitand", "$zbitcount", "$zbitfind",
+	      //"$zbitget", "$zbitlen", "$zbitnot", "$zbitor", "$zbitset", "$zbitstr",
+	      //"$zbitxor", "$zincrement", "$znext", "$zorder", "$zprevious", "$zsort",
+	      //"device", "$ecode", "$estack", "$etrap", "$halt", "$horolog",
+	      //"$io", "$job", "$key", "$namespace", "$principal", "$quit", "$roles",
+	      //"$storage", "$system", "$test", "$this", "$tlevel", "$username",
+	      //"$x", "$y", "$za", "$zb", "$zchild", "$zeof", "$zeos", "$zerror",
+	      //"$zhorolog", "$zio", "$zjob", "$zmode", "$znspace", "$zparent", "$zpi",
+	      //"$zpos", "$zreference", "$zstorage", "$ztimestamp", "$ztimezone",
+	      //"$ztrap", "$zversion"
+
+	    ].join(" ")
+	  };
+
+	  return {
+	    case_insensitive: true,
+	    aliases: ["cos", "cls"],
+	    keywords: COS_KEYWORDS,
+	    contains: [
+	      NUMBERS,
+	      STRINGS,
+	      hljs.C_LINE_COMMENT_MODE,
+	      hljs.C_BLOCK_COMMENT_MODE,
+	      { // functions
+	        className: "built_in",
+	        begin: /\$\$?[a-zA-Z]+/
+	      },
+	      { // macro
+	        className: "keyword",
+	        begin: /\$\$\$[a-zA-Z]+/
+	      },
+	      { // globals
+	        className: "symbol",
+	        begin: /\^%?[a-zA-Z][\w]*/
+	      },
+	      { // static class reference constructions
+	        className: 'keyword',
+	        begin: /##class/
+	      },
+
+	      // sub-languages: are not fully supported by hljs by 11/15/2015
+	      // left for the future implementation.
+	      {
+	        begin: /&sql\(/,    end: /\)/,
+	        excludeBegin: true, excludeEnd: true,
+	        subLanguage: "sql"
+	      },
+	      {
+	        begin: /&(js|jscript|javascript)</, end: />/,
+	        excludeBegin: true, excludeEnd: true,
+	        subLanguage: "javascript"
+	      },
+	      {
+	        begin: /&html<\s*</, end: />\s*>/, // brakes first tag, but the only way to embed valid html
+	        subLanguage: "xml" // no html?
+	      }
+	    ]
+	  };
+	};
+
+/***/ },
+/* 330 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37377,31 +39960,32 @@
 	    variants: [
 	      { begin: '\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)' },
 	      { begin: hljs.C_NUMBER_RE }
-	    ]
+	    ],
+	    relevance: 0
 	  };
 
 	  var PREPROCESSOR =       {
-	    className: 'preprocessor',
+	    className: 'meta',
 	    begin: '#', end: '$',
-	    keywords: 'if else elif endif define undef warning error line ' +
-	              'pragma ifdef ifndef',
+	    keywords: {'meta-keyword': 'if else elif endif define undef warning error line ' +
+	                  'pragma ifdef ifndef'},
 	    contains: [
 	      {
 	        begin: /\\\n/, relevance: 0
 	      },
 	      {
 	        beginKeywords: 'include', end: '$',
+	        keywords: {'meta-keyword': 'include'},
 	        contains: [
-	          STRINGS,
+	          hljs.inherit(STRINGS, {className: 'meta-string'}),
 	          {
-	            className: 'string',
+	            className: 'meta-string',
 	            begin: '<', end: '>',
 	            illegal: '\\n',
 	          }
 	        ]
 	      },
 	      STRINGS,
-	      NUMBERS,
 	      hljs.C_LINE_COMMENT_MODE,
 	      hljs.C_BLOCK_COMMENT_MODE
 	    ]
@@ -37428,7 +40012,7 @@
 	      'isxdigit tolower toupper labs ldexp log10 log malloc realloc memchr memcmp memcpy memset modf pow ' +
 	      'printf putchar puts scanf sinh sin snprintf sprintf sqrt sscanf strcat strchr strcmp ' +
 	      'strcpy strcspn strlen strncat strncmp strncpy strpbrk strrchr strspn strstr tanh tan ' +
-	      'vfprintf vprintf vsprintf',
+	      'vfprintf vprintf vsprintf endl initializer_list unique_ptr',
 	    literal: 'true false nullptr NULL'
 	  };
 
@@ -37493,7 +40077,7 @@
 	};
 
 /***/ },
-/* 276 */
+/* 331 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37519,9 +40103,7 @@
 	    aliases: ['crm', 'pcmk'],
 	    case_insensitive: true,
 	    keywords: {
-	      keyword: KEYWORDS,
-	      operator: OPERATORS,
-	      type: TYPES,
+	      keyword: KEYWORDS + ' ' + OPERATORS + ' ' + TYPES,
 	      literal: LITERALS
 	    },
 	    contains: [
@@ -37529,7 +40111,6 @@
 	      {
 	        beginKeywords: 'node',
 	        starts: {
-	          className: 'identifier',
 	          end: '\\s*([\\w_-]+:)?',
 	          starts: {
 	            className: 'title',
@@ -37543,8 +40124,7 @@
 	          className: 'title',
 	          end: '\\s*[\\$\\w_][\\w_-]*',
 	          starts: {
-	            className: 'pragma',
-	            end: '\\s*@?[\\w_][\\w_\\.:-]*',
+	            end: '\\s*@?[\\w_][\\w_\\.:-]*'
 	          }
 	        }
 	      },
@@ -37553,7 +40133,7 @@
 	        keywords: COMMANDS,
 	        starts: {
 	          className: 'title',
-	          end: '[\\$\\w_][\\w_-]*',
+	          end: '[\\$\\w_][\\w_-]*'
 	        }
 	      },
 	      {
@@ -37565,7 +40145,7 @@
 	      },
 	      hljs.QUOTE_STRING_MODE,
 	      {
-	        className: 'pragma',
+	        className: 'meta',
 	        begin: '(ocf|systemd|service|lsb):[\\w_:-]+',
 	        relevance: 0
 	      },
@@ -37575,12 +40155,12 @@
 	        relevance: 0
 	      },
 	      {
-	        className: 'number',
+	        className: 'literal',
 	        begin: '[-]?(infinity|inf)',
 	        relevance: 0
 	      },
 	      {
-	        className: 'variable',
+	        className: 'attr',
 	        begin: /([A-Za-z\$_\#][\w_-]+)=/,
 	        relevance: 0
 	      },
@@ -37595,7 +40175,7 @@
 	};
 
 /***/ },
-/* 277 */
+/* 332 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37618,7 +40198,7 @@
 	    keywords: CRYSTAL_KEYWORDS
 	  };
 	  var EXPANSION = {
-	    className: 'expansion',
+	    className: 'template-variable',
 	    variants: [
 	      {begin: '\\{\\{', end: '\\}\\}'},
 	      {begin: '\\{%', end: '%\\}'}
@@ -37688,7 +40268,7 @@
 	    relevance: 0
 	  };
 	  var ATTRIBUTE = {
-	    className: 'annotation',
+	    className: 'meta',
 	    begin: '@\\[', end: '\\]',
 	    relevance: 5
 	  };
@@ -37706,14 +40286,7 @@
 	      contains: [
 	        hljs.HASH_COMMENT_MODE,
 	        hljs.inherit(hljs.TITLE_MODE, {begin: '[A-Za-z_]\\w*(::\\w+)*(\\?|\\!)?'}),
-	        {
-	          className: 'inheritance',
-	          begin: '<\\s*',
-	          contains: [{
-	            className: 'parent',
-	            begin: '(' + hljs.IDENT_RE + '::)?' + hljs.IDENT_RE
-	          }]
-	        }
+	        {begin: '<'} // relevance booster for inheritance
 	      ]
 	    },
 	    {
@@ -37748,11 +40321,6 @@
 	      relevance: 5
 	    },
 	    {
-	      className: 'constant',
-	      begin: '(::)?(\\b[A-Z]\\w*(::)?)+',
-	      relevance: 0
-	    },
-	    {
 	      className: 'symbol',
 	      begin: hljs.UNDERSCORE_IDENT_RE + '(\\!|\\?)?:',
 	      relevance: 0
@@ -37772,10 +40340,6 @@
 	        { begin: '\\b(([0-9][0-9_]*[0-9]|[0-9])(\\.[0-9_]*[0-9])?([eE][+-]?[0-9_]*[0-9])?)' + NUM_SUFFIX}
 	      ],
 	      relevance: 0
-	    },
-	    {
-	      className: 'variable',
-	      begin: '(\\$\\W)|((\\$|\\@\\@?|%)(\\w+))'
 	    }
 	  ];
 	  SUBST.contains = CRYSTAL_DEFAULT_CONTAINS;
@@ -37791,7 +40355,7 @@
 	};
 
 /***/ },
-/* 278 */
+/* 333 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37820,7 +40384,7 @@
 	          returnBegin: true,
 	          contains: [
 	            {
-	              className: 'xmlDocTag',
+	              className: 'doctag',
 	              variants: [
 	                {
 	                  begin: '///', relevance: 0
@@ -37839,9 +40403,9 @@
 	      hljs.C_LINE_COMMENT_MODE,
 	      hljs.C_BLOCK_COMMENT_MODE,
 	      {
-	        className: 'preprocessor',
+	        className: 'meta',
 	        begin: '#', end: '$',
-	        keywords: 'if else elif endif define undef warning error line region endregion pragma checksum'
+	        keywords: {'meta-keyword': 'if else elif endif define undef warning error line region endregion pragma checksum'}
 	      },
 	      {
 	        className: 'string',
@@ -37864,12 +40428,7 @@
 	        beginKeywords: 'namespace', end: /[{;=]/,
 	        illegal: /[^\s:]/,
 	        contains: [
-	          {
-	            // Customization of hljs.TITLE_MODE that allows '.'
-	            className: 'title',
-	            begin: '[a-zA-Z](\\.?\\w)*',
-	            relevance: 0
-	          },
+	          hljs.inherit(hljs.TITLE_MODE, {begin: '[a-zA-Z](\\.?\\w)*'}),
 	          hljs.C_LINE_COMMENT_MODE,
 	          hljs.C_BLOCK_COMMENT_MODE
 	        ]
@@ -37914,39 +40473,38 @@
 	};
 
 /***/ },
-/* 279 */
+/* 334 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
-	  var FUNCTION = {
-	    className: 'function',
-	    begin: IDENT_RE + '\\(',
-	    returnBegin: true,
-	    excludeEnd: true,
-	    end: '\\('
-	  };
 	  var RULE = {
-	    className: 'rule',
 	    begin: /[A-Z\_\.\-]+\s*:/, returnBegin: true, end: ';', endsWithParent: true,
 	    contains: [
 	      {
 	        className: 'attribute',
 	        begin: /\S/, end: ':', excludeEnd: true,
 	        starts: {
-	          className: 'value',
 	          endsWithParent: true, excludeEnd: true,
 	          contains: [
-	            FUNCTION,
+	            {
+	              begin: /[\w-]+\s*\(/, returnBegin: true,
+	              contains: [
+	                {
+	                  className: 'built_in',
+	                  begin: /[\w-]+/
+	                }
+	              ]
+	            },
 	            hljs.CSS_NUMBER_MODE,
 	            hljs.QUOTE_STRING_MODE,
 	            hljs.APOS_STRING_MODE,
 	            hljs.C_BLOCK_COMMENT_MODE,
 	            {
-	              className: 'hexcolor', begin: '#[0-9A-Fa-f]+'
+	              className: 'number', begin: '#[0-9A-Fa-f]+'
 	            },
 	            {
-	              className: 'important', begin: '!important'
+	              className: 'meta', begin: '!important'
 	            }
 	          ]
 	        }
@@ -37960,28 +40518,26 @@
 	    contains: [
 	      hljs.C_BLOCK_COMMENT_MODE,
 	      {
-	        className: 'id', begin: /\#[A-Za-z0-9_-]+/
+	        className: 'selector-id', begin: /#[A-Za-z0-9_-]+/
 	      },
 	      {
-	        className: 'class', begin: /\.[A-Za-z0-9_-]+/
+	        className: 'selector-class', begin: /\.[A-Za-z0-9_-]+/
 	      },
 	      {
-	        className: 'attr_selector',
+	        className: 'selector-attr',
 	        begin: /\[/, end: /\]/,
 	        illegal: '$'
 	      },
 	      {
-	        className: 'pseudo',
+	        className: 'selector-pseudo',
 	        begin: /:(:)?[a-zA-Z0-9\_\-\+\(\)"']+/
 	      },
 	      {
-	        className: 'at_rule',
 	        begin: '@(font-face|page)',
 	        lexemes: '[a-z-]+',
 	        keywords: 'font-face page'
 	      },
 	      {
-	        className: 'at_rule',
 	        begin: '@', end: '[{;]', // at_rule eating first "{" is a good thing
 	                                 // because it doesn’t let it to be parsed as
 	                                 // a rule set but instead drops parser into
@@ -37995,7 +40551,6 @@
 	            begin: /\s/, endsWithParent: true, excludeEnd: true,
 	            relevance: 0,
 	            contains: [
-	              FUNCTION,
 	              hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE,
 	              hljs.CSS_NUMBER_MODE
 	            ]
@@ -38003,11 +40558,10 @@
 	        ]
 	      },
 	      {
-	        className: 'tag', begin: IDENT_RE,
+	        className: 'selector-tag', begin: IDENT_RE,
 	        relevance: 0
 	      },
 	      {
-	        className: 'rules',
 	        begin: '{', end: '}',
 	        illegal: /\S/,
 	        contains: [
@@ -38020,7 +40574,7 @@
 	};
 
 /***/ },
-/* 280 */
+/* 335 */
 /***/ function(module, exports) {
 
 	module.exports = /**
@@ -38217,7 +40771,7 @@
 	   * @type {Object}
 	   */
 	  var D_HASHBANG_MODE = {
-	    className: 'shebang',
+	    className: 'meta',
 	    begin: '^#!',
 	    end: '$',
 	    relevance: 5
@@ -38229,7 +40783,7 @@
 	   * @type {Object}
 	   */
 	  var D_SPECIAL_TOKEN_SEQUENCE_MODE = {
-	    className: 'preprocessor',
+	    className: 'meta',
 	    begin: '#(line)',
 	    end: '$',
 	    relevance: 5
@@ -38282,7 +40836,7 @@
 	};
 
 /***/ },
-/* 281 */
+/* 336 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -38291,7 +40845,7 @@
 	    contains: [
 	      // highlight headers
 	      {
-	        className: 'header',
+	        className: 'section',
 	        variants: [
 	          { begin: '^#{1,6}', end: '$' },
 	          { begin: '^.+?\\n[=-]{2,}$' }
@@ -38325,7 +40879,7 @@
 	      },
 	      // blockquotes
 	      {
-	        className: 'blockquote',
+	        className: 'quote',
 	        begin: '^>\\s+', end: '$'
 	      },
 	      // code snippets
@@ -38340,7 +40894,6 @@
 	      },
 	      // horizontal rules
 	      {
-	        className: 'horizontal_rule',
 	        begin: '^[-\\*]{3,}', end: '$'
 	      },
 	      // using links - title and link
@@ -38349,19 +40902,19 @@
 	        returnBegin: true,
 	        contains: [
 	          {
-	            className: 'link_label',
+	            className: 'string',
 	            begin: '\\[', end: '\\]',
 	            excludeBegin: true,
 	            returnEnd: true,
 	            relevance: 0
 	          },
 	          {
-	            className: 'link_url',
+	            className: 'link',
 	            begin: '\\]\\(', end: '\\)',
 	            excludeBegin: true, excludeEnd: true
 	          },
 	          {
-	            className: 'link_reference',
+	            className: 'symbol',
 	            begin: '\\]\\[', end: '\\]',
 	            excludeBegin: true, excludeEnd: true
 	          }
@@ -38373,11 +40926,11 @@
 	        returnBegin: true,
 	        contains: [
 	          {
-	            className: 'link_reference',
+	            className: 'symbol',
 	            begin: '\\[', end: '\\]:',
 	            excludeBegin: true, excludeEnd: true,
 	            starts: {
-	              className: 'link_url',
+	              className: 'link',
 	              end: '$'
 	            }
 	          }
@@ -38388,7 +40941,7 @@
 	};
 
 /***/ },
-/* 282 */
+/* 337 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -38441,8 +40994,8 @@
 
 	  var KEYWORDS = {
 	    keyword: 'assert break case catch class const continue default do else enum extends false final finally for if ' +
-	      'in is new null rethrow return super switch this throw true try var void while with',
-	    literal: 'abstract as dynamic export external factory get implements import library operator part set static typedef',
+	      'in is new null rethrow return super switch this throw true try var void while with ' +
+	      'abstract as dynamic export external factory get implements import library operator part set static typedef',
 	    built_in:
 	      // dart:core
 	      'print Comparable DateTime Duration Function Iterable Iterator List Map Match Null Object Pattern RegExp Set ' +
@@ -38483,7 +41036,7 @@
 	      },
 	      hljs.C_NUMBER_MODE,
 	      {
-	        className: 'annotation', begin: '@[A-Za-z]+'
+	        className: 'meta', begin: '@[A-Za-z]+'
 	      },
 	      {
 	        begin: '=>' // No markup, just a relevance booster
@@ -38493,7 +41046,7 @@
 	};
 
 /***/ },
-/* 283 */
+/* 338 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -38564,7 +41117,7 @@
 	};
 
 /***/ },
-/* 284 */
+/* 339 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -38572,7 +41125,7 @@
 	    aliases: ['patch'],
 	    contains: [
 	      {
-	        className: 'chunk',
+	        className: 'meta',
 	        relevance: 10,
 	        variants: [
 	          {begin: /^@@ +\-\d+,\d+ +\+\d+,\d+ +@@$/},
@@ -38581,7 +41134,7 @@
 	        ]
 	      },
 	      {
-	        className: 'header',
+	        className: 'comment',
 	        variants: [
 	          {begin: /Index: /, end: /$/},
 	          {begin: /=====/, end: /=====$/},
@@ -38600,7 +41153,7 @@
 	        begin: '^\\-', end: '$'
 	      },
 	      {
-	        className: 'change',
+	        className: 'addition',
 	        begin: '^\\!', end: '$'
 	      }
 	    ]
@@ -38608,25 +41161,26 @@
 	};
 
 /***/ },
-/* 285 */
+/* 340 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  var FILTER = {
-	    className: 'filter',
 	    begin: /\|[A-Za-z]+:?/,
-	    keywords:
-	      'truncatewords removetags linebreaksbr yesno get_digit timesince random striptags ' +
-	      'filesizeformat escape linebreaks length_is ljust rjust cut urlize fix_ampersands ' +
-	      'title floatformat capfirst pprint divisibleby add make_list unordered_list urlencode ' +
-	      'timeuntil urlizetrunc wordcount stringformat linenumbers slice date dictsort ' +
-	      'dictsortreversed default_if_none pluralize lower join center default ' +
-	      'truncatewords_html upper length phone2numeric wordwrap time addslashes slugify first ' +
-	      'escapejs force_escape iriencode last safe safeseq truncatechars localize unlocalize ' +
-	      'localtime utc timezone',
+	    keywords: {
+	      name:
+	        'truncatewords removetags linebreaksbr yesno get_digit timesince random striptags ' +
+	        'filesizeformat escape linebreaks length_is ljust rjust cut urlize fix_ampersands ' +
+	        'title floatformat capfirst pprint divisibleby add make_list unordered_list urlencode ' +
+	        'timeuntil urlizetrunc wordcount stringformat linenumbers slice date dictsort ' +
+	        'dictsortreversed default_if_none pluralize lower join center default ' +
+	        'truncatewords_html upper length phone2numeric wordwrap time addslashes slugify first ' +
+	        'escapejs force_escape iriencode last safe safeseq truncatechars localize unlocalize ' +
+	        'localtime utc timezone'
+	    },
 	    contains: [
-	      {className: 'argument', begin: /"/, end: /"/},
-	      {className: 'argument', begin: /'/, end: /'/}
+	      hljs.QUOTE_STRING_MODE,
+	      hljs.APOS_STRING_MODE
 	    ]
 	  };
 
@@ -38638,22 +41192,35 @@
 	      hljs.COMMENT(/\{%\s*comment\s*%}/, /\{%\s*endcomment\s*%}/),
 	      hljs.COMMENT(/\{#/, /#}/),
 	      {
-	        className: 'template_tag',
+	        className: 'template-tag',
 	        begin: /\{%/, end: /%}/,
-	        keywords:
-	          'comment endcomment load templatetag ifchanged endifchanged if endif firstof for ' +
-	          'endfor in ifnotequal endifnotequal widthratio extends include spaceless ' +
-	          'endspaceless regroup by as ifequal endifequal ssi now with cycle url filter ' +
-	          'endfilter debug block endblock else autoescape endautoescape csrf_token empty elif ' +
-	          'endwith static trans blocktrans endblocktrans get_static_prefix get_media_prefix ' +
-	          'plural get_current_language language get_available_languages ' +
-	          'get_current_language_bidi get_language_info get_language_info_list localize ' +
-	          'endlocalize localtime endlocaltime timezone endtimezone get_current_timezone ' +
-	          'verbatim',
-	        contains: [FILTER]
+	        contains: [
+	          {
+	            className: 'name',
+	            begin: /\w+/,
+	            keywords: {
+	              name:
+	                'comment endcomment load templatetag ifchanged endifchanged if endif firstof for ' +
+	                'endfor ifnotequal endifnotequal widthratio extends include spaceless ' +
+	                'endspaceless regroup ifequal endifequal ssi now with cycle url filter ' +
+	                'endfilter debug block endblock else autoescape endautoescape csrf_token empty elif ' +
+	                'endwith static trans blocktrans endblocktrans get_static_prefix get_media_prefix ' +
+	                'plural get_current_language language get_available_languages ' +
+	                'get_current_language_bidi get_language_info get_language_info_list localize ' +
+	                'endlocalize localtime endlocaltime timezone endtimezone get_current_timezone ' +
+	                'verbatim'
+	            },
+	            starts: {
+	              endsWithParent: true,
+	              keywords: 'in by as',
+	              contains: [FILTER],
+	              relevance: 0
+	            }
+	          }
+	        ]
 	      },
 	      {
-	        className: 'variable',
+	        className: 'template-variable',
 	        begin: /\{\{/, end: /}}/,
 	        contains: [FILTER]
 	      }
@@ -38662,7 +41229,7 @@
 	};
 
 /***/ },
-/* 286 */
+/* 341 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -38676,40 +41243,37 @@
 	    contains: [
 	      hljs.COMMENT(';', '$'),
 	      {
-	        className: 'operator',
-	        beginKeywords: '$TTL $GENERATE $INCLUDE $ORIGIN'
+	        className: 'meta',
+	        begin: /^\$(TTL|GENERATE|INCLUDE|ORIGIN)\b/
 	      },
 	      // IPv6
 	      {
 	        className: 'number',
-	        begin: '((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:)))'
+	        begin: '((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:)))\\b'
 	      },
 	      // IPv4
 	      {
 	        className: 'number',
-	        begin: '((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])'
-	      }
+	        begin: '((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\b'
+	      },
+	      hljs.inherit(hljs.NUMBER_MODE, {begin: /\b\d+[dhwm]?/})
 	    ]
 	  };
 	};
 
 /***/ },
-/* 287 */
+/* 342 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  return {
 	    aliases: ['docker'],
 	    case_insensitive: true,
-	    keywords: {
-	      built_ins: 'from maintainer cmd expose add copy entrypoint volume user workdir onbuild run env label'
-	    },
+	    keywords: 'from maintainer cmd expose add copy entrypoint volume user workdir onbuild run env label',
 	    contains: [
 	      hljs.HASH_COMMENT_MODE,
 	      {
-	        keywords : {
-	          built_in: 'run cmd entrypoint volume add copy workdir onbuild label'
-	        },
+	        keywords: 'run cmd entrypoint volume add copy workdir onbuild label',
 	        begin: /^ *(onbuild +)?(run|cmd|entrypoint|volume|add|copy|workdir|label) +/,
 	        starts: {
 	          end: /[^\\]\n/,
@@ -38717,9 +41281,7 @@
 	        }
 	      },
 	      {
-	        keywords: {
-	          built_in: 'from maintainer expose env user onbuild'
-	        },
+	        keywords: 'from maintainer expose env user onbuild',
 	        begin: /^ *(onbuild +)?(from|maintainer|expose|env|user|onbuild) +/, end: /[^\\]\n/,
 	        contains: [
 	          hljs.APOS_STRING_MODE,
@@ -38733,7 +41295,7 @@
 	};
 
 /***/ },
-/* 288 */
+/* 343 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -38744,7 +41306,7 @@
 	    }
 	  );
 	  var LABEL = {
-	    className: 'label',
+	    className: 'symbol',
 	    begin: '^\\s*[A-Za-z._?][A-Za-z0-9_$#@~.?]*(:|\\s+label)',
 	    relevance: 0
 	  };
@@ -38753,20 +41315,23 @@
 	    case_insensitive: true,
 	    illegal: /\/\*/,
 	    keywords: {
-	      flow: 'if else goto for in do call exit not exist errorlevel defined',
-	      operator: 'equ neq lss leq gtr geq',
-	      keyword: 'shift cd dir echo setlocal endlocal set pause copy',
-	      stream: 'prn nul lpt3 lpt2 lpt1 con com4 com3 com2 com1 aux',
-	      winutils: 'ping net ipconfig taskkill xcopy ren del',
-	      built_in: 'append assoc at attrib break cacls cd chcp chdir chkdsk chkntfs cls cmd color ' +
+	      keyword:
+	        'if else goto for in do call exit not exist errorlevel defined ' +
+	        'equ neq lss leq gtr geq',
+	      built_in:
+	        'prn nul lpt3 lpt2 lpt1 con com4 com3 com2 com1 aux ' +
+	        'shift cd dir echo setlocal endlocal set pause copy ' +
+	        'append assoc at attrib break cacls cd chcp chdir chkdsk chkntfs cls cmd color ' +
 	        'comp compact convert date dir diskcomp diskcopy doskey erase fs ' +
 	        'find findstr format ftype graftabl help keyb label md mkdir mode more move path ' +
 	        'pause print popd pushd promt rd recover rem rename replace restore rmdir shift' +
-	        'sort start subst time title tree type ver verify vol'
+	        'sort start subst time title tree type ver verify vol ' +
+	        // winutils
+	        'ping net ipconfig taskkill xcopy ren del'
 	    },
 	    contains: [
 	      {
-	        className: 'envvar', begin: /%%[^ ]|%[^ ]+?%|![^ ]+?!/
+	        className: 'variable', begin: /%%[^ ]|%[^ ]+?%|![^ ]+?!/
 	      },
 	      {
 	        className: 'function',
@@ -38786,7 +41351,7 @@
 	};
 
 /***/ },
-/* 289 */
+/* 344 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -38797,35 +41362,32 @@
 	    subLanguage: 'xml',
 	    contains: [
 	      {
-	        className: 'expression',
-	        begin: '{', end: '}',
-	        relevance: 0,
+	        className: 'template-tag',
+	        begin: /\{[#\/]/, end: /\}/, illegal: /;/,
 	        contains: [
 	          {
-	            className: 'begin-block', begin: '\#[a-zA-Z\-\ \.]+',
-	            keywords: EXPRESSION_KEYWORDS
-	          },
-	          {
-	            className: 'string',
-	            begin: '"', end: '"'
-	          },
-	          {
-	            className: 'end-block', begin: '\\\/[a-zA-Z\-\ \.]+',
-	            keywords: EXPRESSION_KEYWORDS
-	          },
-	          {
-	            className: 'variable', begin: '[a-zA-Z\-\.]+',
-	            keywords: EXPRESSION_KEYWORDS,
-	            relevance: 0
+	            className: 'name',
+	            begin: /[a-zA-Z\.-]+/,
+	            starts: {
+	              endsWithParent: true, relevance: 0,
+	              contains: [
+	                hljs.QUOTE_STRING_MODE
+	              ]
+	            }
 	          }
 	        ]
+	      },
+	      {
+	        className: 'template-variable',
+	        begin: /\{/, end: /\}/, illegal: /;/,
+	        keywords: EXPRESSION_KEYWORDS
 	      }
 	    ]
 	  };
 	};
 
 /***/ },
-/* 290 */
+/* 345 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -38872,11 +41434,6 @@
 	    hljs.HASH_COMMENT_MODE,
 	    CLASS,
 	    FUNCTION,
-	    {
-	      className: 'constant',
-	      begin: '(\\b[A-Z_]\\w*(.)?)+',
-	      relevance: 0
-	    },
 	    {
 	      className: 'symbol',
 	      begin: ':',
@@ -38931,38 +41488,39 @@
 	};
 
 /***/ },
-/* 291 */
+/* 346 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
-	  var COMMENT_MODES = [
-	    hljs.COMMENT('--', '$'),
-	    hljs.COMMENT(
-	      '{-',
-	      '-}',
-	      {
-	        contains: ['self']
-	      }
-	    )
-	  ];
+	  var COMMENT = {
+	    variants: [
+	      hljs.COMMENT('--', '$'),
+	      hljs.COMMENT(
+	        '{-',
+	        '-}',
+	        {
+	          contains: ['self']
+	        }
+	      )
+	    ]
+	  };
 
 	  var CONSTRUCTOR = {
 	    className: 'type',
-	    begin: '\\b[A-Z][\\w\']*', // TODO: other constructors (build-in, infix).
+	    begin: '\\b[A-Z][\\w\']*', // TODO: other constructors (built-in, infix).
 	    relevance: 0
 	  };
 
 	  var LIST = {
-	    className: 'container',
 	    begin: '\\(', end: '\\)',
 	    illegal: '"',
 	    contains: [
-	      {className: 'type', begin: '\\b[A-Z][\\w]*(\\((\\.\\.|,|\\w+)\\))?'}
-	    ].concat(COMMENT_MODES)
+	      {className: 'type', begin: '\\b[A-Z][\\w]*(\\((\\.\\.|,|\\w+)\\))?'},
+	      COMMENT
+	    ]
 	  };
 
 	  var RECORD = {
-	    className: 'container',
 	    begin: '{', end: '}',
 	    contains: LIST.contains
 	  };
@@ -38976,35 +41534,30 @@
 	      // Top-level constructions.
 
 	      {
-	        className: 'module',
-	        begin: '\\bmodule\\b', end: 'where',
+	        beginKeywords: 'module', end: 'where',
 	        keywords: 'module where',
-	        contains: [LIST].concat(COMMENT_MODES),
+	        contains: [LIST, COMMENT],
 	        illegal: '\\W\\.|;'
 	      },
 	      {
-	        className: 'import',
-	        begin: '\\bimport\\b', end: '$',
-	        keywords: 'import|0 as exposing',
-	        contains: [LIST].concat(COMMENT_MODES),
+	        begin: 'import', end: '$',
+	        keywords: 'import as exposing',
+	        contains: [LIST, COMMENT],
 	        illegal: '\\W\\.|;'
 	      },
 	      {
-	        className: 'typedef',
-	        begin: '\\btype\\b', end: '$',
+	        begin: 'type', end: '$',
 	        keywords: 'type alias',
-	        contains: [CONSTRUCTOR, LIST, RECORD].concat(COMMENT_MODES)
+	        contains: [CONSTRUCTOR, LIST, RECORD, COMMENT]
 	      },
 	      {
-	        className: 'infix',
 	        beginKeywords: 'infix infixl infixr', end: '$',
-	        contains: [hljs.C_NUMBER_MODE].concat(COMMENT_MODES)
+	        contains: [hljs.C_NUMBER_MODE, COMMENT]
 	      },
 	      {
-	        className: 'foreign',
-	        begin: '\\bport\\b', end: '$',
+	        begin: 'port', end: '$',
 	        keywords: 'port',
-	        contains: COMMENT_MODES
+	        contains: [COMMENT]
 	      },
 
 	      // Literals and names.
@@ -39014,14 +41567,15 @@
 	      hljs.C_NUMBER_MODE,
 	      CONSTRUCTOR,
 	      hljs.inherit(hljs.TITLE_MODE, {begin: '^[_a-z][\\w\']*'}),
+	      COMMENT,
 
 	      {begin: '->|<-'} // No markup, relevance booster
-	    ].concat(COMMENT_MODES)
+	    ]
 	  };
 	};
 
 /***/ },
-/* 292 */
+/* 347 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -39035,7 +41589,6 @@
 	    begin: '@[A-Za-z]+'
 	  };
 	  var IRB_OBJECT = {
-	    className: 'value',
 	    begin: '#<', end: '>'
 	  };
 	  var COMMENT_MODES = [
@@ -39085,7 +41638,7 @@
 	  };
 	  var PARAMS = {
 	    className: 'params',
-	    begin: '\\(', end: '\\)',
+	    begin: '\\(', end: '\\)', endsParent: true,
 	    keywords: RUBY_KEYWORDS
 	  };
 
@@ -39099,10 +41652,8 @@
 	      contains: [
 	        hljs.inherit(hljs.TITLE_MODE, {begin: '[A-Za-z_]\\w*(::\\w+)*(\\?|\\!)?'}),
 	        {
-	          className: 'inheritance',
 	          begin: '<\\s*',
 	          contains: [{
-	            className: 'parent',
 	            begin: '(' + hljs.IDENT_RE + '::)?' + hljs.IDENT_RE
 	          }]
 	        }
@@ -39115,11 +41666,6 @@
 	        hljs.inherit(hljs.TITLE_MODE, {begin: RUBY_METHOD_RE}),
 	        PARAMS
 	      ].concat(COMMENT_MODES)
-	    },
-	    {
-	      className: 'constant',
-	      begin: '(::)?(\\b[A-Z]\\w*(::)?)+',
-	      relevance: 0
 	    },
 	    {
 	      className: 'symbol',
@@ -39138,8 +41684,7 @@
 	      relevance: 0
 	    },
 	    {
-	      className: 'variable',
-	      begin: '(\\$\\W)|((\\$|\\@\\@?)(\\w+))'
+	      begin: '(\\$\\W)|((\\$|\\@\\@?)(\\w+))' // variables
 	    },
 	    { // regexp container
 	      begin: '(' + hljs.RE_STARTERS_RE + ')\\s*',
@@ -39172,13 +41717,12 @@
 	  var IRB_DEFAULT = [
 	    {
 	      begin: /^\s*=>/,
-	      className: 'status',
 	      starts: {
 	        end: '$', contains: RUBY_DEFAULT_CONTAINS
 	      }
 	    },
 	    {
-	      className: 'prompt',
+	      className: 'meta',
 	      begin: '^('+SIMPLE_PROMPT+"|"+DEFAULT_PROMPT+'|'+RVM_PROMPT+')',
 	      starts: {
 	        end: '$', contains: RUBY_DEFAULT_CONTAINS
@@ -39195,7 +41739,7 @@
 	};
 
 /***/ },
-/* 293 */
+/* 348 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -39214,21 +41758,21 @@
 	};
 
 /***/ },
-/* 294 */
+/* 349 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  return {
 	    keywords: {
-	      special_functions:
+	      built_in:
 	        'spawn spawn_link self',
-	      reserved:
+	      keyword:
 	        'after and andalso|10 band begin bnot bor bsl bsr bxor case catch cond div end fun if ' +
 	        'let not of or orelse|10 query receive rem try when xor'
 	    },
 	    contains: [
 	      {
-	        className: 'prompt', begin: '^[0-9]+> ',
+	        className: 'meta', begin: '^[0-9]+> ',
 	        relevance: 10
 	      },
 	      hljs.COMMENT('%', '$'),
@@ -39240,24 +41784,22 @@
 	      hljs.APOS_STRING_MODE,
 	      hljs.QUOTE_STRING_MODE,
 	      {
-	        className: 'constant', begin: '\\?(::)?([A-Z]\\w*(::)?)+'
+	        begin: '\\?(::)?([A-Z]\\w*(::)?)+'
 	      },
 	      {
-	        className: 'arrow', begin: '->'
+	        begin: '->'
 	      },
 	      {
-	        className: 'ok', begin: 'ok'
+	        begin: 'ok'
 	      },
 	      {
-	        className: 'exclamation_mark', begin: '!'
+	        begin: '!'
 	      },
 	      {
-	        className: 'function_or_atom',
 	        begin: '(\\b[a-z\'][a-zA-Z0-9_\']*:[a-z\'][a-zA-Z0-9_\']*)|(\\b[a-z\'][a-zA-Z0-9_\']*)',
 	        relevance: 0
 	      },
 	      {
-	        className: 'variable',
 	        begin: '[A-Z][a-zA-Z0-9_\']*',
 	        relevance: 0
 	      }
@@ -39266,7 +41808,7 @@
 	};
 
 /***/ },
-/* 295 */
+/* 350 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -39295,8 +41837,7 @@
 	    relevance: 0,
 	    contains: [
 	      {
-	        className: 'function_name', begin: FUNCTION_NAME_RE,
-	        relevance: 0
+	        begin: FUNCTION_NAME_RE, relevance: 0
 	      },
 	      {
 	        begin: '\\(', end: '\\)', endsWithParent: true,
@@ -39307,18 +41848,15 @@
 	    ]
 	  };
 	  var TUPLE = {
-	    className: 'tuple',
 	    begin: '{', end: '}',
 	    relevance: 0
 	    // "contains" defined later
 	  };
 	  var VAR1 = {
-	    className: 'variable',
 	    begin: '\\b_([A-Z][A-Za-z0-9_]*)?',
 	    relevance: 0
 	  };
 	  var VAR2 = {
-	    className: 'variable',
 	    begin: '[A-Z][a-zA-Z0-9_]*',
 	    relevance: 0
 	  };
@@ -39328,7 +41866,6 @@
 	    returnBegin: true,
 	    contains: [
 	      {
-	        className: 'record_name',
 	        begin: '#' + hljs.UNDERSCORE_IDENT_RE,
 	        relevance: 0
 	      },
@@ -39399,7 +41936,6 @@
 	      },
 	      COMMENT,
 	      {
-	        className: 'pp',
 	        begin: '^-', end: '\\.',
 	        relevance: 0,
 	        excludeEnd: true,
@@ -39422,7 +41958,7 @@
 	};
 
 /***/ },
-/* 296 */
+/* 351 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -39440,7 +41976,7 @@
 	        end: /=([^\u2401\u0001=]+)/,
 	        returnEnd: true,
 	        returnBegin: false,
-	        className: 'attribute'
+	        className: 'attr'
 	      },
 	      {
 	        begin: /=/,
@@ -39455,7 +41991,7 @@
 	};
 
 /***/ },
-/* 297 */
+/* 352 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -39465,10 +42001,7 @@
 	  };
 
 	  var F_KEYWORDS = {
-	    constant: '.False. .True.',
-	    type: 'integer real character complex logical dimension allocatable|10 parameter ' +
-	      'external implicit|10 none double precision assign intent optional pointer ' +
-	      'target in out common equivalence data',
+	    literal: '.False. .True.',
 	    keyword: 'kind do while private call intrinsic where elsewhere ' +
 	      'type endtype endmodule endselect endinterface end enddo endif if forall endforall only contains default return stop then ' +
 	      'public subroutine|10 function program .and. .or. .not. .le. .eq. .ge. .gt. .lt. ' +
@@ -39485,7 +42018,10 @@
 	      'c_ptr c_funptr iso_fortran_env character_storage_size error_unit file_storage_size input_unit iostat_end iostat_eor ' +
 	      'numeric_storage_size output_unit c_f_procpointer ieee_arithmetic ieee_support_underflow_control ' +
 	      'ieee_get_underflow_mode ieee_set_underflow_mode newunit contiguous recursive ' +
-	      'pad position action delim readwrite eor advance nml interface procedure namelist include sequence elemental pure',
+	      'pad position action delim readwrite eor advance nml interface procedure namelist include sequence elemental pure ' +
+	      'integer real character complex logical dimension allocatable|10 parameter ' +
+	      'external implicit|10 none double precision assign intent optional pointer ' +
+	      'target in out common equivalence data',
 	    built_in: 'alog alog10 amax0 amax1 amin0 amin1 amod cabs ccos cexp clog csin csqrt dabs dacos dasin datan datan2 dcos dcosh ddim dexp dint ' +
 	      'dlog dlog10 dmax1 dmin1 dmod dnint dsign dsin dsinh dsqrt dtan dtanh float iabs idim idint idnint ifix isign max0 max1 min0 min1 sngl ' +
 	      'algama cdabs cdcos cdexp cdlog cdsin cdsqrt cqabs cqcos cqexp cqlog cqsin cqsqrt dcmplx dconjg derf derfc dfloat dgamma dimag dlgama ' +
@@ -39530,7 +42066,7 @@
 	};
 
 /***/ },
-/* 298 */
+/* 353 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -39576,12 +42112,12 @@
 	        ]
 	      },
 	      {
-	        className: 'annotation',
+	        className: 'meta',
 	        begin: '\\[<', end: '>\\]',
 	        relevance: 10
 	      },
 	      {
-	        className: 'attribute',
+	        className: 'symbol',
 	        begin: '\\B(\'[A-Za-z])\\b',
 	        contains: [hljs.BACKSLASH_ESCAPE]
 	      },
@@ -39593,7 +42129,7 @@
 	};
 
 /***/ },
-/* 299 */
+/* 354 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -39609,7 +42145,6 @@
 	    keywords: KEYWORDS,
 	    contains: [
 	      {
-	        className: 'section',
 	        beginKeywords: 'sets parameters variables equations',
 	        end: ';',
 	        contains: [
@@ -39634,23 +42169,17 @@
 	};
 
 /***/ },
-/* 300 */
+/* 355 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	    var GCODE_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
 	    var GCODE_CLOSE_RE = '\\%';
-	    var GCODE_KEYWORDS = {
-	        literal:
-	            '',
-	        built_in:
-	            '',
-	        keyword:
-	            'IF DO WHILE ENDWHILE CALL ENDIF SUB ENDSUB GOTO REPEAT ENDREPEAT ' +
-	            'EQ LT GT NE GE LE OR XOR'
-	    };
+	    var GCODE_KEYWORDS =
+	      'IF DO WHILE ENDWHILE CALL ENDIF SUB ENDSUB GOTO REPEAT ENDREPEAT ' +
+	      'EQ LT GT NE GE LE OR XOR';
 	    var GCODE_START = {
-	        className: 'preprocessor',
+	        className: 'meta',
 	        begin: '([O])([0-9]+)'
 	    };
 	    var GCODE_CODE = [
@@ -39661,20 +42190,20 @@
 	        hljs.inherit(hljs.APOS_STRING_MODE, {illegal: null}),
 	        hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null}),
 	        {
-	            className: 'keyword',
+	            className: 'name',
 	            begin: '([G])([0-9]+\\.?[0-9]?)'
 	        },
 	        {
-	            className: 'title',
+	            className: 'name',
 	            begin: '([M])([0-9]+\\.?[0-9]?)'
 	        },
 	        {
-	            className: 'title',
+	            className: 'attr',
 	            begin: '(VC|VS|#)',
 	            end: '(\\d+)'
 	        },
 	        {
-	            className: 'title',
+	            className: 'attr',
 	            begin: '(VZOFX|VZOFY|VZOFZ)'
 	        },
 	        {
@@ -39683,7 +42212,7 @@
 	            end: '([-+]?([0-9]*\\.?[0-9]+\\.?))(\\])'
 	        },
 	        {
-	            className: 'label',
+	            className: 'symbol',
 	            variants: [
 	                {
 	                    begin: 'N', end: '\\d+',
@@ -39702,7 +42231,7 @@
 	        keywords: GCODE_KEYWORDS,
 	        contains: [
 	            {
-	                className: 'preprocessor',
+	                className: 'meta',
 	                begin: GCODE_CLOSE_RE
 	            },
 	            GCODE_START
@@ -39711,7 +42240,7 @@
 	};
 
 /***/ },
-/* 301 */
+/* 356 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -39723,7 +42252,10 @@
 	        className: 'keyword',
 	        begin: '\\*'
 	      },
-	      hljs.COMMENT('@[^@\r\n\t ]+', '$'),
+	      {
+	        className: 'meta',
+	        begin: '@[^@\\s]+'
+	      },
 	      {
 	        begin: '\\|', end: '\\|\\w*$',
 	        contains: [
@@ -39748,41 +42280,52 @@
 	};
 
 /***/ },
-/* 302 */
+/* 357 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  return {
 	    keywords: {
 	      keyword:
-	        'atomic_uint attribute bool break bvec2 bvec3 bvec4 case centroid coherent const continue default ' +
-	        'discard dmat2 dmat2x2 dmat2x3 dmat2x4 dmat3 dmat3x2 dmat3x3 dmat3x4 dmat4 dmat4x2 dmat4x3 ' +
-	        'dmat4x4 do double dvec2 dvec3 dvec4 else flat float for highp if iimage1D iimage1DArray ' +
-	        'iimage2D iimage2DArray iimage2DMS iimage2DMSArray iimage2DRect iimage3D iimageBuffer iimageCube ' +
-	        'iimageCubeArray image1D image1DArray image2D image2DArray image2DMS image2DMSArray image2DRect ' +
-	        'image3D imageBuffer imageCube imageCubeArray in inout int invariant isampler1D isampler1DArray ' +
-	        'isampler2D isampler2DArray isampler2DMS isampler2DMSArray isampler2DRect isampler3D isamplerBuffer ' +
-	        'isamplerCube isamplerCubeArray ivec2 ivec3 ivec4 layout lowp mat2 mat2x2 mat2x3 mat2x4 mat3 mat3x2 ' +
-	        'mat3x3 mat3x4 mat4 mat4x2 mat4x3 mat4x4 mediump noperspective out patch precision readonly restrict ' +
-	        'return sample sampler1D sampler1DArray sampler1DArrayShadow sampler1DShadow sampler2D sampler2DArray ' +
-	        'sampler2DArrayShadow sampler2DMS sampler2DMSArray sampler2DRect sampler2DRectShadow sampler2DShadow ' +
-	        'sampler3D samplerBuffer samplerCube samplerCubeArray samplerCubeArrayShadow samplerCubeShadow smooth ' +
-	        'struct subroutine switch uimage1D uimage1DArray uimage2D uimage2DArray uimage2DMS uimage2DMSArray ' +
-	        'uimage2DRect uimage3D uimageBuffer uimageCube uimageCubeArray uint uniform usampler1D usampler1DArray ' +
-	        'usampler2D usampler2DArray usampler2DMS usampler2DMSArray usampler2DRect usampler3D usamplerBuffer ' +
-	        'usamplerCube usamplerCubeArray uvec2 uvec3 uvec4 varying vec2 vec3 vec4 void volatile while writeonly',
+	        // Statements
+	        'break continue discard do else for if return while' +
+	        // Qualifiers
+	        'attribute binding buffer ccw centroid centroid varying coherent column_major const cw ' +
+	        'depth_any depth_greater depth_less depth_unchanged early_fragment_tests equal_spacing ' +
+	        'flat fractional_even_spacing fractional_odd_spacing highp in index inout invariant ' +
+	        'invocations isolines layout line_strip lines lines_adjacency local_size_x local_size_y ' +
+	        'local_size_z location lowp max_vertices mediump noperspective offset origin_upper_left ' +
+	        'out packed patch pixel_center_integer point_mode points precise precision quads r11f_g11f_b10f '+
+	        'r16 r16_snorm r16f r16i r16ui r32f r32i r32ui r8 r8_snorm r8i r8ui readonly restrict ' +
+	        'rg16 rg16_snorm rg16f rg16i rg16ui rg32f rg32i rg32ui rg8 rg8_snorm rg8i rg8ui rgb10_a2 ' +
+	        'rgb10_a2ui rgba16 rgba16_snorm rgba16f rgba16i rgba16ui rgba32f rgba32i rgba32ui rgba8 ' +
+	        'rgba8_snorm rgba8i rgba8ui row_major sample shared smooth std140 std430 stream triangle_strip ' +
+	        'triangles triangles_adjacency uniform varying vertices volatile writeonly',
+	      type:
+	        'atomic_uint bool bvec2 bvec3 bvec4 dmat2 dmat2x2 dmat2x3 dmat2x4 dmat3 dmat3x2 dmat3x3 ' +
+	        'dmat3x4 dmat4 dmat4x2 dmat4x3 dmat4x4 double dvec2 dvec3 dvec4 float iimage1D iimage1DArray ' +
+	        'iimage2D iimage2DArray iimage2DMS iimage2DMSArray iimage2DRect iimage3D iimageBuffer' +
+	        'iimageCube iimageCubeArray image1D image1DArray image2D image2DArray image2DMS image2DMSArray ' +
+	        'image2DRect image3D imageBuffer imageCube imageCubeArray int isampler1D isampler1DArray ' +
+	        'isampler2D isampler2DArray isampler2DMS isampler2DMSArray isampler2DRect isampler3D ' +
+	        'isamplerBuffer isamplerCube isamplerCubeArray ivec2 ivec3 ivec4 mat2 mat2x2 mat2x3 ' +
+	        'mat2x4 mat3 mat3x2 mat3x3 mat3x4 mat4 mat4x2 mat4x3 mat4x4 sampler1D sampler1DArray ' +
+	        'sampler1DArrayShadow sampler1DShadow sampler2D sampler2DArray sampler2DArrayShadow ' +
+	        'sampler2DMS sampler2DMSArray sampler2DRect sampler2DRectShadow sampler2DShadow sampler3D ' +
+	        'samplerBuffer samplerCube samplerCubeArray samplerCubeArrayShadow samplerCubeShadow ' +
+	        'image1D uimage1DArray uimage2D uimage2DArray uimage2DMS uimage2DMSArray uimage2DRect ' +
+	        'uimage3D uimageBuffer uimageCube uimageCubeArray uint usampler1D usampler1DArray ' +
+	        'usampler2D usampler2DArray usampler2DMS usampler2DMSArray usampler2DRect usampler3D ' +
+	        'samplerBuffer usamplerCube usamplerCubeArray uvec2 uvec3 uvec4 vec2 vec3 vec4 void',
 	      built_in:
-	        'gl_BackColor gl_BackLightModelProduct gl_BackLightProduct gl_BackMaterial ' +
-	        'gl_BackSecondaryColor gl_ClipDistance gl_ClipPlane gl_ClipVertex gl_Color ' +
-	        'gl_DepthRange gl_EyePlaneQ gl_EyePlaneR gl_EyePlaneS gl_EyePlaneT gl_Fog gl_FogCoord ' +
-	        'gl_FogFragCoord gl_FragColor gl_FragCoord gl_FragData gl_FragDepth gl_FrontColor ' +
-	        'gl_FrontFacing gl_FrontLightModelProduct gl_FrontLightProduct gl_FrontMaterial ' +
-	        'gl_FrontSecondaryColor gl_InstanceID gl_InvocationID gl_Layer gl_LightModel ' +
-	        'gl_LightSource gl_MaxAtomicCounterBindings gl_MaxAtomicCounterBufferSize ' +
-	        'gl_MaxClipDistances gl_MaxClipPlanes gl_MaxCombinedAtomicCounterBuffers ' +
-	        'gl_MaxCombinedAtomicCounters gl_MaxCombinedImageUniforms gl_MaxCombinedImageUnitsAndFragmentOutputs ' +
-	        'gl_MaxCombinedTextureImageUnits gl_MaxDrawBuffers gl_MaxFragmentAtomicCounterBuffers ' +
-	        'gl_MaxFragmentAtomicCounters gl_MaxFragmentImageUniforms gl_MaxFragmentInputComponents ' +
+	        // Constants
+	        'gl_MaxAtomicCounterBindings gl_MaxAtomicCounterBufferSize gl_MaxClipDistances gl_MaxClipPlanes ' +
+	        'gl_MaxCombinedAtomicCounterBuffers gl_MaxCombinedAtomicCounters gl_MaxCombinedImageUniforms ' +
+	        'gl_MaxCombinedImageUnitsAndFragmentOutputs gl_MaxCombinedTextureImageUnits gl_MaxComputeAtomicCounterBuffers ' +
+	        'gl_MaxComputeAtomicCounters gl_MaxComputeImageUniforms gl_MaxComputeTextureImageUnits ' +
+	        'gl_MaxComputeUniformComponents gl_MaxComputeWorkGroupCount gl_MaxComputeWorkGroupSize ' +
+	        'gl_MaxDrawBuffers gl_MaxFragmentAtomicCounterBuffers gl_MaxFragmentAtomicCounters ' +
+	        'gl_MaxFragmentImageUniforms gl_MaxFragmentInputComponents gl_MaxFragmentInputVectors ' +
 	        'gl_MaxFragmentUniformComponents gl_MaxFragmentUniformVectors gl_MaxGeometryAtomicCounterBuffers ' +
 	        'gl_MaxGeometryAtomicCounters gl_MaxGeometryImageUniforms gl_MaxGeometryInputComponents ' +
 	        'gl_MaxGeometryOutputComponents gl_MaxGeometryOutputVertices gl_MaxGeometryTextureImageUnits ' +
@@ -39796,40 +42339,52 @@
 	        'gl_MaxTessEvaluationTextureImageUnits gl_MaxTessEvaluationUniformComponents ' +
 	        'gl_MaxTessGenLevel gl_MaxTessPatchComponents gl_MaxTextureCoords gl_MaxTextureImageUnits ' +
 	        'gl_MaxTextureUnits gl_MaxVaryingComponents gl_MaxVaryingFloats gl_MaxVaryingVectors ' +
-	        'gl_MaxVertexAtomicCounterBuffers gl_MaxVertexAtomicCounters gl_MaxVertexAttribs ' +
-	        'gl_MaxVertexImageUniforms gl_MaxVertexOutputComponents gl_MaxVertexTextureImageUnits ' +
-	        'gl_MaxVertexUniformComponents gl_MaxVertexUniformVectors gl_MaxViewports gl_MinProgramTexelOffset'+
-	        'gl_ModelViewMatrix gl_ModelViewMatrixInverse gl_ModelViewMatrixInverseTranspose ' +
-	        'gl_ModelViewMatrixTranspose gl_ModelViewProjectionMatrix gl_ModelViewProjectionMatrixInverse ' +
-	        'gl_ModelViewProjectionMatrixInverseTranspose gl_ModelViewProjectionMatrixTranspose ' +
-	        'gl_MultiTexCoord0 gl_MultiTexCoord1 gl_MultiTexCoord2 gl_MultiTexCoord3 gl_MultiTexCoord4 ' +
-	        'gl_MultiTexCoord5 gl_MultiTexCoord6 gl_MultiTexCoord7 gl_Normal gl_NormalMatrix ' +
-	        'gl_NormalScale gl_ObjectPlaneQ gl_ObjectPlaneR gl_ObjectPlaneS gl_ObjectPlaneT gl_PatchVerticesIn ' +
-	        'gl_PerVertex gl_Point gl_PointCoord gl_PointSize gl_Position gl_PrimitiveID gl_PrimitiveIDIn ' +
-	        'gl_ProjectionMatrix gl_ProjectionMatrixInverse gl_ProjectionMatrixInverseTranspose ' +
-	        'gl_ProjectionMatrixTranspose gl_SampleID gl_SampleMask gl_SampleMaskIn gl_SamplePosition ' +
-	        'gl_SecondaryColor gl_TessCoord gl_TessLevelInner gl_TessLevelOuter gl_TexCoord gl_TextureEnvColor ' +
-	        'gl_TextureMatrixInverseTranspose gl_TextureMatrixTranspose gl_Vertex gl_VertexID ' +
-	        'gl_ViewportIndex gl_in gl_out EmitStreamVertex EmitVertex EndPrimitive EndStreamPrimitive ' +
-	        'abs acos acosh all any asin asinh atan atanh atomicCounter atomicCounterDecrement ' +
-	        'atomicCounterIncrement barrier bitCount bitfieldExtract bitfieldInsert bitfieldReverse ' +
-	        'ceil clamp cos cosh cross dFdx dFdy degrees determinant distance dot equal exp exp2 faceforward ' +
-	        'findLSB findMSB floatBitsToInt floatBitsToUint floor fma fract frexp ftransform fwidth greaterThan ' +
-	        'greaterThanEqual imageAtomicAdd imageAtomicAnd imageAtomicCompSwap imageAtomicExchange ' +
-	        'imageAtomicMax imageAtomicMin imageAtomicOr imageAtomicXor imageLoad imageStore imulExtended ' +
-	        'intBitsToFloat interpolateAtCentroid interpolateAtOffset interpolateAtSample inverse inversesqrt ' +
-	        'isinf isnan ldexp length lessThan lessThanEqual log log2 matrixCompMult max memoryBarrier ' +
-	        'min mix mod modf noise1 noise2 noise3 noise4 normalize not notEqual outerProduct packDouble2x32 ' +
-	        'packHalf2x16 packSnorm2x16 packSnorm4x8 packUnorm2x16 packUnorm4x8 pow radians reflect refract ' +
-	        'round roundEven shadow1D shadow1DLod shadow1DProj shadow1DProjLod shadow2D shadow2DLod shadow2DProj ' +
-	        'shadow2DProjLod sign sin sinh smoothstep sqrt step tan tanh texelFetch texelFetchOffset texture ' +
-	        'texture1D texture1DLod texture1DProj texture1DProjLod texture2D texture2DLod texture2DProj ' +
-	        'texture2DProjLod texture3D texture3DLod texture3DProj texture3DProjLod textureCube textureCubeLod ' +
-	        'textureGather textureGatherOffset textureGatherOffsets textureGrad textureGradOffset textureLod ' +
-	        'textureLodOffset textureOffset textureProj textureProjGrad textureProjGradOffset textureProjLod ' +
-	        'textureProjLodOffset textureProjOffset textureQueryLod textureSize transpose trunc uaddCarry ' +
-	        'uintBitsToFloat umulExtended unpackDouble2x32 unpackHalf2x16 unpackSnorm2x16 unpackSnorm4x8 ' +
-	        'unpackUnorm2x16 unpackUnorm4x8 usubBorrow gl_TextureMatrix gl_TextureMatrixInverse',
+	        'gl_MaxVertexAtomicCounterBuffers gl_MaxVertexAtomicCounters gl_MaxVertexAttribs gl_MaxVertexImageUniforms ' +
+	        'gl_MaxVertexOutputComponents gl_MaxVertexOutputVectors gl_MaxVertexTextureImageUnits ' +
+	        'gl_MaxVertexUniformComponents gl_MaxVertexUniformVectors gl_MaxViewports gl_MinProgramTexelOffset ' +
+	        // Variables
+	        'gl_BackColor gl_BackLightModelProduct gl_BackLightProduct gl_BackMaterial ' +
+	        'gl_BackSecondaryColor gl_ClipDistance gl_ClipPlane gl_ClipVertex gl_Color ' +
+	        'gl_DepthRange gl_EyePlaneQ gl_EyePlaneR gl_EyePlaneS gl_EyePlaneT gl_Fog gl_FogCoord ' +
+	        'gl_FogFragCoord gl_FragColor gl_FragCoord gl_FragData gl_FragDepth gl_FrontColor ' +
+	        'gl_FrontFacing gl_FrontLightModelProduct gl_FrontLightProduct gl_FrontMaterial ' +
+	        'gl_FrontSecondaryColor gl_GlobalInvocationID gl_InstanceID gl_InvocationID gl_Layer gl_LightModel ' +
+	        'gl_LightSource gl_LocalInvocationID gl_LocalInvocationIndex gl_ModelViewMatrix ' +
+	        'gl_ModelViewMatrixInverse gl_ModelViewMatrixInverseTranspose gl_ModelViewMatrixTranspose ' +
+	        'gl_ModelViewProjectionMatrix gl_ModelViewProjectionMatrixInverse gl_ModelViewProjectionMatrixInverseTranspose ' +
+	        'gl_ModelViewProjectionMatrixTranspose gl_MultiTexCoord0 gl_MultiTexCoord1 gl_MultiTexCoord2 ' +
+	        'gl_MultiTexCoord3 gl_MultiTexCoord4 gl_MultiTexCoord5 gl_MultiTexCoord6 gl_MultiTexCoord7 ' +
+	        'gl_Normal gl_NormalMatrix gl_NormalScale gl_NumSamples gl_NumWorkGroups gl_ObjectPlaneQ ' +
+	        'gl_ObjectPlaneR gl_ObjectPlaneS gl_ObjectPlaneT gl_PatchVerticesIn gl_Point gl_PointCoord ' +
+	        'gl_PointSize gl_Position gl_PrimitiveID gl_PrimitiveIDIn gl_ProjectionMatrix gl_ProjectionMatrixInverse ' +
+	        'gl_ProjectionMatrixInverseTranspose gl_ProjectionMatrixTranspose gl_SampleID gl_SampleMask ' +
+	        'gl_SampleMaskIn gl_SamplePosition gl_SecondaryColor gl_TessCoord gl_TessLevelInner gl_TessLevelOuter ' +
+	        'gl_TexCoord gl_TextureEnvColor gl_TextureMatrix gl_TextureMatrixInverse gl_TextureMatrixInverseTranspose ' +
+	        'gl_TextureMatrixTranspose gl_Vertex gl_VertexID gl_ViewportIndex gl_WorkGroupID gl_WorkGroupSize gl_in gl_out ' +
+	        // Functions
+	        'EmitStreamVertex EmitVertex EndPrimitive EndStreamPrimitive abs acos acosh all any asin ' +
+	        'asinh atan atanh atomicAdd atomicAnd atomicCompSwap atomicCounter atomicCounterDecrement ' +
+	        'atomicCounterIncrement atomicExchange atomicMax atomicMin atomicOr atomicXor barrier ' +
+	        'bitCount bitfieldExtract bitfieldInsert bitfieldReverse ceil clamp cos cosh cross ' +
+	        'dFdx dFdy degrees determinant distance dot equal exp exp2 faceforward findLSB findMSB ' +
+	        'floatBitsToInt floatBitsToUint floor fma fract frexp ftransform fwidth greaterThan ' +
+	        'greaterThanEqual groupMemoryBarrier imageAtomicAdd imageAtomicAnd imageAtomicCompSwap ' +
+	        'imageAtomicExchange imageAtomicMax imageAtomicMin imageAtomicOr imageAtomicXor imageLoad ' +
+	        'imageSize imageStore imulExtended intBitsToFloat interpolateAtCentroid interpolateAtOffset ' +
+	        'interpolateAtSample inverse inversesqrt isinf isnan ldexp length lessThan lessThanEqual log ' +
+	        'log2 matrixCompMult max memoryBarrier memoryBarrierAtomicCounter memoryBarrierBuffer ' +
+	        'memoryBarrierImage memoryBarrierShared min mix mod modf noise1 noise2 noise3 noise4 ' +
+	        'normalize not notEqual outerProduct packDouble2x32 packHalf2x16 packSnorm2x16 packSnorm4x8 ' +
+	        'packUnorm2x16 packUnorm4x8 pow radians reflect refract round roundEven shadow1D shadow1DLod ' +
+	        'shadow1DProj shadow1DProjLod shadow2D shadow2DLod shadow2DProj shadow2DProjLod sign sin sinh ' +
+	        'smoothstep sqrt step tan tanh texelFetch texelFetchOffset texture texture1D texture1DLod ' +
+	        'texture1DProj texture1DProjLod texture2D texture2DLod texture2DProj texture2DProjLod ' +
+	        'texture3D texture3DLod texture3DProj texture3DProjLod textureCube textureCubeLod ' +
+	        'textureGather textureGatherOffset textureGatherOffsets textureGrad textureGradOffset ' +
+	        'textureLod textureLodOffset textureOffset textureProj textureProjGrad textureProjGradOffset ' +
+	        'textureProjLod textureProjLodOffset textureProjOffset textureQueryLevels textureQueryLod ' +
+	        'textureSize transpose trunc uaddCarry uintBitsToFloat umulExtended unpackDouble2x32 ' +
+	        'unpackHalf2x16 unpackSnorm2x16 unpackSnorm4x8 unpackUnorm2x16 unpackUnorm4x8 usubBorrow',
 	      literal: 'true false'
 	    },
 	    illegal: '"',
@@ -39838,7 +42393,7 @@
 	      hljs.C_BLOCK_COMMENT_MODE,
 	      hljs.C_NUMBER_MODE,
 	      {
-	        className: 'preprocessor',
+	        className: 'meta',
 	        begin: '#', end: '$'
 	      }
 	    ]
@@ -39846,24 +42401,23 @@
 	};
 
 /***/ },
-/* 303 */
+/* 358 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  var GO_KEYWORDS = {
 	    keyword:
 	      'break default func interface select case map struct chan else goto package switch ' +
-	      'const fallthrough if range type continue for import return var go defer',
-	    constant:
-	       'true false iota nil',
-	    typename:
+	      'const fallthrough if range type continue for import return var go defer ' +
 	      'bool byte complex64 complex128 float32 float64 int8 int16 int32 int64 string uint8 ' +
 	      'uint16 uint32 uint64 int uint uintptr rune',
+	    literal:
+	       'true false iota nil',
 	    built_in:
 	      'append cap close complex copy imag len make new panic print println real recover delete'
 	  };
 	  return {
-	    aliases: ["golang"],
+	    aliases: ['golang'],
 	    keywords: GO_KEYWORDS,
 	    illegal: '</',
 	    contains: [
@@ -39889,7 +42443,7 @@
 	};
 
 /***/ },
-/* 304 */
+/* 359 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -39899,8 +42453,7 @@
 	          'println readln print import module function local return let var ' +
 	          'while for foreach times in case when match with break continue ' +
 	          'augment augmentation each find filter reduce ' +
-	          'if then else otherwise try catch finally raise throw orIfNull',
-	        typename:
+	          'if then else otherwise try catch finally raise throw orIfNull ' +
 	          'DynamicObject|10 DynamicVariable struct Observable map set vector list array',
 	        literal:
 	          'true false null'
@@ -39910,14 +42463,14 @@
 	        hljs.QUOTE_STRING_MODE,
 	        hljs.C_NUMBER_MODE,
 	        {
-	          className: 'annotation', begin: '@[A-Za-z]+'
+	          className: 'meta', begin: '@[A-Za-z]+'
 	        }
 	      ]
 	    }
 	};
 
 /***/ },
-/* 305 */
+/* 360 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -39956,15 +42509,15 @@
 	};
 
 /***/ },
-/* 306 */
+/* 361 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	    return {
 	        keywords: {
-	            typename: 'byte short char int long boolean float double void',
 	            literal : 'true false null',
 	            keyword:
+	            'byte short char int long boolean float double void ' +
 	            // groovy specific keywords
 	            'def as in assert trait ' +
 	            // common keywords with Java
@@ -39979,10 +42532,16 @@
 	                '\\*/',
 	                {
 	                    relevance : 0,
-	                    contains : [{
-	                        className : 'doctag',
-	                        begin : '@[A-Za-z]+'
-	                    }]
+	                    contains : [
+	                      {
+	                          // eat up @'s in emails to prevent them to be recognized as doctags
+	                          begin: /\w+@/, relevance: 0
+	                      },
+	                      {
+	                          className : 'doctag',
+	                          begin : '@[A-Za-z]+'
+	                      }
+	                    ]
 	                }
 	            ),
 	            hljs.C_LINE_COMMENT_MODE,
@@ -40010,7 +42569,7 @@
 	            },
 	            hljs.QUOTE_STRING_MODE,
 	            {
-	                className: 'shebang',
+	                className: 'meta',
 	                begin: "^#!/usr/bin/env", end: '$',
 	                illegal: '\n'
 	            },
@@ -40026,7 +42585,7 @@
 	            },
 	            hljs.C_NUMBER_MODE,
 	            {
-	                className: 'annotation', begin: '@[A-Za-z]+'
+	                className: 'meta', begin: '@[A-Za-z]+'
 	            },
 	            {
 	                // highlight map keys and named parameters as strings
@@ -40039,16 +42598,16 @@
 	            },
 	            {
 	                // highlight labeled statements
-	                className: 'label', begin: '^\\s*[A-Za-z0-9_$]+:',
+	                className: 'symbol', begin: '^\\s*[A-Za-z0-9_$]+:',
 	                relevance: 0
 	            },
 	        ],
-	        illegal: /#/
+	        illegal: /#|<\//
 	    }
 	};
 
 /***/ },
-/* 307 */
+/* 362 */
 /***/ function(module, exports) {
 
 	module.exports = // TODO support filter tags like :javascript, support inline HTML
@@ -40057,7 +42616,7 @@
 	    case_insensitive: true,
 	    contains: [
 	      {
-	        className: 'doctype',
+	        className: 'meta',
 	        begin: '^!!!( (5|1\\.1|Strict|Frameset|Basic|Mobile|RDFa|XML\\b.*))?$',
 	        relevance: 10
 	      },
@@ -40081,27 +42640,29 @@
 	        begin: '^\\s*%',
 	        contains: [
 	          {
-	            className: 'title',
+	            className: 'selector-tag',
 	            begin: '\\w+'
 	          },
 	          {
-	            className: 'value',
-	            begin: '[#\\.][\\w-]+'
+	            className: 'selector-id',
+	            begin: '#[\\w-]+'
+	          },
+	          {
+	            className: 'selector-class',
+	            begin: '\\.[\\w-]+'
 	          },
 	          {
 	            begin: '{\\s*',
 	            end: '\\s*}',
-	            excludeEnd: true,
 	            contains: [
 	              {
-	                //className: 'attribute',
 	                begin: ':\\w+\\s*=>',
 	                end: ',\\s+',
 	                returnBegin: true,
 	                endsWithParent: true,
 	                contains: [
 	                  {
-	                    className: 'symbol',
+	                    className: 'attr',
 	                    begin: ':\\w+'
 	                  },
 	                  hljs.APOS_STRING_MODE,
@@ -40120,14 +42681,13 @@
 	            excludeEnd: true,
 	            contains: [
 	              {
-	                //className: 'attribute',
 	                begin: '\\w+\\s*=',
 	                end: '\\s+',
 	                returnBegin: true,
 	                endsWithParent: true,
 	                contains: [
 	                  {
-	                    className: 'attribute',
+	                    className: 'attr',
 	                    begin: '\\w+',
 	                    relevance: 0
 	                  },
@@ -40144,9 +42704,7 @@
 	        ]
 	      },
 	      {
-	        className: 'bullet',
-	        begin: '^\\s*[=~]\\s*',
-	        relevance: 0
+	        begin: '^\\s*[=~]\\s*'
 	      },
 	      {
 	        begin: '#{',
@@ -40160,65 +42718,68 @@
 	};
 
 /***/ },
-/* 308 */
+/* 363 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
-	  var EXPRESSION_KEYWORDS = 'each in with if else unless bindattr action collection debugger log outlet template unbound view yield';
+	  var BUILT_INS = {'builtin-name': 'each in with if else unless bindattr action collection debugger log outlet template unbound view yield'};
 	  return {
 	    aliases: ['hbs', 'html.hbs', 'html.handlebars'],
 	    case_insensitive: true,
 	    subLanguage: 'xml',
 	    contains: [
+	    hljs.COMMENT('{{!(--)?', '(--)?}}'),
 	      {
-	        className: 'expression',
-	        begin: '{{', end: '}}',
+	        className: 'template-tag',
+	        begin: /\{\{[#\/]/, end: /\}\}/,
 	        contains: [
 	          {
-	            className: 'begin-block', begin: '\#[a-zA-Z\-\ \.]+',
-	            keywords: EXPRESSION_KEYWORDS
-	          },
-	          {
-	            className: 'string',
-	            begin: '"', end: '"'
-	          },
-	          {
-	            className: 'end-block', begin: '\\\/[a-zA-Z\-\ \.]+',
-	            keywords: EXPRESSION_KEYWORDS
-	          },
-	          {
-	            className: 'variable', begin: '[a-zA-Z\-\.]+',
-	            keywords: EXPRESSION_KEYWORDS
+	            className: 'name',
+	            begin: /[a-zA-Z\.-]+/,
+	            keywords: BUILT_INS,
+	            starts: {
+	              endsWithParent: true, relevance: 0,
+	              contains: [
+	                hljs.QUOTE_STRING_MODE
+	              ]
+	            }
 	          }
 	        ]
+	      },
+	      {
+	        className: 'template-variable',
+	        begin: /\{\{/, end: /\}\}/,
+	        keywords: BUILT_INS
 	      }
 	    ]
 	  };
 	};
 
 /***/ },
-/* 309 */
+/* 364 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
-	  var COMMENT_MODES = [
-	    hljs.COMMENT('--', '$'),
-	    hljs.COMMENT(
-	      '{-',
-	      '-}',
-	      {
-	        contains: ['self']
-	      }
-	    )
-	  ];
+	  var COMMENT = {
+	    variants: [
+	      hljs.COMMENT('--', '$'),
+	      hljs.COMMENT(
+	        '{-',
+	        '-}',
+	        {
+	          contains: ['self']
+	        }
+	      )
+	    ]
+	  };
 
 	  var PRAGMA = {
-	    className: 'pragma',
+	    className: 'meta',
 	    begin: '{-#', end: '#-}'
 	  };
 
 	  var PREPROCESSOR = {
-	    className: 'preprocessor',
+	    className: 'meta',
 	    begin: '^#', end: '$'
 	  };
 
@@ -40229,19 +42790,18 @@
 	  };
 
 	  var LIST = {
-	    className: 'container',
 	    begin: '\\(', end: '\\)',
 	    illegal: '"',
 	    contains: [
 	      PRAGMA,
 	      PREPROCESSOR,
 	      {className: 'type', begin: '\\b[A-Z][\\w]*(\\((\\.\\.|,|\\w+)\\))?'},
-	      hljs.inherit(hljs.TITLE_MODE, {begin: '[_a-z][\\w\']*'})
-	    ].concat(COMMENT_MODES)
+	      hljs.inherit(hljs.TITLE_MODE, {begin: '[_a-z][\\w\']*'}),
+	      COMMENT
+	    ]
 	  };
 
 	  var RECORD = {
-	    className: 'container',
 	    begin: '{', end: '}',
 	    contains: LIST.contains
 	  };
@@ -40258,17 +42818,15 @@
 	      // Top-level constructions.
 
 	      {
-	        className: 'module',
-	        begin: '\\bmodule\\b', end: 'where',
+	        beginKeywords: 'module', end: 'where',
 	        keywords: 'module where',
-	        contains: [LIST].concat(COMMENT_MODES),
+	        contains: [LIST, COMMENT],
 	        illegal: '\\W\\.|;'
 	      },
 	      {
-	        className: 'import',
 	        begin: '\\bimport\\b', end: '$',
-	        keywords: 'import|0 qualified as hiding',
-	        contains: [LIST].concat(COMMENT_MODES),
+	        keywords: 'import qualified as hiding',
+	        contains: [LIST, COMMENT],
 	        illegal: '\\W\\.|;'
 	      },
 
@@ -40276,33 +42834,30 @@
 	        className: 'class',
 	        begin: '^(\\s*)?(class|instance)\\b', end: 'where',
 	        keywords: 'class family instance where',
-	        contains: [CONSTRUCTOR, LIST].concat(COMMENT_MODES)
+	        contains: [CONSTRUCTOR, LIST, COMMENT]
 	      },
 	      {
-	        className: 'typedef',
+	        className: 'class',
 	        begin: '\\b(data|(new)?type)\\b', end: '$',
 	        keywords: 'data family type newtype deriving',
-	        contains: [PRAGMA, CONSTRUCTOR, LIST, RECORD].concat(COMMENT_MODES)
+	        contains: [PRAGMA, CONSTRUCTOR, LIST, RECORD, COMMENT]
 	      },
 	      {
-	        className: 'default',
 	        beginKeywords: 'default', end: '$',
-	        contains: [CONSTRUCTOR, LIST].concat(COMMENT_MODES)
+	        contains: [CONSTRUCTOR, LIST, COMMENT]
 	      },
 	      {
-	        className: 'infix',
 	        beginKeywords: 'infix infixl infixr', end: '$',
-	        contains: [hljs.C_NUMBER_MODE].concat(COMMENT_MODES)
+	        contains: [hljs.C_NUMBER_MODE, COMMENT]
 	      },
 	      {
-	        className: 'foreign',
 	        begin: '\\bforeign\\b', end: '$',
 	        keywords: 'foreign import export ccall stdcall cplusplus jvm ' +
 	                  'dotnet safe unsafe',
-	        contains: [CONSTRUCTOR, hljs.QUOTE_STRING_MODE].concat(COMMENT_MODES)
+	        contains: [CONSTRUCTOR, hljs.QUOTE_STRING_MODE, COMMENT]
 	      },
 	      {
-	        className: 'shebang',
+	        className: 'meta',
 	        begin: '#!\\/usr\\/bin\\/env\ runhaskell', end: '$'
 	      },
 
@@ -40319,13 +42874,15 @@
 	      CONSTRUCTOR,
 	      hljs.inherit(hljs.TITLE_MODE, {begin: '^[_a-z][\\w\']*'}),
 
+	      COMMENT,
+
 	      {begin: '->|<-'} // No markup, relevance booster
-	    ].concat(COMMENT_MODES)
+	    ]
 	  };
 	};
 
 /***/ },
-/* 310 */
+/* 365 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -40357,9 +42914,9 @@
 	        ]
 	      },
 	      {
-	        className: 'preprocessor',
+	        className: 'meta',
 	        begin: '#', end: '$',
-	        keywords: 'if else elseif end error'
+	        keywords: {'meta-keyword': 'if else elseif end error'}
 	      },
 	      {
 	        className: 'function',
@@ -40378,10 +42935,7 @@
 	            ]
 	          },
 	          {
-	            className: 'type',
-	            begin: ':',
-	            end: IDENT_FUNC_RETURN_TYPE_RE,
-	            relevance: 10
+	            begin: ':\\s*' + IDENT_FUNC_RETURN_TYPE_RE
 	          }
 	        ]
 	      }
@@ -40390,27 +42944,82 @@
 	};
 
 /***/ },
-/* 311 */
+/* 366 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
+	  return {
+	    case_insensitive: true,
+	    keywords: 'goto gosub return break repeat loop continue wait await dim sdim foreach dimtype dup dupptr end stop newmod delmod mref run exgoto on mcall assert logmes newlab resume yield onexit onerror onkey onclick oncmd exist delete mkdir chdir dirlist bload bsave bcopy memfile if else poke wpoke lpoke getstr chdpm memexpand memcpy memset notesel noteadd notedel noteload notesave randomize noteunsel noteget split strrep setease button chgdisp exec dialog mmload mmplay mmstop mci pset pget syscolor mes print title pos circle cls font sysfont objsize picload color palcolor palette redraw width gsel gcopy gzoom gmode bmpsave hsvcolor getkey listbox chkbox combox input mesbox buffer screen bgscr mouse objsel groll line clrobj boxf objprm objmode stick grect grotate gsquare gradf objimage objskip objenable celload celdiv celput newcom querycom delcom cnvstow comres axobj winobj sendmsg comevent comevarg sarrayconv callfunc cnvwtos comevdisp libptr system hspstat hspver stat cnt err strsize looplev sublev iparam wparam lparam refstr refdval int rnd strlen length length2 length3 length4 vartype gettime peek wpeek lpeek varptr varuse noteinfo instr abs limit getease str strmid strf getpath strtrim sin cos tan atan sqrt double absf expf logf limitf powf geteasef mousex mousey mousew hwnd hinstance hdc ginfo objinfo dirinfo sysinfo thismod __hspver__ __hsp30__ __date__ __time__ __line__ __file__ _debug __hspdef__ and or xor not screen_normal screen_palette screen_hide screen_fixedsize screen_tool screen_frame gmode_gdi gmode_mem gmode_rgb0 gmode_alpha gmode_rgb0alpha gmode_add gmode_sub gmode_pixela ginfo_mx ginfo_my ginfo_act ginfo_sel ginfo_wx1 ginfo_wy1 ginfo_wx2 ginfo_wy2 ginfo_vx ginfo_vy ginfo_sizex ginfo_sizey ginfo_winx ginfo_winy ginfo_mesx ginfo_mesy ginfo_r ginfo_g ginfo_b ginfo_paluse ginfo_dispx ginfo_dispy ginfo_cx ginfo_cy ginfo_intid ginfo_newid ginfo_sx ginfo_sy objinfo_mode objinfo_bmscr objinfo_hwnd notemax notesize dir_cur dir_exe dir_win dir_sys dir_cmdline dir_desktop dir_mydoc dir_tv font_normal font_bold font_italic font_underline font_strikeout font_antialias objmode_normal objmode_guifont objmode_usefont gsquare_grad msgothic msmincho do until while wend for next _break _continue switch case default swbreak swend ddim ldim alloc m_pi rad2deg deg2rad ease_linear ease_quad_in ease_quad_out ease_quad_inout ease_cubic_in ease_cubic_out ease_cubic_inout ease_quartic_in ease_quartic_out ease_quartic_inout ease_bounce_in ease_bounce_out ease_bounce_inout ease_shake_in ease_shake_out ease_shake_inout ease_loop',
+	    contains: [
+	      hljs.C_LINE_COMMENT_MODE,
+	      hljs.C_BLOCK_COMMENT_MODE,
+	      hljs.QUOTE_STRING_MODE,
+	      hljs.APOS_STRING_MODE,
+
+	      {
+	        // multi-line string
+	        className: 'string',
+	        begin: '{"', end: '"}',
+	        contains: [hljs.BACKSLASH_ESCAPE]
+	      },
+
+	      hljs.COMMENT(';', '$'),
+
+	      {
+	        // pre-processor
+	        className: 'meta',
+	        begin: '#', end: '$',
+	        keywords: {'meta-keyword': 'addion cfunc cmd cmpopt comfunc const defcfunc deffunc define else endif enum epack func global if ifdef ifndef include modcfunc modfunc modinit modterm module pack packopt regcmd runtime undef usecom uselib'},
+	        contains: [
+	          hljs.inherit(hljs.QUOTE_STRING_MODE, {className: 'meta-string'}),
+	          hljs.NUMBER_MODE,
+	          hljs.C_NUMBER_MODE,
+	          hljs.C_LINE_COMMENT_MODE,
+	          hljs.C_BLOCK_COMMENT_MODE
+	        ]
+	      },
+
+	      {
+	        // label
+	        className: 'symbol',
+	        begin: '^\\*(\\w+|@)'
+	      },
+
+	      hljs.NUMBER_MODE,
+	      hljs.C_NUMBER_MODE
+	    ]
+	  };
+	};
+
+/***/ },
+/* 367 */
+/***/ function(module, exports) {
+
+	module.exports = function(hljs) {
+	  var VERSION = 'HTTP/[0-9\\.]+';
 	  return {
 	    aliases: ['https'],
 	    illegal: '\\S',
 	    contains: [
 	      {
-	        className: 'status',
-	        begin: '^HTTP/[0-9\\.]+', end: '$',
+	        begin: '^' + VERSION, end: '$',
 	        contains: [{className: 'number', begin: '\\b\\d{3}\\b'}]
 	      },
 	      {
-	        className: 'request',
-	        begin: '^[A-Z]+ (.*?) HTTP/[0-9\\.]+$', returnBegin: true, end: '$',
+	        begin: '^[A-Z]+ (.*?) ' + VERSION + '$', returnBegin: true, end: '$',
 	        contains: [
 	          {
 	            className: 'string',
 	            begin: ' ', end: ' ',
 	            excludeBegin: true, excludeEnd: true
+	          },
+	          {
+	            begin: VERSION
+	          },
+	          {
+	            className: 'keyword',
+	            begin: '[A-Z]+'
 	          }
 	        ]
 	      },
@@ -40418,7 +43027,7 @@
 	        className: 'attribute',
 	        begin: '^\\w', end: ': ', excludeEnd: true,
 	        illegal: '\\n|\\s|=',
-	        starts: {className: 'string', end: '$'}
+	        starts: {end: '$', relevance: 0}
 	      },
 	      {
 	        begin: '\\n\\n',
@@ -40429,7 +43038,7 @@
 	};
 
 /***/ },
-/* 312 */
+/* 368 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -40464,7 +43073,7 @@
 	        ]
 	      },
 	      {
-	        className: 'title',
+	        className: 'section',
 	        begin: /^(Volume|Book|Part|Chapter|Section|Table)\b/,
 	        end: '$'
 	      },
@@ -40476,8 +43085,7 @@
 	        contains: [
 	          {
 	            //Rule name
-	            begin: '\\b\\(This',
-	            end: '\\)'
+	            begin: '\\(This', end: '\\)'
 	          }
 	        ]
 	      },
@@ -40491,7 +43099,7 @@
 	};
 
 /***/ },
-/* 313 */
+/* 369 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -40520,18 +43128,25 @@
 	      hljs.COMMENT(';', '$'),
 	      hljs.HASH_COMMENT_MODE,
 	      {
-	        className: 'title',
+	        className: 'section',
 	        begin: /^\s*\[+/, end: /\]+/
 	      },
 	      {
-	        className: 'setting',
 	        begin: /^[a-z0-9\[\]_-]+\s*=\s*/, end: '$',
+	        returnBegin: true,
 	        contains: [
 	          {
-	            className: 'value',
-	            endsWithParent: true,
-	            keywords: 'on off true false yes no',
+	            className: 'attr',
+	            begin: /[a-z0-9\[\]_-]+/
+	          },
+	          {
+	            begin: /=/, endsWithParent: true,
+	            relevance: 0,
 	            contains: [
+	              {
+	                className: 'literal',
+	                begin: /\bon|off|true|false|yes|no\b/
+	              },
 	              {
 	                className: 'variable',
 	                variants: [
@@ -40545,8 +43160,7 @@
 	                begin: /([\+\-]+)?[\d]+_[\d_]+/
 	              },
 	              hljs.NUMBER_MODE
-	            ],
-	            relevance: 0
+	            ]
 	          }
 	        ]
 	      }
@@ -40555,7 +43169,7 @@
 	};
 
 /***/ },
-/* 314 */
+/* 370 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -40565,10 +43179,7 @@
 	  };
 
 	  var F_KEYWORDS = {
-	    constant: '.False. .True.',
-	    type: 'integer real character complex logical dimension allocatable|10 parameter ' +
-	      'external implicit|10 none double precision assign intent optional pointer ' +
-	      'target in out common equivalence data',
+	    literal: '.False. .True.',
 	    keyword: 'kind do while private call intrinsic where elsewhere ' +
 	      'type endtype endmodule endselect endinterface end enddo endif if forall endforall only contains default return stop then ' +
 	      'public subroutine|10 function program .and. .or. .not. .le. .eq. .ge. .gt. .lt. ' +
@@ -40586,6 +43197,9 @@
 	      'numeric_storage_size output_unit c_f_procpointer ieee_arithmetic ieee_support_underflow_control ' +
 	      'ieee_get_underflow_mode ieee_set_underflow_mode newunit contiguous recursive ' +
 	      'pad position action delim readwrite eor advance nml interface procedure namelist include sequence elemental pure ' +
+	      'integer real character complex logical dimension allocatable|10 parameter ' +
+	      'external implicit|10 none double precision assign intent optional pointer ' +
+	      'target in out common equivalence data ' +
 	      // IRPF90 special keywords
 	      'begin_provider &begin_provider end_provider begin_shell end_shell begin_template end_template subst assert touch ' +
 	      'soft_touch provide no_dep free irp_if irp_else irp_endif irp_write irp_read',
@@ -40635,11 +43249,11 @@
 	};
 
 /***/ },
-/* 315 */
+/* 371 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
-	  var GENERIC_IDENT_RE = hljs.UNDERSCORE_IDENT_RE + '(<' + hljs.UNDERSCORE_IDENT_RE + '>)?';
+	  var GENERIC_IDENT_RE = hljs.UNDERSCORE_IDENT_RE + '(<(' + hljs.UNDERSCORE_IDENT_RE + '|\\s*,\\s*)+>)?';
 	  var KEYWORDS =
 	    'false synchronized int abstract float private char boolean static null if const ' +
 	    'for true while long strictfp finally protected import native final void ' +
@@ -40677,10 +43291,16 @@
 	        '\\*/',
 	        {
 	          relevance : 0,
-	          contains : [{
-	            className : 'doctag',
-	            begin : '@[A-Za-z]+'
-	          }]
+	          contains : [
+	            {
+	              // eat up @'s in emails to prevent them to be recognized as doctags
+	              begin: /\w+@/, relevance: 0
+	            },
+	            {
+	              className : 'doctag',
+	              begin : '@[A-Za-z]+'
+	            }
+	          ]
 	        }
 	      ),
 	      hljs.C_LINE_COMMENT_MODE,
@@ -40732,14 +43352,14 @@
 	      },
 	      JAVA_NUMBER_MODE,
 	      {
-	        className: 'annotation', begin: '@[A-Za-z]+'
+	        className: 'meta', begin: '@[A-Za-z]+'
 	      }
 	    ]
 	  };
 	};
 
 /***/ },
-/* 316 */
+/* 372 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -40749,7 +43369,10 @@
 	      keyword:
 	        'in of if for while finally var new function do return void else break catch ' +
 	        'instanceof with throw case default try this switch continue typeof delete ' +
-	        'let yield const export super debugger as async await',
+	        'let yield const export super debugger as async await ' +
+	        // ECMAScript 6 modules import
+	        'import from as'
+	      ,
 	      literal:
 	        'true false null undefined NaN Infinity',
 	      built_in:
@@ -40764,7 +43387,7 @@
 	    },
 	    contains: [
 	      {
-	        className: 'pi',
+	        className: 'meta',
 	        relevance: 10,
 	        begin: /^\s*['"]use (strict|asm)['"]/
 	      },
@@ -40831,15 +43454,6 @@
 	      {
 	        begin: '\\.' + hljs.IDENT_RE, relevance: 0 // hack: prevents detection of keywords after dots
 	      },
-	      // ECMAScript 6 modules import
-	      {
-	        beginKeywords: 'import', end: '[;$]',
-	        keywords: 'import from as',
-	        contains: [
-	          hljs.APOS_STRING_MODE,
-	          hljs.QUOTE_STRING_MODE
-	        ]
-	      },
 	      { // ES6 class
 	        className: 'class',
 	        beginKeywords: 'class', end: /[{;=]/, excludeEnd: true,
@@ -40848,6 +43462,9 @@
 	          {beginKeywords: 'extends'},
 	          hljs.UNDERSCORE_TITLE_MODE
 	        ]
+	      },
+	      {
+	        beginKeywords: 'constructor', end: /\{/, excludeEnd: true
 	      }
 	    ],
 	    illegal: /#/
@@ -40855,7 +43472,7 @@
 	};
 
 /***/ },
-/* 317 */
+/* 373 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -40865,7 +43482,6 @@
 	    hljs.C_NUMBER_MODE
 	  ];
 	  var VALUE_CONTAINER = {
-	    className: 'value',
 	    end: ',', endsWithParent: true, excludeEnd: true,
 	    contains: TYPES,
 	    keywords: LITERALS
@@ -40874,7 +43490,7 @@
 	    begin: '{', end: '}',
 	    contains: [
 	      {
-	        className: 'attribute',
+	        className: 'attr',
 	        begin: '\\s*"', end: '"\\s*:\\s*', excludeBegin: true, excludeEnd: true,
 	        contains: [hljs.BACKSLASH_ESCAPE],
 	        illegal: '\\n',
@@ -40885,7 +43501,7 @@
 	  };
 	  var ARRAY = {
 	    begin: '\\[', end: '\\]',
-	    contains: [hljs.inherit(VALUE_CONTAINER, {className: null})], // inherit is also a workaround for a bug that makes shared modes with endsWithParent compile only the ending of one of the parents
+	    contains: [hljs.inherit(VALUE_CONTAINER)], // inherit is a workaround for a bug that makes shared modes with endsWithParent compile only the ending of one of the parents
 	    illegal: '\\S'
 	  };
 	  TYPES.splice(TYPES.length, 0, OBJECT, ARRAY);
@@ -40897,20 +43513,20 @@
 	};
 
 /***/ },
-/* 318 */
+/* 374 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  // Since there are numerous special names in Julia, it is too much trouble
 	  // to maintain them by hand. Hence these names (i.e. keywords, literals and
-	  // built-ins) are automatically generated from Julia (v0.3.0) itself through
-	  // following scripts for each.
+	  // built-ins) are automatically generated from Julia (v0.3.0 and v0.4.1)
+	  // itself through following scripts for each.
 
 	  var KEYWORDS = {
 	    // # keyword generator
-	    // println("\"in\",")
+	    // println("in")
 	    // for kw in Base.REPLCompletions.complete_keyword("")
-	    //     println("\"$kw\",")
+	    //     println(kw)
 	    // end
 	    keyword:
 	      'in abstract baremodule begin bitstype break catch ccall const continue do else elseif end export ' +
@@ -40918,40 +43534,47 @@
 	      'typealias using while',
 
 	    // # literal generator
-	    // println("\"true\",\n\"false\"")
+	    // println("true")
+	    // println("false")
 	    // for name in Base.REPLCompletions.completions("", 0)[1]
 	    //     try
 	    //         s = symbol(name)
 	    //         v = eval(s)
 	    //         if !isa(v, Function) &&
 	    //            !isa(v, DataType) &&
+	    //            !isa(v, IntrinsicFunction) &&
 	    //            !issubtype(typeof(v), Tuple) &&
-	    //            !isa(v, UnionType) &&
+	    //            !isa(v, Union) &&
 	    //            !isa(v, Module) &&
 	    //            !isa(v, TypeConstructor) &&
+	    //            !isa(v, TypeVar) &&
 	    //            !isa(v, Colon)
-	    //             println("\"$name\",")
+	    //             println(name)
 	    //         end
 	    //     end
 	    // end
 	    literal:
-	      'true false ANY ARGS CPU_CORES C_NULL DL_LOAD_PATH DevNull ENDIAN_BOM ENV I|0 Inf Inf16 Inf32 ' +
+	      // v0.3
+	      'true false ARGS CPU_CORES C_NULL DL_LOAD_PATH DevNull ENDIAN_BOM ENV I|0 Inf Inf16 Inf32 ' +
 	      'InsertionSort JULIA_HOME LOAD_PATH MS_ASYNC MS_INVALIDATE MS_SYNC MergeSort NaN NaN16 NaN32 OS_NAME QuickSort ' +
 	      'RTLD_DEEPBIND RTLD_FIRST RTLD_GLOBAL RTLD_LAZY RTLD_LOCAL RTLD_NODELETE RTLD_NOLOAD RTLD_NOW RoundDown ' +
 	      'RoundFromZero RoundNearest RoundToZero RoundUp STDERR STDIN STDOUT VERSION WORD_SIZE catalan cglobal e|0 eu|0 ' +
-	      'eulergamma golden im nothing pi γ π φ',
+	      'eulergamma golden im nothing pi γ π φ ' +
+	      // v0.4 (diff)
+	      'Inf64 NaN64 RoundNearestTiesAway RoundNearestTiesUp ',
 
 	    // # built_in generator:
 	    // for name in Base.REPLCompletions.completions("", 0)[1]
 	    //     try
 	    //         v = eval(symbol(name))
-	    //         if isa(v, DataType)
-	    //             println("\"$name\",")
+	    //         if isa(v, DataType) || isa(v, TypeConstructor) || isa(v, TypeVar)
+	    //             println(name)
 	    //         end
 	    //     end
 	    // end
 	    built_in:
-	      'ASCIIString AbstractArray AbstractRNG AbstractSparseArray Any ArgumentError Array Associative Base64Pipe ' +
+	      // v0.3
+	      'ANY ASCIIString AbstractArray AbstractRNG AbstractSparseArray Any ArgumentError Array Associative Base64Pipe ' +
 	      'Bidiagonal BigFloat BigInt BitArray BitMatrix BitVector Bool BoundsError Box CFILE Cchar Cdouble Cfloat Char ' +
 	      'CharString Cint Clong Clonglong ClusterManager Cmd Coff_t Colon Complex Complex128 Complex32 Complex64 ' +
 	      'Condition Cptrdiff_t Cshort Csize_t Cssize_t Cuchar Cuint Culong Culonglong Cushort Cwchar_t DArray DataType ' +
@@ -40967,28 +43590,38 @@
 	      'SymTridiagonal Symbol SymbolNode Symmetric SystemError Task TextDisplay Timer TmStruct TopNode Triangular ' +
 	      'Tridiagonal Type TypeConstructor TypeError TypeName TypeVar UTF16String UTF32String UTF8String UdpSocket ' +
 	      'Uint Uint128 Uint16 Uint32 Uint64 Uint8 UndefRefError UndefVarError UniformScaling UnionType UnitRange ' +
-	      'Unsigned Vararg VersionNumber WString WeakKeyDict WeakRef Woodbury Zip'
+	      'Unsigned Vararg VersionNumber WString WeakKeyDict WeakRef Woodbury Zip ' +
+	      // v0.4 (diff)
+	      'AbstractChannel AbstractFloat AbstractString AssertionError Base64DecodePipe Base64EncodePipe BufferStream ' +
+	      'CapturedException CartesianIndex CartesianRange Channel Cintmax_t CompositeException Cstring Cuintmax_t ' +
+	      'Cwstring Date DateTime Dims Enum GenSym GlobalRef HTML InitError InvalidStateException Irrational LinSpace ' +
+	      'LowerTriangular NullException Nullable OutOfMemoryError Pair PartialQuickSort Pipe RandomDevice ' +
+	      'ReadOnlyMemoryError ReentrantLock Ref RemoteException SegmentationFault SerializationState SimpleVector ' +
+	      'TCPSocket Text Tuple UDPSocket UInt UInt128 UInt16 UInt32 UInt64 UInt8 UnicodeError Union UpperTriangular ' +
+	      'Val Void WorkerConfig AbstractMatrix AbstractSparseMatrix AbstractSparseVector AbstractVecOrMat AbstractVector ' +
+	      'DenseMatrix DenseVecOrMat DenseVector Matrix SharedMatrix SharedVector StridedArray StridedMatrix ' +
+	      'StridedVecOrMat StridedVector VecOrMat Vector '
 	  };
 
 	  // ref: http://julia.readthedocs.org/en/latest/manual/variables/#allowed-variable-names
-	  var VARIABLE_NAME_RE = "[A-Za-z_\\u00A1-\\uFFFF][A-Za-z_0-9\\u00A1-\\uFFFF]*";
+	  var VARIABLE_NAME_RE = '[A-Za-z_\\u00A1-\\uFFFF][A-Za-z_0-9\\u00A1-\\uFFFF]*';
 
 	  // placeholder for recursive self-reference
-	  var DEFAULT = { lexemes: VARIABLE_NAME_RE, keywords: KEYWORDS };
+	  var DEFAULT = { lexemes: VARIABLE_NAME_RE, keywords: KEYWORDS, illegal: /<\// };
 
 	  var TYPE_ANNOTATION = {
-	    className: "type-annotation",
+	    className: 'type',
 	    begin: /::/
 	  };
 
 	  var SUBTYPE = {
-	    className: "subtype",
+	    className: 'type',
 	    begin: /<:/
 	  };
 
 	  // ref: http://julia.readthedocs.org/en/latest/manual/integers-and-floating-point-numbers/
 	  var NUMBER = {
-	    className: "number",
+	    className: 'number',
 	    // supported numeric literals:
 	    //  * binary literal (e.g. 0x10)
 	    //  * octal literal (e.g. 0o76543210)
@@ -41001,7 +43634,7 @@
 	  };
 
 	  var CHAR = {
-	    className: "char",
+	    className: 'string',
 	    begin: /'(.|\\[xXuU][a-zA-Z0-9]+)'/
 	  };
 
@@ -41013,34 +43646,34 @@
 
 	  var INTERPOLATED_VARIABLE = {
 	    className: 'variable',
-	    begin: "\\$" + VARIABLE_NAME_RE
+	    begin: '\\$' + VARIABLE_NAME_RE
 	  };
 
 	  // TODO: neatly escape normal code in string literal
 	  var STRING = {
-	    className: "string",
+	    className: 'string',
 	    contains: [hljs.BACKSLASH_ESCAPE, INTERPOLATION, INTERPOLATED_VARIABLE],
 	    variants: [
-	      { begin: /\w*"/, end: /"\w*/ },
-	      { begin: /\w*"""/, end: /"""\w*/ }
+	      { begin: /\w*"""/, end: /"""\w*/, relevance: 10 },
+	      { begin: /\w*"/, end: /"\w*/ }
 	    ]
 	  };
 
 	  var COMMAND = {
-	    className: "string",
+	    className: 'string',
 	    contains: [hljs.BACKSLASH_ESCAPE, INTERPOLATION, INTERPOLATED_VARIABLE],
 	    begin: '`', end: '`'
 	  };
 
 	  var MACROCALL = {
-	    className: "macrocall",
-	    begin: "@" + VARIABLE_NAME_RE
+	    className: 'meta',
+	    begin: '@' + VARIABLE_NAME_RE
 	  };
 
 	  var COMMENT = {
-	    className: "comment",
+	    className: 'comment',
 	    variants: [
-	      { begin: "#=", end: "=#", relevance: 10 },
+	      { begin: '#=', end: '=#', relevance: 10 },
 	      { begin: '#', end: '$' }
 	    ]
 	  };
@@ -41062,19 +43695,19 @@
 	};
 
 /***/ },
-/* 319 */
+/* 375 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
-	  var KEYWORDS = 'val var get set class trait object public open private protected ' +
+	  var KEYWORDS = 'val var get set class trait object open private protected public ' +
 	    'final enum if else do while for when break continue throw try catch finally ' +
-	    'import package is as in return fun override default companion reified inline volatile transient native';
+	    'import package is as in return fun override default companion reified inline volatile transient native ' +
+	    'Byte Short Char Int Long Boolean Float Double Void Unit Nothing';
 
 	  return {
 	    keywords: {
-	      typename: 'Byte Short Char Int Long Boolean Float Double Void Unit Nothing',
-	      literal: 'true false null',
-	      keyword: KEYWORDS
+	      keyword: KEYWORDS,
+	      literal: 'true false null'
 	    },
 	    contains : [
 	      hljs.COMMENT(
@@ -41124,7 +43757,7 @@
 	            illegal: /\([^\(,\s:]+,/,
 	            contains: [
 	              {
-	                className: 'typename',
+	                className: 'type',
 	                begin: /:\s*/, end: /\s*[=\)]/, excludeBegin: true, returnEnd: true,
 	                relevance: 0
 	              }
@@ -41147,7 +43780,7 @@
 	            relevance: 0
 	          },
 	          {
-	            className: 'typename',
+	            className: 'type',
 	            begin: /[,:]\s*/, end: /[<\(,]|$/, excludeBegin: true, returnEnd: true
 	          }
 	        ]
@@ -41157,7 +43790,7 @@
 	      },
 	      hljs.QUOTE_STRING_MODE,
 	      {
-	        className: 'shebang',
+	        className: 'meta',
 	        begin: "^#!/usr/bin/env", end: '$',
 	        illegal: '\n'
 	      },
@@ -41167,7 +43800,7 @@
 	};
 
 /***/ },
-/* 320 */
+/* 376 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -41200,7 +43833,7 @@
 	      'frozen group handle_failure import in into join let match max ' +
 	      'min on order parent protected provide public require returnhome ' +
 	      'skip split_thread sum take thread to trait type where with ' +
-	      'yield yieldhome'
+	      'yield yieldhome and or not'
 	  };
 	  var HTML_COMMENT = hljs.COMMENT(
 	    '<!--',
@@ -41210,21 +43843,20 @@
 	    }
 	  );
 	  var LASSO_NOPROCESS = {
-	    className: 'preprocessor',
+	    className: 'meta',
 	    begin: '\\[noprocess\\]',
 	    starts: {
-	      className: 'markup',
 	      end: '\\[/noprocess\\]',
 	      returnEnd: true,
 	      contains: [HTML_COMMENT]
 	    }
 	  };
 	  var LASSO_START = {
-	    className: 'preprocessor',
+	    className: 'meta',
 	    begin: '\\[/noprocess|' + LASSO_ANGLE_RE
 	  };
 	  var LASSO_DATAMEMBER = {
-	    className: 'variable',
+	    className: 'symbol',
 	    begin: '\'' + LASSO_IDENT_RE + '\''
 	  };
 	  var LASSO_CODE = [
@@ -41241,8 +43873,7 @@
 	      className: 'string',
 	      begin: '`', end: '`'
 	    },
-	    {
-	      className: 'variable',
+	    { // variables
 	      variants: [
 	        {
 	          begin: '[#$]' + LASSO_IDENT_RE
@@ -41254,12 +43885,12 @@
 	      ]
 	    },
 	    {
-	      className: 'tag',
+	      className: 'type',
 	      begin: '::\\s*', end: LASSO_IDENT_RE,
 	      illegal: '\\W'
 	    },
 	    {
-	      className: 'attribute',
+	      className: 'attr',
 	      variants: [
 	        {
 	          begin: '-(?!infinity)' + hljs.UNDERSCORE_IDENT_RE,
@@ -41271,21 +43902,7 @@
 	      ]
 	    },
 	    {
-	      className: 'subst',
-	      variants: [
-	        {
-	          begin: '->\\s*',
-	          contains: [LASSO_DATAMEMBER]
-	        },
-	        {
-	          begin: '->|\\\\|&&?|\\|\\||!(?!=|>)|(and|or|not)\\b',
-	          relevance: 0
-	        }
-	      ]
-	    },
-	    {
-	      className: 'built_in',
-	      begin: '\\.\\.?\\s*',
+	      begin: /(->|\.\.?)\s*/,
 	      relevance: 0,
 	      contains: [LASSO_DATAMEMBER]
 	    },
@@ -41305,11 +43922,10 @@
 	    keywords: LASSO_KEYWORDS,
 	    contains: [
 	      {
-	        className: 'preprocessor',
+	        className: 'meta',
 	        begin: LASSO_CLOSE_RE,
 	        relevance: 0,
-	        starts: {
-	          className: 'markup',
+	        starts: { // markup
 	          end: '\\[|' + LASSO_ANGLE_RE,
 	          returnEnd: true,
 	          relevance: 0,
@@ -41319,7 +43935,7 @@
 	      LASSO_NOPROCESS,
 	      LASSO_START,
 	      {
-	        className: 'preprocessor',
+	        className: 'meta',
 	        begin: '\\[no_square_brackets',
 	        starts: {
 	          end: '\\[/no_square_brackets\\]', // not implemented in the language
@@ -41327,11 +43943,10 @@
 	          keywords: LASSO_KEYWORDS,
 	          contains: [
 	            {
-	              className: 'preprocessor',
+	              className: 'meta',
 	              begin: LASSO_CLOSE_RE,
 	              relevance: 0,
 	              starts: {
-	                className: 'markup',
 	                end: '\\[noprocess\\]|' + LASSO_ANGLE_RE,
 	                returnEnd: true,
 	                contains: [HTML_COMMENT]
@@ -41343,12 +43958,12 @@
 	        }
 	      },
 	      {
-	        className: 'preprocessor',
+	        className: 'meta',
 	        begin: '\\[',
 	        relevance: 0
 	      },
 	      {
-	        className: 'shebang',
+	        className: 'meta',
 	        begin: '^#!.+lasso9\\b',
 	        relevance: 10
 	      }
@@ -41357,7 +43972,7 @@
 	};
 
 /***/ },
-/* 321 */
+/* 377 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -41377,13 +43992,6 @@
 	    className: name, begin: begin, relevance: relevance
 	  };};
 
-	  var FUNCT_MODE = function(name, ident, obj) {
-	    return hljs.inherit({
-	        className: name, begin: ident + '\\(', end: '\\(',
-	        returnBegin: true, excludeEnd: true, relevance: 0
-	    }, obj);
-	  };
-
 	  var PARENS_MODE = {
 	    // used only to properly balance nested parens inside mixin call, def. arg list
 	    begin: '\\(', end: '\\)', contains: VALUE, relevance: 0
@@ -41396,17 +44004,21 @@
 	    STRING_MODE("'"),
 	    STRING_MODE('"'),
 	    hljs.CSS_NUMBER_MODE, // fixme: it does not include dot for numbers like .5em :(
-	    IDENT_MODE('hexcolor', '#[0-9A-Fa-f]+\\b'),
-	    FUNCT_MODE('function', '(url|data-uri)', {
+	    {
+	      begin: '(url|data-uri)\\(',
 	      starts: {className: 'string', end: '[\\)\\n]', excludeEnd: true}
-	    }),
-	    FUNCT_MODE('function', IDENT_RE),
+	    },
+	    IDENT_MODE('number', '#[0-9A-Fa-f]+\\b'),
 	    PARENS_MODE,
 	    IDENT_MODE('variable', '@@?' + IDENT_RE, 10),
 	    IDENT_MODE('variable', '@{'  + IDENT_RE + '}'),
 	    IDENT_MODE('built_in', '~?`[^`]*?`'), // inline javascript (or whatever host language) *multiline* string
 	    { // @media features (it’s here to not duplicate things in AT_RULE_MODE with extra PARENS_MODE overriding):
 	      className: 'attribute', begin: IDENT_RE + '\\s*:', end: ':', returnBegin: true, excludeEnd: true
+	    },
+	    {
+	      className: 'meta',
+	      begin: '!important'
 	    }
 	  );
 
@@ -41430,7 +44042,7 @@
 	  };
 
 	  var AT_RULE_MODE = {
-	    className: 'at_rule', // highlight only at-rule keyword
+	    className: 'keyword',
 	    begin: '@(import|media|charset|font-face|(-[a-z]+-)?keyframes|supports|document|namespace|page|viewport|host)\\b',
 	    starts: {end: '[;{}]', returnEnd: true, contains: VALUE, relevance: 0}
 	  };
@@ -41468,14 +44080,11 @@
 	      MIXIN_GUARD_MODE,
 	      IDENT_MODE('keyword',  'all\\b'),
 	      IDENT_MODE('variable', '@{'  + IDENT_RE + '}'),     // otherwise it’s identified as tag
-	      IDENT_MODE('tag',       INTERP_IDENT_RE + '%?', 0), // '%' for more consistent coloring of @keyframes "tags"
-	      IDENT_MODE('id',       '#'   + INTERP_IDENT_RE),
-	      IDENT_MODE('class',    '\\.' + INTERP_IDENT_RE, 0),
-	      IDENT_MODE('keyword',  '&', 0),
-	      FUNCT_MODE('pseudo',   ':not'),
-	      FUNCT_MODE('keyword',  ':extend'),
-	      IDENT_MODE('pseudo',   '::?' + INTERP_IDENT_RE),
-	      {className: 'attr_selector', begin: '\\[', end: '\\]'},
+	      IDENT_MODE('selector-tag',  INTERP_IDENT_RE + '%?', 0), // '%' for more consistent coloring of @keyframes "tags"
+	      IDENT_MODE('selector-id', '#' + INTERP_IDENT_RE),
+	      IDENT_MODE('selector-class', '\\.' + INTERP_IDENT_RE, 0),
+	      IDENT_MODE('selector-tag',  '&', 0),
+	      {className: 'selector-attr', begin: '\\[', end: '\\]'},
 	      {begin: '\\(', end: '\\)', contains: VALUE_WITH_RULESETS}, // argument list of parametric mixins
 	      {begin: '!important'} // eat !important after mixin call or it will be colored as tag
 	    ]
@@ -41498,7 +44107,7 @@
 	};
 
 /***/ },
-/* 322 */
+/* 378 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -41506,7 +44115,7 @@
 	  var MEC_RE = '\\|[^]*?\\|';
 	  var LISP_SIMPLE_NUMBER_RE = '(\\-|\\+)?\\d+(\\.\\d+|\\/\\d+)?((d|e|f|l|s|D|E|F|L|S)(\\+|\\-)?\\d+)?';
 	  var SHEBANG = {
-	    className: 'shebang',
+	    className: 'meta',
 	    begin: '^#!', end: '$'
 	  };
 	  var LITERAL = {
@@ -41531,11 +44140,10 @@
 	    }
 	  );
 	  var VARIABLE = {
-	    className: 'variable',
 	    begin: '\\*', end: '\\*'
 	  };
 	  var KEYWORD = {
-	    className: 'keyword',
+	    className: 'symbol',
 	    begin: '[:&]' + LISP_IDENT_RE
 	  };
 	  var IDENT = {
@@ -41550,7 +44158,6 @@
 	    contains: ['self', LITERAL, STRING, NUMBER, IDENT]
 	  };
 	  var QUOTED = {
-	    className: 'quoted',
 	    contains: [NUMBER, STRING, VARIABLE, KEYWORD, QUOTED_LIST, IDENT],
 	    variants: [
 	      {
@@ -41558,7 +44165,7 @@
 	      },
 	      {
 	        begin: '\\(quote ', end: '\\)',
-	        keywords: 'quote'
+	        keywords: {name: 'quote'}
 	      },
 	      {
 	        begin: '\'' + MEC_RE
@@ -41566,14 +44173,12 @@
 	    ]
 	  };
 	  var QUOTED_ATOM = {
-	    className: 'quoted',
 	    variants: [
 	      {begin: '\'' + LISP_IDENT_RE},
 	      {begin: '#\'' + LISP_IDENT_RE + '(::' + LISP_IDENT_RE + ')*'}
 	    ]
 	  };
 	  var LIST = {
-	    className: 'list',
 	    begin: '\\(\\s*', end: '\\)'
 	  };
 	  var BODY = {
@@ -41582,7 +44187,7 @@
 	  };
 	  LIST.contains = [
 	    {
-	      className: 'keyword',
+	      className: 'name',
 	      variants: [
 	        {begin: LISP_IDENT_RE},
 	        {begin: MEC_RE}
@@ -41609,12 +44214,12 @@
 	};
 
 /***/ },
-/* 323 */
+/* 379 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  var VARIABLE = {
-	    className: 'variable', begin: '\\b[gtps][A-Z]+[A-Za-z0-9_\\-]*\\b|\\$_[A-Z]+',
+	    begin: '\\b[gtps][A-Z]+[A-Za-z0-9_\\-]*\\b|\\$_[A-Z]+',
 	    relevance: 0
 	  };
 	  var COMMENT_MODES = [
@@ -41643,17 +44248,16 @@
 	        'int4s internet int2 int2s normal text item last long detailed effective uInt4 uInt4s repeat ' +
 	        'end repeat URL in try into switch to words https token binfile each tenth as ticks tick ' +
 	        'system real4 by dateItems without char character ascending eighth whole dateTime numeric short ' +
-	        'first ftp integer abbreviated abbr abbrev private case while if',
-	      constant:
+	        'first ftp integer abbreviated abbr abbrev private case while if ' +
+	        'div mod wrap and or bitAnd bitNot bitOr bitXor among not in a an within ' +
+	        'contains ends with begins the keys of keys',
+	      literal:
 	        'SIX TEN FORMFEED NINE ZERO NONE SPACE FOUR FALSE COLON CRLF PI COMMA ENDOFFILE EOF EIGHT FIVE ' +
 	        'QUOTE EMPTY ONE TRUE RETURN CR LINEFEED RIGHT BACKSLASH NULL SEVEN TAB THREE TWO ' +
 	        'six ten formfeed nine zero none space four false colon crlf pi comma endoffile eof eight five ' +
 	        'quote empty one true return cr linefeed right backslash null seven tab three two ' +
 	        'RIVERSION RISTATE FILE_READ_MODE FILE_WRITE_MODE FILE_WRITE_MODE DIR_WRITE_MODE FILE_READ_UMASK ' +
 	        'FILE_WRITE_UMASK DIR_READ_UMASK DIR_WRITE_UMASK',
-	      operator:
-	        'div mod wrap and or bitAnd bitNot bitOr bitXor among not in a an within ' +
-	        'contains ends with begins the keys of keys',
 	      built_in:
 	        'put abs acos aliasReference annuity arrayDecode arrayEncode asin atan atan2 average avg avgDev base64Decode ' +
 	        'base64Encode baseConvert binaryDecode binaryEncode byteOffset byteToNum cachedURL cachedURLs charToNum ' +
@@ -41737,7 +44341,6 @@
 	        ]
 	      },
 	      {
-	        className: 'command',
 	        beginKeywords: 'command on', end: '$',
 	        contains: [
 	          VARIABLE,
@@ -41750,7 +44353,7 @@
 	        ]
 	      },
 	      {
-	        className: 'preprocessor',
+	        className: 'meta',
 	        variants: [
 	          {
 	            begin: '<\\?(rev|lc|livecode)',
@@ -41771,7 +44374,7 @@
 	};
 
 /***/ },
-/* 324 */
+/* 380 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -41838,7 +44441,7 @@
 	      ]
 	    },
 	    {
-	      className: 'pi',
+	      className: 'regexp',
 	      variants: [
 	        {
 	          begin: '//', end: '//[gim]*',
@@ -41852,7 +44455,6 @@
 	      ]
 	    },
 	    {
-	      className: 'property',
 	      begin: '@' + JS_IDENT_RE
 	    },
 	    {
@@ -41916,7 +44518,6 @@
 	        ]
 	      },
 	      {
-	        className: 'attribute',
 	        begin: JS_IDENT_RE + ':', end: ':',
 	        returnBegin: true, returnEnd: true,
 	        relevance: 0
@@ -41926,7 +44527,7 @@
 	};
 
 /***/ },
-/* 325 */
+/* 381 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -41986,7 +44587,7 @@
 	};
 
 /***/ },
-/* 326 */
+/* 382 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42003,7 +44604,6 @@
 	        begin: /^\w+\s*\W*=/, returnBegin: true,
 	        relevance: 0,
 	        starts: {
-	          className: 'constant',
 	          end: /\s*\W*=/, excludeEnd: true,
 	          starts: {
 	            end: /$/,
@@ -42015,13 +44615,13 @@
 	        }
 	      },
 	      {
-	        className: 'title',
+	        className: 'section',
 	        begin: /^[\w]+:\s*$/
 	      },
 	      {
-	        className: 'phony',
+	        className: 'meta',
 	        begin: /^\.PHONY:/, end: /$/,
-	        keywords: '.PHONY', lexemes: /[\.\w]+/
+	        keywords: {'meta-keyword': '.PHONY'}, lexemes: /[\.\w]+/
 	      },
 	      {
 	        begin: /^\t+/, end: /$/,
@@ -42036,7 +44636,7 @@
 	};
 
 /***/ },
-/* 327 */
+/* 383 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42083,14 +44683,13 @@
 	      '$Aborted $ActivationGroupID $ActivationKey $ActivationUserRegistered $AddOnsDirectory $AssertFunction $Assumptions $AsynchronousTask $BaseDirectory $BatchInput $BatchOutput $BoxForms $ByteOrdering $Canceled $CharacterEncoding $CharacterEncodings $CommandLine $CompilationTarget $ConditionHold $ConfiguredKernels $Context $ContextPath $ControlActiveSetting $CreationDate $CurrentLink $DateStringFormat $DefaultFont $DefaultFrontEnd $DefaultImagingDevice $DefaultPath $Display $DisplayFunction $DistributedContexts $DynamicEvaluation $Echo $Epilog $ExportFormats $Failed $FinancialDataSource $FormatType $FrontEnd $FrontEndSession $GeoLocation $HistoryLength $HomeDirectory $HTTPCookies $IgnoreEOF $ImagingDevices $ImportFormats $InitialDirectory $Input $InputFileName $InputStreamMethods $Inspector $InstallationDate $InstallationDirectory $InterfaceEnvironment $IterationLimit $KernelCount $KernelID $Language $LaunchDirectory $LibraryPath $LicenseExpirationDate $LicenseID $LicenseProcesses $LicenseServer $LicenseSubprocesses $LicenseType $Line $Linked $LinkSupported $LoadedFiles $MachineAddresses $MachineDomain $MachineDomains $MachineEpsilon $MachineID $MachineName $MachinePrecision $MachineType $MaxExtraPrecision $MaxLicenseProcesses $MaxLicenseSubprocesses $MaxMachineNumber $MaxNumber $MaxPiecewiseCases $MaxPrecision $MaxRootDegree $MessageGroups $MessageList $MessagePrePrint $Messages $MinMachineNumber $MinNumber $MinorReleaseNumber $MinPrecision $ModuleNumber $NetworkLicense $NewMessage $NewSymbol $Notebooks $NumberMarks $Off $OperatingSystem $Output $OutputForms $OutputSizeLimit $OutputStreamMethods $Packages $ParentLink $ParentProcessID $PasswordFile $PatchLevelID $Path $PathnameSeparator $PerformanceGoal $PipeSupported $Post $Pre $PreferencesDirectory $PrePrint $PreRead $PrintForms $PrintLiteral $ProcessID $ProcessorCount $ProcessorType $ProductInformation $ProgramName $RandomState $RecursionLimit $ReleaseNumber $RootDirectory $ScheduledTask $ScriptCommandLine $SessionID $SetParentLink $SharedFunctions $SharedVariables $SoundDisplay $SoundDisplayFunction $SuppressInputFormHeads $SynchronousEvaluation $SyntaxHandler $System $SystemCharacterEncoding $SystemID $SystemWordLength $TemporaryDirectory $TemporaryPrefix $TextStyle $TimedOut $TimeUnit $TimeZone $TopDirectory $TraceOff $TraceOn $TracePattern $TracePostAction $TracePreAction $Urgent $UserAddOnsDirectory $UserBaseDirectory $UserDocumentsDirectory $UserName $Version $VersionNumber',
 	    contains: [
 	      {
-	        className: "comment",
+	        className: 'comment',
 	        begin: /\(\*/, end: /\*\)/
 	      },
 	      hljs.APOS_STRING_MODE,
 	      hljs.QUOTE_STRING_MODE,
 	      hljs.C_NUMBER_MODE,
 	      {
-	        className: 'list',
 	        begin: /\{/, end: /\}/,
 	        illegal: /:/
 	      }
@@ -42099,7 +44698,7 @@
 	};
 
 /***/ },
-/* 328 */
+/* 384 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42115,7 +44714,7 @@
 	    relevance: 0,
 	    contains: [
 	      {
-	        className: 'operator', begin: /'['\.]*/
+	        begin: /'['\.]*/
 	      }
 	    ]
 	  };
@@ -42149,12 +44748,11 @@
 	        contains: [
 	          hljs.UNDERSCORE_TITLE_MODE,
 	          {
-	              className: 'params',
-	              begin: '\\(', end: '\\)'
-	          },
-	          {
-	              className: 'params',
-	              begin: '\\[', end: '\\]'
+	            className: 'params',
+	            variants: [
+	              {begin: '\\(', end: '\\)'},
+	              {begin: '\\[', end: '\\]'}
+	            ]
 	          }
 	        ]
 	      },
@@ -42168,14 +44766,12 @@
 	        ]
 	      },
 	      {
-	        className: 'matrix',
 	        begin: '\\[', end: '\\]',
 	        contains: COMMON_CONTAINS,
 	        relevance: 0,
 	        starts: TRANSPOSE
 	      },
 	      {
-	        className: 'cell',
 	        begin: '\\{', end: /}/,
 	        contains: COMMON_CONTAINS,
 	        relevance: 0,
@@ -42194,7 +44790,7 @@
 	};
 
 /***/ },
-/* 329 */
+/* 385 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42413,13 +45009,8 @@
 	        begin: '`', end: '`',
 	        contains: [hljs.BACKSLASH_ESCAPE]
 	      },
-	      {
-	        className: 'variable',
-	        variants: [
-	          {begin: '\\$\\d'},
-	          {begin: '[\\$\\%\\@](\\^\\w\\b|#\\w+|[^\\s\\w{]|{\\w+}|\\w+)'},
-	          {begin: '\\*(\\^\\w\\b|#\\w+|[^\\s\\w{]|{\\w+}|\\w+)', relevance: 0}
-	        ]
+	      { // eats variables
+	        begin: '[\\$\\%\\@](\\^\\w\\b|#\\w+|[^\\s\\w{]|{\\w+}|\\w+)'
 	      },
 	      hljs.C_LINE_COMMENT_MODE,
 	      hljs.C_BLOCK_COMMENT_MODE
@@ -42428,7 +45019,7 @@
 	};
 
 /***/ },
-/* 330 */
+/* 386 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42441,11 +45032,12 @@
 	      'pragma promise external trace atomic or_else require_complete_switch ' +
 	      'require_det require_semidet require_multi require_nondet ' +
 	      'require_cc_multi require_cc_nondet require_erroneous require_failure',
-	    pragma:
+	    meta:
+	      // pragma
 	      'inline no_inline type_spec source_file fact_table obsolete memo ' +
 	      'loop_check minimal_model terminates does_not_terminate ' +
-	      'check_termination promise_equivalent_clauses',
-	    preprocessor:
+	      'check_termination promise_equivalent_clauses ' +
+	      // preprocessor
 	      'foreign_proc foreign_decl foreign_code foreign_type ' +
 	      'foreign_import_module foreign_export_enum foreign_export ' +
 	      'foreign_enum may_call_mercury will_not_call_mercury thread_safe ' +
@@ -42460,15 +45052,7 @@
 	      'semidet_true semidet_false semidet_fail impure_true impure semipure'
 	  };
 
-	  var TODO = {
-	    className: 'label',
-	    begin: 'XXX', end: '$', endsWithParent: true,
-	    relevance: 0
-	  };
-	  var COMMENT = hljs.inherit(hljs.C_LINE_COMMENT_MODE, {begin: '%'});
-	  var CCOMMENT = hljs.inherit(hljs.C_BLOCK_COMMENT_MODE, {relevance: 0});
-	  COMMENT.contains.push(TODO);
-	  CCOMMENT.contains.push(TODO);
+	  var COMMENT = hljs.COMMENT('%', '$');
 
 	  var NUMCODE = {
 	    className: 'number',
@@ -42478,7 +45062,7 @@
 	  var ATOM = hljs.inherit(hljs.APOS_STRING_MODE, {relevance: 0});
 	  var STRING = hljs.inherit(hljs.QUOTE_STRING_MODE, {relevance: 0});
 	  var STRING_FMT = {
-	    className: 'constant',
+	    className: 'subst',
 	    begin: '\\\\[abfnrtv]\\|\\\\x[0-9a-fA-F]*\\\\\\|%[-+# *.0-9]*[dioxXucsfeEgGp]',
 	    relevance: 0
 	  };
@@ -42510,7 +45094,7 @@
 	      IMPLICATION,
 	      HEAD_BODY_CONJUNCTION,
 	      COMMENT,
-	      CCOMMENT,
+	      hljs.C_BLOCK_COMMENT_MODE,
 	      NUMCODE,
 	      hljs.NUMBER_MODE,
 	      ATOM,
@@ -42521,7 +45105,97 @@
 	};
 
 /***/ },
-/* 331 */
+/* 387 */
+/***/ function(module, exports) {
+
+	module.exports = function(hljs) {
+	    //local labels: %?[FB]?[AT]?\d{1,2}\w+
+	  return {
+	    case_insensitive: true,
+	    aliases: ['mips'],
+	    lexemes: '\\.?' + hljs.IDENT_RE,
+	    keywords: {
+	      meta:
+	        //GNU preprocs
+	        '.2byte .4byte .align .ascii .asciz .balign .byte .code .data .else .end .endif .endm .endr .equ .err .exitm .extern .global .hword .if .ifdef .ifndef .include .irp .long .macro .rept .req .section .set .skip .space .text .word .ltorg ',
+	      built_in:
+	        '$0 $1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 ' + // integer registers
+	        '$16 $17 $18 $19 $20 $21 $22 $23 $24 $25 $26 $27 $28 $29 $30 $31 ' + // integer registers
+	        'zero at v0 v1 a0 a1 a2 a3 a4 a5 a6 a7 ' + // integer register aliases
+	        't0 t1 t2 t3 t4 t5 t6 t7 t8 t9 s0 s1 s2 s3 s4 s5 s6 s7 s8 ' + // integer register aliases
+	        'k0 k1 gp sp fp ra ' + // integer register aliases
+	        '$f0 $f1 $f2 $f2 $f4 $f5 $f6 $f7 $f8 $f9 $f10 $f11 $f12 $f13 $f14 $f15 ' + // floating-point registers
+	        '$f16 $f17 $f18 $f19 $f20 $f21 $f22 $f23 $f24 $f25 $f26 $f27 $f28 $f29 $f30 $f31 ' + // floating-point registers
+	        'Context Random EntryLo0 EntryLo1 Context PageMask Wired EntryHi ' + // Coprocessor 0 registers
+	        'HWREna BadVAddr Count Compare SR IntCtl SRSCtl SRSMap Cause EPC PRId ' + // Coprocessor 0 registers
+	        'EBase Config Config1 Config2 Config3 LLAddr Debug DEPC DESAVE CacheErr ' + // Coprocessor 0 registers
+	        'ECC ErrorEPC TagLo DataLo TagHi DataHi WatchLo WatchHi PerfCtl PerfCnt ' // Coprocessor 0 registers
+	    },
+	    contains: [
+	      {
+	        className: 'keyword',
+	        begin: '\\b('+     //mnemonics
+	            // 32-bit integer instructions
+	            'addi?u?|andi?|b(al)?|beql?|bgez(al)?l?|bgtzl?|blezl?|bltz(al)?l?|' +
+	            'bnel?|cl[oz]|divu?|ext|ins|j(al)?|jalr(\.hb)?|jr(\.hb)?|lbu?|lhu?|' +
+	            'll|lui|lw[lr]?|maddu?|mfhi|mflo|movn|movz|msubu?|mthi|mtlo|mul|' +
+	            'multu?|nop|nor|ori?|rotrv?|sb|sc|se[bh]|sh|sllv?|slti?u?|srav?|' +
+	            'srlv?|subu?|sw[lr]?|xori?|wsbh|' +
+	            // floating-point instructions
+	            'abs\.[sd]|add\.[sd]|alnv.ps|bc1[ft]l?|' +
+	            'c\.(s?f|un|u?eq|[ou]lt|[ou]le|ngle?|seq|l[et]|ng[et])\.[sd]|' +
+	            '(ceil|floor|round|trunc)\.[lw]\.[sd]|cfc1|cvt\.d\.[lsw]|' +
+	            'cvt\.l\.[dsw]|cvt\.ps\.s|cvt\.s\.[dlw]|cvt\.s\.p[lu]|cvt\.w\.[dls]|' +
+	            'div\.[ds]|ldx?c1|luxc1|lwx?c1|madd\.[sd]|mfc1|mov[fntz]?\.[ds]|' +
+	            'msub\.[sd]|mth?c1|mul\.[ds]|neg\.[ds]|nmadd\.[ds]|nmsub\.[ds]|' +
+	            'p[lu][lu]\.ps|recip\.fmt|r?sqrt\.[ds]|sdx?c1|sub\.[ds]|suxc1|' +
+	            'swx?c1|' +
+	            // system control instructions
+	            'break|cache|d?eret|[de]i|ehb|mfc0|mtc0|pause|prefx?|rdhwr|' +
+	            'rdpgpr|sdbbp|ssnop|synci?|syscall|teqi?|tgei?u?|tlb(p|r|w[ir])|' +
+	            'tlti?u?|tnei?|wait|wrpgpr'+
+	        ')',
+	        end: '\\s'
+	      },
+	      hljs.COMMENT('[;#]', '$'),
+	      hljs.C_BLOCK_COMMENT_MODE,
+	      hljs.QUOTE_STRING_MODE,
+	      {
+	        className: 'string',
+	        begin: '\'',
+	        end: '[^\\\\]\'',
+	        relevance: 0
+	      },
+	      {
+	        className: 'title',
+	        begin: '\\|', end: '\\|',
+	        illegal: '\\n',
+	        relevance: 0
+	      },
+	      {
+	        className: 'number',
+	        variants: [
+	            {begin: '0x[0-9a-f]+'}, //hex
+	            {begin: '\\b-?\\d+'}           //bare number
+	        ],
+	        relevance: 0
+	      },
+	      {
+	        className: 'symbol',
+	        variants: [
+	            {begin: '^\\s*[a-z_\\.\\$][a-z0-9_\\.\\$]+:'}, //GNU MIPS syntax
+	            {begin: '^\\s*[0-9]+:'}, // numbered local labels
+	            {begin: '[0-9]+[bf]' }  // number local label reference (backwards, forwards)
+	        ],
+	        relevance: 0
+	      }
+	    ],
+	    illegal: '\/'
+	  };
+	};
+
+/***/ },
+/* 388 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42544,7 +45218,7 @@
 	};
 
 /***/ },
-/* 332 */
+/* 389 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42577,7 +45251,6 @@
 	    // contains defined later
 	  };
 	  var VAR = {
-	    className: 'variable',
 	    variants: [
 	      {begin: /\$\d/},
 	      {begin: /[\$%@](\^\w\b|#\w+(::\w+)*|{\w+}|\w+(::\w*)*)/},
@@ -42672,12 +45345,12 @@
 	      ]
 	    },
 	    {
-	      className: 'sub',
-	      beginKeywords: 'sub', end: '(\\s*\\(.*?\\))?[;{]',
-	      relevance: 5
+	      className: 'function',
+	      beginKeywords: 'sub', end: '(\\s*\\(.*?\\))?[;{]', excludeEnd: true,
+	      relevance: 5,
+	      contains: [hljs.TITLE_MODE]
 	    },
 	    {
-	      className: 'operator',
 	      begin: '-\\w\\b',
 	      relevance: 0
 	    },
@@ -42705,7 +45378,7 @@
 	};
 
 /***/ },
-/* 333 */
+/* 390 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42713,7 +45386,7 @@
 	    subLanguage: 'xml',
 	    contains: [
 	      {
-	        className: 'preprocessor',
+	        className: 'meta',
 	        begin: '^__(END|DATA)__$'
 	      },
 	    // mojolicious line
@@ -42734,7 +45407,7 @@
 	};
 
 /***/ },
-/* 334 */
+/* 391 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42753,7 +45426,8 @@
 	    keywords: {
 	      keyword: 'public private property continue exit extern new try catch ' +
 	        'eachin not abstract final select case default const local global field ' +
-	        'end if then else elseif endif while wend repeat until forever for to step next return module inline throw',
+	        'end if then else elseif endif while wend repeat until forever for ' +
+	        'to step next return module inline throw import',
 
 	      built_in: 'DebugLog DebugStop Error Print ACos ACosr ASin ASinr ATan ATan2 ATan2r ATanr Abs Abs Ceil ' +
 	        'Clamp Clamp Cos Cosr Exp Floor Log Max Max Min Min Pow Sgn Sgn Sin Sinr Sqrt Tan Tanr Seed PI HALFPI TWOPI',
@@ -42789,21 +45463,16 @@
 	        ]
 	      },
 	      {
-	        className: 'variable',
+	        className: 'built_in',
 	        begin: '\\b(self|super)\\b'
 	      },
 	      {
-	        className: 'preprocessor',
-	        beginKeywords: 'import',
-	        end: '$'
-	      },
-	      {
-	        className: 'preprocessor',
+	        className: 'meta',
 	        begin: '\\s*#', end: '$',
-	        keywords: 'if else elseif endif end then'
+	        keywords: {'meta-keyword': 'if else elseif endif end then'}
 	      },
 	      {
-	        className: 'pi',
+	        className: 'meta',
 	        begin: '^\\s*strict\\b'
 	      },
 	      {
@@ -42817,7 +45486,7 @@
 	};
 
 /***/ },
-/* 335 */
+/* 392 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42833,7 +45502,7 @@
 	    endsWithParent: true,
 	    lexemes: '[a-z/_]+',
 	    keywords: {
-	      built_in:
+	      literal:
 	        'on off yes no true false none blocked debug info notice warn error crit ' +
 	        'select break last permanent redirect kqueue rtsig epoll poll /dev/poll'
 	    },
@@ -42849,8 +45518,8 @@
 	          {begin: /'/, end: /'/}
 	        ]
 	      },
+	      // this swallows entire URLs to avoid detecting numbers within
 	      {
-	        className: 'url',
 	        begin: '([a-z]+):/', end: '\\s', endsWithParent: true, excludeEnd: true,
 	        contains: [VAR]
 	      },
@@ -42887,10 +45556,21 @@
 	    contains: [
 	      hljs.HASH_COMMENT_MODE,
 	      {
+	        begin: hljs.UNDERSCORE_IDENT_RE + '\\s+{', returnBegin: true,
+	        end: '{',
+	        contains: [
+	          {
+	            className: 'section',
+	            begin: hljs.UNDERSCORE_IDENT_RE
+	          }
+	        ],
+	        relevance: 0
+	      },
+	      {
 	        begin: hljs.UNDERSCORE_IDENT_RE + '\\s', end: ';|{', returnBegin: true,
 	        contains: [
 	          {
-	            className: 'title',
+	            className: 'attribute',
 	            begin: hljs.UNDERSCORE_IDENT_RE,
 	            starts: DEFAULT
 	          }
@@ -42903,7 +45583,7 @@
 	};
 
 /***/ },
-/* 336 */
+/* 393 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42914,7 +45594,7 @@
 	      literal: 'shared guarded stdin stdout stderr result|10 true false'
 	    },
 	    contains: [ {
-	        className: 'decorator', // Actually pragma
+	        className: 'meta', // Actually pragma
 	        begin: /{\./,
 	        end: /\.}/,
 	        relevance: 10
@@ -42934,24 +45614,17 @@
 	        begin: /\b[A-Z]\w+\b/,
 	        relevance: 0
 	      }, {
-	        className: 'type',
+	        className: 'built_in',
 	        begin: /\b(int|int8|int16|int32|int64|uint|uint8|uint16|uint32|uint64|float|float32|float64|bool|char|string|cstring|pointer|expr|stmt|void|auto|any|range|array|openarray|varargs|seq|set|clong|culong|cchar|cschar|cshort|cint|csize|clonglong|cfloat|cdouble|clongdouble|cuchar|cushort|cuint|culonglong|cstringarray|semistatic)\b/
 	      }, {
 	        className: 'number',
-	        begin: /\b(0[xX][0-9a-fA-F][_0-9a-fA-F]*)('?[iIuU](8|16|32|64))?/,
-	        relevance: 0
-	      }, {
-	        className: 'number',
-	        begin: /\b(0o[0-7][_0-7]*)('?[iIuUfF](8|16|32|64))?/,
-	        relevance: 0
-	      }, {
-	        className: 'number',
-	        begin: /\b(0(b|B)[01][_01]*)('?[iIuUfF](8|16|32|64))?/,
-	        relevance: 0
-	      }, {
-	        className: 'number',
-	        begin: /\b(\d[_\d]*)('?[iIuUfF](8|16|32|64))?/,
-	        relevance: 0
+	        relevance: 0,
+	        variants: [
+	          {begin: /\b(0[xX][0-9a-fA-F][_0-9a-fA-F]*)('?[iIuU](8|16|32|64))?/},
+	          {begin: /\b(0o[0-7][_0-7]*)('?[iIuUfF](8|16|32|64))?/},
+	          {begin: /\b(0(b|B)[01][_01]*)('?[iIuUfF](8|16|32|64))?/},
+	          {begin: /\b(\d[_\d]*)('?[iIuUfF](8|16|32|64))?/}
+	        ]
 	      },
 	      hljs.HASH_COMMENT_MODE
 	    ]
@@ -42959,15 +45632,18 @@
 	};
 
 /***/ },
-/* 337 */
+/* 394 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  var NIX_KEYWORDS = {
-	    keyword: 'rec with let in inherit assert if else then',
-	    constant: 'true false or and null',
+	    keyword:
+	      'rec with let in inherit assert if else then',
+	    literal:
+	      'true false or and null',
 	    built_in:
-	      'import abort baseNameOf dirOf isNull builtins map removeAttrs throw toString derivation'
+	      'import abort baseNameOf dirOf isNull builtins map removeAttrs throw ' +
+	      'toString derivation'
 	  };
 	  var ANTIQUOTE = {
 	    className: 'subst',
@@ -42976,33 +45652,28 @@
 	    keywords: NIX_KEYWORDS
 	  };
 	  var ATTRS = {
-	    className: 'variable',
-	    // TODO: we have to figure out a way how to exclude \s*=
-	    begin: /[a-zA-Z0-9-_]+(\s*=)/,
-	    relevance: 0
-	  };
-	  var SINGLE_QUOTE = {
-	    className: 'string',
-	    begin: "''",
-	    end: "''",
+	    begin: /[a-zA-Z0-9-_]+(\s*=)/, returnBegin: true,
+	    relevance: 0,
 	    contains: [
-	      ANTIQUOTE
+	      {
+	        className: 'attr',
+	        begin: /\S+/
+	      }
 	    ]
 	  };
-	  var DOUBLE_QUOTE = {
+	  var STRING = {
 	    className: 'string',
-	    begin: '"',
-	    end: '"',
-	    contains: [
-	      ANTIQUOTE
+	    contains: [ANTIQUOTE],
+	    variants: [
+	      {begin: "''", end: "''"},
+	      {begin: '"', end: '"'}
 	    ]
 	  };
 	  var EXPRESSIONS = [
 	    hljs.NUMBER_MODE,
 	    hljs.HASH_COMMENT_MODE,
 	    hljs.C_BLOCK_COMMENT_MODE,
-	    SINGLE_QUOTE,
-	    DOUBLE_QUOTE,
+	    STRING,
 	    ATTRS
 	  ];
 	  ANTIQUOTE.contains = EXPRESSIONS;
@@ -43014,18 +45685,18 @@
 	};
 
 /***/ },
-/* 338 */
+/* 395 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  var CONSTANTS = {
-	    className: 'symbol',
+	    className: 'variable',
 	    begin: '\\$(ADMINTOOLS|APPDATA|CDBURN_AREA|CMDLINE|COMMONFILES32|COMMONFILES64|COMMONFILES|COOKIES|DESKTOP|DOCUMENTS|EXEDIR|EXEFILE|EXEPATH|FAVORITES|FONTS|HISTORY|HWNDPARENT|INSTDIR|INTERNET_CACHE|LANGUAGE|LOCALAPPDATA|MUSIC|NETHOOD|OUTDIR|PICTURES|PLUGINSDIR|PRINTHOOD|PROFILE|PROGRAMFILES32|PROGRAMFILES64|PROGRAMFILES|QUICKLAUNCH|RECENT|RESOURCES_LOCALIZED|RESOURCES|SENDTO|SMPROGRAMS|SMSTARTUP|STARTMENU|SYSDIR|TEMP|TEMPLATES|VIDEOS|WINDIR)'
 	  };
 
 	  var DEFINES = {
 	    // ${defines}
-	    className: 'constant',
+	    className: 'variable',
 	    begin: '\\$+{[a-zA-Z0-9_]+}'
 	  };
 
@@ -43038,19 +45709,19 @@
 
 	  var LANGUAGES = {
 	    // $(language_strings)
-	    className: 'constant',
+	    className: 'variable',
 	    begin: '\\$+\\([a-zA-Z0-9_]+\\)'
 	  };
 
 	  var PARAMETERS = {
 	    // command parameters
-	    className: 'params',
+	    className: 'built_in',
 	    begin: '(ARCHIVE|FILE_ATTRIBUTE_ARCHIVE|FILE_ATTRIBUTE_NORMAL|FILE_ATTRIBUTE_OFFLINE|FILE_ATTRIBUTE_READONLY|FILE_ATTRIBUTE_SYSTEM|FILE_ATTRIBUTE_TEMPORARY|HKCR|HKCU|HKDD|HKEY_CLASSES_ROOT|HKEY_CURRENT_CONFIG|HKEY_CURRENT_USER|HKEY_DYN_DATA|HKEY_LOCAL_MACHINE|HKEY_PERFORMANCE_DATA|HKEY_USERS|HKLM|HKPD|HKU|IDABORT|IDCANCEL|IDIGNORE|IDNO|IDOK|IDRETRY|IDYES|MB_ABORTRETRYIGNORE|MB_DEFBUTTON1|MB_DEFBUTTON2|MB_DEFBUTTON3|MB_DEFBUTTON4|MB_ICONEXCLAMATION|MB_ICONINFORMATION|MB_ICONQUESTION|MB_ICONSTOP|MB_OK|MB_OKCANCEL|MB_RETRYCANCEL|MB_RIGHT|MB_RTLREADING|MB_SETFOREGROUND|MB_TOPMOST|MB_USERICON|MB_YESNO|NORMAL|OFFLINE|READONLY|SHCTX|SHELL_CONTEXT|SYSTEM|TEMPORARY)'
 	  };
 
 	  var COMPILER ={
 	    // !compiler_flags
-	    className: 'constant',
+	    className: 'keyword',
 	    begin: '\\!(addincludedir|addplugindir|appendfile|cd|define|delfile|echo|else|endif|error|execute|finalize|getdllversionsystem|ifdef|ifmacrodef|ifmacrondef|ifndef|if|include|insertmacro|macroend|macro|makensis|packhdr|searchparse|searchreplace|tempfile|undef|verbose|warning)'
 	  };
 
@@ -43071,7 +45742,6 @@
 	        illegal: '\\n',
 	        contains: [
 	          { // $\n, $\r, $\t, $$
-	            className: 'symbol',
 	            begin: '\\$(\\\\(n|r|t)|\\$)'
 	          },
 	          CONSTANTS,
@@ -43098,7 +45768,6 @@
 	      PARAMETERS,
 	      hljs.NUMBER_MODE,
 	      { // plug::ins
-	        className: 'literal',
 	        begin: hljs.IDENT_RE + '::' + hljs.IDENT_RE
 	      }
 	    ]
@@ -43106,13 +45775,13 @@
 	};
 
 /***/ },
-/* 339 */
+/* 396 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  var API_CLASS = {
 	    className: 'built_in',
-	    begin: '(AV|CA|CF|CG|CI|MK|MP|NS|UI)\\w+',
+	    begin: '(AV|CA|CF|CG|CI|MK|MP|NS|UI|XC)\\w+',
 	  };
 	  var OBJC_KEYWORDS = {
 	    keyword:
@@ -43158,12 +45827,12 @@
 	        ]
 	      },
 	      {
-	        className: 'preprocessor',
+	        className: 'meta',
 	        begin: '#',
 	        end: '$',
 	        contains: [
 	          {
-	            className: 'title',
+	            className: 'meta-string',
 	            variants: [
 	              { begin: '\"', end: '\"' },
 	              { begin: '<', end: '>' }
@@ -43180,7 +45849,6 @@
 	        ]
 	      },
 	      {
-	        className: 'variable',
 	        begin: '\\.'+hljs.UNDERSCORE_IDENT_RE,
 	        relevance: 0
 	      }
@@ -43189,7 +45857,7 @@
 	};
 
 /***/ },
-/* 340 */
+/* 397 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43234,7 +45902,7 @@
 	        /* the grammar is ambiguous on how 'a'b should be interpreted but not the compiler */
 	      },
 	      { /* polymorphic variant */
-	        className: 'tag',
+	        className: 'type',
 	        begin: '`[A-Z][\\w\']*'
 	      },
 	      { /* module or constructor */
@@ -43243,9 +45911,9 @@
 	        relevance: 0
 	      },
 	      { /* don't color identifiers, but safely catch all identifiers with '*/
-	        begin: '[a-z_]\\w*\'[\\w\']*'
+	        begin: '[a-z_]\\w*\'[\\w\']*', relevance: 0
 	      },
-	      hljs.inherit(hljs.APOS_STRING_MODE, {className: 'char', relevance: 0}),
+	      hljs.inherit(hljs.APOS_STRING_MODE, {className: 'string', relevance: 0}),
 	      hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null}),
 	      {
 	        className: 'number',
@@ -43264,7 +45932,7 @@
 	};
 
 /***/ },
-/* 341 */
+/* 398 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43283,8 +45951,8 @@
 		},
 		STRING = hljs.inherit(hljs.QUOTE_STRING_MODE,{illegal: null}),
 		PREPRO = {
-			className: 'preprocessor',
-			keywords: 'include use',
+			className: 'meta',
+			keywords: {'meta-keyword': 'include use'},
 			begin: 'include|use <',
 			end: '>'
 		},
@@ -43294,7 +45962,6 @@
 			contains: ['self', NUMBERS, STRING, SPECIAL_VARS, LITERALS]
 		},
 		MODIFIERS = {
-			className: 'built_in',
 			begin: '[*!#%]',
 			relevance: 0
 		},
@@ -43326,7 +45993,7 @@
 	};
 
 /***/ },
-/* 342 */
+/* 399 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43399,7 +46066,7 @@
 	};
 
 /***/ },
-/* 343 */
+/* 400 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43425,7 +46092,7 @@
 	        }
 	      ),
 	      {
-	        className: 'preprocessor',
+	        className: 'meta',
 	        begin: '^@(?:BASE|USE|CLASS|OPTIONS)$',
 	        relevance: 10
 	      },
@@ -43451,7 +46118,7 @@
 	};
 
 /***/ },
-/* 344 */
+/* 401 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43507,15 +46174,15 @@
 	};
 
 /***/ },
-/* 345 */
+/* 402 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  var VARIABLE = {
-	    className: 'variable', begin: '\\$+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*'
+	    begin: '\\$+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*'
 	  };
 	  var PREPROCESSOR = {
-	    className: 'preprocessor', begin: /<\?(php)?|\?>/
+	    className: 'meta', begin: /<\?(php)?|\?>/
 	  };
 	  var STRING = {
 	    className: 'string',
@@ -43636,7 +46303,7 @@
 	};
 
 /***/ },
-/* 346 */
+/* 403 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43649,6 +46316,10 @@
 	    variants: [
 	      {begin: /\$[\w\d][\w\d_:]*/}
 	    ]
+	  };
+	  var LITERAL = {
+	    className: 'literal',
+	    begin: /\$(null|true|false)\b/
 	  };
 	  var QUOTE_STRING = {
 	    className: 'string',
@@ -43673,22 +46344,22 @@
 	    case_insensitive: true,
 	    keywords: {
 	      keyword: 'if else foreach return function do while until elseif begin for trap data dynamicparam end break throw param continue finally in switch exit filter try process catch',
-	      literal: '$null $true $false',
 	      built_in: 'Add-Content Add-History Add-Member Add-PSSnapin Clear-Content Clear-Item Clear-Item Property Clear-Variable Compare-Object ConvertFrom-SecureString Convert-Path ConvertTo-Html ConvertTo-SecureString Copy-Item Copy-ItemProperty Export-Alias Export-Clixml Export-Console Export-Csv ForEach-Object Format-Custom Format-List Format-Table Format-Wide Get-Acl Get-Alias Get-AuthenticodeSignature Get-ChildItem Get-Command Get-Content Get-Credential Get-Culture Get-Date Get-EventLog Get-ExecutionPolicy Get-Help Get-History Get-Host Get-Item Get-ItemProperty Get-Location Get-Member Get-PfxCertificate Get-Process Get-PSDrive Get-PSProvider Get-PSSnapin Get-Service Get-TraceSource Get-UICulture Get-Unique Get-Variable Get-WmiObject Group-Object Import-Alias Import-Clixml Import-Csv Invoke-Expression Invoke-History Invoke-Item Join-Path Measure-Command Measure-Object Move-Item Move-ItemProperty New-Alias New-Item New-ItemProperty New-Object New-PSDrive New-Service New-TimeSpan New-Variable Out-Default Out-File Out-Host Out-Null Out-Printer Out-String Pop-Location Push-Location Read-Host Remove-Item Remove-ItemProperty Remove-PSDrive Remove-PSSnapin Remove-Variable Rename-Item Rename-ItemProperty Resolve-Path Restart-Service Resume-Service Select-Object Select-String Set-Acl Set-Alias Set-AuthenticodeSignature Set-Content Set-Date Set-ExecutionPolicy Set-Item Set-ItemProperty Set-Location Set-PSDebug Set-Service Set-TraceSource Set-Variable Sort-Object Split-Path Start-Service Start-Sleep Start-Transcript Stop-Process Stop-Service Stop-Transcript Suspend-Service Tee-Object Test-Path Trace-Command Update-FormatData Update-TypeData Where-Object Write-Debug Write-Error Write-Host Write-Output Write-Progress Write-Verbose Write-Warning',
-	      operator: '-ne -eq -lt -gt -ge -le -not -like -notlike -match -notmatch -contains -notcontains -in -notin -replace'
+	      nomarkup: '-ne -eq -lt -gt -ge -le -not -like -notlike -match -notmatch -contains -notcontains -in -notin -replace'
 	    },
 	    contains: [
 	      hljs.HASH_COMMENT_MODE,
 	      hljs.NUMBER_MODE,
 	      QUOTE_STRING,
 	      APOS_STRING,
+	      LITERAL,
 	      VAR
 	    ]
 	  };
 	};
 
 /***/ },
-/* 347 */
+/* 404 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43702,11 +46373,11 @@
 	        'for true while long throw strictfp finally protected import native final return void ' +
 	        'enum else break transient new catch instanceof byte super volatile case assert short ' +
 	        'package default double public try this switch continue throws protected public private',
-	      constant: 'P2D P3D HALF_PI PI QUARTER_PI TAU TWO_PI',
-	      variable: 'displayHeight displayWidth mouseY mouseX mousePressed pmouseX pmouseY key ' +
-	        'keyCode pixels focused frameCount frameRate height width',
+	      literal: 'P2D P3D HALF_PI PI QUARTER_PI TAU TWO_PI',
 	      title: 'setup draw',
-	      built_in: 'size createGraphics beginDraw createShape loadShape PShape arc ellipse line point ' +
+	      built_in: 'displayHeight displayWidth mouseY mouseX mousePressed pmouseX pmouseY key ' +
+	        'keyCode pixels focused frameCount frameRate height width ' +
+	        'size createGraphics beginDraw createShape loadShape PShape arc ellipse line point ' +
 	        'quad rect triangle bezier bezierDetail bezierPoint bezierTangent curve curveDetail curvePoint ' +
 	        'curveTangent curveTightness shape shapeMode beginContour beginShape bezierVertex curveVertex ' +
 	        'endContour endShape quadraticVertex vertex ellipseMode noSmooth rectMode smooth strokeCap ' +
@@ -43740,7 +46411,7 @@
 	};
 
 /***/ },
-/* 348 */
+/* 405 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43748,25 +46419,15 @@
 	    contains: [
 	      hljs.C_NUMBER_MODE,
 	      {
-	        className: 'built_in',
-	        begin: '{', end: '}$',
-	        excludeBegin: true, excludeEnd: true,
-	        contains: [hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE],
-	        relevance: 0
-	      },
-	      {
-	        className: 'filename',
 	        begin: '[a-zA-Z_][\\da-zA-Z_]+\\.[\\da-zA-Z_]{1,3}', end: ':',
 	        excludeEnd: true
 	      },
 	      {
-	        className: 'header',
 	        begin: '(ncalls|tottime|cumtime)', end: '$',
 	        keywords: 'ncalls tottime|10 cumtime|10 filename',
 	        relevance: 10
 	      },
 	      {
-	        className: 'summary',
 	        begin: 'function calls', end: '$',
 	        contains: [hljs.C_NUMBER_MODE],
 	        relevance: 10
@@ -43774,11 +46435,9 @@
 	      hljs.APOS_STRING_MODE,
 	      hljs.QUOTE_STRING_MODE,
 	      {
-	        className: 'function',
+	        className: 'string',
 	        begin: '\\(', end: '\\)$',
-	        contains: [
-	          hljs.UNDERSCORE_TITLE_MODE
-	        ],
+	        excludeBegin: true, excludeEnd: true,
 	        relevance: 0
 	      }
 	    ]
@@ -43786,21 +46445,20 @@
 	};
 
 /***/ },
-/* 349 */
+/* 406 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 
 	  var ATOM = {
 
-	    className: 'atom',
 	    begin: /[a-z][A-Za-z0-9_]*/,
 	    relevance: 0
 	  };
 
 	  var VAR = {
 
-	    className: 'name',
+	    className: 'symbol',
 	    variants: [
 	      {begin: /[A-Z][a-zA-Z0-9_]*/},
 	      {begin: /_[A-Za-z0-9_]*/},
@@ -43879,7 +46537,7 @@
 	};
 
 /***/ },
-/* 350 */
+/* 407 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43911,7 +46569,6 @@
 	        keywords: 'rpc returns'
 	      },
 	      {
-	        className: 'constant',
 	        begin: /^\s*[A-Z_]+/,
 	        end: /\s*=/, excludeEnd: true
 	      }
@@ -43920,7 +46577,7 @@
 	};
 
 /***/ },
-/* 351 */
+/* 408 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43994,7 +46651,7 @@
 	        beginKeywords: 'define', end: /\{/,
 	        contains: [
 	          {
-	            className: 'title', begin: hljs.IDENT_RE, endsParent: true
+	            className: 'section', begin: hljs.IDENT_RE, endsParent: true
 	          }
 	        ]
 	      },
@@ -44003,7 +46660,7 @@
 	        end: /\S/,
 	        contains: [
 	          {
-	            className: 'name',
+	            className: 'keyword',
 	            begin: hljs.IDENT_RE
 	          },
 	          {
@@ -44014,7 +46671,14 @@
 	              STRING,
 	              COMMENT,
 	              {
-	                begin:'[a-zA-Z_]+\\s*=>'
+	                begin:'[a-zA-Z_]+\\s*=>',
+	                returnBegin: true, end: '=>',
+	                contains: [
+	                  {
+	                    className: 'attr',
+	                    begin: hljs.IDENT_RE,
+	                  }
+	                ]
 	              },
 	              {
 	                className: 'number',
@@ -44032,12 +46696,12 @@
 	};
 
 /***/ },
-/* 352 */
+/* 409 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  var PROMPT = {
-	    className: 'prompt',  begin: /^(>>>|\.\.\.) /
+	    className: 'meta',  begin: /^(>>>|\.\.\.) /
 	  };
 	  var STRING = {
 	    className: 'string',
@@ -44110,7 +46774,7 @@
 	        contains: [hljs.UNDERSCORE_TITLE_MODE, PARAMS]
 	      },
 	      {
-	        className: 'decorator',
+	        className: 'meta',
 	        begin: /^[\t ]*@/, end: /$/
 	      },
 	      {
@@ -44121,24 +46785,24 @@
 	};
 
 /***/ },
-/* 353 */
+/* 410 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  var Q_KEYWORDS = {
 	  keyword:
 	    'do while select delete by update from',
-	  constant:
+	  literal:
 	    '0b 1b',
 	  built_in:
 	    'neg not null string reciprocal floor ceiling signum mod xbar xlog and or each scan over prior mmu lsq inv md5 ltime gtime count first var dev med cov cor all any rand sums prds mins maxs fills deltas ratios avgs differ prev next rank reverse iasc idesc asc desc msum mcount mavg mdev xrank mmin mmax xprev rotate distinct group where flip type key til get value attr cut set upsert raze union inter except cross sv vs sublist enlist read0 read1 hopen hclose hdel hsym hcount peach system ltrim rtrim trim lower upper ssr view tables views cols xcols keys xkey xcol xasc xdesc fkeys meta lj aj aj0 ij pj asof uj ww wj wj1 fby xgroup ungroup ej save load rsave rload show csv parse eval min max avg wavg wsum sin cos tan sum',
-	  typename:
+	  type:
 	    '`float `double int `timestamp `timespan `datetime `time `boolean `symbol `char `byte `short `long `real `month `date `minute `second `guid'
 	  };
 	  return {
 	  aliases:['k', 'kdb'],
 	  keywords: Q_KEYWORDS,
-	  lexemes: /\b(`?)[A-Za-z0-9_]+\b/,
+	  lexemes: /(`?)[A-Za-z0-9_]+\b/,
 	  contains: [
 	  hljs.C_LINE_COMMENT_MODE,
 	    hljs.QUOTE_STRING_MODE,
@@ -44148,7 +46812,7 @@
 	};
 
 /***/ },
-/* 354 */
+/* 411 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -44222,7 +46886,7 @@
 	};
 
 /***/ },
-/* 355 */
+/* 412 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -44253,11 +46917,30 @@
 	};
 
 /***/ },
-/* 356 */
+/* 413 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
-	  var IDENTIFIER = '[a-zA-Z-_][^\n{\r\n]+\\{';
+	  var IDENTIFIER = '[a-zA-Z-_][^\\n{]+\\{';
+
+	  var PROPERTY = {
+	    className: 'attribute',
+	    begin: /[a-zA-Z-_]+/, end: /\s*:/, excludeEnd: true,
+	    starts: {
+	      end: ';',
+	      relevance: 0,
+	      contains: [
+	        {
+	          className: 'variable',
+	          begin: /\.[a-zA-Z-_]+/
+	        },
+	        {
+	          className: 'keyword',
+	          begin: /\(optional\)/
+	        }
+	      ]
+	    }
+	  };
 
 	  return {
 	    aliases: ['graph', 'instances'],
@@ -44266,46 +46949,34 @@
 	    contains: [
 	      // Facet sections
 	      {
-	        className: 'facet',
 	        begin: '^facet ' + IDENTIFIER,
 	        end: '}',
-	        keywords: 'facet installer exports children extends',
+	        keywords: 'facet',
 	        contains: [
+	          PROPERTY,
 	          hljs.HASH_COMMENT_MODE
 	        ]
 	      },
 
 	      // Instance sections
 	      {
-	        className: 'instance-of',
-	        begin: '^instance of ' + IDENTIFIER,
+	        begin: '^\\s*instance of ' + IDENTIFIER,
 	        end: '}',
 	        keywords: 'name count channels instance-data instance-state instance of',
+	        illegal: /\S/,
 	        contains: [
-	          // Instance overridden properties
-	          {
-	            className: 'keyword',
-	            begin: '[a-zA-Z-_]+( |\t)*:'
-	          },
+	          'self',
+	          PROPERTY,
 	          hljs.HASH_COMMENT_MODE
 	        ]
 	      },
 
 	      // Component sections
 	      {
-	        className: 'component',
 	        begin: '^' + IDENTIFIER,
 	        end: '}',
-	        lexemes: '\\(?[a-zA-Z]+\\)?',
-	        keywords: 'installer exports children extends imports facets alias (optional)',
 	        contains: [
-	          // Imported component variables
-	          {
-	            className: 'string',
-	            begin: '\\.[a-zA-Z-_]+',
-	            end: '\\s|,|;',
-	            excludeEnd: true
-	          },
+	          PROPERTY,
 	          hljs.HASH_COMMENT_MODE
 	        ]
 	      },
@@ -44317,7 +46988,7 @@
 	};
 
 /***/ },
-/* 357 */
+/* 414 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -44342,15 +47013,14 @@
 	      hljs.APOS_STRING_MODE,
 	      hljs.C_NUMBER_MODE,
 	      {
-	        className: 'preprocessor',
+	        className: 'meta',
 	        begin: '#', end: '$'
 	      },
 	      {
-	        className: 'shader',
+	        className: 'class',
 	        beginKeywords: 'surface displacement light volume imager', end: '\\('
 	      },
 	      {
-	        className: 'shading',
 	        beginKeywords: 'illuminate illuminance gather', end: '\\('
 	      }
 	    ]
@@ -44358,7 +47028,7 @@
 	};
 
 /***/ },
-/* 358 */
+/* 415 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -44412,7 +47082,7 @@
 	      hljs.QUOTE_STRING_MODE,
 	      hljs.C_NUMBER_MODE,
 	      {
-	        className: 'array',
+	        className: 'literal',
 	        variants: [
 	          {begin: '#\\s+[a-zA-Z\\ \\.]*', relevance: 0}, // looks like #-comment
 	          {begin: '#[a-zA-Z\\ \\.]+'}
@@ -44423,13 +47093,25 @@
 	};
 
 /***/ },
-/* 359 */
+/* 416 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  var NUM_SUFFIX = '([uif](8|16|32|64|size))\?';
 	  var BLOCK_COMMENT = hljs.inherit(hljs.C_BLOCK_COMMENT_MODE);
 	  BLOCK_COMMENT.contains.push('self');
+	  var BUILTINS =
+	    // prelude
+	    'Copy Send Sized Sync Drop Fn FnMut FnOnce drop Box ToOwned Clone ' +
+	    'PartialEq PartialOrd Eq Ord AsRef AsMut Into From Default Iterator ' +
+	    'Extend IntoIterator DoubleEndedIterator ExactSizeIterator Option ' +
+	    'Some None Result Ok Err SliceConcatExt String ToString Vec ' +
+	    // macros
+	    'assert! assert_eq! bitflags! bytes! cfg! col! concat! concat_idents! ' +
+	    'debug_assert! debug_assert_eq! env! panic! file! format! format_args! ' +
+	    'include_bin! include_str! line! local_data_key! module_path! ' +
+	    'option_env! print! println! select! stringify! try! unimplemented! ' +
+	    'unreachable! vec! write! writeln!';
 	  return {
 	    aliases: ['rs'],
 	    keywords: {
@@ -44442,18 +47124,10 @@
 	        'uint u8 u32 u64 ' +
 	        'float f32 f64 ' +
 	        'str char bool',
+	      literal:
+	        'true false',
 	      built_in:
-	        // prelude
-	        'Copy Send Sized Sync Drop Fn FnMut FnOnce drop Box ToOwned Clone ' +
-	        'PartialEq PartialOrd Eq Ord AsRef AsMut Into From Default Iterator ' +
-	        'Extend IntoIterator DoubleEndedIterator ExactSizeIterator Option ' +
-	        'Some None Result Ok Err SliceConcatExt String ToString Vec ' +
-	        // macros
-	        'assert! assert_eq! bitflags! bytes! cfg! col! concat! concat_idents! ' +
-	        'debug_assert! debug_assert_eq! env! panic! file! format! format_args! ' +
-	        'include_bin! include_str! line! local_data_key! module_path! ' +
-	        'option_env! print! println! select! stringify! try! unimplemented! ' +
-	        'unreachable! vec! write! writeln!'
+	        BUILTINS
 	    },
 	    lexemes: hljs.IDENT_RE + '!?',
 	    illegal: '</',
@@ -44466,8 +47140,11 @@
 	        variants: [
 	           { begin: /r(#*)".*?"\1(?!#)/ },
 	           { begin: /'\\?(x\w{2}|u\w{4}|U\w{8}|.)'/ },
-	           { begin: /'[a-zA-Z_][a-zA-Z0-9_]*/ }
 	        ]
+	      },
+	      {
+	        className: 'symbol',
+	        begin: /'[a-zA-Z_][a-zA-Z0-9_]*/
 	      },
 	      {
 	        className: 'number',
@@ -44487,15 +47164,17 @@
 	        contains: [hljs.UNDERSCORE_TITLE_MODE]
 	      },
 	      {
-	        className: 'preprocessor',
+	        className: 'meta',
 	        begin: '#\\!?\\[', end: '\\]'
 	      },
 	      {
+	        className: 'class',
 	        beginKeywords: 'type', end: '(=|<)',
 	        contains: [hljs.UNDERSCORE_TITLE_MODE],
 	        illegal: '\\S'
 	      },
 	      {
+	        className: 'class',
 	        beginKeywords: 'trait enum', end: '{',
 	        contains: [
 	          hljs.inherit(hljs.UNDERSCORE_TITLE_MODE, {endsParent: true})
@@ -44503,7 +47182,8 @@
 	        illegal: '[\\w\\d]'
 	      },
 	      {
-	        begin: hljs.IDENT_RE + '::'
+	        begin: hljs.IDENT_RE + '::',
+	        keywords: {built_in: BUILTINS}
 	      },
 	      {
 	        begin: '->'
@@ -44513,19 +47193,47 @@
 	};
 
 /***/ },
-/* 360 */
+/* 417 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 
-	  var ANNOTATION = {
-	    className: 'annotation', begin: '@[A-Za-z]+'
+	  var ANNOTATION = { className: 'meta', begin: '@[A-Za-z]+' };
+
+	  // used in strings for escaping/interpolation/substitution
+	  var SUBST = {
+	    className: 'subst',
+	    variants: [
+	      {begin: '\\$[A-Za-z0-9_]+'},
+	      {begin: '\\${', end: '}'}
+	    ]
 	  };
 
 	  var STRING = {
 	    className: 'string',
-	    begin: 'u?r?"""', end: '"""',
-	    relevance: 10
+	    variants: [
+	      {
+	        begin: '"', end: '"',
+	        illegal: '\\n',
+	        contains: [hljs.BACKSLASH_ESCAPE]
+	      },
+	      {
+	        begin: '"""', end: '"""',
+	        relevance: 10
+	      },
+	      {
+	        begin: '[a-z]+"', end: '"',
+	        illegal: '\\n',
+	        contains: [hljs.BACKSLASH_ESCAPE, SUBST]
+	      },
+	      {
+	        className: 'string',
+	        begin: '[a-z]+"""', end: '"""',
+	        contains: [SUBST],
+	        relevance: 10
+	      }
+	    ]
+
 	  };
 
 	  var SYMBOL = {
@@ -44548,14 +47256,39 @@
 	  var CLASS = {
 	    className: 'class',
 	    beginKeywords: 'class object trait type',
-	    end: /[:={\[(\n;]/,
-	    contains: [{className: 'keyword', beginKeywords: 'extends with', relevance: 10}, NAME]
+	    end: /[:={\[\n;]/,
+	    excludeEnd: true,
+	    contains: [
+	      {
+	        beginKeywords: 'extends with',
+	        relevance: 10
+	      },
+	      {
+	        begin: /\[/,
+	        end: /\]/,
+	        excludeBegin: true,
+	        excludeEnd: true,
+	        relevance: 0,
+	        contains: [TYPE]
+	      },
+	      {
+	        className: 'params',
+	        begin: /\(/,
+	        end: /\)/,
+	        excludeBegin: true,
+	        excludeEnd: true,
+	        relevance: 0,
+	        contains: [TYPE]
+	      },
+	      NAME
+	    ]
 	  };
 
 	  var METHOD = {
 	    className: 'function',
 	    beginKeywords: 'def',
 	    end: /[:={\[(\n;]/,
+	    excludeEnd: true,
 	    contains: [NAME]
 	  };
 
@@ -44568,7 +47301,6 @@
 	      hljs.C_LINE_COMMENT_MODE,
 	      hljs.C_BLOCK_COMMENT_MODE,
 	      STRING,
-	      hljs.QUOTE_STRING_MODE,
 	      SYMBOL,
 	      TYPE,
 	      METHOD,
@@ -44580,7 +47312,7 @@
 	};
 
 /***/ },
-/* 361 */
+/* 418 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -44588,7 +47320,7 @@
 	  var SCHEME_SIMPLE_NUMBER_RE = '(\\-|\\+)?\\d+([./]\\d+)?';
 	  var SCHEME_COMPLEX_NUMBER_RE = SCHEME_SIMPLE_NUMBER_RE + '[+\\-]' + SCHEME_SIMPLE_NUMBER_RE + 'i';
 	  var BUILTINS = {
-	    built_in:
+	    'builtin-name':
 	      'case-lambda call/cc class define-class exit-handler field import ' +
 	      'inherit init-field interface let*-values let-values let/ec mixin ' +
 	      'opt-lambda override protect provide public rename require ' +
@@ -44625,7 +47357,7 @@
 	  };
 
 	  var SHEBANG = {
-	    className: 'shebang',
+	    className: 'meta',
 	    begin: '^#!',
 	    end: '$'
 	  };
@@ -44671,7 +47403,7 @@
 	  };
 
 	  var QUOTED_IDENT = {
-	    className: 'variable',
+	    className: 'symbol',
 	    begin: '\'' + SCHEME_IDENT_RE
 	  };
 
@@ -44681,14 +47413,13 @@
 	  };
 
 	  var LIST = {
-	    className: 'list',
 	    variants: [
 	      { begin: '\\(', end: '\\)' },
 	      { begin: '\\[', end: '\\]' }
 	    ],
 	    contains: [
 	      {
-	        className: 'keyword',
+	        className: 'name',
 	        begin: SCHEME_IDENT_RE,
 	        lexemes: SCHEME_IDENT_RE,
 	        keywords: BUILTINS
@@ -44706,7 +47437,7 @@
 	};
 
 /***/ },
-/* 362 */
+/* 419 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -44722,24 +47453,25 @@
 
 	  return {
 	    aliases: ['sci'],
+	    lexemes: /%?\w+/,
 	    keywords: {
-	      keyword: 'abort break case clear catch continue do elseif else endfunction end for function'+
-	        'global if pause return resume select try then while'+
+	      keyword: 'abort break case clear catch continue do elseif else endfunction end for function '+
+	        'global if pause return resume select try then while',
+	      literal:
 	        '%f %F %t %T %pi %eps %inf %nan %e %i %z %s',
 	      built_in: // Scilab has more than 2000 functions. Just list the most commons
-	       'abs and acos asin atan ceil cd chdir clearglobal cosh cos cumprod deff disp error'+
-	       'exec execstr exists exp eye gettext floor fprintf fread fsolve imag isdef isempty'+
-	       'isinfisnan isvector lasterror length load linspace list listfiles log10 log2 log'+
-	       'max min msprintf mclose mopen ones or pathconvert poly printf prod pwd rand real'+
-	       'round sinh sin size gsort sprintf sqrt strcat strcmps tring sum system tanh tan'+
+	       'abs and acos asin atan ceil cd chdir clearglobal cosh cos cumprod deff disp error '+
+	       'exec execstr exists exp eye gettext floor fprintf fread fsolve imag isdef isempty '+
+	       'isinfisnan isvector lasterror length load linspace list listfiles log10 log2 log '+
+	       'max min msprintf mclose mopen ones or pathconvert poly printf prod pwd rand real '+
+	       'round sinh sin size gsort sprintf sqrt strcat strcmps tring sum system tanh tan '+
 	       'type typename warning zeros matrix'
 	    },
 	    illegal: '("|#|/\\*|\\s+/\\w+)',
 	    contains: [
 	      {
 	        className: 'function',
-	        beginKeywords: 'function endfunction', end: '$',
-	        keywords: 'function endfunction|10',
+	        beginKeywords: 'function', end: '$',
 	        contains: [
 	          hljs.UNDERSCORE_TITLE_MODE,
 	          {
@@ -44749,12 +47481,10 @@
 	        ]
 	      },
 	      {
-	        className: 'transposed_variable',
 	        begin: '[a-zA-Z_][a-zA-Z_0-9]*(\'+[\\.\']*|[\\.\']+)', end: '',
 	        relevance: 0
 	      },
 	      {
-	        className: 'matrix',
 	        begin: '\\[', end: '\\]\'*[\\.\']*',
 	        relevance: 0,
 	        contains: COMMON_CONTAINS
@@ -44765,7 +47495,7 @@
 	};
 
 /***/ },
-/* 363 */
+/* 420 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -44774,15 +47504,8 @@
 	    className: 'variable',
 	    begin: '(\\$' + IDENT_RE + ')\\b'
 	  };
-	  var FUNCTION = {
-	    className: 'function',
-	    begin: IDENT_RE + '\\(',
-	    returnBegin: true,
-	    excludeEnd: true,
-	    end: '\\('
-	  };
 	  var HEXCOLOR = {
-	    className: 'hexcolor', begin: '#[0-9A-Fa-f]+'
+	    className: 'number', begin: '#[0-9A-Fa-f]+'
 	  };
 	  var DEF_INTERNALS = {
 	    className: 'attribute',
@@ -44790,17 +47513,15 @@
 	    excludeEnd: true,
 	    illegal: '[^\\s]',
 	    starts: {
-	      className: 'value',
 	      endsWithParent: true, excludeEnd: true,
 	      contains: [
-	        FUNCTION,
 	        HEXCOLOR,
 	        hljs.CSS_NUMBER_MODE,
 	        hljs.QUOTE_STRING_MODE,
 	        hljs.APOS_STRING_MODE,
 	        hljs.C_BLOCK_COMMENT_MODE,
 	        {
-	          className: 'important', begin: '!important'
+	          className: 'meta', begin: '!important'
 	        }
 	      ]
 	    }
@@ -44811,31 +47532,27 @@
 	    contains: [
 	      hljs.C_LINE_COMMENT_MODE,
 	      hljs.C_BLOCK_COMMENT_MODE,
-	      FUNCTION,
 	      {
-	        className: 'id', begin: '\\#[A-Za-z0-9_-]+',
+	        className: 'selector-id', begin: '\\#[A-Za-z0-9_-]+',
 	        relevance: 0
 	      },
 	      {
-	        className: 'class', begin: '\\.[A-Za-z0-9_-]+',
+	        className: 'selector-class', begin: '\\.[A-Za-z0-9_-]+',
 	        relevance: 0
 	      },
 	      {
-	        className: 'attr_selector',
-	        begin: '\\[', end: '\\]',
+	        className: 'selector-attr', begin: '\\[', end: '\\]',
 	        illegal: '$'
 	      },
 	      {
-	        className: 'tag', // begin: IDENT_RE, end: '[,|\\s]'
+	        className: 'selector-tag', // begin: IDENT_RE, end: '[,|\\s]'
 	        begin: '\\b(a|abbr|acronym|address|area|article|aside|audio|b|base|big|blockquote|body|br|button|canvas|caption|cite|code|col|colgroup|command|datalist|dd|del|details|dfn|div|dl|dt|em|embed|fieldset|figcaption|figure|footer|form|frame|frameset|(h[1-6])|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|map|mark|meta|meter|nav|noframes|noscript|object|ol|optgroup|option|output|p|param|pre|progress|q|rp|rt|ruby|samp|script|section|select|small|span|strike|strong|style|sub|sup|table|tbody|td|textarea|tfoot|th|thead|time|title|tr|tt|ul|var|video)\\b',
 	        relevance: 0
 	      },
 	      {
-	        className: 'pseudo',
 	        begin: ':(visited|valid|root|right|required|read-write|read-only|out-range|optional|only-of-type|only-child|nth-of-type|nth-last-of-type|nth-last-child|nth-child|not|link|left|last-of-type|last-child|lang|invalid|indeterminate|in-range|hover|focus|first-of-type|first-line|first-letter|first-child|first|enabled|empty|disabled|default|checked|before|after|active)'
 	      },
 	      {
-	        className: 'pseudo',
 	        begin: '::(after|before|choices|first-letter|first-line|repeat-index|repeat-item|selection|value)'
 	      },
 	      VARIABLE,
@@ -44845,37 +47562,31 @@
 	        illegal: '[^\\s]'
 	      },
 	      {
-	        className: 'value',
 	        begin: '\\b(whitespace|wait|w-resize|visible|vertical-text|vertical-ideographic|uppercase|upper-roman|upper-alpha|underline|transparent|top|thin|thick|text|text-top|text-bottom|tb-rl|table-header-group|table-footer-group|sw-resize|super|strict|static|square|solid|small-caps|separate|se-resize|scroll|s-resize|rtl|row-resize|ridge|right|repeat|repeat-y|repeat-x|relative|progress|pointer|overline|outside|outset|oblique|nowrap|not-allowed|normal|none|nw-resize|no-repeat|no-drop|newspaper|ne-resize|n-resize|move|middle|medium|ltr|lr-tb|lowercase|lower-roman|lower-alpha|loose|list-item|line|line-through|line-edge|lighter|left|keep-all|justify|italic|inter-word|inter-ideograph|inside|inset|inline|inline-block|inherit|inactive|ideograph-space|ideograph-parenthesis|ideograph-numeric|ideograph-alpha|horizontal|hidden|help|hand|groove|fixed|ellipsis|e-resize|double|dotted|distribute|distribute-space|distribute-letter|distribute-all-lines|disc|disabled|default|decimal|dashed|crosshair|collapse|col-resize|circle|char|center|capitalize|break-word|break-all|bottom|both|bolder|bold|block|bidi-override|below|baseline|auto|always|all-scroll|absolute|table|table-cell)\\b'
 	      },
 	      {
-	        className: 'value',
 	        begin: ':', end: ';',
 	        contains: [
-	          FUNCTION,
 	          VARIABLE,
 	          HEXCOLOR,
 	          hljs.CSS_NUMBER_MODE,
 	          hljs.QUOTE_STRING_MODE,
 	          hljs.APOS_STRING_MODE,
 	          {
-	            className: 'important', begin: '!important'
+	            className: 'meta', begin: '!important'
 	          }
 	        ]
 	      },
 	      {
-	        className: 'at_rule',
 	        begin: '@', end: '[{;]',
 	        keywords: 'mixin include extend for if else each while charset import debug media page content font-face namespace warn',
 	        contains: [
-	          FUNCTION,
 	          VARIABLE,
 	          hljs.QUOTE_STRING_MODE,
 	          hljs.APOS_STRING_MODE,
 	          HEXCOLOR,
 	          hljs.CSS_NUMBER_MODE,
 	          {
-	            className: 'preprocessor',
 	            begin: '\\s[A-Za-z0-9_.-]+',
 	            relevance: 0
 	          }
@@ -44886,7 +47597,7 @@
 	};
 
 /***/ },
-/* 364 */
+/* 421 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -44910,43 +47621,28 @@
 	      ),
 	      {
 	        className: 'keyword',
-	        begin: '\\s*\\.end\\s[a-zA-Z0-9]*',
-	        relevance: 1
+	        variants: [
+	          {begin: '\\s*\\.end\\s[a-zA-Z0-9]*'},
+	          {begin: '^[ ]*\\.[a-zA-Z]*', relevance: 0},
+	          {begin: '\\s:[a-zA-Z_0-9]*', relevance: 0},
+	          {begin: '\\s(' + smali_keywords.join('|') + ')'}
+	        ]
 	      },
 	      {
-	        className: 'keyword',
-	        begin: '^[ ]*\\.[a-zA-Z]*',
-	        relevance: 0
-	      },
-	      {
-	        className: 'keyword',
-	        begin: '\\s:[a-zA-Z_0-9]*',
-	        relevance: 0
-	      },
-	      {
-	        className: 'keyword',
-	        begin: '\\s('+smali_keywords.join('|')+')',
-	        relevance: 1
-	      },
-	      {
-	        className: 'keyword',
-	        begin: '\\[',
-	        relevance: 0
-	      },
-	      {
-	        className: 'instruction',
-	        begin: '\\s('+smali_instr_low_prio.join('|')+')\\s',
-	        relevance: 1
-	      },
-	      {
-	        className: 'instruction',
-	        begin: '\\s('+smali_instr_low_prio.join('|')+')((\\-|/)[a-zA-Z0-9]+)+\\s',
-	        relevance: 10
-	      },
-	      {
-	        className: 'instruction',
-	        begin: '\\s('+smali_instr_high_prio.join('|')+')((\\-|/)[a-zA-Z0-9]+)*\\s',
-	        relevance: 10
+	        className: 'built_in',
+	        variants : [
+	          {
+	            begin: '\\s('+smali_instr_low_prio.join('|')+')\\s'
+	          },
+	          {
+	            begin: '\\s('+smali_instr_low_prio.join('|')+')((\\-|/)[a-zA-Z0-9]+)+\\s',
+	            relevance: 10
+	          },
+	          {
+	            begin: '\\s('+smali_instr_high_prio.join('|')+')((\\-|/)[a-zA-Z0-9]+)*\\s',
+	            relevance: 10
+	          },
+	        ]
 	      },
 	      {
 	        className: 'class',
@@ -44954,32 +47650,20 @@
 	        relevance: 0
 	      },
 	      {
-	        className: 'function',
-	        begin: '( |->)[^(\n ;"]*\\(',
-	        relevance: 0
-	      },
-	      {
-	        className: 'function',
-	        begin: '\\)',
-	        relevance: 0
-	      },
-	      {
-	        className: 'variable',
 	        begin: '[vp][0-9]+',
-	        relevance: 0
 	      }
 	    ]
 	  };
 	};
 
 /***/ },
-/* 365 */
+/* 422 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  var VAR_IDENT_RE = '[a-z][a-zA-Z0-9_]*';
 	  var CHAR = {
-	    className: 'char',
+	    className: 'string',
 	    begin: '\\$.{1}'
 	  };
 	  var SYMBOL = {
@@ -44993,12 +47677,11 @@
 	      hljs.COMMENT('"', '"'),
 	      hljs.APOS_STRING_MODE,
 	      {
-	        className: 'class',
+	        className: 'type',
 	        begin: '\\b[A-Z][A-Za-z0-9_]*',
 	        relevance: 0
 	      },
 	      {
-	        className: 'method',
 	        begin: VAR_IDENT_RE + ':',
 	        relevance: 0
 	      },
@@ -45006,7 +47689,6 @@
 	      SYMBOL,
 	      CHAR,
 	      {
-	        className: 'localvars',
 	        // This looks more complicated than needed to avoid combinatorial
 	        // explosion under V8. It effectively means `| var1 var2 ... |` with
 	        // whitespace adjacent to `|` being optional.
@@ -45016,7 +47698,6 @@
 	        contains: [{begin: '(\\|[ ]*)?' + VAR_IDENT_RE}]
 	      },
 	      {
-	        className: 'array',
 	        begin: '\\#\\(', end: '\\)',
 	        contains: [
 	          hljs.APOS_STRING_MODE,
@@ -45030,7 +47711,7 @@
 	};
 
 /***/ },
-/* 366 */
+/* 423 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -45069,7 +47750,7 @@
 	        /* the grammar is ambiguous on how 'a'b should be interpreted but not the compiler */
 	      },
 	      { /* polymorphic variant */
-	        className: 'tag',
+	        className: 'type',
 	        begin: '`[A-Z][\\w\']*'
 	      },
 	      { /* module or constructor */
@@ -45080,7 +47761,7 @@
 	      { /* don't color identifiers, but safely catch all identifiers with '*/
 	        begin: '[a-z_]\\w*\'[\\w\']*'
 	      },
-	      hljs.inherit(hljs.APOS_STRING_MODE, {className: 'char', relevance: 0}),
+	      hljs.inherit(hljs.APOS_STRING_MODE, {className: 'string', relevance: 0}),
 	      hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null}),
 	      {
 	        className: 'number',
@@ -45099,7 +47780,7 @@
 	};
 
 /***/ },
-/* 367 */
+/* 424 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -45154,22 +47835,23 @@
 	  };
 
 	  var PREPROCESSOR =       {
-	    className: 'preprocessor',
+	    className: 'meta',
 	    begin: '#', end: '$',
-	    keywords: 'if else elif endif define undef warning error line ' +
-	              'pragma ifdef ifndef',
+	    keywords: {'meta-keyword': 'if else elif endif define undef warning error line ' +
+	              'pragma ifdef ifndef'},
 	    contains: [
 	      {
 	        begin: /\\\n/, relevance: 0
 	      },
 	      {
 	        beginKeywords: 'include', end: '$',
+	        keywords: {'meta-keyword': 'include'},
 	        contains: [
 	          PREPROCESSOR_STRINGS,
 	          {
-	            className: 'string',
+	            className: 'meta-string',
 	            begin: '<', end: '>',
-	            illegal: '\\n',
+	            illegal: '\\n'
 	          }
 	        ]
 	      },
@@ -45199,7 +47881,7 @@
 	};
 
 /***/ },
-/* 368 */
+/* 425 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -45209,7 +47891,6 @@
 	    illegal: /[<>{}*]/,
 	    contains: [
 	      {
-	        className: 'operator',
 	        beginKeywords:
 	          'begin end start commit rollback savepoint lock alter create drop rename call ' +
 	          'delete do handler insert load replace select truncate update set show pragma grant ' +
@@ -45363,7 +48044,7 @@
 	};
 
 /***/ },
-/* 369 */
+/* 426 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -45373,12 +48054,12 @@
 	    keywords: 'if else in foreach for forv forva forval forvalu forvalue forvalues by bys bysort xi quietly qui capture about ac ac_7 acprplot acprplot_7 adjust ado adopath adoupdate alpha ameans an ano anov anova anova_estat anova_terms anovadef aorder ap app appe appen append arch arch_dr arch_estat arch_p archlm areg areg_p args arima arima_dr arima_estat arima_p as asmprobit asmprobit_estat asmprobit_lf asmprobit_mfx__dlg asmprobit_p ass asse asser assert avplot avplot_7 avplots avplots_7 bcskew0 bgodfrey binreg bip0_lf biplot bipp_lf bipr_lf bipr_p biprobit bitest bitesti bitowt blogit bmemsize boot bootsamp bootstrap bootstrap_8 boxco_l boxco_p boxcox boxcox_6 boxcox_p bprobit br break brier bro brow brows browse brr brrstat bs bs_7 bsampl_w bsample bsample_7 bsqreg bstat bstat_7 bstat_8 bstrap bstrap_7 ca ca_estat ca_p cabiplot camat canon canon_8 canon_8_p canon_estat canon_p cap caprojection capt captu captur capture cat cc cchart cchart_7 cci cd censobs_table centile cf char chdir checkdlgfiles checkestimationsample checkhlpfiles checksum chelp ci cii cl class classutil clear cli clis clist clo clog clog_lf clog_p clogi clogi_sw clogit clogit_lf clogit_p clogitp clogl_sw cloglog clonevar clslistarray cluster cluster_measures cluster_stop cluster_tree cluster_tree_8 clustermat cmdlog cnr cnre cnreg cnreg_p cnreg_sw cnsreg codebook collaps4 collapse colormult_nb colormult_nw compare compress conf confi confir confirm conren cons const constr constra constrai constrain constraint continue contract copy copyright copysource cor corc corr corr2data corr_anti corr_kmo corr_smc corre correl correla correlat correlate corrgram cou coun count cox cox_p cox_sw coxbase coxhaz coxvar cprplot cprplot_7 crc cret cretu cretur creturn cross cs cscript cscript_log csi ct ct_is ctset ctst_5 ctst_st cttost cumsp cumsp_7 cumul cusum cusum_7 cutil d datasig datasign datasigna datasignat datasignatu datasignatur datasignature datetof db dbeta de dec deco decod decode deff des desc descr descri describ describe destring dfbeta dfgls dfuller di di_g dir dirstats dis discard disp disp_res disp_s displ displa display distinct do doe doed doedi doedit dotplot dotplot_7 dprobit drawnorm drop ds ds_util dstdize duplicates durbina dwstat dydx e ed edi edit egen eivreg emdef en enc enco encod encode eq erase ereg ereg_lf ereg_p ereg_sw ereghet ereghet_glf ereghet_glf_sh ereghet_gp ereghet_ilf ereghet_ilf_sh ereghet_ip eret eretu eretur ereturn err erro error est est_cfexist est_cfname est_clickable est_expand est_hold est_table est_unhold est_unholdok estat estat_default estat_summ estat_vce_only esti estimates etodow etof etomdy ex exi exit expand expandcl fac fact facto factor factor_estat factor_p factor_pca_rotated factor_rotate factormat fcast fcast_compute fcast_graph fdades fdadesc fdadescr fdadescri fdadescrib fdadescribe fdasav fdasave fdause fh_st file open file read file close file filefilter fillin find_hlp_file findfile findit findit_7 fit fl fli flis flist for5_0 form forma format fpredict frac_154 frac_adj frac_chk frac_cox frac_ddp frac_dis frac_dv frac_in frac_mun frac_pp frac_pq frac_pv frac_wgt frac_xo fracgen fracplot fracplot_7 fracpoly fracpred fron_ex fron_hn fron_p fron_tn fron_tn2 frontier ftodate ftoe ftomdy ftowdate g gamhet_glf gamhet_gp gamhet_ilf gamhet_ip gamma gamma_d2 gamma_p gamma_sw gammahet gdi_hexagon gdi_spokes ge gen gene gener genera generat generate genrank genstd genvmean gettoken gl gladder gladder_7 glim_l01 glim_l02 glim_l03 glim_l04 glim_l05 glim_l06 glim_l07 glim_l08 glim_l09 glim_l10 glim_l11 glim_l12 glim_lf glim_mu glim_nw1 glim_nw2 glim_nw3 glim_p glim_v1 glim_v2 glim_v3 glim_v4 glim_v5 glim_v6 glim_v7 glm glm_6 glm_p glm_sw glmpred glo glob globa global glogit glogit_8 glogit_p gmeans gnbre_lf gnbreg gnbreg_5 gnbreg_p gomp_lf gompe_sw gomper_p gompertz gompertzhet gomphet_glf gomphet_glf_sh gomphet_gp gomphet_ilf gomphet_ilf_sh gomphet_ip gphdot gphpen gphprint gprefs gprobi_p gprobit gprobit_8 gr gr7 gr_copy gr_current gr_db gr_describe gr_dir gr_draw gr_draw_replay gr_drop gr_edit gr_editviewopts gr_example gr_example2 gr_export gr_print gr_qscheme gr_query gr_read gr_rename gr_replay gr_save gr_set gr_setscheme gr_table gr_undo gr_use graph graph7 grebar greigen greigen_7 greigen_8 grmeanby grmeanby_7 gs_fileinfo gs_filetype gs_graphinfo gs_stat gsort gwood h hadimvo hareg hausman haver he heck_d2 heckma_p heckman heckp_lf heckpr_p heckprob hel help hereg hetpr_lf hetpr_p hetprob hettest hexdump hilite hist hist_7 histogram hlogit hlu hmeans hotel hotelling hprobit hreg hsearch icd9 icd9_ff icd9p iis impute imtest inbase include inf infi infil infile infix inp inpu input ins insheet insp inspe inspec inspect integ inten intreg intreg_7 intreg_p intrg2_ll intrg_ll intrg_ll2 ipolate iqreg ir irf irf_create irfm iri is_svy is_svysum isid istdize ivprob_1_lf ivprob_lf ivprobit ivprobit_p ivreg ivreg_footnote ivtob_1_lf ivtob_lf ivtobit ivtobit_p jackknife jacknife jknife jknife_6 jknife_8 jkstat joinby kalarma1 kap kap_3 kapmeier kappa kapwgt kdensity kdensity_7 keep ksm ksmirnov ktau kwallis l la lab labe label labelbook ladder levels levelsof leverage lfit lfit_p li lincom line linktest lis list lloghet_glf lloghet_glf_sh lloghet_gp lloghet_ilf lloghet_ilf_sh lloghet_ip llogi_sw llogis_p llogist llogistic llogistichet lnorm_lf lnorm_sw lnorma_p lnormal lnormalhet lnormhet_glf lnormhet_glf_sh lnormhet_gp lnormhet_ilf lnormhet_ilf_sh lnormhet_ip lnskew0 loadingplot loc loca local log logi logis_lf logistic logistic_p logit logit_estat logit_p loglogs logrank loneway lookfor lookup lowess lowess_7 lpredict lrecomp lroc lroc_7 lrtest ls lsens lsens_7 lsens_x lstat ltable ltable_7 ltriang lv lvr2plot lvr2plot_7 m ma mac macr macro makecns man manova manova_estat manova_p manovatest mantel mark markin markout marksample mat mat_capp mat_order mat_put_rr mat_rapp mata mata_clear mata_describe mata_drop mata_matdescribe mata_matsave mata_matuse mata_memory mata_mlib mata_mosave mata_rename mata_which matalabel matcproc matlist matname matr matri matrix matrix_input__dlg matstrik mcc mcci md0_ md1_ md1debug_ md2_ md2debug_ mds mds_estat mds_p mdsconfig mdslong mdsmat mdsshepard mdytoe mdytof me_derd mean means median memory memsize meqparse mer merg merge mfp mfx mhelp mhodds minbound mixed_ll mixed_ll_reparm mkassert mkdir mkmat mkspline ml ml_5 ml_adjs ml_bhhhs ml_c_d ml_check ml_clear ml_cnt ml_debug ml_defd ml_e0 ml_e0_bfgs ml_e0_cycle ml_e0_dfp ml_e0i ml_e1 ml_e1_bfgs ml_e1_bhhh ml_e1_cycle ml_e1_dfp ml_e2 ml_e2_cycle ml_ebfg0 ml_ebfr0 ml_ebfr1 ml_ebh0q ml_ebhh0 ml_ebhr0 ml_ebr0i ml_ecr0i ml_edfp0 ml_edfr0 ml_edfr1 ml_edr0i ml_eds ml_eer0i ml_egr0i ml_elf ml_elf_bfgs ml_elf_bhhh ml_elf_cycle ml_elf_dfp ml_elfi ml_elfs ml_enr0i ml_enrr0 ml_erdu0 ml_erdu0_bfgs ml_erdu0_bhhh ml_erdu0_bhhhq ml_erdu0_cycle ml_erdu0_dfp ml_erdu0_nrbfgs ml_exde ml_footnote ml_geqnr ml_grad0 ml_graph ml_hbhhh ml_hd0 ml_hold ml_init ml_inv ml_log ml_max ml_mlout ml_mlout_8 ml_model ml_nb0 ml_opt ml_p ml_plot ml_query ml_rdgrd ml_repor ml_s_e ml_score ml_searc ml_technique ml_unhold mleval mlf_ mlmatbysum mlmatsum mlog mlogi mlogit mlogit_footnote mlogit_p mlopts mlsum mlvecsum mnl0_ mor more mov move mprobit mprobit_lf mprobit_p mrdu0_ mrdu1_ mvdecode mvencode mvreg mvreg_estat n nbreg nbreg_al nbreg_lf nbreg_p nbreg_sw nestreg net newey newey_7 newey_p news nl nl_7 nl_9 nl_9_p nl_p nl_p_7 nlcom nlcom_p nlexp2 nlexp2_7 nlexp2a nlexp2a_7 nlexp3 nlexp3_7 nlgom3 nlgom3_7 nlgom4 nlgom4_7 nlinit nllog3 nllog3_7 nllog4 nllog4_7 nlog_rd nlogit nlogit_p nlogitgen nlogittree nlpred no nobreak noi nois noisi noisil noisily note notes notes_dlg nptrend numlabel numlist odbc old_ver olo olog ologi ologi_sw ologit ologit_p ologitp on one onew onewa oneway op_colnm op_comp op_diff op_inv op_str opr opro oprob oprob_sw oprobi oprobi_p oprobit oprobitp opts_exclusive order orthog orthpoly ou out outf outfi outfil outfile outs outsh outshe outshee outsheet ovtest pac pac_7 palette parse parse_dissim pause pca pca_8 pca_display pca_estat pca_p pca_rotate pcamat pchart pchart_7 pchi pchi_7 pcorr pctile pentium pergram pergram_7 permute permute_8 personal peto_st pkcollapse pkcross pkequiv pkexamine pkexamine_7 pkshape pksumm pksumm_7 pl plo plot plugin pnorm pnorm_7 poisgof poiss_lf poiss_sw poisso_p poisson poisson_estat post postclose postfile postutil pperron pr prais prais_e prais_e2 prais_p predict predictnl preserve print pro prob probi probit probit_estat probit_p proc_time procoverlay procrustes procrustes_estat procrustes_p profiler prog progr progra program prop proportion prtest prtesti pwcorr pwd q\\s qby qbys qchi qchi_7 qladder qladder_7 qnorm qnorm_7 qqplot qqplot_7 qreg qreg_c qreg_p qreg_sw qu quadchk quantile quantile_7 que quer query range ranksum ratio rchart rchart_7 rcof recast reclink recode reg reg3 reg3_p regdw regr regre regre_p2 regres regres_p regress regress_estat regriv_p remap ren rena renam rename renpfix repeat replace report reshape restore ret retu retur return rm rmdir robvar roccomp roccomp_7 roccomp_8 rocf_lf rocfit rocfit_8 rocgold rocplot rocplot_7 roctab roctab_7 rolling rologit rologit_p rot rota rotat rotate rotatemat rreg rreg_p ru run runtest rvfplot rvfplot_7 rvpplot rvpplot_7 sa safesum sample sampsi sav save savedresults saveold sc sca scal scala scalar scatter scm_mine sco scob_lf scob_p scobi_sw scobit scor score scoreplot scoreplot_help scree screeplot screeplot_help sdtest sdtesti se search separate seperate serrbar serrbar_7 serset set set_defaults sfrancia sh she shel shell shewhart shewhart_7 signestimationsample signrank signtest simul simul_7 simulate simulate_8 sktest sleep slogit slogit_d2 slogit_p smooth snapspan so sor sort spearman spikeplot spikeplot_7 spikeplt spline_x split sqreg sqreg_p sret sretu sretur sreturn ssc st st_ct st_hc st_hcd st_hcd_sh st_is st_issys st_note st_promo st_set st_show st_smpl st_subid stack statsby statsby_8 stbase stci stci_7 stcox stcox_estat stcox_fr stcox_fr_ll stcox_p stcox_sw stcoxkm stcoxkm_7 stcstat stcurv stcurve stcurve_7 stdes stem stepwise stereg stfill stgen stir stjoin stmc stmh stphplot stphplot_7 stphtest stphtest_7 stptime strate strate_7 streg streg_sw streset sts sts_7 stset stsplit stsum sttocc sttoct stvary stweib su suest suest_8 sum summ summa summar summari summariz summarize sunflower sureg survcurv survsum svar svar_p svmat svy svy_disp svy_dreg svy_est svy_est_7 svy_estat svy_get svy_gnbreg_p svy_head svy_header svy_heckman_p svy_heckprob_p svy_intreg_p svy_ivreg_p svy_logistic_p svy_logit_p svy_mlogit_p svy_nbreg_p svy_ologit_p svy_oprobit_p svy_poisson_p svy_probit_p svy_regress_p svy_sub svy_sub_7 svy_x svy_x_7 svy_x_p svydes svydes_8 svygen svygnbreg svyheckman svyheckprob svyintreg svyintreg_7 svyintrg svyivreg svylc svylog_p svylogit svymarkout svymarkout_8 svymean svymlog svymlogit svynbreg svyolog svyologit svyoprob svyoprobit svyopts svypois svypois_7 svypoisson svyprobit svyprobt svyprop svyprop_7 svyratio svyreg svyreg_p svyregress svyset svyset_7 svyset_8 svytab svytab_7 svytest svytotal sw sw_8 swcnreg swcox swereg swilk swlogis swlogit swologit swoprbt swpois swprobit swqreg swtobit swweib symmetry symmi symplot symplot_7 syntax sysdescribe sysdir sysuse szroeter ta tab tab1 tab2 tab_or tabd tabdi tabdis tabdisp tabi table tabodds tabodds_7 tabstat tabu tabul tabula tabulat tabulate te tempfile tempname tempvar tes test testnl testparm teststd tetrachoric time_it timer tis tob tobi tobit tobit_p tobit_sw token tokeni tokeniz tokenize tostring total translate translator transmap treat_ll treatr_p treatreg trim trnb_cons trnb_mean trpoiss_d2 trunc_ll truncr_p truncreg tsappend tset tsfill tsline tsline_ex tsreport tsrevar tsrline tsset tssmooth tsunab ttest ttesti tut_chk tut_wait tutorial tw tware_st two twoway twoway__fpfit_serset twoway__function_gen twoway__histogram_gen twoway__ipoint_serset twoway__ipoints_serset twoway__kdensity_gen twoway__lfit_serset twoway__normgen_gen twoway__pci_serset twoway__qfit_serset twoway__scatteri_serset twoway__sunflower_gen twoway_ksm_serset ty typ type typeof u unab unabbrev unabcmd update us use uselabel var var_mkcompanion var_p varbasic varfcast vargranger varirf varirf_add varirf_cgraph varirf_create varirf_ctable varirf_describe varirf_dir varirf_drop varirf_erase varirf_graph varirf_ograph varirf_rename varirf_set varirf_table varlist varlmar varnorm varsoc varstable varstable_w varstable_w2 varwle vce vec vec_fevd vec_mkphi vec_p vec_p_w vecirf_create veclmar veclmar_w vecnorm vecnorm_w vecrank vecstable verinst vers versi versio version view viewsource vif vwls wdatetof webdescribe webseek webuse weib1_lf weib2_lf weib_lf weib_lf0 weibhet_glf weibhet_glf_sh weibhet_glfa weibhet_glfa_sh weibhet_gp weibhet_ilf weibhet_ilf_sh weibhet_ilfa weibhet_ilfa_sh weibhet_ip weibu_sw weibul_p weibull weibull_c weibull_s weibullhet wh whelp whi which whil while wilc_st wilcoxon win wind windo window winexec wntestb wntestb_7 wntestq xchart xchart_7 xcorr xcorr_7 xi xi_6 xmlsav xmlsave xmluse xpose xsh xshe xshel xshell xt_iis xt_tis xtab_p xtabond xtbin_p xtclog xtcloglog xtcloglog_8 xtcloglog_d2 xtcloglog_pa_p xtcloglog_re_p xtcnt_p xtcorr xtdata xtdes xtfront_p xtfrontier xtgee xtgee_elink xtgee_estat xtgee_makeivar xtgee_p xtgee_plink xtgls xtgls_p xthaus xthausman xtht_p xthtaylor xtile xtint_p xtintreg xtintreg_8 xtintreg_d2 xtintreg_p xtivp_1 xtivp_2 xtivreg xtline xtline_ex xtlogit xtlogit_8 xtlogit_d2 xtlogit_fe_p xtlogit_pa_p xtlogit_re_p xtmixed xtmixed_estat xtmixed_p xtnb_fe xtnb_lf xtnbreg xtnbreg_pa_p xtnbreg_refe_p xtpcse xtpcse_p xtpois xtpoisson xtpoisson_d2 xtpoisson_pa_p xtpoisson_refe_p xtpred xtprobit xtprobit_8 xtprobit_d2 xtprobit_re_p xtps_fe xtps_lf xtps_ren xtps_ren_8 xtrar_p xtrc xtrc_p xtrchh xtrefe_p xtreg xtreg_be xtreg_fe xtreg_ml xtreg_pa_p xtreg_re xtregar xtrere_p xtset xtsf_ll xtsf_llti xtsum xttab xttest0 xttobit xttobit_8 xttobit_p xttrans yx yxview__barlike_draw yxview_area_draw yxview_bar_draw yxview_dot_draw yxview_dropline_draw yxview_function_draw yxview_iarrow_draw yxview_ilabels_draw yxview_normal_draw yxview_pcarrow_draw yxview_pcbarrow_draw yxview_pccapsym_draw yxview_pcscatter_draw yxview_pcspike_draw yxview_rarea_draw yxview_rbar_draw yxview_rbarm_draw yxview_rcap_draw yxview_rcapsym_draw yxview_rconnected_draw yxview_rline_draw yxview_rscatter_draw yxview_rspike_draw yxview_spike_draw yxview_sunflower_draw zap_s zinb zinb_llf zinb_plf zip zip_llf zip_p zip_plf zt_ct_5 zt_hc_5 zt_hcd_5 zt_is_5 zt_iss_5 zt_sho_5 zt_smp_5 ztbase_5 ztcox_5 ztdes_5 ztereg_5 ztfill_5 ztgen_5 ztir_5 ztjoin_5 ztnb ztnb_p ztp ztp_p zts_5 ztset_5 ztspli_5 ztsum_5 zttoct_5 ztvary_5 ztweib_5',
 	        contains: [
 	      {
-	        className: 'label',
-	        variants: [
-	          {begin: "\\$\\{?[a-zA-Z0-9_]+\\}?"},
-	          {begin: "`[a-zA-Z0-9_]+'"}
-
-	        ]
+	        className: 'symbol',
+	        begin: /`[a-zA-Z0-9_]+'/
+	      },
+	      {
+	        className: 'variable',
+	        begin: /\$\{?[a-zA-Z0-9_]+\}?/
 	      },
 	      {
 	        className: 'string',
@@ -45389,7 +48070,7 @@
 	      },
 
 	      {
-	        className: 'literal',
+	        className: 'built_in',
 	        variants: [
 	          {
 	            begin: '\\b(abs|acos|asin|atan|atan2|atanh|ceil|cloglog|comb|cos|digamma|exp|floor|invcloglog|invlogit|ln|lnfact|lnfactorial|lngamma|log|log10|max|min|mod|reldif|round|sign|sin|sqrt|sum|tan|tanh|trigamma|trunc|betaden|Binomial|binorm|binormal|chi2|chi2tail|dgammapda|dgammapdada|dgammapdadx|dgammapdx|dgammapdxdx|F|Fden|Ftail|gammaden|gammap|ibeta|invbinomial|invchi2|invchi2tail|invF|invFtail|invgammap|invibeta|invnchi2|invnFtail|invnibeta|invnorm|invnormal|invttail|nbetaden|nchi2|nFden|nFtail|nibeta|norm|normal|normalden|normd|npnchi2|tden|ttail|uniform|abbrev|char|index|indexnot|length|lower|ltrim|match|plural|proper|real|regexm|regexr|regexs|reverse|rtrim|string|strlen|strlower|strltrim|strmatch|strofreal|strpos|strproper|strreverse|strrtrim|strtrim|strupper|subinstr|subinword|substr|trim|upper|word|wordcount|_caller|autocode|byteorder|chop|clip|cond|e|epsdouble|epsfloat|group|inlist|inrange|irecode|matrix|maxbyte|maxdouble|maxfloat|maxint|maxlong|mi|minbyte|mindouble|minfloat|minint|minlong|missing|r|recode|replay|return|s|scalar|d|date|day|dow|doy|halfyear|mdy|month|quarter|week|year|d|daily|dofd|dofh|dofm|dofq|dofw|dofy|h|halfyearly|hofd|m|mofd|monthly|q|qofd|quarterly|tin|twithin|w|weekly|wofd|y|yearly|yh|ym|yofd|yq|yw|cholesky|colnumb|colsof|corr|det|diag|diag0cnt|el|get|hadamard|I|inv|invsym|issym|issymmetric|J|matmissing|matuniform|mreldif|nullmat|rownumb|rowsof|sweep|syminv|trace|vec|vecdiag)(?=\\(|$)'
@@ -45405,44 +48086,24 @@
 	};
 
 /***/ },
-/* 370 */
+/* 427 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  var STEP21_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
-	  var STEP21_CLOSE_RE = 'END-ISO-10303-21;';
 	  var STEP21_KEYWORDS = {
-	    literal: '',
-	    built_in: '',
-	    keyword:
-	    'HEADER ENDSEC DATA'
+	    keyword: 'HEADER ENDSEC DATA'
 	  };
 	  var STEP21_START = {
-	    className: 'preprocessor',
+	    className: 'meta',
 	    begin: 'ISO-10303-21;',
 	    relevance: 10
 	  };
-	  var STEP21_CODE = [
-	    hljs.C_LINE_COMMENT_MODE,
-	    hljs.C_BLOCK_COMMENT_MODE,
-	    hljs.COMMENT('/\\*\\*!', '\\*/'),
-	    hljs.C_NUMBER_MODE,
-	    hljs.inherit(hljs.APOS_STRING_MODE, {illegal: null}),
-	    hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null}),
-	    {
-	      className: 'string',
-	      begin: "'", end: "'"
-	    },
-	    {
-	      className: 'label',
-	      variants: [
-	        {
-	          begin: '#', end: '\\d+',
-	          illegal: '\\W'
-	        }
-	      ]
-	    }
-	  ];
+	  var STEP21_CLOSE = {
+	    className: 'meta',
+	    begin: 'END-ISO-10303-21;',
+	    relevance: 10
+	  };
 
 	  return {
 	    aliases: ['p21', 'step', 'stp'],
@@ -45450,18 +48111,33 @@
 	    lexemes: STEP21_IDENT_RE,
 	    keywords: STEP21_KEYWORDS,
 	    contains: [
+	      STEP21_START,
+	      STEP21_CLOSE,
+	      hljs.C_LINE_COMMENT_MODE,
+	      hljs.C_BLOCK_COMMENT_MODE,
+	      hljs.COMMENT('/\\*\\*!', '\\*/'),
+	      hljs.C_NUMBER_MODE,
+	      hljs.inherit(hljs.APOS_STRING_MODE, {illegal: null}),
+	      hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null}),
 	      {
-	        className: 'preprocessor',
-	        begin: STEP21_CLOSE_RE,
-	        relevance: 10
+	        className: 'string',
+	        begin: "'", end: "'"
 	      },
-	      STEP21_START
-	    ].concat(STEP21_CODE)
+	      {
+	        className: 'symbol',
+	        variants: [
+	          {
+	            begin: '#', end: '\\d+',
+	            illegal: '\\W'
+	          }
+	        ]
+	      }
+	    ]
 	  };
 	};
 
 /***/ },
-/* 371 */
+/* 428 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -45472,9 +48148,8 @@
 	  };
 
 	  var HEX_COLOR = {
-	    className: 'hexcolor',
-	    begin: '#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})',
-	    relevance: 10
+	    className: 'number',
+	    begin: '#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})'
 	  };
 
 	  var AT_KEYWORDS = [
@@ -45828,7 +48503,7 @@
 	        begin: '\\.[a-zA-Z][a-zA-Z0-9_-]*' + TAG_END,
 	        returnBegin: true,
 	        contains: [
-	          {className: 'class', begin: '\\.[a-zA-Z][a-zA-Z0-9_-]*'}
+	          {className: 'selector-class', begin: '\\.[a-zA-Z][a-zA-Z0-9_-]*'}
 	        ]
 	      },
 
@@ -45837,7 +48512,7 @@
 	        begin: '\\#[a-zA-Z][a-zA-Z0-9_-]*' + TAG_END,
 	        returnBegin: true,
 	        contains: [
-	          {className: 'id', begin: '\\#[a-zA-Z][a-zA-Z0-9_-]*'}
+	          {className: 'selector-id', begin: '\\#[a-zA-Z][a-zA-Z0-9_-]*'}
 	        ]
 	      },
 
@@ -45846,19 +48521,17 @@
 	        begin: '\\b(' + TAGS.join('|') + ')' + TAG_END,
 	        returnBegin: true,
 	        contains: [
-	          {className: 'tag', begin: '\\b[a-zA-Z][a-zA-Z0-9_-]*'}
+	          {className: 'selector-tag', begin: '\\b[a-zA-Z][a-zA-Z0-9_-]*'}
 	        ]
 	      },
 
 	      // psuedo selectors
 	      {
-	        className: 'pseudo',
 	        begin: '&?:?:\\b(' + PSEUDO_SELECTORS.join('|') + ')' + TAG_END
 	      },
 
 	      // @ keywords
 	      {
-	        className: 'at_rule',
 	        begin: '\@(' + AT_KEYWORDS.join('|') + ')\\b'
 	      },
 
@@ -45875,7 +48548,7 @@
 	      //  - only from beginning of line + whitespace
 	      {
 	        className: 'function',
-	        begin: '\\b[a-zA-Z][a-zA-Z0-9_\-]*\\(.*\\)',
+	        begin: '^[a-zA-Z][a-zA-Z0-9_\-]*\\(.*\\)',
 	        illegal: '[\\n]',
 	        returnBegin: true,
 	        contains: [
@@ -45908,7 +48581,7 @@
 	};
 
 /***/ },
-/* 372 */
+/* 429 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -45976,7 +48649,7 @@
 	      TYPE,
 	      NUMBERS,
 	      {
-	        className: 'func',
+	        className: 'function',
 	        beginKeywords: 'func', end: '{', excludeEnd: true,
 	        contains: [
 	          hljs.inherit(hljs.TITLE_MODE, {
@@ -45984,7 +48657,6 @@
 	            illegal: /\(/
 	          }),
 	          {
-	            className: 'generics',
 	            begin: /</, end: />/,
 	            illegal: />/
 	          },
@@ -46015,7 +48687,7 @@
 	        ]
 	      },
 	      {
-	        className: 'preprocessor', // @attributes
+	        className: 'meta', // @attributes
 	        begin: '(@warn_unused_result|@exported|@lazy|@noescape|' +
 	                  '@NSCopying|@NSManaged|@objc|@convention|@required|' +
 	                  '@noreturn|@IBAction|@IBDesignable|@IBInspectable|@IBOutlet|' +
@@ -46032,7 +48704,7 @@
 	};
 
 /***/ },
-/* 373 */
+/* 430 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46059,7 +48731,7 @@
 	        excludeEnd: true,
 	        contains: [
 	          {
-	            className: 'symbol',
+	            className: 'title',
 	            begin: '[ \\t\\n\\r]+(::)?[a-zA-Z_]((::)?[a-zA-Z0-9_])*',
 	            end: '[ \\t\\n\\r]',
 	            endsWithParent: true,
@@ -46068,7 +48740,6 @@
 	        ]
 	      },
 	      {
-	        className: 'variable',
 	        excludeEnd: true,
 	        variants: [
 	          {
@@ -46098,52 +48769,59 @@
 	};
 
 /***/ },
-/* 374 */
+/* 431 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
-	  var COMMAND1 = {
-	    className: 'command',
-	    begin: '\\\\[a-zA-Zа-яА-я]+[\\*]?'
-	  };
-	  var COMMAND2 = {
-	    className: 'command',
-	    begin: '\\\\[^a-zA-Zа-яА-я0-9]'
-	  };
-	  var SPECIAL = {
-	    className: 'special',
-	    begin: '[{}\\[\\]\\&#~]',
-	    relevance: 0
+	  var COMMAND = {
+	    className: 'tag',
+	    begin: /\\/,
+	    relevance: 0,
+	    contains: [
+	      {
+	        className: 'name',
+	        variants: [
+	          {begin: /[a-zA-Zа-яА-я]+[*]?/},
+	          {begin: /[^a-zA-Zа-яА-я0-9]/}
+	        ],
+	        starts: {
+	          endsWithParent: true,
+	          relevance: 0,
+	          contains: [
+	            {
+	              className: 'string', // because it looks like attributes in HTML tags
+	              variants: [
+	                {begin: /\[/, end: /\]/},
+	                {begin: /\{/, end: /\}/}
+	              ]
+	            },
+	            {
+	              begin: /\s*=\s*/, endsWithParent: true,
+	              relevance: 0,
+	              contains: [
+	                {
+	                  className: 'number',
+	                  begin: /-?\d*\.?\d+(pt|pc|mm|cm|in|dd|cc|ex|em)?/
+	                }
+	              ]
+	            }
+	          ]
+	        }
+	      }
+	    ]
 	  };
 
 	  return {
 	    contains: [
-	      { // parameter
-	        begin: '\\\\[a-zA-Zа-яА-я]+[\\*]? *= *-?\\d*\\.?\\d+(pt|pc|mm|cm|in|dd|cc|ex|em)?',
-	        returnBegin: true,
-	        contains: [
-	          COMMAND1, COMMAND2,
-	          {
-	            className: 'number',
-	            begin: ' *=', end: '-?\\d*\\.?\\d+(pt|pc|mm|cm|in|dd|cc|ex|em)?',
-	            excludeBegin: true
-	          }
-	        ],
-	        relevance: 10
-	      },
-	      COMMAND1, COMMAND2,
-	      SPECIAL,
+	      COMMAND,
 	      {
 	        className: 'formula',
-	        begin: '\\$\\$', end: '\\$\\$',
-	        contains: [COMMAND1, COMMAND2, SPECIAL],
-	        relevance: 0
-	      },
-	      {
-	        className: 'formula',
-	        begin: '\\$', end: '\\$',
-	        contains: [COMMAND1, COMMAND2, SPECIAL],
-	        relevance: 0
+	        contains: [COMMAND],
+	        relevance: 0,
+	        variants: [
+	          {begin: /\$\$/, end: /\$\$/},
+	          {begin: /\$/, end: /\$/}
+	        ]
 	      },
 	      hljs.COMMENT(
 	        '%',
@@ -46157,7 +48835,7 @@
 	};
 
 /***/ },
-/* 375 */
+/* 432 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46196,7 +48874,7 @@
 	};
 
 /***/ },
-/* 376 */
+/* 433 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46206,7 +48884,7 @@
 	    relevance: 0
 	  };
 	  var TPLABEL = {
-	    className: 'comment',
+	    className: 'symbol',
 	    begin: ':[^\\]]+'
 	  };
 	  var TPDATA = {
@@ -46238,8 +48916,8 @@
 	        'IF JMP LINEAR_MAX_SPEED LOCK MOD MONITOR OFFSET Offset OR OVERRIDE ' +
 	        'PAUSE PREG PTH RT_LD RUN SELECT SKIP Skip TA TB TO TOOL_OFFSET ' +
 	        'Tool_Offset UF UT UFRAME_NUM UTOOL_NUM UNLOCK WAIT X Y Z W P R STRLEN ' +
-	        'SUBSTR FINDSTR VOFFSET',
-	      constant:
+	        'SUBSTR FINDSTR VOFFSET PROG ATTR MN POS',
+	      literal:
 	        'ON OFF max_speed LPOS JPOS ENABLE DISABLE START STOP RESET'
 	    },
 	    contains: [
@@ -46284,7 +48962,7 @@
 	};
 
 /***/ },
-/* 377 */
+/* 434 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46297,8 +48975,8 @@
 	                  'max min parent random range source template_from_string';
 
 	  var FUNCTIONS = {
-	    className: 'function',
 	    beginKeywords: FUNCTION_NAMES,
+	    keywords: {name: FUNCTION_NAMES},
 	    relevance: 0,
 	    contains: [
 	      PARAMS
@@ -46306,7 +48984,6 @@
 	  };
 
 	  var FILTER = {
-	    className: 'filter',
 	    begin: /\|[A-Za-z_]+:?/,
 	    keywords:
 	      'abs batch capitalize convert_encoding date date_modify default ' +
@@ -46330,28 +49007,38 @@
 	    contains: [
 	      hljs.COMMENT(/\{#/, /#}/),
 	      {
-	        className: 'template_tag',
+	        className: 'template-tag',
 	        begin: /\{%/, end: /%}/,
-	        keywords: TAGS,
-	        contains: [FILTER, FUNCTIONS]
+	        contains: [
+	          {
+	            className: 'name',
+	            begin: /\w+/,
+	            keywords: TAGS,
+	            starts: {
+	              endsWithParent: true,
+	              contains: [FILTER, FUNCTIONS],
+	              relevance: 0
+	            }
+	          }
+	        ]
 	      },
 	      {
-	        className: 'variable',
+	        className: 'template-variable',
 	        begin: /\{\{/, end: /}}/,
-	        contains: [FILTER, FUNCTIONS]
+	        contains: ['self', FILTER, FUNCTIONS]
 	      }
 	    ]
 	  };
 	};
 
 /***/ },
-/* 378 */
+/* 435 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  var KEYWORDS = {
 	    keyword:
-	      'in if for while finally var new function|0 do return void else break catch ' +
+	      'in if for while finally var new function do return void else break catch ' +
 	      'instanceof with throw case default try this switch continue typeof delete ' +
 	      'let yield const class public private protected get set super ' +
 	      'static implements enum export import declare type namespace abstract',
@@ -46372,12 +49059,22 @@
 	    keywords: KEYWORDS,
 	    contains: [
 	      {
-	        className: 'pi',
-	        begin: /^\s*['"]use strict['"]/,
-	        relevance: 0
+	        className: 'meta',
+	        begin: /^\s*['"]use strict['"]/
 	      },
 	      hljs.APOS_STRING_MODE,
 	      hljs.QUOTE_STRING_MODE,
+	      { // template string
+	        className: 'string',
+	        begin: '`', end: '`',
+	        contains: [
+	          hljs.BACKSLASH_ESCAPE,
+	          {
+	            className: 'subst',
+	            begin: '\\$\\{', end: '\\}'
+	          }
+	        ]
+	      },
 	      hljs.C_LINE_COMMENT_MODE,
 	      hljs.C_BLOCK_COMMENT_MODE,
 	      {
@@ -46423,16 +49120,12 @@
 	        relevance: 0 // () => {} is more typical in TypeScript
 	      },
 	      {
-	        className: 'constructor',
-	        beginKeywords: 'constructor', end: /\{/, excludeEnd: true,
-	        relevance: 10
+	        beginKeywords: 'constructor', end: /\{/, excludeEnd: true
 	      },
 	      {
-	        className: 'module',
 	        beginKeywords: 'module', end: /\{/, excludeEnd: true
 	      },
 	      {
-	        className: 'interface',
 	        beginKeywords: 'interface', end: /\{/, excludeEnd: true,
 	        keywords: 'interface extends'
 	      },
@@ -46447,7 +49140,7 @@
 	};
 
 /***/ },
-/* 379 */
+/* 436 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46492,21 +49185,16 @@
 	      hljs.QUOTE_STRING_MODE,
 	      hljs.C_NUMBER_MODE,
 	      {
-	        className: 'preprocessor',
+	        className: 'meta',
 	        begin: '^#', end: '$',
 	        relevance: 2
-	      },
-	      {
-	        className: 'constant',
-	        begin: ' [A-Z_]+ ',
-	        relevance: 0
 	      }
 	    ]
 	  };
 	};
 
 /***/ },
-/* 380 */
+/* 437 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46543,12 +49231,12 @@
 	          returnBegin: true,
 	          contains: [
 	            {
-	              className: 'xmlDocTag',
+	              className: 'doctag',
 	              begin: '\'\'\'|<!--|-->',
 	              contains: [hljs.PHRASAL_WORDS_MODE]
 	            },
 	            {
-	              className: 'xmlDocTag',
+	              className: 'doctag',
 	              begin: '</?', end: '>',
 	              contains: [hljs.PHRASAL_WORDS_MODE]
 	            }
@@ -46557,16 +49245,16 @@
 	      ),
 	      hljs.C_NUMBER_MODE,
 	      {
-	        className: 'preprocessor',
+	        className: 'meta',
 	        begin: '#', end: '$',
-	        keywords: 'if else elseif end region externalsource'
+	        keywords: {'meta-keyword': 'if else elseif end region externalsource'}
 	      }
 	    ]
 	  };
 	};
 
 /***/ },
-/* 381 */
+/* 438 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46609,7 +49297,7 @@
 	};
 
 /***/ },
-/* 382 */
+/* 439 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46625,7 +49313,7 @@
 	};
 
 /***/ },
-/* 383 */
+/* 440 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46641,8 +49329,8 @@
 	        'negedge nmos nor not notif0 notif1 or output parameter pmos posedge ' +
 	        'primitive pulldown pullup rcmos release repeat rnmos rpmos rtran ' +
 	        'rtranif0 rtranif1 specify specparam table task timescale tran ' +
-	        'tranif0 tranif1 wait while xnor xor',
-	      typename:
+	        'tranif0 tranif1 wait while xnor xor ' +
+	        // types
 	        'highz0 highz1 integer large medium pull0 pull1 real realtime reg ' +
 	        'scalared signed small strong0 strong1 supply0 supply0 supply1 supply1 ' +
 	        'time tri tri0 tri1 triand trior trireg vectored wand weak0 weak1 wire wor'
@@ -46657,29 +49345,17 @@
 	        contains: [hljs.BACKSLASH_ESCAPE],
 	        relevance: 0
 	      },
-	      /* ports in instances */
-	      {
-	        className: 'typename',
-	        begin: '\\.\\w+',
-	        relevance: 0
-	      },
 	      /* parameters to instances */
 	      {
-	        className: 'value',
+	        className: 'variable',
 	        begin: '#\\((?!parameter).+\\)'
-	      },
-	      /* operators */
-	      {
-	        className: 'keyword',
-	        begin: '\\+|-|\\*|/|%|<|>|=|#|`|\\!|&|\\||@|:|\\^|~|\\{|\\}',
-	        relevance: 0
 	      }
 	    ]
 	  }; // return
 	};
 
 /***/ },
-/* 384 */
+/* 441 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46708,7 +49384,7 @@
 	        'release rem report restrict restrict_guarantee return rol ror select sequence ' +
 	        'severity shared signal sla sll sra srl strong subtype then to transport type ' +
 	        'unaffected units until use variable vmode vprop vunit wait when while with xnor xor',
-	      typename:
+	      built_in:
 	        'boolean bit character severity_level integer time delay_length natural positive ' +
 	        'string bit_vector file_open_kind file_open_status std_ulogic std_ulogic_vector ' +
 	        'std_logic std_logic_vector unsigned signed boolean_vector integer_vector ' +
@@ -46730,7 +49406,7 @@
 	        contains: [hljs.BACKSLASH_ESCAPE]
 	      },
 	      {
-	        className: 'attribute',
+	        className: 'symbol',
 	        begin: '\'[A-Za-z](_?[A-Za-z0-9])*',
 	        contains: [hljs.BACKSLASH_ESCAPE]
 	      }
@@ -46739,7 +49415,7 @@
 	};
 
 /***/ },
-/* 385 */
+/* 442 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46806,18 +49482,18 @@
 	};
 
 /***/ },
-/* 386 */
+/* 443 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  return {
 	    case_insensitive: true,
-	    lexemes: '\\.?' + hljs.IDENT_RE,
+	    lexemes: '[.%]?' + hljs.IDENT_RE,
 	    keywords: {
 	      keyword:
 	        'lock rep repe repz repne repnz xaquire xrelease bnd nobnd ' +
 	        'aaa aad aam aas adc add and arpl bb0_reset bb1_reset bound bsf bsr bswap bt btc btr bts call cbw cdq cdqe clc cld cli clts cmc cmp cmpsb cmpsd cmpsq cmpsw cmpxchg cmpxchg486 cmpxchg8b cmpxchg16b cpuid cpu_read cpu_write cqo cwd cwde daa das dec div dmint emms enter equ f2xm1 fabs fadd faddp fbld fbstp fchs fclex fcmovb fcmovbe fcmove fcmovnb fcmovnbe fcmovne fcmovnu fcmovu fcom fcomi fcomip fcomp fcompp fcos fdecstp fdisi fdiv fdivp fdivr fdivrp femms feni ffree ffreep fiadd ficom ficomp fidiv fidivr fild fimul fincstp finit fist fistp fisttp fisub fisubr fld fld1 fldcw fldenv fldl2e fldl2t fldlg2 fldln2 fldpi fldz fmul fmulp fnclex fndisi fneni fninit fnop fnsave fnstcw fnstenv fnstsw fpatan fprem fprem1 fptan frndint frstor fsave fscale fsetpm fsin fsincos fsqrt fst fstcw fstenv fstp fstsw fsub fsubp fsubr fsubrp ftst fucom fucomi fucomip fucomp fucompp fxam fxch fxtract fyl2x fyl2xp1 hlt ibts icebp idiv imul in inc incbin insb insd insw int int01 int1 int03 int3 into invd invpcid invlpg invlpga iret iretd iretq iretw jcxz jecxz jrcxz jmp jmpe lahf lar lds lea leave les lfence lfs lgdt lgs lidt lldt lmsw loadall loadall286 lodsb lodsd lodsq lodsw loop loope loopne loopnz loopz lsl lss ltr mfence monitor mov movd movq movsb movsd movsq movsw movsx movsxd movzx mul mwait neg nop not or out outsb outsd outsw packssdw packsswb packuswb paddb paddd paddsb paddsiw paddsw paddusb paddusw paddw pand pandn pause paveb pavgusb pcmpeqb pcmpeqd pcmpeqw pcmpgtb pcmpgtd pcmpgtw pdistib pf2id pfacc pfadd pfcmpeq pfcmpge pfcmpgt pfmax pfmin pfmul pfrcp pfrcpit1 pfrcpit2 pfrsqit1 pfrsqrt pfsub pfsubr pi2fd pmachriw pmaddwd pmagw pmulhriw pmulhrwa pmulhrwc pmulhw pmullw pmvgezb pmvlzb pmvnzb pmvzb pop popa popad popaw popf popfd popfq popfw por prefetch prefetchw pslld psllq psllw psrad psraw psrld psrlq psrlw psubb psubd psubsb psubsiw psubsw psubusb psubusw psubw punpckhbw punpckhdq punpckhwd punpcklbw punpckldq punpcklwd push pusha pushad pushaw pushf pushfd pushfq pushfw pxor rcl rcr rdshr rdmsr rdpmc rdtsc rdtscp ret retf retn rol ror rdm rsdc rsldt rsm rsts sahf sal salc sar sbb scasb scasd scasq scasw sfence sgdt shl shld shr shrd sidt sldt skinit smi smint smintold smsw stc std sti stosb stosd stosq stosw str sub svdc svldt svts swapgs syscall sysenter sysexit sysret test ud0 ud1 ud2b ud2 ud2a umov verr verw fwait wbinvd wrshr wrmsr xadd xbts xchg xlatb xlat xor cmove cmovz cmovne cmovnz cmova cmovnbe cmovae cmovnb cmovb cmovnae cmovbe cmovna cmovg cmovnle cmovge cmovnl cmovl cmovnge cmovle cmovng cmovc cmovnc cmovo cmovno cmovs cmovns cmovp cmovpe cmovnp cmovpo je jz jne jnz ja jnbe jae jnb jb jnae jbe jna jg jnle jge jnl jl jnge jle jng jc jnc jo jno js jns jpo jnp jpe jp sete setz setne setnz seta setnbe setae setnb setnc setb setnae setcset setbe setna setg setnle setge setnl setl setnge setle setng sets setns seto setno setpe setp setpo setnp addps addss andnps andps cmpeqps cmpeqss cmpleps cmpless cmpltps cmpltss cmpneqps cmpneqss cmpnleps cmpnless cmpnltps cmpnltss cmpordps cmpordss cmpunordps cmpunordss cmpps cmpss comiss cvtpi2ps cvtps2pi cvtsi2ss cvtss2si cvttps2pi cvttss2si divps divss ldmxcsr maxps maxss minps minss movaps movhps movlhps movlps movhlps movmskps movntps movss movups mulps mulss orps rcpps rcpss rsqrtps rsqrtss shufps sqrtps sqrtss stmxcsr subps subss ucomiss unpckhps unpcklps xorps fxrstor fxrstor64 fxsave fxsave64 xgetbv xsetbv xsave xsave64 xsaveopt xsaveopt64 xrstor xrstor64 prefetchnta prefetcht0 prefetcht1 prefetcht2 maskmovq movntq pavgb pavgw pextrw pinsrw pmaxsw pmaxub pminsw pminub pmovmskb pmulhuw psadbw pshufw pf2iw pfnacc pfpnacc pi2fw pswapd maskmovdqu clflush movntdq movnti movntpd movdqa movdqu movdq2q movq2dq paddq pmuludq pshufd pshufhw pshuflw pslldq psrldq psubq punpckhqdq punpcklqdq addpd addsd andnpd andpd cmpeqpd cmpeqsd cmplepd cmplesd cmpltpd cmpltsd cmpneqpd cmpneqsd cmpnlepd cmpnlesd cmpnltpd cmpnltsd cmpordpd cmpordsd cmpunordpd cmpunordsd cmppd comisd cvtdq2pd cvtdq2ps cvtpd2dq cvtpd2pi cvtpd2ps cvtpi2pd cvtps2dq cvtps2pd cvtsd2si cvtsd2ss cvtsi2sd cvtss2sd cvttpd2pi cvttpd2dq cvttps2dq cvttsd2si divpd divsd maxpd maxsd minpd minsd movapd movhpd movlpd movmskpd movupd mulpd mulsd orpd shufpd sqrtpd sqrtsd subpd subsd ucomisd unpckhpd unpcklpd xorpd addsubpd addsubps haddpd haddps hsubpd hsubps lddqu movddup movshdup movsldup clgi stgi vmcall vmclear vmfunc vmlaunch vmload vmmcall vmptrld vmptrst vmread vmresume vmrun vmsave vmwrite vmxoff vmxon invept invvpid pabsb pabsw pabsd palignr phaddw phaddd phaddsw phsubw phsubd phsubsw pmaddubsw pmulhrsw pshufb psignb psignw psignd extrq insertq movntsd movntss lzcnt blendpd blendps blendvpd blendvps dppd dpps extractps insertps movntdqa mpsadbw packusdw pblendvb pblendw pcmpeqq pextrb pextrd pextrq phminposuw pinsrb pinsrd pinsrq pmaxsb pmaxsd pmaxud pmaxuw pminsb pminsd pminud pminuw pmovsxbw pmovsxbd pmovsxbq pmovsxwd pmovsxwq pmovsxdq pmovzxbw pmovzxbd pmovzxbq pmovzxwd pmovzxwq pmovzxdq pmuldq pmulld ptest roundpd roundps roundsd roundss crc32 pcmpestri pcmpestrm pcmpistri pcmpistrm pcmpgtq popcnt getsec pfrcpv pfrsqrtv movbe aesenc aesenclast aesdec aesdeclast aesimc aeskeygenassist vaesenc vaesenclast vaesdec vaesdeclast vaesimc vaeskeygenassist vaddpd vaddps vaddsd vaddss vaddsubpd vaddsubps vandpd vandps vandnpd vandnps vblendpd vblendps vblendvpd vblendvps vbroadcastss vbroadcastsd vbroadcastf128 vcmpeq_ospd vcmpeqpd vcmplt_ospd vcmpltpd vcmple_ospd vcmplepd vcmpunord_qpd vcmpunordpd vcmpneq_uqpd vcmpneqpd vcmpnlt_uspd vcmpnltpd vcmpnle_uspd vcmpnlepd vcmpord_qpd vcmpordpd vcmpeq_uqpd vcmpnge_uspd vcmpngepd vcmpngt_uspd vcmpngtpd vcmpfalse_oqpd vcmpfalsepd vcmpneq_oqpd vcmpge_ospd vcmpgepd vcmpgt_ospd vcmpgtpd vcmptrue_uqpd vcmptruepd vcmplt_oqpd vcmple_oqpd vcmpunord_spd vcmpneq_uspd vcmpnlt_uqpd vcmpnle_uqpd vcmpord_spd vcmpeq_uspd vcmpnge_uqpd vcmpngt_uqpd vcmpfalse_ospd vcmpneq_ospd vcmpge_oqpd vcmpgt_oqpd vcmptrue_uspd vcmppd vcmpeq_osps vcmpeqps vcmplt_osps vcmpltps vcmple_osps vcmpleps vcmpunord_qps vcmpunordps vcmpneq_uqps vcmpneqps vcmpnlt_usps vcmpnltps vcmpnle_usps vcmpnleps vcmpord_qps vcmpordps vcmpeq_uqps vcmpnge_usps vcmpngeps vcmpngt_usps vcmpngtps vcmpfalse_oqps vcmpfalseps vcmpneq_oqps vcmpge_osps vcmpgeps vcmpgt_osps vcmpgtps vcmptrue_uqps vcmptrueps vcmplt_oqps vcmple_oqps vcmpunord_sps vcmpneq_usps vcmpnlt_uqps vcmpnle_uqps vcmpord_sps vcmpeq_usps vcmpnge_uqps vcmpngt_uqps vcmpfalse_osps vcmpneq_osps vcmpge_oqps vcmpgt_oqps vcmptrue_usps vcmpps vcmpeq_ossd vcmpeqsd vcmplt_ossd vcmpltsd vcmple_ossd vcmplesd vcmpunord_qsd vcmpunordsd vcmpneq_uqsd vcmpneqsd vcmpnlt_ussd vcmpnltsd vcmpnle_ussd vcmpnlesd vcmpord_qsd vcmpordsd vcmpeq_uqsd vcmpnge_ussd vcmpngesd vcmpngt_ussd vcmpngtsd vcmpfalse_oqsd vcmpfalsesd vcmpneq_oqsd vcmpge_ossd vcmpgesd vcmpgt_ossd vcmpgtsd vcmptrue_uqsd vcmptruesd vcmplt_oqsd vcmple_oqsd vcmpunord_ssd vcmpneq_ussd vcmpnlt_uqsd vcmpnle_uqsd vcmpord_ssd vcmpeq_ussd vcmpnge_uqsd vcmpngt_uqsd vcmpfalse_ossd vcmpneq_ossd vcmpge_oqsd vcmpgt_oqsd vcmptrue_ussd vcmpsd vcmpeq_osss vcmpeqss vcmplt_osss vcmpltss vcmple_osss vcmpless vcmpunord_qss vcmpunordss vcmpneq_uqss vcmpneqss vcmpnlt_usss vcmpnltss vcmpnle_usss vcmpnless vcmpord_qss vcmpordss vcmpeq_uqss vcmpnge_usss vcmpngess vcmpngt_usss vcmpngtss vcmpfalse_oqss vcmpfalsess vcmpneq_oqss vcmpge_osss vcmpgess vcmpgt_osss vcmpgtss vcmptrue_uqss vcmptruess vcmplt_oqss vcmple_oqss vcmpunord_sss vcmpneq_usss vcmpnlt_uqss vcmpnle_uqss vcmpord_sss vcmpeq_usss vcmpnge_uqss vcmpngt_uqss vcmpfalse_osss vcmpneq_osss vcmpge_oqss vcmpgt_oqss vcmptrue_usss vcmpss vcomisd vcomiss vcvtdq2pd vcvtdq2ps vcvtpd2dq vcvtpd2ps vcvtps2dq vcvtps2pd vcvtsd2si vcvtsd2ss vcvtsi2sd vcvtsi2ss vcvtss2sd vcvtss2si vcvttpd2dq vcvttps2dq vcvttsd2si vcvttss2si vdivpd vdivps vdivsd vdivss vdppd vdpps vextractf128 vextractps vhaddpd vhaddps vhsubpd vhsubps vinsertf128 vinsertps vlddqu vldqqu vldmxcsr vmaskmovdqu vmaskmovps vmaskmovpd vmaxpd vmaxps vmaxsd vmaxss vminpd vminps vminsd vminss vmovapd vmovaps vmovd vmovq vmovddup vmovdqa vmovqqa vmovdqu vmovqqu vmovhlps vmovhpd vmovhps vmovlhps vmovlpd vmovlps vmovmskpd vmovmskps vmovntdq vmovntqq vmovntdqa vmovntpd vmovntps vmovsd vmovshdup vmovsldup vmovss vmovupd vmovups vmpsadbw vmulpd vmulps vmulsd vmulss vorpd vorps vpabsb vpabsw vpabsd vpacksswb vpackssdw vpackuswb vpackusdw vpaddb vpaddw vpaddd vpaddq vpaddsb vpaddsw vpaddusb vpaddusw vpalignr vpand vpandn vpavgb vpavgw vpblendvb vpblendw vpcmpestri vpcmpestrm vpcmpistri vpcmpistrm vpcmpeqb vpcmpeqw vpcmpeqd vpcmpeqq vpcmpgtb vpcmpgtw vpcmpgtd vpcmpgtq vpermilpd vpermilps vperm2f128 vpextrb vpextrw vpextrd vpextrq vphaddw vphaddd vphaddsw vphminposuw vphsubw vphsubd vphsubsw vpinsrb vpinsrw vpinsrd vpinsrq vpmaddwd vpmaddubsw vpmaxsb vpmaxsw vpmaxsd vpmaxub vpmaxuw vpmaxud vpminsb vpminsw vpminsd vpminub vpminuw vpminud vpmovmskb vpmovsxbw vpmovsxbd vpmovsxbq vpmovsxwd vpmovsxwq vpmovsxdq vpmovzxbw vpmovzxbd vpmovzxbq vpmovzxwd vpmovzxwq vpmovzxdq vpmulhuw vpmulhrsw vpmulhw vpmullw vpmulld vpmuludq vpmuldq vpor vpsadbw vpshufb vpshufd vpshufhw vpshuflw vpsignb vpsignw vpsignd vpslldq vpsrldq vpsllw vpslld vpsllq vpsraw vpsrad vpsrlw vpsrld vpsrlq vptest vpsubb vpsubw vpsubd vpsubq vpsubsb vpsubsw vpsubusb vpsubusw vpunpckhbw vpunpckhwd vpunpckhdq vpunpckhqdq vpunpcklbw vpunpcklwd vpunpckldq vpunpcklqdq vpxor vrcpps vrcpss vrsqrtps vrsqrtss vroundpd vroundps vroundsd vroundss vshufpd vshufps vsqrtpd vsqrtps vsqrtsd vsqrtss vstmxcsr vsubpd vsubps vsubsd vsubss vtestps vtestpd vucomisd vucomiss vunpckhpd vunpckhps vunpcklpd vunpcklps vxorpd vxorps vzeroall vzeroupper pclmullqlqdq pclmulhqlqdq pclmullqhqdq pclmulhqhqdq pclmulqdq vpclmullqlqdq vpclmulhqlqdq vpclmullqhqdq vpclmulhqhqdq vpclmulqdq vfmadd132ps vfmadd132pd vfmadd312ps vfmadd312pd vfmadd213ps vfmadd213pd vfmadd123ps vfmadd123pd vfmadd231ps vfmadd231pd vfmadd321ps vfmadd321pd vfmaddsub132ps vfmaddsub132pd vfmaddsub312ps vfmaddsub312pd vfmaddsub213ps vfmaddsub213pd vfmaddsub123ps vfmaddsub123pd vfmaddsub231ps vfmaddsub231pd vfmaddsub321ps vfmaddsub321pd vfmsub132ps vfmsub132pd vfmsub312ps vfmsub312pd vfmsub213ps vfmsub213pd vfmsub123ps vfmsub123pd vfmsub231ps vfmsub231pd vfmsub321ps vfmsub321pd vfmsubadd132ps vfmsubadd132pd vfmsubadd312ps vfmsubadd312pd vfmsubadd213ps vfmsubadd213pd vfmsubadd123ps vfmsubadd123pd vfmsubadd231ps vfmsubadd231pd vfmsubadd321ps vfmsubadd321pd vfnmadd132ps vfnmadd132pd vfnmadd312ps vfnmadd312pd vfnmadd213ps vfnmadd213pd vfnmadd123ps vfnmadd123pd vfnmadd231ps vfnmadd231pd vfnmadd321ps vfnmadd321pd vfnmsub132ps vfnmsub132pd vfnmsub312ps vfnmsub312pd vfnmsub213ps vfnmsub213pd vfnmsub123ps vfnmsub123pd vfnmsub231ps vfnmsub231pd vfnmsub321ps vfnmsub321pd vfmadd132ss vfmadd132sd vfmadd312ss vfmadd312sd vfmadd213ss vfmadd213sd vfmadd123ss vfmadd123sd vfmadd231ss vfmadd231sd vfmadd321ss vfmadd321sd vfmsub132ss vfmsub132sd vfmsub312ss vfmsub312sd vfmsub213ss vfmsub213sd vfmsub123ss vfmsub123sd vfmsub231ss vfmsub231sd vfmsub321ss vfmsub321sd vfnmadd132ss vfnmadd132sd vfnmadd312ss vfnmadd312sd vfnmadd213ss vfnmadd213sd vfnmadd123ss vfnmadd123sd vfnmadd231ss vfnmadd231sd vfnmadd321ss vfnmadd321sd vfnmsub132ss vfnmsub132sd vfnmsub312ss vfnmsub312sd vfnmsub213ss vfnmsub213sd vfnmsub123ss vfnmsub123sd vfnmsub231ss vfnmsub231sd vfnmsub321ss vfnmsub321sd rdfsbase rdgsbase rdrand wrfsbase wrgsbase vcvtph2ps vcvtps2ph adcx adox rdseed clac stac xstore xcryptecb xcryptcbc xcryptctr xcryptcfb xcryptofb montmul xsha1 xsha256 llwpcb slwpcb lwpval lwpins vfmaddpd vfmaddps vfmaddsd vfmaddss vfmaddsubpd vfmaddsubps vfmsubaddpd vfmsubaddps vfmsubpd vfmsubps vfmsubsd vfmsubss vfnmaddpd vfnmaddps vfnmaddsd vfnmaddss vfnmsubpd vfnmsubps vfnmsubsd vfnmsubss vfrczpd vfrczps vfrczsd vfrczss vpcmov vpcomb vpcomd vpcomq vpcomub vpcomud vpcomuq vpcomuw vpcomw vphaddbd vphaddbq vphaddbw vphadddq vphaddubd vphaddubq vphaddubw vphaddudq vphadduwd vphadduwq vphaddwd vphaddwq vphsubbw vphsubdq vphsubwd vpmacsdd vpmacsdqh vpmacsdql vpmacssdd vpmacssdqh vpmacssdql vpmacsswd vpmacssww vpmacswd vpmacsww vpmadcsswd vpmadcswd vpperm vprotb vprotd vprotq vprotw vpshab vpshad vpshaq vpshaw vpshlb vpshld vpshlq vpshlw vbroadcasti128 vpblendd vpbroadcastb vpbroadcastw vpbroadcastd vpbroadcastq vpermd vpermpd vpermps vpermq vperm2i128 vextracti128 vinserti128 vpmaskmovd vpmaskmovq vpsllvd vpsllvq vpsravd vpsrlvd vpsrlvq vgatherdpd vgatherqpd vgatherdps vgatherqps vpgatherdd vpgatherqd vpgatherdq vpgatherqq xabort xbegin xend xtest andn bextr blci blcic blsi blsic blcfill blsfill blcmsk blsmsk blsr blcs bzhi mulx pdep pext rorx sarx shlx shrx tzcnt tzmsk t1mskc valignd valignq vblendmpd vblendmps vbroadcastf32x4 vbroadcastf64x4 vbroadcasti32x4 vbroadcasti64x4 vcompresspd vcompressps vcvtpd2udq vcvtps2udq vcvtsd2usi vcvtss2usi vcvttpd2udq vcvttps2udq vcvttsd2usi vcvttss2usi vcvtudq2pd vcvtudq2ps vcvtusi2sd vcvtusi2ss vexpandpd vexpandps vextractf32x4 vextractf64x4 vextracti32x4 vextracti64x4 vfixupimmpd vfixupimmps vfixupimmsd vfixupimmss vgetexppd vgetexpps vgetexpsd vgetexpss vgetmantpd vgetmantps vgetmantsd vgetmantss vinsertf32x4 vinsertf64x4 vinserti32x4 vinserti64x4 vmovdqa32 vmovdqa64 vmovdqu32 vmovdqu64 vpabsq vpandd vpandnd vpandnq vpandq vpblendmd vpblendmq vpcmpltd vpcmpled vpcmpneqd vpcmpnltd vpcmpnled vpcmpd vpcmpltq vpcmpleq vpcmpneqq vpcmpnltq vpcmpnleq vpcmpq vpcmpequd vpcmpltud vpcmpleud vpcmpnequd vpcmpnltud vpcmpnleud vpcmpud vpcmpequq vpcmpltuq vpcmpleuq vpcmpnequq vpcmpnltuq vpcmpnleuq vpcmpuq vpcompressd vpcompressq vpermi2d vpermi2pd vpermi2ps vpermi2q vpermt2d vpermt2pd vpermt2ps vpermt2q vpexpandd vpexpandq vpmaxsq vpmaxuq vpminsq vpminuq vpmovdb vpmovdw vpmovqb vpmovqd vpmovqw vpmovsdb vpmovsdw vpmovsqb vpmovsqd vpmovsqw vpmovusdb vpmovusdw vpmovusqb vpmovusqd vpmovusqw vpord vporq vprold vprolq vprolvd vprolvq vprord vprorq vprorvd vprorvq vpscatterdd vpscatterdq vpscatterqd vpscatterqq vpsraq vpsravq vpternlogd vpternlogq vptestmd vptestmq vptestnmd vptestnmq vpxord vpxorq vrcp14pd vrcp14ps vrcp14sd vrcp14ss vrndscalepd vrndscaleps vrndscalesd vrndscaless vrsqrt14pd vrsqrt14ps vrsqrt14sd vrsqrt14ss vscalefpd vscalefps vscalefsd vscalefss vscatterdpd vscatterdps vscatterqpd vscatterqps vshuff32x4 vshuff64x2 vshufi32x4 vshufi64x2 kandnw kandw kmovw knotw kortestw korw kshiftlw kshiftrw kunpckbw kxnorw kxorw vpbroadcastmb2q vpbroadcastmw2d vpconflictd vpconflictq vplzcntd vplzcntq vexp2pd vexp2ps vrcp28pd vrcp28ps vrcp28sd vrcp28ss vrsqrt28pd vrsqrt28ps vrsqrt28sd vrsqrt28ss vgatherpf0dpd vgatherpf0dps vgatherpf0qpd vgatherpf0qps vgatherpf1dpd vgatherpf1dps vgatherpf1qpd vgatherpf1qps vscatterpf0dpd vscatterpf0dps vscatterpf0qpd vscatterpf0qps vscatterpf1dpd vscatterpf1dps vscatterpf1qpd vscatterpf1qps prefetchwt1 bndmk bndcl bndcu bndcn bndmov bndldx bndstx sha1rnds4 sha1nexte sha1msg1 sha1msg2 sha256rnds2 sha256msg1 sha256msg2 hint_nop0 hint_nop1 hint_nop2 hint_nop3 hint_nop4 hint_nop5 hint_nop6 hint_nop7 hint_nop8 hint_nop9 hint_nop10 hint_nop11 hint_nop12 hint_nop13 hint_nop14 hint_nop15 hint_nop16 hint_nop17 hint_nop18 hint_nop19 hint_nop20 hint_nop21 hint_nop22 hint_nop23 hint_nop24 hint_nop25 hint_nop26 hint_nop27 hint_nop28 hint_nop29 hint_nop30 hint_nop31 hint_nop32 hint_nop33 hint_nop34 hint_nop35 hint_nop36 hint_nop37 hint_nop38 hint_nop39 hint_nop40 hint_nop41 hint_nop42 hint_nop43 hint_nop44 hint_nop45 hint_nop46 hint_nop47 hint_nop48 hint_nop49 hint_nop50 hint_nop51 hint_nop52 hint_nop53 hint_nop54 hint_nop55 hint_nop56 hint_nop57 hint_nop58 hint_nop59 hint_nop60 hint_nop61 hint_nop62 hint_nop63',
-	      literal:
+	      built_in:
 	        // Instruction pointer
 	        'ip eip rip ' +
 	        // 8-bit registers
@@ -46853,24 +49529,22 @@
 	        'r0 r1 r2 r3 r4 r5 r6 r7 r0b r1b r2b r3b r4b r5b r6b r7b ' +
 	        'r0w r1w r2w r3w r4w r5w r6w r7w r0d r1d r2d r3d r4d r5d r6d r7d ' +
 	        'r0h r1h r2h r3h ' +
-	        'r0l r1l r2l r3l r4l r5l r6l r7l r8l r9l r10l r11l r12l r13l r14l r15l',
+	        'r0l r1l r2l r3l r4l r5l r6l r7l r8l r9l r10l r11l r12l r13l r14l r15l ' +
 
-	      pseudo:
 	        'db dw dd dq dt ddq do dy dz ' +
 	        'resb resw resd resq rest resdq reso resy resz ' +
-	        'incbin equ times',
+	        'incbin equ times ' +
+	        'byte word dword qword nosplit rel abs seg wrt strict near far a32 ptr',
 
-	      preprocessor:
+	      meta:
 	        '%define %xdefine %+ %undef %defstr %deftok %assign %strcat %strlen %substr %rotate %elif %else %endif ' +
-	        '%ifmacro %ifctx %ifidn %ifidni %ifid %ifnum %ifstr %iftoken %ifempty %ifenv %error %warning %fatal %rep ' +
+	        '%if %ifmacro %ifctx %ifidn %ifidni %ifid %ifnum %ifstr %iftoken %ifempty %ifenv %error %warning %fatal %rep ' +
 	        '%endrep %include %push %pop %repl %pathsearch %depend %use %arg %stacksize %local %line %comment %endcomment ' +
 	        '.nolist ' +
-	        'byte word dword qword nosplit rel abs seg wrt strict near far a32 ptr ' +
 	        '__FILE__ __LINE__ __SECT__  __BITS__ __OUTPUT_FORMAT__ __DATE__ __TIME__ __DATE_NUM__ __TIME_NUM__ ' +
 	        '__UTC_DATE__ __UTC_TIME__ __UTC_DATE_NUM__ __UTC_TIME_NUM__  __PASS__ struc endstruc istruc at iend ' +
-	        'align alignb sectalign daz nodaz up down zero default option assume public ',
+	        'align alignb sectalign daz nodaz up down zero default option assume public ' +
 
-	      built_in:
 	        'bits use16 use32 use64 default section segment absolute extern global common cpu float ' +
 	        '__utf16__ __utf16le__ __utf16be__ __utf32__ __utf32le__ __utf32be__ ' +
 	        '__float8__ __float16__ __float32__ __float64__ __float80m__ __float80e__ __float128l__ __float128h__ ' +
@@ -46920,7 +49594,7 @@
 	        relevance: 0
 	      },
 	      {
-	        className: 'label',
+	        className: 'symbol',
 	        variants: [
 	          // Global label and local label
 	          { begin: '^\\s*[A-Za-z._?][A-Za-z0-9_$#@~.?]*(:|\\s+label)' },
@@ -46931,13 +49605,13 @@
 	      },
 	      // Macro parameter
 	      {
-	        className: 'argument',
+	        className: 'subst',
 	        begin: '%[0-9]+',
 	        relevance: 0
 	      },
 	      // Macro parameter
 	      {
-	        className: 'built_in',
+	        className: 'subst',
 	        begin: '%!\S+',
 	        relevance: 0
 	      }
@@ -46946,7 +49620,7 @@
 	};
 
 /***/ },
-/* 387 */
+/* 444 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46955,33 +49629,22 @@
 	    'StereoDecoder PointCloud NetworkAccess RemoteControl RegExp ChromaKey Snowfall NodeJS Speech Charts';
 
 	  var XL_KEYWORDS = {
-	    keyword: 'if then else do while until for loop import with is as where when by data constant',
-	    literal: 'true false nil',
-	    type: 'integer real text name boolean symbol infix prefix postfix block tree',
-	    built_in: 'in mod rem and or xor not abs sign floor ceil sqrt sin cos tan asin acos atan exp expm1 log log2 log10 log1p pi at',
-	    module: BUILTIN_MODULES,
-	    id:
-	      'text_length text_range text_find text_replace contains page slide basic_slide title_slide title subtitle ' +
-	      'fade_in fade_out fade_at clear_color color line_color line_width texture_wrap texture_transform texture ' +
-	      'scale_?x scale_?y scale_?z? translate_?x translate_?y translate_?z? rotate_?x rotate_?y rotate_?z? rectangle ' +
-	      'circle ellipse sphere path line_to move_to quad_to curve_to theme background contents locally time mouse_?x ' +
-	      'mouse_?y mouse_buttons'
-	  };
-
-	  var XL_CONSTANT = {
-	    className: 'constant',
-	    begin: '[A-Z][A-Z_0-9]+',
-	    relevance: 0
-	  };
-	  var XL_VARIABLE = {
-	    className: 'variable',
-	    begin: '([A-Z][a-z_0-9]+)+',
-	    relevance: 0
-	  };
-	  var XL_ID = {
-	    className: 'id',
-	    begin: '[a-z][a-z_0-9]+',
-	    relevance: 0
+	    keyword:
+	      'if then else do while until for loop import with is as where when by data constant ' +
+	      'integer real text name boolean symbol infix prefix postfix block tree',
+	    literal:
+	      'true false nil',
+	    built_in:
+	      'in mod rem and or xor not abs sign floor ceil sqrt sin cos tan asin ' +
+	      'acos atan exp expm1 log log2 log10 log1p pi at text_length text_range ' +
+	      'text_find text_replace contains page slide basic_slide title_slide ' +
+	      'title subtitle fade_in fade_out fade_at clear_color color line_color ' +
+	      'line_width texture_wrap texture_transform texture scale_?x scale_?y ' +
+	      'scale_?z? translate_?x translate_?y translate_?z? rotate_?x rotate_?y ' +
+	      'rotate_?z? rectangle circle ellipse sphere path line_to move_to ' +
+	      'quad_to curve_to theme background contents locally time mouse_?x ' +
+	      'mouse_?y mouse_buttons ' +
+	      BUILTIN_MODULES
 	  };
 
 	  var DOUBLE_QUOTE_TEXT = {
@@ -46998,22 +49661,22 @@
 	  };
 	  var BASED_NUMBER = {
 	    className: 'number',
-	    begin: '[0-9]+#[0-9A-Z_]+(\\.[0-9-A-Z_]+)?#?([Ee][+-]?[0-9]+)?',
-	    relevance: 10
+	    begin: '[0-9]+#[0-9A-Z_]+(\\.[0-9-A-Z_]+)?#?([Ee][+-]?[0-9]+)?'
 	  };
 	  var IMPORT = {
-	    className: 'import',
 	    beginKeywords: 'import', end: '$',
-	    keywords: {
-	      keyword: 'import',
-	      module: BUILTIN_MODULES
-	    },
-	    relevance: 0,
+	    keywords: XL_KEYWORDS,
 	    contains: [DOUBLE_QUOTE_TEXT]
 	  };
 	  var FUNCTION_DEFINITION = {
 	    className: 'function',
-	    begin: '[a-z].*->'
+	    begin: /[a-z][^\n]*->/, returnBegin: true, end: /->/,
+	    contains: [
+	      hljs.inherit(hljs.TITLE_MODE, {starts: {
+	        endsWithParent: true,
+	        keywords: XL_KEYWORDS
+	      }})
+	    ]
 	  };
 	  return {
 	    aliases: ['tao'],
@@ -47027,9 +49690,6 @@
 	    LONG_TEXT,
 	    FUNCTION_DEFINITION,
 	    IMPORT,
-	    XL_CONSTANT,
-	    XL_VARIABLE,
-	    XL_ID,
 	    BASED_NUMBER,
 	    hljs.NUMBER_MODE
 	    ]
@@ -47037,7 +49697,7 @@
 	};
 
 /***/ },
-/* 388 */
+/* 445 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -47050,7 +49710,6 @@
 	    'replace value rename copy modify update';
 	  var LITERAL = 'false true xs:string xs:integer element item xs:date xs:datetime xs:float xs:double xs:decimal QName xs:anyURI xs:long xs:int xs:short xs:byte attribute';
 	  var VAR = {
-	    className: 'variable',
 	    begin: /\$[a-zA-Z0-9\-]+/,
 	    relevance: 5
 	  };
@@ -47070,7 +49729,7 @@
 	  };
 
 	  var ANNOTATION = {
-	    className: 'decorator',
+	    className: 'meta',
 	    begin: '%\\w+'
 	  };
 
@@ -47080,7 +49739,7 @@
 	    relevance: 10,
 	    contains: [
 	      {
-	        className: 'doc', begin: '@\\w+'
+	        className: 'doctag', begin: '@\\w+'
 	      }
 	    ]
 	  };
@@ -47114,7 +49773,95 @@
 	};
 
 /***/ },
-/* 389 */
+/* 446 */
+/***/ function(module, exports) {
+
+	module.exports = function(hljs) {
+	  var LITERALS = {literal: '{ } true false yes no Yes No True False null'};
+
+	  var keyPrefix = '^[ \\-]*';
+	  var keyName =  '[a-zA-Z_][\\w\\-]*';
+	  var KEY = {
+	    className: 'attr',
+	    variants: [
+	      { begin: keyPrefix + keyName + ":"},
+	      { begin: keyPrefix + '"' + keyName + '"' + ":"},
+	      { begin: keyPrefix + "'" + keyName + "'" + ":"}
+	    ]
+	  };
+
+	  var TEMPLATE_VARIABLES = {
+	    className: 'template-variable',
+	    variants: [
+	      { begin: '\{\{', end: '\}\}' }, // jinja templates Ansible
+	      { begin: '%\{', end: '\}' } // Ruby i18n
+	    ]
+	  };
+	  var STRING = {
+	    className: 'string',
+	    relevance: 0,
+	    variants: [
+	      {begin: /'/, end: /'/},
+	      {begin: /"/, end: /"/}
+	    ],
+	    contains: [
+	      hljs.BACKSLASH_ESCAPE,
+	      TEMPLATE_VARIABLES
+	    ]
+	  };
+
+	  return {
+	    case_insensitive: true,
+	    aliases: ['yml', 'YAML', 'yaml'],
+	    contains: [
+	      KEY,
+	      {
+	        className: 'meta',
+	        begin: '^---\s*$',
+	        relevance: 10
+	      },
+	      { // multi line string
+	        className: 'string',
+	        begin: '[\\|>] *$',
+	        returnEnd: true,
+	        contains: STRING.contains,
+	        // very simple termination: next hash key
+	        end: KEY.variants[0].begin
+	      },
+	      { // Ruby/Rails erb
+	        begin: '<%[%=-]?', end: '[%-]?%>',
+	        subLanguage: 'ruby',
+	        excludeBegin: true,
+	        excludeEnd: true,
+	        relevance: 0
+	      },
+	      { // data type
+	        className: 'type',
+	        begin: '!!' + hljs.UNDERSCORE_IDENT_RE,
+	      },
+	      { // fragment id &ref
+	        className: 'meta',
+	        begin: '&' + hljs.UNDERSCORE_IDENT_RE + '$',
+	      },
+	      { // fragment reference *ref
+	        className: 'meta',
+	        begin: '\\*' + hljs.UNDERSCORE_IDENT_RE + '$'
+	      },
+	      { // array listing
+	        className: 'bullet',
+	        begin: '^ *-',
+	        relevance: 0
+	      },
+	      STRING,
+	      hljs.HASH_COMMENT_MODE,
+	      hljs.C_NUMBER_MODE
+	    ],
+	    keywords: LITERALS
+	  };
+	};
+
+/***/ },
+/* 447 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -47137,15 +49884,15 @@
 	    aliases: ['zep'],
 	    case_insensitive: true,
 	    keywords:
-	    'and include_once list abstract global private echo interface as static endswitch ' +
-	    'array null if endwhile or const for endforeach self var let while isset public ' +
-	    'protected exit foreach throw elseif include __FILE__ empty require_once do xor ' +
-	    'return parent clone use __CLASS__ __LINE__ else break print eval new ' +
-	    'catch __METHOD__ case exception default die require __FUNCTION__ ' +
-	    'enddeclare final try switch continue endfor endif declare unset true false ' +
-	    'trait goto instanceof insteadof __DIR__ __NAMESPACE__ ' +
-	    'yield finally int uint long ulong char uchar double float bool boolean string' +
-	    'likely unlikely',
+	      'and include_once list abstract global private echo interface as static endswitch ' +
+	      'array null if endwhile or const for endforeach self var let while isset public ' +
+	      'protected exit foreach throw elseif include __FILE__ empty require_once do xor ' +
+	      'return parent clone use __CLASS__ __LINE__ else break print eval new ' +
+	      'catch __METHOD__ case exception default die require __FUNCTION__ ' +
+	      'enddeclare final try switch continue endfor endif declare unset true false ' +
+	      'trait goto instanceof insteadof __DIR__ __NAMESPACE__ ' +
+	      'yield finally int uint long ulong char uchar double float bool boolean string' +
+	      'likely unlikely',
 	    contains: [
 	      hljs.C_LINE_COMMENT_MODE,
 	      hljs.HASH_COMMENT_MODE,
@@ -47225,14 +49972,14 @@
 	};
 
 /***/ },
-/* 390 */
+/* 448 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(2);
-	var DatePicker = __webpack_require__(160);
-	var moment = __webpack_require__(162);
+	var DatePicker = __webpack_require__(156);
+	var moment = __webpack_require__(182);
 
 	var Default = React.createClass({
 	  displayName: 'Default',
@@ -47282,14 +50029,14 @@
 	module.exports = Default;
 
 /***/ },
-/* 391 */
+/* 449 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(2);
-	var DatePicker = __webpack_require__(160);
-	var moment = __webpack_require__(162);
+	var DatePicker = __webpack_require__(156);
+	var moment = __webpack_require__(182);
 
 	var CustomDateFormat = React.createClass({
 	  displayName: 'CustomDateFormat',
@@ -47347,14 +50094,14 @@
 	module.exports = CustomDateFormat;
 
 /***/ },
-/* 392 */
+/* 450 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(2);
-	var DatePicker = __webpack_require__(160);
-	var moment = __webpack_require__(162);
+	var DatePicker = __webpack_require__(156);
+	var moment = __webpack_require__(182);
 
 	var CustomClassName = React.createClass({
 	  displayName: 'CustomClassName',
@@ -47409,14 +50156,14 @@
 	module.exports = CustomClassName;
 
 /***/ },
-/* 393 */
+/* 451 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(2);
-	var DatePicker = __webpack_require__(160);
-	var moment = __webpack_require__(162);
+	var DatePicker = __webpack_require__(156);
+	var moment = __webpack_require__(182);
 
 	var PlaceholderText = React.createClass({
 	  displayName: 'PlaceholderText',
@@ -47446,14 +50193,14 @@
 	module.exports = PlaceholderText;
 
 /***/ },
-/* 394 */
+/* 452 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(2);
-	var DatePicker = __webpack_require__(160);
-	var moment = __webpack_require__(162);
+	var DatePicker = __webpack_require__(156);
+	var moment = __webpack_require__(182);
 
 	var SpecificDateRange = React.createClass({
 	  displayName: 'SpecificDateRange',
@@ -47523,14 +50270,14 @@
 	module.exports = SpecificDateRange;
 
 /***/ },
-/* 395 */
+/* 453 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(2);
-	var DatePicker = __webpack_require__(160);
-	var moment = __webpack_require__(162);
+	var DatePicker = __webpack_require__(156);
+	var moment = __webpack_require__(182);
 
 	var CustomStartDate = React.createClass({
 	  displayName: 'CustomStartDate',
@@ -47592,14 +50339,14 @@
 	module.exports = CustomStartDate;
 
 /***/ },
-/* 396 */
+/* 454 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(2);
-	var DatePicker = __webpack_require__(160);
-	var moment = __webpack_require__(162);
+	var DatePicker = __webpack_require__(156);
+	var moment = __webpack_require__(182);
 
 	var ExcludeDates = React.createClass({
 	  displayName: 'ExcludeDates',
@@ -47661,14 +50408,14 @@
 	module.exports = ExcludeDates;
 
 /***/ },
-/* 397 */
+/* 455 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(2);
-	var DatePicker = __webpack_require__(160);
-	var moment = __webpack_require__(162);
+	var DatePicker = __webpack_require__(156);
+	var moment = __webpack_require__(182);
 
 	var Disabled = React.createClass({
 	  displayName: 'Disabled',
@@ -47731,14 +50478,14 @@
 	module.exports = Disabled;
 
 /***/ },
-/* 398 */
+/* 456 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(2);
-	var DatePicker = __webpack_require__(160);
-	var moment = __webpack_require__(162);
+	var DatePicker = __webpack_require__(156);
+	var moment = __webpack_require__(182);
 
 	var Disabled = React.createClass({
 	  displayName: 'Disabled',
@@ -47786,14 +50533,14 @@
 	module.exports = Disabled;
 
 /***/ },
-/* 399 */
+/* 457 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(2);
-	var DatePicker = __webpack_require__(160);
-	var moment = __webpack_require__(162);
+	var DatePicker = __webpack_require__(156);
+	var moment = __webpack_require__(182);
 
 	var Disabled = React.createClass({
 	  displayName: 'Disabled',
@@ -47893,14 +50640,14 @@
 	module.exports = Disabled;
 
 /***/ },
-/* 400 */
+/* 458 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(2);
-	var DatePicker = __webpack_require__(160);
-	var moment = __webpack_require__(162);
+	var DatePicker = __webpack_require__(156);
+	var moment = __webpack_require__(182);
 
 	var Weekdays = React.createClass({
 	  displayName: 'Weekdays',
@@ -47955,14 +50702,14 @@
 	module.exports = Weekdays;
 
 /***/ },
-/* 401 */
+/* 459 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(2);
-	var DatePicker = __webpack_require__(160);
-	var moment = __webpack_require__(162);
+	var DatePicker = __webpack_require__(156);
+	var moment = __webpack_require__(182);
 
 	var Placement = React.createClass({
 	  displayName: 'Placement',
@@ -48024,22 +50771,22 @@
 	module.exports = Placement;
 
 /***/ },
-/* 402 */
+/* 460 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 403 */
-402,
-/* 404 */
+/* 461 */
+460,
+/* 462 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(2);
-	var DatePicker = __webpack_require__(160);
-	var moment = __webpack_require__(162);
+	var DatePicker = __webpack_require__(156);
+	var moment = __webpack_require__(182);
 
 	var HeroExample = React.createClass({
 	  displayName: 'HeroExample',
