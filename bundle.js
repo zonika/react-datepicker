@@ -19250,7 +19250,7 @@
 	  render: function render() {
 	    return _react2.default.createElement(
 	      "div",
-	      { key: this.props.id, id: "#example-" + this.props.id, className: "example" },
+	      { key: this.props.id, id: "example-" + this.props.id, className: "example" },
 	      _react2.default.createElement(
 	        "h2",
 	        { className: "example__heading" },
