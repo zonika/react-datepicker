@@ -19029,7 +19029,7 @@
 
 	var _example_components2 = _interopRequireDefault(_example_components);
 
-	var _hero_example = __webpack_require__(465);
+	var _hero_example = __webpack_require__(466);
 
 	var _hero_example2 = _interopRequireDefault(_hero_example);
 
@@ -19238,9 +19238,13 @@
 
 	var _date_range2 = _interopRequireDefault(_date_range);
 
-	__webpack_require__(463);
+	var _tab_index = __webpack_require__(463);
+
+	var _tab_index2 = _interopRequireDefault(_tab_index);
 
 	__webpack_require__(464);
+
+	__webpack_require__(465);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19306,6 +19310,9 @@
 	  }, {
 	    title: "Configure Popover Placement",
 	    component: _react2.default.createElement(_placement2.default, null)
+	  }, {
+	    title: "TabIndex",
+	    component: _react2.default.createElement(_tab_index2.default, null)
 	  }],
 
 	  componentDidMount: function componentDidMount() {
@@ -19407,7 +19414,8 @@
 	    weekStart: _react2.default.PropTypes.string,
 	    onChange: _react2.default.PropTypes.func.isRequired,
 	    onBlur: _react2.default.PropTypes.func,
-	    onFocus: _react2.default.PropTypes.func
+	    onFocus: _react2.default.PropTypes.func,
+	    tabIndex: _react2.default.PropTypes.number
 	  },
 
 	  getDefaultProps: function getDefaultProps() {
@@ -19569,7 +19577,8 @@
 	        className: this.props.className,
 	        title: this.props.title,
 	        readOnly: this.props.readOnly,
-	        required: this.props.required }),
+	        required: this.props.required,
+	        tabIndex: this.props.tabIndex }),
 	      clearButton,
 	      this.props.disabled ? null : this.calendar()
 	    );
@@ -32258,7 +32267,8 @@
 	      disabled: this.props.disabled,
 	      placeholder: this.props.placeholderText,
 	      readOnly: this.props.readOnly,
-	      required: this.props.required });
+	      required: this.props.required,
+	      tabIndex: this.props.tabIndex });
 	  }
 	});
 
@@ -32409,6 +32419,21 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function getDateInView(_ref) {
+	  var moment = _ref.moment;
+	  var minDate = _ref.minDate;
+	  var maxDate = _ref.maxDate;
+
+	  var current = new _date2.default(moment());
+	  if (minDate && new _date2.default(minDate).isAfter(current)) {
+	    return minDate;
+	  } else if (maxDate && new _date2.default(maxDate).isBefore(current)) {
+	    return maxDate;
+	  } else {
+	    return current.moment();
+	  }
+	}
+
 	var Calendar = _react2.default.createClass({
 	  displayName: "Calendar",
 
@@ -32416,7 +32441,7 @@
 
 	  propTypes: {
 	    weekdays: _react2.default.PropTypes.array.isRequired,
-	    locale: _react2.default.PropTypes.string,
+	    locale: _react2.default.PropTypes.string.isRequired,
 	    moment: _react2.default.PropTypes.func.isRequired,
 	    dateFormat: _react2.default.PropTypes.string.isRequired,
 	    onSelect: _react2.default.PropTypes.func.isRequired,
@@ -32436,7 +32461,7 @@
 	  },
 	  getInitialState: function getInitialState() {
 	    return {
-	      date: new _date2.default(this.props.selected).safeClone(this.props.moment())
+	      date: new _date2.default(this.props.selected).safeClone(getDateInView(this.props))
 	    };
 	  },
 	  getDefaultProps: function getDefaultProps() {
@@ -51255,14 +51280,85 @@
 
 /***/ },
 /* 463 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDatepicker = __webpack_require__(157);
+
+	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
+
+	var _moment = __webpack_require__(183);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _react2.default.createClass({
+	  displayName: "TabIndex",
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      startDate: (0, _moment2.default)()
+	    };
+	  },
+	  handleChange: function handleChange(date) {
+	    this.setState({
+	      startDate: date
+	    });
+	  },
+	  render: function render() {
+	    return _react2.default.createElement(
+	      "div",
+	      { className: "row" },
+	      _react2.default.createElement(
+	        "pre",
+	        { className: "column example__code" },
+	        _react2.default.createElement(
+	          "code",
+	          { className: "jsx" },
+	          "<DatePicker",
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "selected={this.state.startDate}",
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "onChange={this.handleChange}",
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "tabIndex={1} />"
+	        )
+	      ),
+	      _react2.default.createElement(
+	        "div",
+	        { className: "column" },
+	        _react2.default.createElement(_reactDatepicker2.default, {
+	          selected: this.state.startDate,
+	          onChange: this.handleChange,
+	          tabIndex: 1 })
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 464 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 464 */
-463,
 /* 465 */
+464,
+/* 466 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
