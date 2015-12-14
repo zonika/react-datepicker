@@ -19055,8 +19055,12 @@
 	          _react2.default.createElement(
 	            "div",
 	            { className: "hero__crafted-by" },
-	            "Crafted by ",
-	            _react2.default.createElement("img", { src: "images/logo.png", className: "hero__image", alt: "HackerOne", title: "HackerOne" })
+	            _react2.default.createElement(
+	              "a",
+	              { href: "https://hackerone.com", className: "hero__crafted-by-link" },
+	              "Crafted by ",
+	              _react2.default.createElement("img", { src: "images/logo.png", className: "hero__image", alt: "HackerOne", title: "HackerOne" })
+	            )
 	          ),
 	          _react2.default.createElement(
 	            "div",
@@ -19151,6 +19155,11 @@
 	        "div",
 	        { className: "wrapper" },
 	        _react2.default.createElement(_example_components2.default, null)
+	      ),
+	      _react2.default.createElement(
+	        "a",
+	        { href: "https://github.com/Hacker0x01/react-datepicker/" },
+	        _react2.default.createElement("img", { className: "github-ribbon", src: "images/ribbon.png", alt: "Fork me on GitHub" })
 	      )
 	    );
 	  }

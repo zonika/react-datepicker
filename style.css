@@ -502,6 +502,14 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
     margin: 0 auto; }
   .hero__crafted-by {
     margin-bottom: 30px; }
+  .hero__crafted-by-link {
+    color: #fff; }
+
+.github-ribbon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0; }
 
 .examples__navigation {
   display: none; }
