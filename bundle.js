@@ -19105,107 +19105,6 @@
 	        _react2.default.createElement(
 	          "h2",
 	          null,
-	          "Configuration"
-	        ),
-	        _react2.default.createElement(
-	          "ul",
-	          null,
-	          _react2.default.createElement(
-	            "li",
-	            null,
-	            "Change date format by passing a different date format in the props:",
-	            " ",
-	            _react2.default.createElement(
-	              "code",
-	              null,
-	              "dateFormat: \"YYYY/MM/DD\""
-	            )
-	          ),
-	          _react2.default.createElement(
-	            "li",
-	            null,
-	            "Add placeholder text:",
-	            " ",
-	            _react2.default.createElement(
-	              "code",
-	              null,
-	              "placeholderText: 'Click to select a date'"
-	            ),
-	            " ",
-	            "(Defaults to the selected date when no placeholder text is added)"
-	          ),
-	          _react2.default.createElement(
-	            "li",
-	            null,
-	            "Give users a predefined date range:",
-	            " ",
-	            _react2.default.createElement(
-	              "code",
-	              null,
-	              "minDate: moment() & maxDate: moment().add(5, 'days')"
-	            ),
-	            " ",
-	            "(this gives users the ability to select a date between today and 5 days in the future)"
-	          ),
-	          _react2.default.createElement(
-	            "li",
-	            null,
-	            "Exclude a set of dates from those that are selectable:",
-	            " ",
-	            _react2.default.createElement(
-	              "code",
-	              null,
-	              "excludeDates: [ moment(), moment('2015-01-01') ]"
-	            ),
-	            " ",
-	            "(prevent users from selecting today or Jan 1st, 2015)"
-	          ),
-	          _react2.default.createElement(
-	            "li",
-	            null,
-	            "Set custom moment.js instance (could have defined custom locale settings):",
-	            " ",
-	            _react2.default.createElement(
-	              "code",
-	              null,
-	              "moment: require('./foo/moment')"
-	            )
-	          ),
-	          _react2.default.createElement(
-	            "li",
-	            null,
-	            "Set custom locale settings for locale: ",
-	            _react2.default.createElement(
-	              "code",
-	              null,
-	              "locale: \"cs\""
-	            )
-	          ),
-	          _react2.default.createElement(
-	            "li",
-	            null,
-	            "Set date format for callendar: ",
-	            _react2.default.createElement(
-	              "code",
-	              null,
-	              "dateFormatCalendar: \"YYYY/MM/DD\""
-	            )
-	          ),
-	          _react2.default.createElement(
-	            "li",
-	            null,
-	            "Set custom weekdays (for locale days):",
-	            " ",
-	            _react2.default.createElement(
-	              "code",
-	              null,
-	              "weekdays: ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So']"
-	            )
-	          )
-	        ),
-	        _react2.default.createElement(
-	          "h2",
-	          null,
 	          "Installation"
 	        ),
 	        _react2.default.createElement(
@@ -19246,18 +19145,6 @@
 	              "bundle install rails-assets-react-date-picker"
 	            )
 	          )
-	        ),
-	        _react2.default.createElement(
-	          "h2",
-	          null,
-	          "License"
-	        ),
-	        _react2.default.createElement(
-	          "p",
-	          null,
-	          "Copyright (c) 2015 HackerOne Inc. and individual contributors.",
-	          " ",
-	          "Licensed under MIT license, see LICENSE for the full license."
 	        )
 	      ),
 	      _react2.default.createElement(
@@ -19393,7 +19280,7 @@
 	    title: "Specific date range",
 	    component: _react2.default.createElement(_specific_date_range2.default, null)
 	  }, {
-	    title: "Custom start date",
+	    title: "Custom week start day",
 	    component: _react2.default.createElement(_custom_start_date2.default, null)
 	  }, {
 	    title: "Exclude dates",
@@ -33833,7 +33720,7 @@
 /* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {/**
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
 	 * A mixin for handling (effectively) onClickOutside for React components.
 	 * Note that we're not intercepting any events in this approach, and we're
 	 * not using double events for capturing and discarding in layers or wrappers.
@@ -33850,17 +33737,19 @@
 	(function (root, factory) {
 	  if (true) {
 	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(154)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(154)], __WEBPACK_AMD_DEFINE_RESULT__ = function(reactDom) {
+	      return factory(root, reactDom);
+	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if (typeof exports === 'object') {
 	    // Node. Note that this does not work with strict
 	    // CommonJS, but only CommonJS-like environments
 	    // that support module.exports
-	    module.exports = factory(require('react-dom'));
+	    module.exports = factory(root, require('react-dom'));
 	  } else {
 	    // Browser globals (root is window)
-	    root.OnClickOutside = factory(ReactDOM);
+	    root.OnClickOutside = factory(root, ReactDOM);
 	  }
-	}(this, function (ReactDOM) {
+	}(this, function (root, ReactDOM) {
 	  "use strict";
 
 	  // Use a parallel array because we can't use
@@ -33940,7 +33829,7 @@
 	     */
 	    enableOnClickOutside: function() {
 	      var fn = this.__outsideClickHandler;
-	      if (global.document != null) {
+	      if (document != null) {
 	        document.addEventListener("mousedown", fn);
 	        document.addEventListener("touchstart", fn);
 	      }
@@ -33952,7 +33841,7 @@
 	     */
 	    disableOnClickOutside: function() {
 	      var fn = this.__outsideClickHandler;
-	      if (global.document != null) {
+	      if (document != null) {
 	        document.removeEventListener("mousedown", fn);
 	        document.removeEventListener("touchstart", fn);
 	      }
@@ -33961,7 +33850,6 @@
 
 	}));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 304 */
@@ -50867,7 +50755,7 @@
 	            "strong",
 	            null,
 	            "    ",
-	            "includeDates={[moment(), moment().add('days', 1)]}"
+	            "includeDates={[moment(), moment().add(1, 'days')]}"
 	          ),
 	          _react2.default.createElement("br", null),
 	          "    ",
@@ -50880,7 +50768,7 @@
 	        _react2.default.createElement(_reactDatepicker2.default, {
 	          selected: this.state.startDate,
 	          onChange: this.handleChange,
-	          includeDates: [(0, _moment2.default)(), (0, _moment2.default)().add("days", 1)],
+	          includeDates: [(0, _moment2.default)(), (0, _moment2.default)().add(1, "days")],
 	          placeholderText: "This only includes today and tomorrow" })
 	      )
 	    );
