@@ -53,6 +53,9 @@
   position: absolute;
   left: 50px; }
 
+.tether-target-attached-top.datepicker__container {
+  margin-top: -20px; }
+
 .datepicker__header {
   text-align: center;
   background-color: #f0f0f0;

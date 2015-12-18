@@ -32323,8 +32323,8 @@
 
 	DateUtil.prototype.inRange = function (startDate, endDate) {
 	  if (!startDate || !endDate) return false;
-	  var before = startDate._date.startOf("day").subtract(1, "seconds");
-	  var after = endDate._date.startOf("day").add(1, "seconds");
+	  var before = startDate._date.clone().startOf("day").subtract(1, "seconds");
+	  var after = endDate._date.clone().startOf("day").add(1, "seconds");
 	  return this._date.isBetween(before, after);
 	};
 
@@ -51313,10 +51313,28 @@
 	    };
 	  },
 
-	  handleChange: function handleChange(date) {
-	    this.setState({
-	      startDate: date
-	    });
+	  handleChange: function handleChange(_ref) {
+	    var startDate = _ref.startDate;
+	    var endDate = _ref.endDate;
+
+	    startDate = startDate || this.state.startDate;
+	    endDate = endDate || this.state.endDate;
+
+	    if (startDate.isAfter(endDate)) {
+	      var temp = startDate;
+	      startDate = endDate;
+	      endDate = temp;
+	    }
+
+	    this.setState({ startDate: startDate, endDate: endDate });
+	  },
+
+	  handleChangeStart: function handleChangeStart(startDate) {
+	    this.handleChange({ startDate: startDate });
+	  },
+
+	  handleChangeEnd: function handleChangeEnd(endDate) {
+	    this.handleChange({ endDate: endDate });
 	  },
 
 	  render: function render() {
@@ -51338,7 +51356,25 @@
 	          "startDate={this.state.startDate}",
 	          React.createElement("br", null),
 	          "    ",
-	          "endDate={this.state.endDate} />"
+	          "endDate={this.state.endDate}",
+	          React.createElement("br", null),
+	          "    ",
+	          "onChange={this.handleChangeStart} />",
+	          React.createElement("br", null),
+	          "<DatePicker",
+	          React.createElement("br", null),
+	          "    ",
+	          "selected={this.state.endDate}",
+	          React.createElement("br", null),
+	          "    ",
+	          "startDate={this.state.startDate}",
+	          React.createElement("br", null),
+	          "    ",
+	          "endDate={this.state.endDate}",
+	          React.createElement("br", null),
+	          "    ",
+	          "onChange={this.handleChangeEnd} />",
+	          React.createElement("br", null)
 	        )
 	      ),
 	      React.createElement(
@@ -51347,7 +51383,13 @@
 	        React.createElement(DatePicker, {
 	          selected: this.state.startDate,
 	          startDate: this.state.startDate,
-	          endDate: this.state.endDate })
+	          endDate: this.state.endDate,
+	          onChange: this.handleChangeStart }),
+	        React.createElement(DatePicker, {
+	          selected: this.state.endDate,
+	          startDate: this.state.startDate,
+	          endDate: this.state.endDate,
+	          onChange: this.handleChangeEnd })
 	      )
 	    );
 	  }
