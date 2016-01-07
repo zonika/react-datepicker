@@ -19029,7 +19029,7 @@
 
 	var _example_components2 = _interopRequireDefault(_example_components);
 
-	var _hero_example = __webpack_require__(468);
+	var _hero_example = __webpack_require__(469);
 
 	var _hero_example2 = _interopRequireDefault(_hero_example);
 
@@ -19235,29 +19235,33 @@
 
 	var _on_blur_callbacks2 = _interopRequireDefault(_on_blur_callbacks);
 
-	var _weekdays = __webpack_require__(461);
+	var _on_clear_callbacks = __webpack_require__(461);
+
+	var _on_clear_callbacks2 = _interopRequireDefault(_on_clear_callbacks);
+
+	var _weekdays = __webpack_require__(462);
 
 	var _weekdays2 = _interopRequireDefault(_weekdays);
 
-	var _placement = __webpack_require__(462);
+	var _placement = __webpack_require__(463);
 
 	var _placement2 = _interopRequireDefault(_placement);
 
-	var _date_range = __webpack_require__(463);
+	var _date_range = __webpack_require__(464);
 
 	var _date_range2 = _interopRequireDefault(_date_range);
 
-	var _tab_index = __webpack_require__(464);
+	var _tab_index = __webpack_require__(465);
 
 	var _tab_index2 = _interopRequireDefault(_tab_index);
 
-	var _hide_year_dropdown = __webpack_require__(465);
+	var _year_dropdown = __webpack_require__(466);
 
-	var _hide_year_dropdown2 = _interopRequireDefault(_hide_year_dropdown);
-
-	__webpack_require__(466);
+	var _year_dropdown2 = _interopRequireDefault(_year_dropdown);
 
 	__webpack_require__(467);
+
+	__webpack_require__(468);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19318,6 +19322,9 @@
 	    title: "onBlur callbacks in console",
 	    component: _react2.default.createElement(_on_blur_callbacks2.default, null)
 	  }, {
+	    title: "onClear callbacks in console",
+	    component: _react2.default.createElement(_on_clear_callbacks2.default, null)
+	  }, {
 	    title: "Custom weekdays",
 	    component: _react2.default.createElement(_weekdays2.default, null)
 	  }, {
@@ -19327,8 +19334,8 @@
 	    title: "TabIndex",
 	    component: _react2.default.createElement(_tab_index2.default, null)
 	  }, {
-	    title: "Hide year dropdown",
-	    component: _react2.default.createElement(_hide_year_dropdown2.default, null)
+	    title: "Year dropdown",
+	    component: _react2.default.createElement(_year_dropdown2.default, null)
 	  }],
 
 	  componentDidMount: function componentDidMount() {
@@ -19413,6 +19420,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactDom = __webpack_require__(154);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var DatePicker = _react2.default.createClass({
@@ -19432,6 +19443,7 @@
 	    onChange: _react2.default.PropTypes.func.isRequired,
 	    onBlur: _react2.default.PropTypes.func,
 	    onFocus: _react2.default.PropTypes.func,
+	    onClear: _react2.default.PropTypes.func,
 	    tabIndex: _react2.default.PropTypes.number
 	  },
 
@@ -19439,21 +19451,19 @@
 	    return {
 	      weekdays: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
 	      locale: "en",
-	      dateFormatCalendar: "MMMM",
+	      dateFormatCalendar: "MMMM YYYY",
 	      moment: _moment2.default,
 	      onChange: function onChange() {},
 
 	      disabled: false,
 	      onFocus: function onFocus() {},
 	      onBlur: function onBlur() {},
-
-	      showYearDropdown: true
+	      onClear: function onClear() {}
 	    };
 	  },
 	  getInitialState: function getInitialState() {
 	    return {
 	      focus: false,
-	      virtualFocus: false,
 	      selected: this.props.selected
 	    };
 	  },
@@ -19469,65 +19479,78 @@
 	    return this.state.selected;
 	  },
 	  handleFocus: function handleFocus() {
-	    this.props.onFocus();
-	    this.setState({
-	      focus: true
-	    });
-	  },
-	  handleBlur: function handleBlur() {
 	    var _this = this;
 
-	    this.setState({ virtualFocus: false }, function () {
-	      setTimeout(function () {
-	        if (!_this.state.virtualFocus) {
-	          _this.props.onBlur(_this.state.selected);
-	          _this.hideCalendar();
-	        }
-	      }, 200);
-	    });
+	    this.props.onFocus();
+	    setTimeout(function () {
+	      _this.setState({ focus: true });
+	    }, 200);
 	  },
-	  hideCalendar: function hideCalendar() {
+	  handleBlur: function handleBlur() {
 	    var _this2 = this;
 
 	    setTimeout(function () {
-	      _this2.setState({
+	      if (!_this2.state.datePickerHasFocus) {
+	        _this2.props.onBlur(_this2.state.selected);
+	        _this2.hideCalendar();
+	      }
+	    }, 200);
+	  },
+	  hideCalendar: function hideCalendar() {
+	    var _this3 = this;
+
+	    setTimeout(function () {
+	      _this3.setState({
 	        focus: false
 	      });
 	    }, 0);
 	  },
+	  doesDatePickerContainElement: function doesDatePickerContainElement(element) {
+	    var datePicker = _reactDom2.default.findDOMNode(this.refs.calendar);
+	    if (!datePicker) {
+	      return false;
+	    }
+	    return datePicker.contains(element);
+	  },
 	  handleSelect: function handleSelect(date) {
-	    var _this3 = this;
+	    var _this4 = this;
 
 	    this.setSelected(date);
 
 	    setTimeout(function () {
-	      _this3.hideCalendar();
+	      _this4.hideCalendar();
 	    }, 200);
 	  },
 	  setSelected: function setSelected(date) {
-	    var _this4 = this;
+	    var _this5 = this;
 
 	    this.setState({
 	      selected: date.moment()
 	    }, function () {
-	      _this4.props.onChange(_this4.state.selected);
+	      _this5.props.onChange(_this5.state.selected);
 	    });
 	  },
 	  invalidateSelected: function invalidateSelected() {
 	    if (this.state.selected === null) return;
 	    this.props.onChange(null);
 	  },
-	  onInputClick: function onInputClick() {
-	    if (!this.state.virtualFocus) {
-	      return this.setState({
-	        focus: true,
-	        virtualFocus: true
-	      });
-	    }
-	    this.setState({ virtualFocus: false });
+	  onInputClick: function onInputClick(event) {
+	    var _this6 = this;
+
+	    var previousFocusState = this.state.focus;
+
+	    this.setState({
+	      focus: event.target === _reactDom2.default.findDOMNode(this.refs.input) ? !this.state.focus : true,
+	      datePickerHasFocus: this.doesDatePickerContainElement(event.target)
+	    }, function () {
+	      _this6.forceUpdate();
+	      if (previousFocusState && !_this6.state.datePickerHasFocus) {
+	        _this6.hideCalendar();
+	      }
+	    });
 	  },
 	  onClearClick: function onClearClick(event) {
-	    var _this5 = this;
+	    var _this7 = this;
 
 	    event.preventDefault();
 
@@ -19537,7 +19560,8 @@
 	    this.setState({
 	      selected: null
 	    }, function () {
-	      _this5.props.onChange(null);
+	      _this7.props.onClear();
+	      _this7.props.onChange(null);
 	    });
 	  },
 	  calendar: function calendar() {
@@ -19592,7 +19616,6 @@
 	        handleEnter: this.hideCalendar,
 	        setSelected: this.setSelected,
 	        invalidateSelected: this.invalidateSelected,
-	        hideCalendar: this.hideCalendar,
 	        placeholderText: this.props.placeholderText,
 	        disabled: this.props.disabled,
 	        className: this.props.className,
@@ -32284,7 +32307,7 @@
 	      onFocus: this.props.onFocus,
 	      onBlur: this.props.onBlur,
 	      onChange: this.handleChange,
-	      className: this.props.className,
+	      className: "ignore-react-onclickoutside " + this.props.className,
 	      disabled: this.props.disabled,
 	      placeholder: this.props.placeholderText,
 	      readOnly: this.props.readOnly,
@@ -32467,7 +32490,6 @@
 	    dateFormat: _react2.default.PropTypes.string.isRequired,
 	    onSelect: _react2.default.PropTypes.func.isRequired,
 	    handleClick: _react2.default.PropTypes.func.isRequired,
-	    hideCalendar: _react2.default.PropTypes.func.isRequired,
 	    minDate: _react2.default.PropTypes.object,
 	    maxDate: _react2.default.PropTypes.object,
 	    startDate: _react2.default.PropTypes.object,
@@ -32478,8 +32500,8 @@
 	    showYearDropdown: _react2.default.PropTypes.bool
 	  },
 
-	  handleClickOutside: function handleClickOutside() {
-	    this.props.hideCalendar();
+	  handleClickOutside: function handleClickOutside(event) {
+	    this.props.handleClick(event);
 	  },
 	  getInitialState: function getInitialState() {
 	    return {
@@ -32488,8 +32510,7 @@
 	  },
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      weekStart: "1",
-	      showYearDropdown: true
+	      weekStart: "1"
 	    };
 	  },
 	  componentWillMount: function componentWillMount() {
@@ -51167,6 +51188,110 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
+	  displayName: "ClearCallbacks",
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      startDate: null
+	    };
+	  },
+
+	  handleChange: function handleChange(date) {
+	    this.setState({
+	      startDate: date
+	    });
+	  },
+
+	  handleOnClear: function handleOnClear() {
+	    console.log("Date has been cleared");
+	  },
+
+	  render: function render() {
+	    return _react2.default.createElement(
+	      "div",
+	      { className: "row" },
+	      _react2.default.createElement(
+	        "pre",
+	        { className: "column example__code" },
+	        _react2.default.createElement(
+	          "code",
+	          { className: "js" },
+	          "handleOnClear: function (date) {",
+	          _react2.default.createElement("br", null),
+	          "          ",
+	          "console.log('Date has been cleared');",
+	          _react2.default.createElement("br", null),
+	          "};"
+	        ),
+	        _react2.default.createElement("br", null),
+	        _react2.default.createElement(
+	          "code",
+	          { className: "jsx" },
+	          "<DatePicker",
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "key='example9'",
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "selected={this.state.startDate}",
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "onChange={this.handleChange}",
+	          _react2.default.createElement("br", null),
+	          _react2.default.createElement(
+	            "strong",
+	            null,
+	            "    ",
+	            "onClear={this.handleOnClear}"
+	          ),
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "isClearable={true}",
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "placeholderText=\"View clear callbacks in console\" />"
+	        )
+	      ),
+	      _react2.default.createElement(
+	        "div",
+	        { className: "column" },
+	        _react2.default.createElement(_reactDatepicker2.default, {
+	          key: "example9",
+	          selected: this.state.startDate,
+	          onChange: this.handleChange,
+	          onClear: this.handleOnClear,
+	          isClearable: true,
+	          placeholderText: "View clear callbacks in console" })
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 462 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDatepicker = __webpack_require__(157);
+
+	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
+
+	var _moment = __webpack_require__(183);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _react2.default.createClass({
 	  displayName: "Weekdays",
 
 	  getInitialState: function getInitialState() {
@@ -51215,7 +51340,7 @@
 	});
 
 /***/ },
-/* 462 */
+/* 463 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51294,7 +51419,7 @@
 	});
 
 /***/ },
-/* 463 */
+/* 464 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51398,7 +51523,7 @@
 	module.exports = DateRange;
 
 /***/ },
-/* 464 */
+/* 465 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51469,7 +51594,7 @@
 	});
 
 /***/ },
-/* 465 */
+/* 466 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51493,7 +51618,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
-	  displayName: "Weekdays",
+	  displayName: "YearDropdown",
 
 	  getInitialState: function getInitialState() {
 	    return {
@@ -51525,11 +51650,11 @@
 	          " ",
 	          _react2.default.createElement("br", null),
 	          "    ",
-	          "showYearDropdown={false}",
+	          "showYearDropdown",
 	          " ",
 	          _react2.default.createElement("br", null),
 	          "    ",
-	          "dateFormatCalendar=\"MMMM YYYY\" />"
+	          "dateFormatCalendar=\"MMMM\" />"
 	        )
 	      ),
 	      _react2.default.createElement(
@@ -51538,23 +51663,23 @@
 	        _react2.default.createElement(_reactDatepicker2.default, {
 	          selected: this.state.startDate,
 	          onChange: this.handleChange,
-	          showYearDropdown: false,
-	          dateFormatCalendar: "MMMM YYYY" })
+	          showYearDropdown: true,
+	          dateFormatCalendar: "MMMM" })
 	      )
 	    );
 	  }
 	});
 
 /***/ },
-/* 466 */
+/* 467 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 467 */
-466,
 /* 468 */
+467,
+/* 469 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
