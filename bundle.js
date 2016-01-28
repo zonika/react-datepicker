@@ -19029,7 +19029,7 @@
 
 	var _example_components2 = _interopRequireDefault(_example_components);
 
-	var _hero_example = __webpack_require__(469);
+	var _hero_example = __webpack_require__(468);
 
 	var _hero_example2 = _interopRequireDefault(_hero_example);
 
@@ -19187,41 +19187,45 @@
 
 	var _moment2 = _interopRequireDefault(_moment);
 
-	var _highlight = __webpack_require__(307);
+	var _highlight = __webpack_require__(306);
 
 	var _highlight2 = _interopRequireDefault(_highlight);
 
-	var _default = __webpack_require__(450);
+	var _default = __webpack_require__(449);
 
 	var _default2 = _interopRequireDefault(_default);
 
-	var _custom_date_format = __webpack_require__(451);
+	var _custom_date_format = __webpack_require__(450);
 
 	var _custom_date_format2 = _interopRequireDefault(_custom_date_format);
 
-	var _custom_class_name = __webpack_require__(452);
+	var _custom_class_name = __webpack_require__(451);
 
 	var _custom_class_name2 = _interopRequireDefault(_custom_class_name);
 
-	var _placeholder_text = __webpack_require__(453);
+	var _placeholder_text = __webpack_require__(452);
 
 	var _placeholder_text2 = _interopRequireDefault(_placeholder_text);
 
-	var _specific_date_range = __webpack_require__(454);
+	var _specific_date_range = __webpack_require__(453);
 
 	var _specific_date_range2 = _interopRequireDefault(_specific_date_range);
 
-	var _custom_start_date = __webpack_require__(455);
+	var _custom_start_date = __webpack_require__(454);
 
 	var _custom_start_date2 = _interopRequireDefault(_custom_start_date);
 
-	var _exclude_dates = __webpack_require__(456);
+	var _exclude_dates = __webpack_require__(455);
 
 	var _exclude_dates2 = _interopRequireDefault(_exclude_dates);
 
-	var _include_dates = __webpack_require__(457);
+	var _include_dates = __webpack_require__(456);
 
 	var _include_dates2 = _interopRequireDefault(_include_dates);
+
+	var _filter_dates = __webpack_require__(457);
+
+	var _filter_dates2 = _interopRequireDefault(_filter_dates);
 
 	var _disabled = __webpack_require__(458);
 
@@ -19235,33 +19239,29 @@
 
 	var _on_blur_callbacks2 = _interopRequireDefault(_on_blur_callbacks);
 
-	var _on_clear_callbacks = __webpack_require__(461);
-
-	var _on_clear_callbacks2 = _interopRequireDefault(_on_clear_callbacks);
-
-	var _weekdays = __webpack_require__(462);
+	var _weekdays = __webpack_require__(461);
 
 	var _weekdays2 = _interopRequireDefault(_weekdays);
 
-	var _placement = __webpack_require__(463);
+	var _placement = __webpack_require__(462);
 
 	var _placement2 = _interopRequireDefault(_placement);
 
-	var _date_range = __webpack_require__(464);
+	var _date_range = __webpack_require__(463);
 
 	var _date_range2 = _interopRequireDefault(_date_range);
 
-	var _tab_index = __webpack_require__(465);
+	var _tab_index = __webpack_require__(464);
 
 	var _tab_index2 = _interopRequireDefault(_tab_index);
 
-	var _year_dropdown = __webpack_require__(466);
+	var _year_dropdown = __webpack_require__(465);
 
 	var _year_dropdown2 = _interopRequireDefault(_year_dropdown);
 
-	__webpack_require__(467);
+	__webpack_require__(466);
 
-	__webpack_require__(468);
+	__webpack_require__(467);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19310,6 +19310,9 @@
 	    title: "Include dates",
 	    component: _react2.default.createElement(_include_dates2.default, null)
 	  }, {
+	    title: "Filter dates",
+	    component: _react2.default.createElement(_filter_dates2.default, null)
+	  }, {
 	    title: "Date Range",
 	    component: _react2.default.createElement(_date_range2.default, null)
 	  }, {
@@ -19321,9 +19324,6 @@
 	  }, {
 	    title: "onBlur callbacks in console",
 	    component: _react2.default.createElement(_on_blur_callbacks2.default, null)
-	  }, {
-	    title: "onClear callbacks in console",
-	    component: _react2.default.createElement(_on_clear_callbacks2.default, null)
 	  }, {
 	    title: "Custom weekdays",
 	    component: _react2.default.createElement(_weekdays2.default, null)
@@ -19408,11 +19408,7 @@
 
 	var _calendar2 = _interopRequireDefault(_calendar);
 
-	var _date = __webpack_require__(272);
-
-	var _date2 = _interopRequireDefault(_date);
-
-	var _popover = __webpack_require__(305);
+	var _popover = __webpack_require__(304);
 
 	var _popover2 = _interopRequireDefault(_popover);
 
@@ -19430,6 +19426,7 @@
 	  displayName: "DatePicker",
 
 	  propTypes: {
+	    selected: _react2.default.PropTypes.object,
 	    weekdays: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.string),
 	    locale: _react2.default.PropTypes.string,
 	    dateFormatCalendar: _react2.default.PropTypes.string,
@@ -19443,8 +19440,8 @@
 	    onChange: _react2.default.PropTypes.func.isRequired,
 	    onBlur: _react2.default.PropTypes.func,
 	    onFocus: _react2.default.PropTypes.func,
-	    onClear: _react2.default.PropTypes.func,
-	    tabIndex: _react2.default.PropTypes.number
+	    tabIndex: _react2.default.PropTypes.number,
+	    filterDate: _react2.default.PropTypes.func
 	  },
 
 	  getDefaultProps: function getDefaultProps() {
@@ -19457,26 +19454,16 @@
 
 	      disabled: false,
 	      onFocus: function onFocus() {},
-	      onBlur: function onBlur() {},
-	      onClear: function onClear() {}
+	      onBlur: function onBlur() {}
 	    };
 	  },
 	  getInitialState: function getInitialState() {
 	    return {
-	      focus: false,
-	      selected: this.props.selected
+	      focus: false
 	    };
-	  },
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    this.setState({
-	      selected: nextProps.selected
-	    });
 	  },
 	  shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
 	    return !((0, _isEqual2.default)(nextProps, this.props) && (0, _isEqual2.default)(nextState, this.state));
-	  },
-	  getValue: function getValue() {
-	    return this.state.selected;
 	  },
 	  handleFocus: function handleFocus() {
 	    var _this = this;
@@ -19491,7 +19478,7 @@
 
 	    setTimeout(function () {
 	      if (!_this2.state.datePickerHasFocus) {
-	        _this2.props.onBlur(_this2.state.selected);
+	        _this2.props.onBlur();
 	        _this2.hideCalendar();
 	      }
 	    }, 200);
@@ -19522,20 +19509,12 @@
 	    }, 200);
 	  },
 	  setSelected: function setSelected(date) {
-	    var _this5 = this;
-
-	    this.setState({
-	      selected: date.moment()
-	    }, function () {
-	      _this5.props.onChange(_this5.state.selected);
-	    });
-	  },
-	  invalidateSelected: function invalidateSelected() {
-	    if (this.state.selected === null) return;
-	    this.props.onChange(null);
+	    if (this.props.selected !== date) {
+	      this.props.onChange(date);
+	    }
 	  },
 	  onInputClick: function onInputClick(event) {
-	    var _this6 = this;
+	    var _this5 = this;
 
 	    var previousFocusState = this.state.focus;
 
@@ -19543,26 +19522,15 @@
 	      focus: event.target === _reactDom2.default.findDOMNode(this.refs.input) ? !this.state.focus : true,
 	      datePickerHasFocus: this.doesDatePickerContainElement(event.target)
 	    }, function () {
-	      _this6.forceUpdate();
-	      if (previousFocusState && !_this6.state.datePickerHasFocus) {
-	        _this6.hideCalendar();
+	      _this5.forceUpdate();
+	      if (previousFocusState && !_this5.state.datePickerHasFocus) {
+	        _this5.hideCalendar();
 	      }
 	    });
 	  },
 	  onClearClick: function onClearClick(event) {
-	    var _this7 = this;
-
 	    event.preventDefault();
-
-	    // Due to issues with IE onchange events sometimes this gets noisy, so skip if we've already cleared
-	    if (this.state.selected === null) return;
-
-	    this.setState({
-	      selected: null
-	    }, function () {
-	      _this7.props.onClear();
-	      _this7.props.onChange(null);
-	    });
+	    this.props.onChange(null);
 	  },
 	  calendar: function calendar() {
 	    if (this.state.focus) {
@@ -19579,7 +19547,7 @@
 	          locale: this.props.locale,
 	          moment: this.props.moment,
 	          dateFormat: this.props.dateFormatCalendar,
-	          selected: this.state.selected,
+	          selected: this.props.selected,
 	          onSelect: this.handleSelect,
 	          hideCalendar: this.hideCalendar,
 	          minDate: this.props.minDate,
@@ -19587,6 +19555,7 @@
 	          startDate: this.props.startDate,
 	          endDate: this.props.endDate,
 	          excludeDates: this.props.excludeDates,
+	          filterDate: this.props.filterDate,
 	          handleClick: this.onInputClick,
 	          includeDates: this.props.includeDates,
 	          weekStart: this.props.weekStart,
@@ -19594,12 +19563,14 @@
 	      );
 	    }
 	  },
-	  render: function render() {
-	    var clearButton = null;
-	    if (this.props.isClearable && this.state.selected != null) {
-	      clearButton = _react2.default.createElement("a", { className: "close-icon", href: "#", onClick: this.onClearClick });
+	  renderClearButton: function renderClearButton() {
+	    if (this.props.isClearable && this.props.selected != null) {
+	      return _react2.default.createElement("a", { className: "close-icon", href: "#", onClick: this.onClearClick });
+	    } else {
+	      return null;
 	    }
-
+	  },
+	  render: function render() {
 	    return _react2.default.createElement(
 	      "div",
 	      { className: "datepicker__input-container" },
@@ -19607,15 +19578,14 @@
 	        ref: "input",
 	        id: this.props.id,
 	        name: this.props.name,
-	        date: this.state.selected,
+	        date: this.props.selected,
 	        dateFormat: this.props.dateFormat,
 	        focus: this.state.focus,
 	        onFocus: this.handleFocus,
 	        onBlur: this.handleBlur,
 	        handleClick: this.onInputClick,
-	        handleEnter: this.hideCalendar,
+	        hideCalendar: this.hideCalendar,
 	        setSelected: this.setSelected,
-	        invalidateSelected: this.invalidateSelected,
 	        placeholderText: this.props.placeholderText,
 	        disabled: this.props.disabled,
 	        className: this.props.className,
@@ -19623,7 +19593,7 @@
 	        readOnly: this.props.readOnly,
 	        required: this.props.required,
 	        tabIndex: this.props.tabIndex }),
-	      clearButton,
+	      this.renderClearButton(),
 	      this.props.disabled ? null : this.calendar()
 	    );
 	  }
@@ -32211,10 +32181,6 @@
 
 	var _moment2 = _interopRequireDefault(_moment);
 
-	var _date = __webpack_require__(272);
-
-	var _date2 = _interopRequireDefault(_date);
-
 	var _reactDom = __webpack_require__(154);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
@@ -32223,15 +32189,17 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _classnames = __webpack_require__(272);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var DateInput = _react2.default.createClass({
 	  displayName: "DateInput",
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      dateFormat: "YYYY-MM-DD",
-	      className: "datepicker__input",
-	      onBlur: function onBlur() {}
+	      dateFormat: "YYYY-MM-DD"
 	    };
 	  },
 	  componentWillMount: function componentWillMount() {
@@ -32264,13 +32232,11 @@
 	  handleChange: function handleChange(event) {
 	    var value = event.target.value;
 	    var date = (0, _moment2.default)(value, this.props.dateFormat, true);
-
 	    if (date.isValid()) {
-	      this.props.setSelected(new _date2.default(date));
-	    } else {
-	      this.props.invalidateSelected();
+	      this.props.setSelected(date);
+	    } else if (value === "") {
+	      this.props.setSelected(null);
 	    }
-
 	    this.setState({
 	      maybeDate: value
 	    });
@@ -32279,21 +32245,18 @@
 	    return !!date ? date.format(this.props.dateFormat) : null;
 	  },
 	  handleKeyDown: function handleKeyDown(event) {
-	    switch (event.key) {
-	      case "Enter":
-	        event.preventDefault();
-	        this.props.handleEnter();
-	        break;
-	      case "Escape":
-	        event.preventDefault();
-	        this.props.hideCalendar();
-	        break;
+	    if (event.key === "Enter" || event.key === "Escape") {
+	      event.preventDefault();
+	      this.props.hideCalendar();
 	    }
 	  },
 	  handleClick: function handleClick(event) {
 	    if (!this.props.disabled) {
 	      this.props.handleClick(event);
 	    }
+	  },
+	  getClassNames: function getClassNames() {
+	    return (0, _classnames2.default)("datepicker__input", "ignore-react-onclickoutside", this.props.className);
 	  },
 	  render: function render() {
 	    return _react2.default.createElement("input", {
@@ -32307,7 +32270,7 @@
 	      onFocus: this.props.onFocus,
 	      onBlur: this.props.onBlur,
 	      onChange: this.handleChange,
-	      className: "ignore-react-onclickoutside " + this.props.className,
+	      className: this.getClassNames(),
 	      disabled: this.props.disabled,
 	      placeholder: this.props.placeholderText,
 	      readOnly: this.props.readOnly,
@@ -32320,116 +32283,57 @@
 
 /***/ },
 /* 272 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2016 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+	/* global define */
 
-	function DateUtil(date) {
-	  this._date = date;
-	}
+	(function () {
+		'use strict';
 
-	DateUtil.prototype.isBefore = function (other) {
-	  return this._date.isBefore(other._date, "day");
-	};
+		var hasOwn = {}.hasOwnProperty;
 
-	DateUtil.prototype.isAfter = function (other) {
-	  return this._date.isAfter(other._date, "day");
-	};
+		function classNames () {
+			var classes = [];
 
-	DateUtil.prototype.sameDay = function (other) {
-	  return this._date.isSame(other._date, "day");
-	};
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (!arg) continue;
 
-	DateUtil.prototype.sameMonth = function (other) {
-	  return this._date.isSame(other._date, "month");
-	};
+				var argType = typeof arg;
 
-	DateUtil.prototype.inRange = function (startDate, endDate) {
-	  if (!startDate || !endDate) return false;
-	  var before = startDate._date.clone().startOf("day").subtract(1, "seconds");
-	  var after = endDate._date.clone().startOf("day").add(1, "seconds");
-	  return this._date.isBetween(before, after);
-	};
+				if (argType === 'string' || argType === 'number') {
+					classes.push(arg);
+				} else if (Array.isArray(arg)) {
+					classes.push(classNames.apply(null, arg));
+				} else if (argType === 'object') {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				}
+			}
 
-	DateUtil.prototype.day = function () {
-	  return this._date.date();
-	};
+			return classes.join(' ');
+		}
 
-	DateUtil.prototype.year = function () {
-	  return this._date.clone().year();
-	};
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else if (true) {
+			// register as 'classnames', consistent with npm package name
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return classNames;
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else {
+			window.classNames = classNames;
+		}
+	}());
 
-	DateUtil.prototype.mapDaysInWeek = function (callback) {
-	  var week = [];
-	  var firstDay = this._date.clone();
-
-	  for (var i = 0; i < 7; i++) {
-	    var day = new DateUtil(firstDay.clone().add(i, "days"));
-
-	    week[i] = callback(day, i);
-	  }
-
-	  return week;
-	};
-
-	DateUtil.prototype.mapWeeksInMonth = function (callback) {
-	  var month = [];
-	  var firstDay = this._date.clone().startOf("month").startOf("week");
-
-	  for (var i = 0; i < 6; i++) {
-	    var weekStart = new DateUtil(firstDay.clone().add(i, "weeks"));
-
-	    month[i] = callback(weekStart, i);
-	  }
-
-	  return month;
-	};
-
-	DateUtil.prototype.weekInMonth = function (other) {
-	  var firstDayInWeek = this._date.clone();
-	  var lastDayInWeek = this._date.clone().weekday(7);
-
-	  return firstDayInWeek.isSame(other._date, "month") || lastDayInWeek.isSame(other._date, "month");
-	};
-
-	DateUtil.prototype.format = function () {
-	  return this._date.format.apply(this._date, arguments);
-	};
-
-	DateUtil.prototype.localeFormat = function () {
-	  var args = Array.prototype.slice.call(arguments);
-	  var locale = args.shift();
-	  return this._date.locale(locale).format.apply(this._date, args);
-	};
-
-	DateUtil.prototype.addMonth = function () {
-	  return new DateUtil(this._date.clone().add(1, "month"));
-	};
-
-	DateUtil.prototype.subtractMonth = function () {
-	  return new DateUtil(this._date.clone().subtract(1, "month"));
-	};
-
-	DateUtil.prototype.changeYear = function (year) {
-	  return new DateUtil(this._date.clone().set("year", year));
-	};
-
-	DateUtil.prototype.clone = function () {
-	  return new DateUtil(this._date.clone());
-	};
-
-	DateUtil.prototype.safeClone = function (alternative) {
-	  if (!!this._date) return this.clone();
-
-	  if (alternative === undefined) alternative = null;
-	  return new DateUtil(alternative);
-	};
-
-	DateUtil.prototype.moment = function () {
-	  return this._date;
-	};
-
-	module.exports = DateUtil;
 
 /***/ },
 /* 273 */
@@ -32437,25 +32341,13 @@
 
 	"use strict";
 
-	var _some = __webpack_require__(274);
-
-	var _some2 = _interopRequireDefault(_some);
-
-	var _map = __webpack_require__(298);
-
-	var _map2 = _interopRequireDefault(_map);
-
-	var _date = __webpack_require__(272);
-
-	var _date2 = _interopRequireDefault(_date);
-
-	var _year_dropdown = __webpack_require__(301);
+	var _year_dropdown = __webpack_require__(274);
 
 	var _year_dropdown2 = _interopRequireDefault(_year_dropdown);
 
-	var _day = __webpack_require__(304);
+	var _month = __webpack_require__(277);
 
-	var _day2 = _interopRequireDefault(_day);
+	var _month2 = _interopRequireDefault(_month);
 
 	var _react = __webpack_require__(2);
 
@@ -32465,23 +32357,26 @@
 
 	function getDateInView(_ref) {
 	  var moment = _ref.moment;
+	  var selected = _ref.selected;
 	  var minDate = _ref.minDate;
 	  var maxDate = _ref.maxDate;
 
-	  var current = new _date2.default(moment());
-	  if (minDate && new _date2.default(minDate).isAfter(current)) {
+	  var current = moment();
+	  if (selected) {
+	    return selected;
+	  } else if (minDate && minDate.isAfter(current)) {
 	    return minDate;
-	  } else if (maxDate && new _date2.default(maxDate).isBefore(current)) {
+	  } else if (maxDate && maxDate.isBefore(current)) {
 	    return maxDate;
 	  } else {
-	    return current.moment();
+	    return current;
 	  }
 	}
 
 	var Calendar = _react2.default.createClass({
 	  displayName: "Calendar",
 
-	  mixins: [__webpack_require__(303)],
+	  mixins: [__webpack_require__(276)],
 
 	  propTypes: {
 	    weekdays: _react2.default.PropTypes.array.isRequired,
@@ -32496,6 +32391,7 @@
 	    endDate: _react2.default.PropTypes.object,
 	    excludeDates: _react2.default.PropTypes.array,
 	    includeDates: _react2.default.PropTypes.array,
+	    filterDate: _react2.default.PropTypes.func,
 	    weekStart: _react2.default.PropTypes.string.isRequired,
 	    showYearDropdown: _react2.default.PropTypes.bool
 	  },
@@ -32505,7 +32401,7 @@
 	  },
 	  getInitialState: function getInitialState() {
 	    return {
-	      date: new _date2.default(this.props.selected).safeClone(getDateInView(this.props))
+	      date: getDateInView(this.props)
 	    };
 	  },
 	  getDefaultProps: function getDefaultProps() {
@@ -32524,7 +32420,7 @@
 	    // When the selected date changed
 	    if (nextProps.selected !== this.props.selected) {
 	      this.setState({
-	        date: new _date2.default(nextProps.selected).clone()
+	        date: nextProps.selected
 	      });
 	    }
 	  },
@@ -32541,77 +32437,21 @@
 	  },
 	  increaseMonth: function increaseMonth() {
 	    this.setState({
-	      date: this.state.date.addMonth()
+	      date: this.state.date.clone().add(1, "month")
 	    });
 	  },
 	  decreaseMonth: function decreaseMonth() {
 	    this.setState({
-	      date: this.state.date.subtractMonth()
+	      date: this.state.date.clone().subtract(1, "month")
 	    });
-	  },
-	  weeks: function weeks() {
-	    return this.state.date.mapWeeksInMonth(this.renderWeek);
 	  },
 	  handleDayClick: function handleDayClick(day) {
 	    this.props.onSelect(day);
 	  },
 	  changeYear: function changeYear(year) {
 	    this.setState({
-	      date: this.state.date.changeYear(year)
+	      date: this.state.date.clone().set("year", year)
 	    });
-	  },
-	  renderWeek: function renderWeek(weekStart, key) {
-	    if (!weekStart.weekInMonth(this.state.date)) {
-	      return;
-	    }
-
-	    return _react2.default.createElement(
-	      "div",
-	      { key: key },
-	      this.days(weekStart)
-	    );
-	  },
-	  renderDay: function renderDay(day, key) {
-	    var minDate = new _date2.default(this.props.minDate).safeClone(),
-	        maxDate = new _date2.default(this.props.maxDate).safeClone(),
-	        excludeDates,
-	        includeDates,
-	        disabled,
-	        inRange;
-
-	    if (this.props.excludeDates && Array.isArray(this.props.excludeDates)) {
-	      excludeDates = (0, _map2.default)(this.props.excludeDates, function (date) {
-	        return new _date2.default(date).safeClone();
-	      });
-	    }
-
-	    if (this.props.includeDates && Array.isArray(this.props.includeDates)) {
-	      includeDates = (0, _map2.default)(this.props.includeDates, function (date) {
-	        return new _date2.default(date).safeClone();
-	      });
-	    }
-
-	    disabled = day.isBefore(minDate) || day.isAfter(maxDate) || (0, _some2.default)(excludeDates, function (xDay) {
-	      return day.sameDay(xDay);
-	    }) || includeDates && !(0, _some2.default)(includeDates, function (xDay) {
-	      return day.sameDay(xDay);
-	    });
-
-	    if (this.props.startDate && this.props.endDate) {
-	      inRange = day.inRange(new _date2.default(this.props.startDate), new _date2.default(this.props.endDate));
-	    }
-
-	    return _react2.default.createElement(_day2.default, {
-	      key: key,
-	      day: day,
-	      date: this.state.date,
-	      onClick: this.handleDayClick.bind(this, day),
-	      selected: new _date2.default(this.props.selected),
-	      inRange: inRange,
-	      disabled: disabled });
-	  },
-	  days: function days(weekStart) {
-	    return weekStart.mapDaysInWeek(this.renderDay);
 	  },
 	  header: function header() {
 	    return this.props.moment.weekdaysMin().map(function (day, key) {
@@ -32630,7 +32470,7 @@
 	    return _react2.default.createElement(
 	      "div",
 	      { className: classes.join(" ") },
-	      this.state.date.localeFormat(this.props.locale, this.props.dateFormat)
+	      this.state.date.format(this.props.dateFormat)
 	    );
 	  },
 	  renderYearDropdown: function renderYearDropdown() {
@@ -32661,11 +32501,17 @@
 	          this.header()
 	        )
 	      ),
-	      _react2.default.createElement(
-	        "div",
-	        { className: "datepicker__month" },
-	        this.weeks()
-	      )
+	      _react2.default.createElement(_month2.default, {
+	        day: this.state.date,
+	        onDayClick: this.handleDayClick,
+	        minDate: this.props.minDate,
+	        maxDate: this.props.maxDate,
+	        excludeDates: this.props.excludeDates,
+	        includeDates: this.props.includeDates,
+	        filterDate: this.props.filterDate,
+	        selected: this.props.selected,
+	        startDate: this.props.startDate,
+	        endDate: this.props.endDate })
 	    );
 	  }
 	});
@@ -32676,956 +32522,13 @@
 /* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var arraySome = __webpack_require__(162),
-	    baseCallback = __webpack_require__(275),
-	    baseSome = __webpack_require__(291),
-	    isArray = __webpack_require__(177),
-	    isIterateeCall = __webpack_require__(297);
-
-	/**
-	 * Checks if `predicate` returns truthy for **any** element of `collection`.
-	 * The function returns as soon as it finds a passing value and does not iterate
-	 * over the entire collection. The predicate is bound to `thisArg` and invoked
-	 * with three arguments: (value, index|key, collection).
-	 *
-	 * If a property name is provided for `predicate` the created `_.property`
-	 * style callback returns the property value of the given element.
-	 *
-	 * If a value is also provided for `thisArg` the created `_.matchesProperty`
-	 * style callback returns `true` for elements that have a matching property
-	 * value, else `false`.
-	 *
-	 * If an object is provided for `predicate` the created `_.matches` style
-	 * callback returns `true` for elements that have the properties of the given
-	 * object, else `false`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @alias any
-	 * @category Collection
-	 * @param {Array|Object|string} collection The collection to iterate over.
-	 * @param {Function|Object|string} [predicate=_.identity] The function invoked
-	 *  per iteration.
-	 * @param {*} [thisArg] The `this` binding of `predicate`.
-	 * @returns {boolean} Returns `true` if any element passes the predicate check,
-	 *  else `false`.
-	 * @example
-	 *
-	 * _.some([null, 0, 'yes', false], Boolean);
-	 * // => true
-	 *
-	 * var users = [
-	 *   { 'user': 'barney', 'active': true },
-	 *   { 'user': 'fred',   'active': false }
-	 * ];
-	 *
-	 * // using the `_.matches` callback shorthand
-	 * _.some(users, { 'user': 'barney', 'active': false });
-	 * // => false
-	 *
-	 * // using the `_.matchesProperty` callback shorthand
-	 * _.some(users, 'active', false);
-	 * // => true
-	 *
-	 * // using the `_.property` callback shorthand
-	 * _.some(users, 'active');
-	 * // => true
-	 */
-	function some(collection, predicate, thisArg) {
-	  var func = isArray(collection) ? arraySome : baseSome;
-	  if (thisArg && isIterateeCall(collection, predicate, thisArg)) {
-	    predicate = undefined;
-	  }
-	  if (typeof predicate != 'function' || thisArg !== undefined) {
-	    predicate = baseCallback(predicate, thisArg, 3);
-	  }
-	  return func(collection, predicate);
-	}
-
-	module.exports = some;
-
-
-/***/ },
-/* 275 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var baseMatches = __webpack_require__(276),
-	    baseMatchesProperty = __webpack_require__(282),
-	    bindCallback = __webpack_require__(181),
-	    identity = __webpack_require__(182),
-	    property = __webpack_require__(289);
-
-	/**
-	 * The base implementation of `_.callback` which supports specifying the
-	 * number of arguments to provide to `func`.
-	 *
-	 * @private
-	 * @param {*} [func=_.identity] The value to convert to a callback.
-	 * @param {*} [thisArg] The `this` binding of `func`.
-	 * @param {number} [argCount] The number of arguments to provide to `func`.
-	 * @returns {Function} Returns the callback.
-	 */
-	function baseCallback(func, thisArg, argCount) {
-	  var type = typeof func;
-	  if (type == 'function') {
-	    return thisArg === undefined
-	      ? func
-	      : bindCallback(func, thisArg, argCount);
-	  }
-	  if (func == null) {
-	    return identity;
-	  }
-	  if (type == 'object') {
-	    return baseMatches(func);
-	  }
-	  return thisArg === undefined
-	    ? property(func)
-	    : baseMatchesProperty(func, thisArg);
-	}
-
-	module.exports = baseCallback;
-
-
-/***/ },
-/* 276 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var baseIsMatch = __webpack_require__(277),
-	    getMatchData = __webpack_require__(279),
-	    toObject = __webpack_require__(278);
-
-	/**
-	 * The base implementation of `_.matches` which does not clone `source`.
-	 *
-	 * @private
-	 * @param {Object} source The object of property values to match.
-	 * @returns {Function} Returns the new function.
-	 */
-	function baseMatches(source) {
-	  var matchData = getMatchData(source);
-	  if (matchData.length == 1 && matchData[0][2]) {
-	    var key = matchData[0][0],
-	        value = matchData[0][1];
-
-	    return function(object) {
-	      if (object == null) {
-	        return false;
-	      }
-	      return object[key] === value && (value !== undefined || (key in toObject(object)));
-	    };
-	  }
-	  return function(object) {
-	    return baseIsMatch(object, matchData);
-	  };
-	}
-
-	module.exports = baseMatches;
-
-
-/***/ },
-/* 277 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var baseIsEqual = __webpack_require__(159),
-	    toObject = __webpack_require__(278);
-
-	/**
-	 * The base implementation of `_.isMatch` without support for callback
-	 * shorthands and `this` binding.
-	 *
-	 * @private
-	 * @param {Object} object The object to inspect.
-	 * @param {Array} matchData The propery names, values, and compare flags to match.
-	 * @param {Function} [customizer] The function to customize comparing objects.
-	 * @returns {boolean} Returns `true` if `object` is a match, else `false`.
-	 */
-	function baseIsMatch(object, matchData, customizer) {
-	  var index = matchData.length,
-	      length = index,
-	      noCustomizer = !customizer;
-
-	  if (object == null) {
-	    return !length;
-	  }
-	  object = toObject(object);
-	  while (index--) {
-	    var data = matchData[index];
-	    if ((noCustomizer && data[2])
-	          ? data[1] !== object[data[0]]
-	          : !(data[0] in object)
-	        ) {
-	      return false;
-	    }
-	  }
-	  while (++index < length) {
-	    data = matchData[index];
-	    var key = data[0],
-	        objValue = object[key],
-	        srcValue = data[1];
-
-	    if (noCustomizer && data[2]) {
-	      if (objValue === undefined && !(key in object)) {
-	        return false;
-	      }
-	    } else {
-	      var result = customizer ? customizer(objValue, srcValue, key) : undefined;
-	      if (!(result === undefined ? baseIsEqual(srcValue, objValue, customizer, true) : result)) {
-	        return false;
-	      }
-	    }
-	  }
-	  return true;
-	}
-
-	module.exports = baseIsMatch;
-
-
-/***/ },
-/* 278 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var isObject = __webpack_require__(169);
-
-	/**
-	 * Converts `value` to an object if it's not one.
-	 *
-	 * @private
-	 * @param {*} value The value to process.
-	 * @returns {Object} Returns the object.
-	 */
-	function toObject(value) {
-	  return isObject(value) ? value : Object(value);
-	}
-
-	module.exports = toObject;
-
-
-/***/ },
-/* 279 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var isStrictComparable = __webpack_require__(280),
-	    pairs = __webpack_require__(281);
-
-	/**
-	 * Gets the propery names, values, and compare flags of `object`.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @returns {Array} Returns the match data of `object`.
-	 */
-	function getMatchData(object) {
-	  var result = pairs(object),
-	      length = result.length;
-
-	  while (length--) {
-	    result[length][2] = isStrictComparable(result[length][1]);
-	  }
-	  return result;
-	}
-
-	module.exports = getMatchData;
-
-
-/***/ },
-/* 280 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var isObject = __webpack_require__(169);
-
-	/**
-	 * Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` if suitable for strict
-	 *  equality comparisons, else `false`.
-	 */
-	function isStrictComparable(value) {
-	  return value === value && !isObject(value);
-	}
-
-	module.exports = isStrictComparable;
-
-
-/***/ },
-/* 281 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var keys = __webpack_require__(165),
-	    toObject = __webpack_require__(278);
-
-	/**
-	 * Creates a two dimensional array of the key-value pairs for `object`,
-	 * e.g. `[[key1, value1], [key2, value2]]`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Object
-	 * @param {Object} object The object to query.
-	 * @returns {Array} Returns the new array of key-value pairs.
-	 * @example
-	 *
-	 * _.pairs({ 'barney': 36, 'fred': 40 });
-	 * // => [['barney', 36], ['fred', 40]] (iteration order is not guaranteed)
-	 */
-	function pairs(object) {
-	  object = toObject(object);
-
-	  var index = -1,
-	      props = keys(object),
-	      length = props.length,
-	      result = Array(length);
-
-	  while (++index < length) {
-	    var key = props[index];
-	    result[index] = [key, object[key]];
-	  }
-	  return result;
-	}
-
-	module.exports = pairs;
-
-
-/***/ },
-/* 282 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var baseGet = __webpack_require__(283),
-	    baseIsEqual = __webpack_require__(159),
-	    baseSlice = __webpack_require__(284),
-	    isArray = __webpack_require__(177),
-	    isKey = __webpack_require__(285),
-	    isStrictComparable = __webpack_require__(280),
-	    last = __webpack_require__(286),
-	    toObject = __webpack_require__(278),
-	    toPath = __webpack_require__(287);
-
-	/**
-	 * The base implementation of `_.matchesProperty` which does not clone `srcValue`.
-	 *
-	 * @private
-	 * @param {string} path The path of the property to get.
-	 * @param {*} srcValue The value to compare.
-	 * @returns {Function} Returns the new function.
-	 */
-	function baseMatchesProperty(path, srcValue) {
-	  var isArr = isArray(path),
-	      isCommon = isKey(path) && isStrictComparable(srcValue),
-	      pathKey = (path + '');
-
-	  path = toPath(path);
-	  return function(object) {
-	    if (object == null) {
-	      return false;
-	    }
-	    var key = pathKey;
-	    object = toObject(object);
-	    if ((isArr || !isCommon) && !(key in object)) {
-	      object = path.length == 1 ? object : baseGet(object, baseSlice(path, 0, -1));
-	      if (object == null) {
-	        return false;
-	      }
-	      key = last(path);
-	      object = toObject(object);
-	    }
-	    return object[key] === srcValue
-	      ? (srcValue !== undefined || (key in object))
-	      : baseIsEqual(srcValue, object[key], undefined, true);
-	  };
-	}
-
-	module.exports = baseMatchesProperty;
-
-
-/***/ },
-/* 283 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var toObject = __webpack_require__(278);
-
-	/**
-	 * The base implementation of `get` without support for string paths
-	 * and default values.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @param {Array} path The path of the property to get.
-	 * @param {string} [pathKey] The key representation of path.
-	 * @returns {*} Returns the resolved value.
-	 */
-	function baseGet(object, path, pathKey) {
-	  if (object == null) {
-	    return;
-	  }
-	  if (pathKey !== undefined && pathKey in toObject(object)) {
-	    path = [pathKey];
-	  }
-	  var index = 0,
-	      length = path.length;
-
-	  while (object != null && index < length) {
-	    object = object[path[index++]];
-	  }
-	  return (index && index == length) ? object : undefined;
-	}
-
-	module.exports = baseGet;
-
-
-/***/ },
-/* 284 */
-/***/ function(module, exports) {
-
-	/**
-	 * The base implementation of `_.slice` without an iteratee call guard.
-	 *
-	 * @private
-	 * @param {Array} array The array to slice.
-	 * @param {number} [start=0] The start position.
-	 * @param {number} [end=array.length] The end position.
-	 * @returns {Array} Returns the slice of `array`.
-	 */
-	function baseSlice(array, start, end) {
-	  var index = -1,
-	      length = array.length;
-
-	  start = start == null ? 0 : (+start || 0);
-	  if (start < 0) {
-	    start = -start > length ? 0 : (length + start);
-	  }
-	  end = (end === undefined || end > length) ? length : (+end || 0);
-	  if (end < 0) {
-	    end += length;
-	  }
-	  length = start > end ? 0 : ((end - start) >>> 0);
-	  start >>>= 0;
-
-	  var result = Array(length);
-	  while (++index < length) {
-	    result[index] = array[index + start];
-	  }
-	  return result;
-	}
-
-	module.exports = baseSlice;
-
-
-/***/ },
-/* 285 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var isArray = __webpack_require__(177),
-	    toObject = __webpack_require__(278);
-
-	/** Used to match property names within property paths. */
-	var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\n\\]|\\.)*?\1)\]/,
-	    reIsPlainProp = /^\w*$/;
-
-	/**
-	 * Checks if `value` is a property name and not a property path.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @param {Object} [object] The object to query keys on.
-	 * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
-	 */
-	function isKey(value, object) {
-	  var type = typeof value;
-	  if ((type == 'string' && reIsPlainProp.test(value)) || type == 'number') {
-	    return true;
-	  }
-	  if (isArray(value)) {
-	    return false;
-	  }
-	  var result = !reIsDeepProp.test(value);
-	  return result || (object != null && value in toObject(object));
-	}
-
-	module.exports = isKey;
-
-
-/***/ },
-/* 286 */
-/***/ function(module, exports) {
-
-	/**
-	 * Gets the last element of `array`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Array
-	 * @param {Array} array The array to query.
-	 * @returns {*} Returns the last element of `array`.
-	 * @example
-	 *
-	 * _.last([1, 2, 3]);
-	 * // => 3
-	 */
-	function last(array) {
-	  var length = array ? array.length : 0;
-	  return length ? array[length - 1] : undefined;
-	}
-
-	module.exports = last;
-
-
-/***/ },
-/* 287 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var baseToString = __webpack_require__(288),
-	    isArray = __webpack_require__(177);
-
-	/** Used to match property names within property paths. */
-	var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\n\\]|\\.)*?)\2)\]/g;
-
-	/** Used to match backslashes in property paths. */
-	var reEscapeChar = /\\(\\)?/g;
-
-	/**
-	 * Converts `value` to property path array if it's not one.
-	 *
-	 * @private
-	 * @param {*} value The value to process.
-	 * @returns {Array} Returns the property path array.
-	 */
-	function toPath(value) {
-	  if (isArray(value)) {
-	    return value;
-	  }
-	  var result = [];
-	  baseToString(value).replace(rePropName, function(match, number, quote, string) {
-	    result.push(quote ? string.replace(reEscapeChar, '$1') : (number || match));
-	  });
-	  return result;
-	}
-
-	module.exports = toPath;
-
-
-/***/ },
-/* 288 */
-/***/ function(module, exports) {
-
-	/**
-	 * Converts `value` to a string if it's not one. An empty string is returned
-	 * for `null` or `undefined` values.
-	 *
-	 * @private
-	 * @param {*} value The value to process.
-	 * @returns {string} Returns the string.
-	 */
-	function baseToString(value) {
-	  return value == null ? '' : (value + '');
-	}
-
-	module.exports = baseToString;
-
-
-/***/ },
-/* 289 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var baseProperty = __webpack_require__(173),
-	    basePropertyDeep = __webpack_require__(290),
-	    isKey = __webpack_require__(285);
-
-	/**
-	 * Creates a function that returns the property value at `path` on a
-	 * given object.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Utility
-	 * @param {Array|string} path The path of the property to get.
-	 * @returns {Function} Returns the new function.
-	 * @example
-	 *
-	 * var objects = [
-	 *   { 'a': { 'b': { 'c': 2 } } },
-	 *   { 'a': { 'b': { 'c': 1 } } }
-	 * ];
-	 *
-	 * _.map(objects, _.property('a.b.c'));
-	 * // => [2, 1]
-	 *
-	 * _.pluck(_.sortBy(objects, _.property(['a', 'b', 'c'])), 'a.b.c');
-	 * // => [1, 2]
-	 */
-	function property(path) {
-	  return isKey(path) ? baseProperty(path) : basePropertyDeep(path);
-	}
-
-	module.exports = property;
-
-
-/***/ },
-/* 290 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var baseGet = __webpack_require__(283),
-	    toPath = __webpack_require__(287);
-
-	/**
-	 * A specialized version of `baseProperty` which supports deep paths.
-	 *
-	 * @private
-	 * @param {Array|string} path The path of the property to get.
-	 * @returns {Function} Returns the new function.
-	 */
-	function basePropertyDeep(path) {
-	  var pathKey = (path + '');
-	  path = toPath(path);
-	  return function(object) {
-	    return baseGet(object, path, pathKey);
-	  };
-	}
-
-	module.exports = basePropertyDeep;
-
-
-/***/ },
-/* 291 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var baseEach = __webpack_require__(292);
-
-	/**
-	 * The base implementation of `_.some` without support for callback shorthands
-	 * and `this` binding.
-	 *
-	 * @private
-	 * @param {Array|Object|string} collection The collection to iterate over.
-	 * @param {Function} predicate The function invoked per iteration.
-	 * @returns {boolean} Returns `true` if any element passes the predicate check,
-	 *  else `false`.
-	 */
-	function baseSome(collection, predicate) {
-	  var result;
-
-	  baseEach(collection, function(value, index, collection) {
-	    result = predicate(value, index, collection);
-	    return !result;
-	  });
-	  return !!result;
-	}
-
-	module.exports = baseSome;
-
-
-/***/ },
-/* 292 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var baseForOwn = __webpack_require__(293),
-	    createBaseEach = __webpack_require__(296);
-
-	/**
-	 * The base implementation of `_.forEach` without support for callback
-	 * shorthands and `this` binding.
-	 *
-	 * @private
-	 * @param {Array|Object|string} collection The collection to iterate over.
-	 * @param {Function} iteratee The function invoked per iteration.
-	 * @returns {Array|Object|string} Returns `collection`.
-	 */
-	var baseEach = createBaseEach(baseForOwn);
-
-	module.exports = baseEach;
-
-
-/***/ },
-/* 293 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var baseFor = __webpack_require__(294),
-	    keys = __webpack_require__(165);
-
-	/**
-	 * The base implementation of `_.forOwn` without support for callback
-	 * shorthands and `this` binding.
-	 *
-	 * @private
-	 * @param {Object} object The object to iterate over.
-	 * @param {Function} iteratee The function invoked per iteration.
-	 * @returns {Object} Returns `object`.
-	 */
-	function baseForOwn(object, iteratee) {
-	  return baseFor(object, iteratee, keys);
-	}
-
-	module.exports = baseForOwn;
-
-
-/***/ },
-/* 294 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var createBaseFor = __webpack_require__(295);
-
-	/**
-	 * The base implementation of `baseForIn` and `baseForOwn` which iterates
-	 * over `object` properties returned by `keysFunc` invoking `iteratee` for
-	 * each property. Iteratee functions may exit iteration early by explicitly
-	 * returning `false`.
-	 *
-	 * @private
-	 * @param {Object} object The object to iterate over.
-	 * @param {Function} iteratee The function invoked per iteration.
-	 * @param {Function} keysFunc The function to get the keys of `object`.
-	 * @returns {Object} Returns `object`.
-	 */
-	var baseFor = createBaseFor();
-
-	module.exports = baseFor;
-
-
-/***/ },
-/* 295 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var toObject = __webpack_require__(278);
-
-	/**
-	 * Creates a base function for `_.forIn` or `_.forInRight`.
-	 *
-	 * @private
-	 * @param {boolean} [fromRight] Specify iterating from right to left.
-	 * @returns {Function} Returns the new base function.
-	 */
-	function createBaseFor(fromRight) {
-	  return function(object, iteratee, keysFunc) {
-	    var iterable = toObject(object),
-	        props = keysFunc(object),
-	        length = props.length,
-	        index = fromRight ? length : -1;
-
-	    while ((fromRight ? index-- : ++index < length)) {
-	      var key = props[index];
-	      if (iteratee(iterable[key], key, iterable) === false) {
-	        break;
-	      }
-	    }
-	    return object;
-	  };
-	}
-
-	module.exports = createBaseFor;
-
-
-/***/ },
-/* 296 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var getLength = __webpack_require__(172),
-	    isLength = __webpack_require__(174),
-	    toObject = __webpack_require__(278);
-
-	/**
-	 * Creates a `baseEach` or `baseEachRight` function.
-	 *
-	 * @private
-	 * @param {Function} eachFunc The function to iterate over a collection.
-	 * @param {boolean} [fromRight] Specify iterating from right to left.
-	 * @returns {Function} Returns the new base function.
-	 */
-	function createBaseEach(eachFunc, fromRight) {
-	  return function(collection, iteratee) {
-	    var length = collection ? getLength(collection) : 0;
-	    if (!isLength(length)) {
-	      return eachFunc(collection, iteratee);
-	    }
-	    var index = fromRight ? length : -1,
-	        iterable = toObject(collection);
-
-	    while ((fromRight ? index-- : ++index < length)) {
-	      if (iteratee(iterable[index], index, iterable) === false) {
-	        break;
-	      }
-	    }
-	    return collection;
-	  };
-	}
-
-	module.exports = createBaseEach;
-
-
-/***/ },
-/* 297 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var isArrayLike = __webpack_require__(171),
-	    isIndex = __webpack_require__(178),
-	    isObject = __webpack_require__(169);
-
-	/**
-	 * Checks if the provided arguments are from an iteratee call.
-	 *
-	 * @private
-	 * @param {*} value The potential iteratee value argument.
-	 * @param {*} index The potential iteratee index or key argument.
-	 * @param {*} object The potential iteratee object argument.
-	 * @returns {boolean} Returns `true` if the arguments are from an iteratee call, else `false`.
-	 */
-	function isIterateeCall(value, index, object) {
-	  if (!isObject(object)) {
-	    return false;
-	  }
-	  var type = typeof index;
-	  if (type == 'number'
-	      ? (isArrayLike(object) && isIndex(index, object.length))
-	      : (type == 'string' && index in object)) {
-	    var other = object[index];
-	    return value === value ? (value === other) : (other !== other);
-	  }
-	  return false;
-	}
-
-	module.exports = isIterateeCall;
-
-
-/***/ },
-/* 298 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var arrayMap = __webpack_require__(299),
-	    baseCallback = __webpack_require__(275),
-	    baseMap = __webpack_require__(300),
-	    isArray = __webpack_require__(177);
-
-	/**
-	 * Creates an array of values by running each element in `collection` through
-	 * `iteratee`. The `iteratee` is bound to `thisArg` and invoked with three
-	 * arguments: (value, index|key, collection).
-	 *
-	 * If a property name is provided for `iteratee` the created `_.property`
-	 * style callback returns the property value of the given element.
-	 *
-	 * If a value is also provided for `thisArg` the created `_.matchesProperty`
-	 * style callback returns `true` for elements that have a matching property
-	 * value, else `false`.
-	 *
-	 * If an object is provided for `iteratee` the created `_.matches` style
-	 * callback returns `true` for elements that have the properties of the given
-	 * object, else `false`.
-	 *
-	 * Many lodash methods are guarded to work as iteratees for methods like
-	 * `_.every`, `_.filter`, `_.map`, `_.mapValues`, `_.reject`, and `_.some`.
-	 *
-	 * The guarded methods are:
-	 * `ary`, `callback`, `chunk`, `clone`, `create`, `curry`, `curryRight`,
-	 * `drop`, `dropRight`, `every`, `fill`, `flatten`, `invert`, `max`, `min`,
-	 * `parseInt`, `slice`, `sortBy`, `take`, `takeRight`, `template`, `trim`,
-	 * `trimLeft`, `trimRight`, `trunc`, `random`, `range`, `sample`, `some`,
-	 * `sum`, `uniq`, and `words`
-	 *
-	 * @static
-	 * @memberOf _
-	 * @alias collect
-	 * @category Collection
-	 * @param {Array|Object|string} collection The collection to iterate over.
-	 * @param {Function|Object|string} [iteratee=_.identity] The function invoked
-	 *  per iteration.
-	 * @param {*} [thisArg] The `this` binding of `iteratee`.
-	 * @returns {Array} Returns the new mapped array.
-	 * @example
-	 *
-	 * function timesThree(n) {
-	 *   return n * 3;
-	 * }
-	 *
-	 * _.map([1, 2], timesThree);
-	 * // => [3, 6]
-	 *
-	 * _.map({ 'a': 1, 'b': 2 }, timesThree);
-	 * // => [3, 6] (iteration order is not guaranteed)
-	 *
-	 * var users = [
-	 *   { 'user': 'barney' },
-	 *   { 'user': 'fred' }
-	 * ];
-	 *
-	 * // using the `_.property` callback shorthand
-	 * _.map(users, 'user');
-	 * // => ['barney', 'fred']
-	 */
-	function map(collection, iteratee, thisArg) {
-	  var func = isArray(collection) ? arrayMap : baseMap;
-	  iteratee = baseCallback(iteratee, thisArg, 3);
-	  return func(collection, iteratee);
-	}
-
-	module.exports = map;
-
-
-/***/ },
-/* 299 */
-/***/ function(module, exports) {
-
-	/**
-	 * A specialized version of `_.map` for arrays without support for callback
-	 * shorthands and `this` binding.
-	 *
-	 * @private
-	 * @param {Array} array The array to iterate over.
-	 * @param {Function} iteratee The function invoked per iteration.
-	 * @returns {Array} Returns the new mapped array.
-	 */
-	function arrayMap(array, iteratee) {
-	  var index = -1,
-	      length = array.length,
-	      result = Array(length);
-
-	  while (++index < length) {
-	    result[index] = iteratee(array[index], index, array);
-	  }
-	  return result;
-	}
-
-	module.exports = arrayMap;
-
-
-/***/ },
-/* 300 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var baseEach = __webpack_require__(292),
-	    isArrayLike = __webpack_require__(171);
-
-	/**
-	 * The base implementation of `_.map` without support for callback shorthands
-	 * and `this` binding.
-	 *
-	 * @private
-	 * @param {Array|Object|string} collection The collection to iterate over.
-	 * @param {Function} iteratee The function invoked per iteration.
-	 * @returns {Array} Returns the new mapped array.
-	 */
-	function baseMap(collection, iteratee) {
-	  var index = -1,
-	      result = isArrayLike(collection) ? Array(collection.length) : [];
-
-	  baseEach(collection, function(value, key, collection) {
-	    result[++index] = iteratee(value, key, collection);
-	  });
-	  return result;
-	}
-
-	module.exports = baseMap;
-
-
-/***/ },
-/* 301 */
-/***/ function(module, exports, __webpack_require__) {
-
 	"use strict";
 
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _year_dropdown_options = __webpack_require__(302);
+	var _year_dropdown_options = __webpack_require__(275);
 
 	var _year_dropdown_options2 = _interopRequireDefault(_year_dropdown_options);
 
@@ -33685,7 +32588,7 @@
 	module.exports = YearDropdown;
 
 /***/ },
-/* 302 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33707,7 +32610,7 @@
 	var YearDropdownOptions = _react2.default.createClass({
 	  displayName: "YearDropdownOptions",
 
-	  mixins: [__webpack_require__(303)],
+	  mixins: [__webpack_require__(276)],
 
 	  propTypes: {
 	    year: _react2.default.PropTypes.number.isRequired,
@@ -33790,7 +32693,7 @@
 	module.exports = YearDropdownOptions;
 
 /***/ },
-/* 303 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -33925,7 +32828,154 @@
 
 
 /***/ },
-/* 304 */
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _week = __webpack_require__(278);
+
+	var _week2 = _interopRequireDefault(_week);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Month = _react2.default.createClass({
+	  displayName: "Month",
+
+	  propTypes: {
+	    day: _react2.default.PropTypes.object.isRequired,
+	    onDayClick: _react2.default.PropTypes.func,
+	    minDate: _react2.default.PropTypes.object,
+	    maxDate: _react2.default.PropTypes.object,
+	    excludeDates: _react2.default.PropTypes.array,
+	    includeDates: _react2.default.PropTypes.array,
+	    filterDate: _react2.default.PropTypes.func,
+	    selected: _react2.default.PropTypes.object,
+	    startDate: _react2.default.PropTypes.object,
+	    endDate: _react2.default.PropTypes.object
+	  },
+
+	  handleDayClick: function handleDayClick(day) {
+	    if (this.props.onDayClick) {
+	      this.props.onDayClick(day);
+	    }
+	  },
+	  isWeekInMonth: function isWeekInMonth(startOfWeek) {
+	    var day = this.props.day;
+	    var endOfWeek = startOfWeek.clone().add(6, "days");
+	    return startOfWeek.isSame(day, "month") || endOfWeek.isSame(day, "month");
+	  },
+	  renderWeeks: function renderWeeks() {
+	    var _this = this;
+
+	    var startOfMonth = this.props.day.clone().startOf("month").startOf("week");
+	    return [0, 1, 2, 3, 4, 5].map(function (offset) {
+	      return startOfMonth.clone().add(offset, "weeks");
+	    }).filter(function (startOfWeek) {
+	      return _this.isWeekInMonth(startOfWeek);
+	    }).map(function (startOfWeek, offset) {
+	      return _react2.default.createElement(_week2.default, {
+	        key: offset,
+	        day: startOfWeek,
+	        month: _this.props.day.month(),
+	        onDayClick: _this.handleDayClick,
+	        minDate: _this.props.minDate,
+	        maxDate: _this.props.maxDate,
+	        excludeDates: _this.props.excludeDates,
+	        includeDates: _this.props.includeDates,
+	        filterDate: _this.props.filterDate,
+	        selected: _this.props.selected,
+	        startDate: _this.props.startDate,
+	        endDate: _this.props.endDate });
+	    });
+	  },
+	  render: function render() {
+	    return _react2.default.createElement(
+	      "div",
+	      { className: "datepicker__month" },
+	      this.renderWeeks()
+	    );
+	  }
+	});
+
+	module.exports = Month;
+
+/***/ },
+/* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _day = __webpack_require__(279);
+
+	var _day2 = _interopRequireDefault(_day);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Week = _react2.default.createClass({
+	  displayName: "Week",
+
+	  propTypes: {
+	    day: _react2.default.PropTypes.object.isRequired,
+	    month: _react2.default.PropTypes.number,
+	    onDayClick: _react2.default.PropTypes.func,
+	    minDate: _react2.default.PropTypes.object,
+	    maxDate: _react2.default.PropTypes.object,
+	    excludeDates: _react2.default.PropTypes.array,
+	    includeDates: _react2.default.PropTypes.array,
+	    filterDate: _react2.default.PropTypes.func,
+	    selected: _react2.default.PropTypes.object,
+	    startDate: _react2.default.PropTypes.object,
+	    endDate: _react2.default.PropTypes.object
+	  },
+
+	  handleDayClick: function handleDayClick(day) {
+	    if (this.props.onDayClick) {
+	      this.props.onDayClick(day);
+	    }
+	  },
+	  renderDays: function renderDays() {
+	    var _this = this;
+
+	    var startOfWeek = this.props.day.clone().startOf("week");
+	    return [0, 1, 2, 3, 4, 5, 6].map(function (offset) {
+	      var day = startOfWeek.clone().add(offset, "days");
+	      return _react2.default.createElement(_day2.default, {
+	        key: offset,
+	        day: day,
+	        month: _this.props.month,
+	        onClick: _this.handleDayClick.bind(_this, day),
+	        minDate: _this.props.minDate,
+	        maxDate: _this.props.maxDate,
+	        excludeDates: _this.props.excludeDates,
+	        includeDates: _this.props.includeDates,
+	        filterDate: _this.props.filterDate,
+	        selected: _this.props.selected,
+	        startDate: _this.props.startDate,
+	        endDate: _this.props.endDate });
+	    });
+	  },
+	  render: function render() {
+	    return _react2.default.createElement(
+	      "div",
+	      { className: "datepicker__week" },
+	      this.renderDays()
+	    );
+	  }
+	});
+
+	module.exports = Week;
+
+/***/ },
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33938,36 +32988,92 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _classnames = __webpack_require__(272);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _some = __webpack_require__(280);
+
+	var _some2 = _interopRequireDefault(_some);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Day = _react2.default.createClass({
 	  displayName: "Day",
-	  handleClick: function handleClick(event) {
-	    if (this.props.disabled) return;
 
-	    this.props.onClick(event);
+	  propTypes: {
+	    day: _react2.default.PropTypes.object.isRequired,
+	    month: _react2.default.PropTypes.number,
+	    onClick: _react2.default.PropTypes.func,
+	    minDate: _react2.default.PropTypes.object,
+	    maxDate: _react2.default.PropTypes.object,
+	    excludeDates: _react2.default.PropTypes.array,
+	    includeDates: _react2.default.PropTypes.array,
+	    filterDate: _react2.default.PropTypes.func,
+	    selected: _react2.default.PropTypes.object,
+	    startDate: _react2.default.PropTypes.object,
+	    endDate: _react2.default.PropTypes.object
+	  },
+
+	  handleClick: function handleClick(event) {
+	    if (!this.isDisabled() && this.props.onClick) {
+	      this.props.onClick(event);
+	    }
+	  },
+	  isSameDay: function isSameDay(other) {
+	    return other && this.props.day.isSame(other, "day");
+	  },
+	  isDisabled: function isDisabled() {
+	    var _this = this;
+
+	    var _props = this.props;
+	    var day = _props.day;
+	    var minDate = _props.minDate;
+	    var maxDate = _props.maxDate;
+	    var excludeDates = _props.excludeDates;
+	    var includeDates = _props.includeDates;
+	    var filterDate = _props.filterDate;
+
+	    return minDate && day.isBefore(minDate, "day") || maxDate && day.isAfter(maxDate, "day") || (0, _some2.default)(excludeDates, function (excludeDate) {
+	      return _this.isSameDay(excludeDate);
+	    }) || includeDates && !(0, _some2.default)(includeDates, function (includeDate) {
+	      return _this.isSameDay(includeDate);
+	    }) || filterDate && !filterDate(day.clone());
+	  },
+	  isInRange: function isInRange() {
+	    var _props2 = this.props;
+	    var day = _props2.day;
+	    var startDate = _props2.startDate;
+	    var endDate = _props2.endDate;
+
+	    if (!startDate || !endDate) return false;
+
+	    var before = startDate.clone().startOf("day").subtract(1, "seconds");
+	    var after = endDate.clone().startOf("day").add(1, "seconds");
+	    return day.clone().startOf("day").isBetween(before, after);
 	  },
 	  isWeekend: function isWeekend() {
-	    var weekday = this.props.day.moment().weekday();
+	    var weekday = this.props.day.weekday();
 	    return weekday === 5 || weekday === 6;
 	  },
+	  isOutsideMonth: function isOutsideMonth() {
+	    return this.props.month !== undefined && this.props.month !== this.props.day.month();
+	  },
+	  getClassNames: function getClassNames() {
+	    return (0, _classnames2.default)("datepicker__day", {
+	      "datepicker__day--disabled": this.isDisabled(),
+	      "datepicker__day--selected": this.isSameDay(this.props.selected),
+	      "datepicker__day--in-range": this.isInRange(),
+	      "datepicker__day--today": this.isSameDay((0, _moment2.default)()),
+	      "datepicker__day--weekend": this.isWeekend(),
+	      "datepicker__day--outside-month": this.isOutsideMonth()
+	    });
+	  },
 	  render: function render() {
-	    var classes = ["datepicker__day"];
-
-	    if (this.props.disabled) classes.push("datepicker__day--disabled");
-
-	    if (this.props.day.sameDay(this.props.selected)) classes.push("datepicker__day--selected");
-
-	    if (this.props.inRange) classes.push("datepicker__day--in-range");
-
-	    if (this.props.day.sameDay((0, _moment2.default)())) classes.push("datepicker__day--today");
-
-	    if (this.isWeekend()) classes.push("datepicker__day--weekend");
-
 	    return _react2.default.createElement(
 	      "div",
-	      { className: classes.join(" "), onClick: this.handleClick },
-	      this.props.day.day()
+	      { className: this.getClassNames(), onClick: this.handleClick },
+	      this.props.day.date()
 	    );
 	  }
 	});
@@ -33975,7 +33081,820 @@
 	module.exports = Day;
 
 /***/ },
-/* 305 */
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var arraySome = __webpack_require__(162),
+	    baseCallback = __webpack_require__(281),
+	    baseSome = __webpack_require__(297),
+	    isArray = __webpack_require__(177),
+	    isIterateeCall = __webpack_require__(303);
+
+	/**
+	 * Checks if `predicate` returns truthy for **any** element of `collection`.
+	 * The function returns as soon as it finds a passing value and does not iterate
+	 * over the entire collection. The predicate is bound to `thisArg` and invoked
+	 * with three arguments: (value, index|key, collection).
+	 *
+	 * If a property name is provided for `predicate` the created `_.property`
+	 * style callback returns the property value of the given element.
+	 *
+	 * If a value is also provided for `thisArg` the created `_.matchesProperty`
+	 * style callback returns `true` for elements that have a matching property
+	 * value, else `false`.
+	 *
+	 * If an object is provided for `predicate` the created `_.matches` style
+	 * callback returns `true` for elements that have the properties of the given
+	 * object, else `false`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @alias any
+	 * @category Collection
+	 * @param {Array|Object|string} collection The collection to iterate over.
+	 * @param {Function|Object|string} [predicate=_.identity] The function invoked
+	 *  per iteration.
+	 * @param {*} [thisArg] The `this` binding of `predicate`.
+	 * @returns {boolean} Returns `true` if any element passes the predicate check,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.some([null, 0, 'yes', false], Boolean);
+	 * // => true
+	 *
+	 * var users = [
+	 *   { 'user': 'barney', 'active': true },
+	 *   { 'user': 'fred',   'active': false }
+	 * ];
+	 *
+	 * // using the `_.matches` callback shorthand
+	 * _.some(users, { 'user': 'barney', 'active': false });
+	 * // => false
+	 *
+	 * // using the `_.matchesProperty` callback shorthand
+	 * _.some(users, 'active', false);
+	 * // => true
+	 *
+	 * // using the `_.property` callback shorthand
+	 * _.some(users, 'active');
+	 * // => true
+	 */
+	function some(collection, predicate, thisArg) {
+	  var func = isArray(collection) ? arraySome : baseSome;
+	  if (thisArg && isIterateeCall(collection, predicate, thisArg)) {
+	    predicate = undefined;
+	  }
+	  if (typeof predicate != 'function' || thisArg !== undefined) {
+	    predicate = baseCallback(predicate, thisArg, 3);
+	  }
+	  return func(collection, predicate);
+	}
+
+	module.exports = some;
+
+
+/***/ },
+/* 281 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseMatches = __webpack_require__(282),
+	    baseMatchesProperty = __webpack_require__(288),
+	    bindCallback = __webpack_require__(181),
+	    identity = __webpack_require__(182),
+	    property = __webpack_require__(295);
+
+	/**
+	 * The base implementation of `_.callback` which supports specifying the
+	 * number of arguments to provide to `func`.
+	 *
+	 * @private
+	 * @param {*} [func=_.identity] The value to convert to a callback.
+	 * @param {*} [thisArg] The `this` binding of `func`.
+	 * @param {number} [argCount] The number of arguments to provide to `func`.
+	 * @returns {Function} Returns the callback.
+	 */
+	function baseCallback(func, thisArg, argCount) {
+	  var type = typeof func;
+	  if (type == 'function') {
+	    return thisArg === undefined
+	      ? func
+	      : bindCallback(func, thisArg, argCount);
+	  }
+	  if (func == null) {
+	    return identity;
+	  }
+	  if (type == 'object') {
+	    return baseMatches(func);
+	  }
+	  return thisArg === undefined
+	    ? property(func)
+	    : baseMatchesProperty(func, thisArg);
+	}
+
+	module.exports = baseCallback;
+
+
+/***/ },
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseIsMatch = __webpack_require__(283),
+	    getMatchData = __webpack_require__(285),
+	    toObject = __webpack_require__(284);
+
+	/**
+	 * The base implementation of `_.matches` which does not clone `source`.
+	 *
+	 * @private
+	 * @param {Object} source The object of property values to match.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseMatches(source) {
+	  var matchData = getMatchData(source);
+	  if (matchData.length == 1 && matchData[0][2]) {
+	    var key = matchData[0][0],
+	        value = matchData[0][1];
+
+	    return function(object) {
+	      if (object == null) {
+	        return false;
+	      }
+	      return object[key] === value && (value !== undefined || (key in toObject(object)));
+	    };
+	  }
+	  return function(object) {
+	    return baseIsMatch(object, matchData);
+	  };
+	}
+
+	module.exports = baseMatches;
+
+
+/***/ },
+/* 283 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseIsEqual = __webpack_require__(159),
+	    toObject = __webpack_require__(284);
+
+	/**
+	 * The base implementation of `_.isMatch` without support for callback
+	 * shorthands and `this` binding.
+	 *
+	 * @private
+	 * @param {Object} object The object to inspect.
+	 * @param {Array} matchData The propery names, values, and compare flags to match.
+	 * @param {Function} [customizer] The function to customize comparing objects.
+	 * @returns {boolean} Returns `true` if `object` is a match, else `false`.
+	 */
+	function baseIsMatch(object, matchData, customizer) {
+	  var index = matchData.length,
+	      length = index,
+	      noCustomizer = !customizer;
+
+	  if (object == null) {
+	    return !length;
+	  }
+	  object = toObject(object);
+	  while (index--) {
+	    var data = matchData[index];
+	    if ((noCustomizer && data[2])
+	          ? data[1] !== object[data[0]]
+	          : !(data[0] in object)
+	        ) {
+	      return false;
+	    }
+	  }
+	  while (++index < length) {
+	    data = matchData[index];
+	    var key = data[0],
+	        objValue = object[key],
+	        srcValue = data[1];
+
+	    if (noCustomizer && data[2]) {
+	      if (objValue === undefined && !(key in object)) {
+	        return false;
+	      }
+	    } else {
+	      var result = customizer ? customizer(objValue, srcValue, key) : undefined;
+	      if (!(result === undefined ? baseIsEqual(srcValue, objValue, customizer, true) : result)) {
+	        return false;
+	      }
+	    }
+	  }
+	  return true;
+	}
+
+	module.exports = baseIsMatch;
+
+
+/***/ },
+/* 284 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(169);
+
+	/**
+	 * Converts `value` to an object if it's not one.
+	 *
+	 * @private
+	 * @param {*} value The value to process.
+	 * @returns {Object} Returns the object.
+	 */
+	function toObject(value) {
+	  return isObject(value) ? value : Object(value);
+	}
+
+	module.exports = toObject;
+
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isStrictComparable = __webpack_require__(286),
+	    pairs = __webpack_require__(287);
+
+	/**
+	 * Gets the propery names, values, and compare flags of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the match data of `object`.
+	 */
+	function getMatchData(object) {
+	  var result = pairs(object),
+	      length = result.length;
+
+	  while (length--) {
+	    result[length][2] = isStrictComparable(result[length][1]);
+	  }
+	  return result;
+	}
+
+	module.exports = getMatchData;
+
+
+/***/ },
+/* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(169);
+
+	/**
+	 * Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` if suitable for strict
+	 *  equality comparisons, else `false`.
+	 */
+	function isStrictComparable(value) {
+	  return value === value && !isObject(value);
+	}
+
+	module.exports = isStrictComparable;
+
+
+/***/ },
+/* 287 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var keys = __webpack_require__(165),
+	    toObject = __webpack_require__(284);
+
+	/**
+	 * Creates a two dimensional array of the key-value pairs for `object`,
+	 * e.g. `[[key1, value1], [key2, value2]]`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the new array of key-value pairs.
+	 * @example
+	 *
+	 * _.pairs({ 'barney': 36, 'fred': 40 });
+	 * // => [['barney', 36], ['fred', 40]] (iteration order is not guaranteed)
+	 */
+	function pairs(object) {
+	  object = toObject(object);
+
+	  var index = -1,
+	      props = keys(object),
+	      length = props.length,
+	      result = Array(length);
+
+	  while (++index < length) {
+	    var key = props[index];
+	    result[index] = [key, object[key]];
+	  }
+	  return result;
+	}
+
+	module.exports = pairs;
+
+
+/***/ },
+/* 288 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseGet = __webpack_require__(289),
+	    baseIsEqual = __webpack_require__(159),
+	    baseSlice = __webpack_require__(290),
+	    isArray = __webpack_require__(177),
+	    isKey = __webpack_require__(291),
+	    isStrictComparable = __webpack_require__(286),
+	    last = __webpack_require__(292),
+	    toObject = __webpack_require__(284),
+	    toPath = __webpack_require__(293);
+
+	/**
+	 * The base implementation of `_.matchesProperty` which does not clone `srcValue`.
+	 *
+	 * @private
+	 * @param {string} path The path of the property to get.
+	 * @param {*} srcValue The value to compare.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseMatchesProperty(path, srcValue) {
+	  var isArr = isArray(path),
+	      isCommon = isKey(path) && isStrictComparable(srcValue),
+	      pathKey = (path + '');
+
+	  path = toPath(path);
+	  return function(object) {
+	    if (object == null) {
+	      return false;
+	    }
+	    var key = pathKey;
+	    object = toObject(object);
+	    if ((isArr || !isCommon) && !(key in object)) {
+	      object = path.length == 1 ? object : baseGet(object, baseSlice(path, 0, -1));
+	      if (object == null) {
+	        return false;
+	      }
+	      key = last(path);
+	      object = toObject(object);
+	    }
+	    return object[key] === srcValue
+	      ? (srcValue !== undefined || (key in object))
+	      : baseIsEqual(srcValue, object[key], undefined, true);
+	  };
+	}
+
+	module.exports = baseMatchesProperty;
+
+
+/***/ },
+/* 289 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var toObject = __webpack_require__(284);
+
+	/**
+	 * The base implementation of `get` without support for string paths
+	 * and default values.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {Array} path The path of the property to get.
+	 * @param {string} [pathKey] The key representation of path.
+	 * @returns {*} Returns the resolved value.
+	 */
+	function baseGet(object, path, pathKey) {
+	  if (object == null) {
+	    return;
+	  }
+	  if (pathKey !== undefined && pathKey in toObject(object)) {
+	    path = [pathKey];
+	  }
+	  var index = 0,
+	      length = path.length;
+
+	  while (object != null && index < length) {
+	    object = object[path[index++]];
+	  }
+	  return (index && index == length) ? object : undefined;
+	}
+
+	module.exports = baseGet;
+
+
+/***/ },
+/* 290 */
+/***/ function(module, exports) {
+
+	/**
+	 * The base implementation of `_.slice` without an iteratee call guard.
+	 *
+	 * @private
+	 * @param {Array} array The array to slice.
+	 * @param {number} [start=0] The start position.
+	 * @param {number} [end=array.length] The end position.
+	 * @returns {Array} Returns the slice of `array`.
+	 */
+	function baseSlice(array, start, end) {
+	  var index = -1,
+	      length = array.length;
+
+	  start = start == null ? 0 : (+start || 0);
+	  if (start < 0) {
+	    start = -start > length ? 0 : (length + start);
+	  }
+	  end = (end === undefined || end > length) ? length : (+end || 0);
+	  if (end < 0) {
+	    end += length;
+	  }
+	  length = start > end ? 0 : ((end - start) >>> 0);
+	  start >>>= 0;
+
+	  var result = Array(length);
+	  while (++index < length) {
+	    result[index] = array[index + start];
+	  }
+	  return result;
+	}
+
+	module.exports = baseSlice;
+
+
+/***/ },
+/* 291 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArray = __webpack_require__(177),
+	    toObject = __webpack_require__(284);
+
+	/** Used to match property names within property paths. */
+	var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\n\\]|\\.)*?\1)\]/,
+	    reIsPlainProp = /^\w*$/;
+
+	/**
+	 * Checks if `value` is a property name and not a property path.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {Object} [object] The object to query keys on.
+	 * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
+	 */
+	function isKey(value, object) {
+	  var type = typeof value;
+	  if ((type == 'string' && reIsPlainProp.test(value)) || type == 'number') {
+	    return true;
+	  }
+	  if (isArray(value)) {
+	    return false;
+	  }
+	  var result = !reIsDeepProp.test(value);
+	  return result || (object != null && value in toObject(object));
+	}
+
+	module.exports = isKey;
+
+
+/***/ },
+/* 292 */
+/***/ function(module, exports) {
+
+	/**
+	 * Gets the last element of `array`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Array
+	 * @param {Array} array The array to query.
+	 * @returns {*} Returns the last element of `array`.
+	 * @example
+	 *
+	 * _.last([1, 2, 3]);
+	 * // => 3
+	 */
+	function last(array) {
+	  var length = array ? array.length : 0;
+	  return length ? array[length - 1] : undefined;
+	}
+
+	module.exports = last;
+
+
+/***/ },
+/* 293 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseToString = __webpack_require__(294),
+	    isArray = __webpack_require__(177);
+
+	/** Used to match property names within property paths. */
+	var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\n\\]|\\.)*?)\2)\]/g;
+
+	/** Used to match backslashes in property paths. */
+	var reEscapeChar = /\\(\\)?/g;
+
+	/**
+	 * Converts `value` to property path array if it's not one.
+	 *
+	 * @private
+	 * @param {*} value The value to process.
+	 * @returns {Array} Returns the property path array.
+	 */
+	function toPath(value) {
+	  if (isArray(value)) {
+	    return value;
+	  }
+	  var result = [];
+	  baseToString(value).replace(rePropName, function(match, number, quote, string) {
+	    result.push(quote ? string.replace(reEscapeChar, '$1') : (number || match));
+	  });
+	  return result;
+	}
+
+	module.exports = toPath;
+
+
+/***/ },
+/* 294 */
+/***/ function(module, exports) {
+
+	/**
+	 * Converts `value` to a string if it's not one. An empty string is returned
+	 * for `null` or `undefined` values.
+	 *
+	 * @private
+	 * @param {*} value The value to process.
+	 * @returns {string} Returns the string.
+	 */
+	function baseToString(value) {
+	  return value == null ? '' : (value + '');
+	}
+
+	module.exports = baseToString;
+
+
+/***/ },
+/* 295 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseProperty = __webpack_require__(173),
+	    basePropertyDeep = __webpack_require__(296),
+	    isKey = __webpack_require__(291);
+
+	/**
+	 * Creates a function that returns the property value at `path` on a
+	 * given object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Utility
+	 * @param {Array|string} path The path of the property to get.
+	 * @returns {Function} Returns the new function.
+	 * @example
+	 *
+	 * var objects = [
+	 *   { 'a': { 'b': { 'c': 2 } } },
+	 *   { 'a': { 'b': { 'c': 1 } } }
+	 * ];
+	 *
+	 * _.map(objects, _.property('a.b.c'));
+	 * // => [2, 1]
+	 *
+	 * _.pluck(_.sortBy(objects, _.property(['a', 'b', 'c'])), 'a.b.c');
+	 * // => [1, 2]
+	 */
+	function property(path) {
+	  return isKey(path) ? baseProperty(path) : basePropertyDeep(path);
+	}
+
+	module.exports = property;
+
+
+/***/ },
+/* 296 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseGet = __webpack_require__(289),
+	    toPath = __webpack_require__(293);
+
+	/**
+	 * A specialized version of `baseProperty` which supports deep paths.
+	 *
+	 * @private
+	 * @param {Array|string} path The path of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function basePropertyDeep(path) {
+	  var pathKey = (path + '');
+	  path = toPath(path);
+	  return function(object) {
+	    return baseGet(object, path, pathKey);
+	  };
+	}
+
+	module.exports = basePropertyDeep;
+
+
+/***/ },
+/* 297 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseEach = __webpack_require__(298);
+
+	/**
+	 * The base implementation of `_.some` without support for callback shorthands
+	 * and `this` binding.
+	 *
+	 * @private
+	 * @param {Array|Object|string} collection The collection to iterate over.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @returns {boolean} Returns `true` if any element passes the predicate check,
+	 *  else `false`.
+	 */
+	function baseSome(collection, predicate) {
+	  var result;
+
+	  baseEach(collection, function(value, index, collection) {
+	    result = predicate(value, index, collection);
+	    return !result;
+	  });
+	  return !!result;
+	}
+
+	module.exports = baseSome;
+
+
+/***/ },
+/* 298 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseForOwn = __webpack_require__(299),
+	    createBaseEach = __webpack_require__(302);
+
+	/**
+	 * The base implementation of `_.forEach` without support for callback
+	 * shorthands and `this` binding.
+	 *
+	 * @private
+	 * @param {Array|Object|string} collection The collection to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Array|Object|string} Returns `collection`.
+	 */
+	var baseEach = createBaseEach(baseForOwn);
+
+	module.exports = baseEach;
+
+
+/***/ },
+/* 299 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseFor = __webpack_require__(300),
+	    keys = __webpack_require__(165);
+
+	/**
+	 * The base implementation of `_.forOwn` without support for callback
+	 * shorthands and `this` binding.
+	 *
+	 * @private
+	 * @param {Object} object The object to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Object} Returns `object`.
+	 */
+	function baseForOwn(object, iteratee) {
+	  return baseFor(object, iteratee, keys);
+	}
+
+	module.exports = baseForOwn;
+
+
+/***/ },
+/* 300 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var createBaseFor = __webpack_require__(301);
+
+	/**
+	 * The base implementation of `baseForIn` and `baseForOwn` which iterates
+	 * over `object` properties returned by `keysFunc` invoking `iteratee` for
+	 * each property. Iteratee functions may exit iteration early by explicitly
+	 * returning `false`.
+	 *
+	 * @private
+	 * @param {Object} object The object to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @param {Function} keysFunc The function to get the keys of `object`.
+	 * @returns {Object} Returns `object`.
+	 */
+	var baseFor = createBaseFor();
+
+	module.exports = baseFor;
+
+
+/***/ },
+/* 301 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var toObject = __webpack_require__(284);
+
+	/**
+	 * Creates a base function for `_.forIn` or `_.forInRight`.
+	 *
+	 * @private
+	 * @param {boolean} [fromRight] Specify iterating from right to left.
+	 * @returns {Function} Returns the new base function.
+	 */
+	function createBaseFor(fromRight) {
+	  return function(object, iteratee, keysFunc) {
+	    var iterable = toObject(object),
+	        props = keysFunc(object),
+	        length = props.length,
+	        index = fromRight ? length : -1;
+
+	    while ((fromRight ? index-- : ++index < length)) {
+	      var key = props[index];
+	      if (iteratee(iterable[key], key, iterable) === false) {
+	        break;
+	      }
+	    }
+	    return object;
+	  };
+	}
+
+	module.exports = createBaseFor;
+
+
+/***/ },
+/* 302 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getLength = __webpack_require__(172),
+	    isLength = __webpack_require__(174),
+	    toObject = __webpack_require__(284);
+
+	/**
+	 * Creates a `baseEach` or `baseEachRight` function.
+	 *
+	 * @private
+	 * @param {Function} eachFunc The function to iterate over a collection.
+	 * @param {boolean} [fromRight] Specify iterating from right to left.
+	 * @returns {Function} Returns the new base function.
+	 */
+	function createBaseEach(eachFunc, fromRight) {
+	  return function(collection, iteratee) {
+	    var length = collection ? getLength(collection) : 0;
+	    if (!isLength(length)) {
+	      return eachFunc(collection, iteratee);
+	    }
+	    var index = fromRight ? length : -1,
+	        iterable = toObject(collection);
+
+	    while ((fromRight ? index-- : ++index < length)) {
+	      if (iteratee(iterable[index], index, iterable) === false) {
+	        break;
+	      }
+	    }
+	    return collection;
+	  };
+	}
+
+	module.exports = createBaseEach;
+
+
+/***/ },
+/* 303 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArrayLike = __webpack_require__(171),
+	    isIndex = __webpack_require__(178),
+	    isObject = __webpack_require__(169);
+
+	/**
+	 * Checks if the provided arguments are from an iteratee call.
+	 *
+	 * @private
+	 * @param {*} value The potential iteratee value argument.
+	 * @param {*} index The potential iteratee index or key argument.
+	 * @param {*} object The potential iteratee object argument.
+	 * @returns {boolean} Returns `true` if the arguments are from an iteratee call, else `false`.
+	 */
+	function isIterateeCall(value, index, object) {
+	  if (!isObject(object)) {
+	    return false;
+	  }
+	  var type = typeof index;
+	  if (type == 'number'
+	      ? (isArrayLike(object) && isIndex(index, object.length))
+	      : (type == 'string' && index in object)) {
+	    var other = object[index];
+	    return value === value ? (value === other) : (other !== other);
+	  }
+	  return false;
+	}
+
+	module.exports = isIterateeCall;
+
+
+/***/ },
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34051,7 +33970,7 @@
 	    if (this._tether != null) {
 	      this._tether.setOptions(this._tetherOptions());
 	    } else if (window && document) {
-	      var Tether = __webpack_require__(306);
+	      var Tether = __webpack_require__(305);
 	      this._tether = new Tether(this._tetherOptions());
 	    }
 	  },
@@ -34070,7 +33989,7 @@
 	module.exports = Popover;
 
 /***/ },
-/* 306 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! tether 1.1.0 */
@@ -35791,157 +35710,157 @@
 
 
 /***/ },
-/* 307 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var hljs = __webpack_require__(308);
+	var hljs = __webpack_require__(307);
 
-	hljs.registerLanguage('1c', __webpack_require__(309));
-	hljs.registerLanguage('accesslog', __webpack_require__(310));
-	hljs.registerLanguage('actionscript', __webpack_require__(311));
-	hljs.registerLanguage('apache', __webpack_require__(312));
-	hljs.registerLanguage('applescript', __webpack_require__(313));
-	hljs.registerLanguage('armasm', __webpack_require__(314));
-	hljs.registerLanguage('xml', __webpack_require__(315));
-	hljs.registerLanguage('asciidoc', __webpack_require__(316));
-	hljs.registerLanguage('aspectj', __webpack_require__(317));
-	hljs.registerLanguage('autohotkey', __webpack_require__(318));
-	hljs.registerLanguage('autoit', __webpack_require__(319));
-	hljs.registerLanguage('avrasm', __webpack_require__(320));
-	hljs.registerLanguage('axapta', __webpack_require__(321));
-	hljs.registerLanguage('bash', __webpack_require__(322));
-	hljs.registerLanguage('brainfuck', __webpack_require__(323));
-	hljs.registerLanguage('cal', __webpack_require__(324));
-	hljs.registerLanguage('capnproto', __webpack_require__(325));
-	hljs.registerLanguage('ceylon', __webpack_require__(326));
-	hljs.registerLanguage('clojure', __webpack_require__(327));
-	hljs.registerLanguage('clojure-repl', __webpack_require__(328));
-	hljs.registerLanguage('cmake', __webpack_require__(329));
-	hljs.registerLanguage('coffeescript', __webpack_require__(330));
-	hljs.registerLanguage('cos', __webpack_require__(331));
-	hljs.registerLanguage('cpp', __webpack_require__(332));
-	hljs.registerLanguage('crmsh', __webpack_require__(333));
-	hljs.registerLanguage('crystal', __webpack_require__(334));
-	hljs.registerLanguage('cs', __webpack_require__(335));
-	hljs.registerLanguage('css', __webpack_require__(336));
-	hljs.registerLanguage('d', __webpack_require__(337));
-	hljs.registerLanguage('markdown', __webpack_require__(338));
-	hljs.registerLanguage('dart', __webpack_require__(339));
-	hljs.registerLanguage('delphi', __webpack_require__(340));
-	hljs.registerLanguage('diff', __webpack_require__(341));
-	hljs.registerLanguage('django', __webpack_require__(342));
-	hljs.registerLanguage('dns', __webpack_require__(343));
-	hljs.registerLanguage('dockerfile', __webpack_require__(344));
-	hljs.registerLanguage('dos', __webpack_require__(345));
-	hljs.registerLanguage('dust', __webpack_require__(346));
-	hljs.registerLanguage('elixir', __webpack_require__(347));
-	hljs.registerLanguage('elm', __webpack_require__(348));
-	hljs.registerLanguage('ruby', __webpack_require__(349));
-	hljs.registerLanguage('erb', __webpack_require__(350));
-	hljs.registerLanguage('erlang-repl', __webpack_require__(351));
-	hljs.registerLanguage('erlang', __webpack_require__(352));
-	hljs.registerLanguage('fix', __webpack_require__(353));
-	hljs.registerLanguage('fortran', __webpack_require__(354));
-	hljs.registerLanguage('fsharp', __webpack_require__(355));
-	hljs.registerLanguage('gams', __webpack_require__(356));
-	hljs.registerLanguage('gcode', __webpack_require__(357));
-	hljs.registerLanguage('gherkin', __webpack_require__(358));
-	hljs.registerLanguage('glsl', __webpack_require__(359));
-	hljs.registerLanguage('go', __webpack_require__(360));
-	hljs.registerLanguage('golo', __webpack_require__(361));
-	hljs.registerLanguage('gradle', __webpack_require__(362));
-	hljs.registerLanguage('groovy', __webpack_require__(363));
-	hljs.registerLanguage('haml', __webpack_require__(364));
-	hljs.registerLanguage('handlebars', __webpack_require__(365));
-	hljs.registerLanguage('haskell', __webpack_require__(366));
-	hljs.registerLanguage('haxe', __webpack_require__(367));
-	hljs.registerLanguage('hsp', __webpack_require__(368));
-	hljs.registerLanguage('http', __webpack_require__(369));
-	hljs.registerLanguage('inform7', __webpack_require__(370));
-	hljs.registerLanguage('ini', __webpack_require__(371));
-	hljs.registerLanguage('irpf90', __webpack_require__(372));
-	hljs.registerLanguage('java', __webpack_require__(373));
-	hljs.registerLanguage('javascript', __webpack_require__(374));
-	hljs.registerLanguage('json', __webpack_require__(375));
-	hljs.registerLanguage('julia', __webpack_require__(376));
-	hljs.registerLanguage('kotlin', __webpack_require__(377));
-	hljs.registerLanguage('lasso', __webpack_require__(378));
-	hljs.registerLanguage('less', __webpack_require__(379));
-	hljs.registerLanguage('lisp', __webpack_require__(380));
-	hljs.registerLanguage('livecodeserver', __webpack_require__(381));
-	hljs.registerLanguage('livescript', __webpack_require__(382));
-	hljs.registerLanguage('lua', __webpack_require__(383));
-	hljs.registerLanguage('makefile', __webpack_require__(384));
-	hljs.registerLanguage('mathematica', __webpack_require__(385));
-	hljs.registerLanguage('matlab', __webpack_require__(386));
-	hljs.registerLanguage('mel', __webpack_require__(387));
-	hljs.registerLanguage('mercury', __webpack_require__(388));
-	hljs.registerLanguage('mipsasm', __webpack_require__(389));
-	hljs.registerLanguage('mizar', __webpack_require__(390));
-	hljs.registerLanguage('perl', __webpack_require__(391));
-	hljs.registerLanguage('mojolicious', __webpack_require__(392));
-	hljs.registerLanguage('monkey', __webpack_require__(393));
-	hljs.registerLanguage('nginx', __webpack_require__(394));
-	hljs.registerLanguage('nimrod', __webpack_require__(395));
-	hljs.registerLanguage('nix', __webpack_require__(396));
-	hljs.registerLanguage('nsis', __webpack_require__(397));
-	hljs.registerLanguage('objectivec', __webpack_require__(398));
-	hljs.registerLanguage('ocaml', __webpack_require__(399));
-	hljs.registerLanguage('openscad', __webpack_require__(400));
-	hljs.registerLanguage('oxygene', __webpack_require__(401));
-	hljs.registerLanguage('parser3', __webpack_require__(402));
-	hljs.registerLanguage('pf', __webpack_require__(403));
-	hljs.registerLanguage('php', __webpack_require__(404));
-	hljs.registerLanguage('powershell', __webpack_require__(405));
-	hljs.registerLanguage('processing', __webpack_require__(406));
-	hljs.registerLanguage('profile', __webpack_require__(407));
-	hljs.registerLanguage('prolog', __webpack_require__(408));
-	hljs.registerLanguage('protobuf', __webpack_require__(409));
-	hljs.registerLanguage('puppet', __webpack_require__(410));
-	hljs.registerLanguage('python', __webpack_require__(411));
-	hljs.registerLanguage('q', __webpack_require__(412));
-	hljs.registerLanguage('r', __webpack_require__(413));
-	hljs.registerLanguage('rib', __webpack_require__(414));
-	hljs.registerLanguage('roboconf', __webpack_require__(415));
-	hljs.registerLanguage('rsl', __webpack_require__(416));
-	hljs.registerLanguage('ruleslanguage', __webpack_require__(417));
-	hljs.registerLanguage('rust', __webpack_require__(418));
-	hljs.registerLanguage('scala', __webpack_require__(419));
-	hljs.registerLanguage('scheme', __webpack_require__(420));
-	hljs.registerLanguage('scilab', __webpack_require__(421));
-	hljs.registerLanguage('scss', __webpack_require__(422));
-	hljs.registerLanguage('smali', __webpack_require__(423));
-	hljs.registerLanguage('smalltalk', __webpack_require__(424));
-	hljs.registerLanguage('sml', __webpack_require__(425));
-	hljs.registerLanguage('sqf', __webpack_require__(426));
-	hljs.registerLanguage('sql', __webpack_require__(427));
-	hljs.registerLanguage('stata', __webpack_require__(428));
-	hljs.registerLanguage('step21', __webpack_require__(429));
-	hljs.registerLanguage('stylus', __webpack_require__(430));
-	hljs.registerLanguage('swift', __webpack_require__(431));
-	hljs.registerLanguage('tcl', __webpack_require__(432));
-	hljs.registerLanguage('tex', __webpack_require__(433));
-	hljs.registerLanguage('thrift', __webpack_require__(434));
-	hljs.registerLanguage('tp', __webpack_require__(435));
-	hljs.registerLanguage('twig', __webpack_require__(436));
-	hljs.registerLanguage('typescript', __webpack_require__(437));
-	hljs.registerLanguage('vala', __webpack_require__(438));
-	hljs.registerLanguage('vbnet', __webpack_require__(439));
-	hljs.registerLanguage('vbscript', __webpack_require__(440));
-	hljs.registerLanguage('vbscript-html', __webpack_require__(441));
-	hljs.registerLanguage('verilog', __webpack_require__(442));
-	hljs.registerLanguage('vhdl', __webpack_require__(443));
-	hljs.registerLanguage('vim', __webpack_require__(444));
-	hljs.registerLanguage('x86asm', __webpack_require__(445));
-	hljs.registerLanguage('xl', __webpack_require__(446));
-	hljs.registerLanguage('xquery', __webpack_require__(447));
-	hljs.registerLanguage('yaml', __webpack_require__(448));
-	hljs.registerLanguage('zephir', __webpack_require__(449));
+	hljs.registerLanguage('1c', __webpack_require__(308));
+	hljs.registerLanguage('accesslog', __webpack_require__(309));
+	hljs.registerLanguage('actionscript', __webpack_require__(310));
+	hljs.registerLanguage('apache', __webpack_require__(311));
+	hljs.registerLanguage('applescript', __webpack_require__(312));
+	hljs.registerLanguage('armasm', __webpack_require__(313));
+	hljs.registerLanguage('xml', __webpack_require__(314));
+	hljs.registerLanguage('asciidoc', __webpack_require__(315));
+	hljs.registerLanguage('aspectj', __webpack_require__(316));
+	hljs.registerLanguage('autohotkey', __webpack_require__(317));
+	hljs.registerLanguage('autoit', __webpack_require__(318));
+	hljs.registerLanguage('avrasm', __webpack_require__(319));
+	hljs.registerLanguage('axapta', __webpack_require__(320));
+	hljs.registerLanguage('bash', __webpack_require__(321));
+	hljs.registerLanguage('brainfuck', __webpack_require__(322));
+	hljs.registerLanguage('cal', __webpack_require__(323));
+	hljs.registerLanguage('capnproto', __webpack_require__(324));
+	hljs.registerLanguage('ceylon', __webpack_require__(325));
+	hljs.registerLanguage('clojure', __webpack_require__(326));
+	hljs.registerLanguage('clojure-repl', __webpack_require__(327));
+	hljs.registerLanguage('cmake', __webpack_require__(328));
+	hljs.registerLanguage('coffeescript', __webpack_require__(329));
+	hljs.registerLanguage('cos', __webpack_require__(330));
+	hljs.registerLanguage('cpp', __webpack_require__(331));
+	hljs.registerLanguage('crmsh', __webpack_require__(332));
+	hljs.registerLanguage('crystal', __webpack_require__(333));
+	hljs.registerLanguage('cs', __webpack_require__(334));
+	hljs.registerLanguage('css', __webpack_require__(335));
+	hljs.registerLanguage('d', __webpack_require__(336));
+	hljs.registerLanguage('markdown', __webpack_require__(337));
+	hljs.registerLanguage('dart', __webpack_require__(338));
+	hljs.registerLanguage('delphi', __webpack_require__(339));
+	hljs.registerLanguage('diff', __webpack_require__(340));
+	hljs.registerLanguage('django', __webpack_require__(341));
+	hljs.registerLanguage('dns', __webpack_require__(342));
+	hljs.registerLanguage('dockerfile', __webpack_require__(343));
+	hljs.registerLanguage('dos', __webpack_require__(344));
+	hljs.registerLanguage('dust', __webpack_require__(345));
+	hljs.registerLanguage('elixir', __webpack_require__(346));
+	hljs.registerLanguage('elm', __webpack_require__(347));
+	hljs.registerLanguage('ruby', __webpack_require__(348));
+	hljs.registerLanguage('erb', __webpack_require__(349));
+	hljs.registerLanguage('erlang-repl', __webpack_require__(350));
+	hljs.registerLanguage('erlang', __webpack_require__(351));
+	hljs.registerLanguage('fix', __webpack_require__(352));
+	hljs.registerLanguage('fortran', __webpack_require__(353));
+	hljs.registerLanguage('fsharp', __webpack_require__(354));
+	hljs.registerLanguage('gams', __webpack_require__(355));
+	hljs.registerLanguage('gcode', __webpack_require__(356));
+	hljs.registerLanguage('gherkin', __webpack_require__(357));
+	hljs.registerLanguage('glsl', __webpack_require__(358));
+	hljs.registerLanguage('go', __webpack_require__(359));
+	hljs.registerLanguage('golo', __webpack_require__(360));
+	hljs.registerLanguage('gradle', __webpack_require__(361));
+	hljs.registerLanguage('groovy', __webpack_require__(362));
+	hljs.registerLanguage('haml', __webpack_require__(363));
+	hljs.registerLanguage('handlebars', __webpack_require__(364));
+	hljs.registerLanguage('haskell', __webpack_require__(365));
+	hljs.registerLanguage('haxe', __webpack_require__(366));
+	hljs.registerLanguage('hsp', __webpack_require__(367));
+	hljs.registerLanguage('http', __webpack_require__(368));
+	hljs.registerLanguage('inform7', __webpack_require__(369));
+	hljs.registerLanguage('ini', __webpack_require__(370));
+	hljs.registerLanguage('irpf90', __webpack_require__(371));
+	hljs.registerLanguage('java', __webpack_require__(372));
+	hljs.registerLanguage('javascript', __webpack_require__(373));
+	hljs.registerLanguage('json', __webpack_require__(374));
+	hljs.registerLanguage('julia', __webpack_require__(375));
+	hljs.registerLanguage('kotlin', __webpack_require__(376));
+	hljs.registerLanguage('lasso', __webpack_require__(377));
+	hljs.registerLanguage('less', __webpack_require__(378));
+	hljs.registerLanguage('lisp', __webpack_require__(379));
+	hljs.registerLanguage('livecodeserver', __webpack_require__(380));
+	hljs.registerLanguage('livescript', __webpack_require__(381));
+	hljs.registerLanguage('lua', __webpack_require__(382));
+	hljs.registerLanguage('makefile', __webpack_require__(383));
+	hljs.registerLanguage('mathematica', __webpack_require__(384));
+	hljs.registerLanguage('matlab', __webpack_require__(385));
+	hljs.registerLanguage('mel', __webpack_require__(386));
+	hljs.registerLanguage('mercury', __webpack_require__(387));
+	hljs.registerLanguage('mipsasm', __webpack_require__(388));
+	hljs.registerLanguage('mizar', __webpack_require__(389));
+	hljs.registerLanguage('perl', __webpack_require__(390));
+	hljs.registerLanguage('mojolicious', __webpack_require__(391));
+	hljs.registerLanguage('monkey', __webpack_require__(392));
+	hljs.registerLanguage('nginx', __webpack_require__(393));
+	hljs.registerLanguage('nimrod', __webpack_require__(394));
+	hljs.registerLanguage('nix', __webpack_require__(395));
+	hljs.registerLanguage('nsis', __webpack_require__(396));
+	hljs.registerLanguage('objectivec', __webpack_require__(397));
+	hljs.registerLanguage('ocaml', __webpack_require__(398));
+	hljs.registerLanguage('openscad', __webpack_require__(399));
+	hljs.registerLanguage('oxygene', __webpack_require__(400));
+	hljs.registerLanguage('parser3', __webpack_require__(401));
+	hljs.registerLanguage('pf', __webpack_require__(402));
+	hljs.registerLanguage('php', __webpack_require__(403));
+	hljs.registerLanguage('powershell', __webpack_require__(404));
+	hljs.registerLanguage('processing', __webpack_require__(405));
+	hljs.registerLanguage('profile', __webpack_require__(406));
+	hljs.registerLanguage('prolog', __webpack_require__(407));
+	hljs.registerLanguage('protobuf', __webpack_require__(408));
+	hljs.registerLanguage('puppet', __webpack_require__(409));
+	hljs.registerLanguage('python', __webpack_require__(410));
+	hljs.registerLanguage('q', __webpack_require__(411));
+	hljs.registerLanguage('r', __webpack_require__(412));
+	hljs.registerLanguage('rib', __webpack_require__(413));
+	hljs.registerLanguage('roboconf', __webpack_require__(414));
+	hljs.registerLanguage('rsl', __webpack_require__(415));
+	hljs.registerLanguage('ruleslanguage', __webpack_require__(416));
+	hljs.registerLanguage('rust', __webpack_require__(417));
+	hljs.registerLanguage('scala', __webpack_require__(418));
+	hljs.registerLanguage('scheme', __webpack_require__(419));
+	hljs.registerLanguage('scilab', __webpack_require__(420));
+	hljs.registerLanguage('scss', __webpack_require__(421));
+	hljs.registerLanguage('smali', __webpack_require__(422));
+	hljs.registerLanguage('smalltalk', __webpack_require__(423));
+	hljs.registerLanguage('sml', __webpack_require__(424));
+	hljs.registerLanguage('sqf', __webpack_require__(425));
+	hljs.registerLanguage('sql', __webpack_require__(426));
+	hljs.registerLanguage('stata', __webpack_require__(427));
+	hljs.registerLanguage('step21', __webpack_require__(428));
+	hljs.registerLanguage('stylus', __webpack_require__(429));
+	hljs.registerLanguage('swift', __webpack_require__(430));
+	hljs.registerLanguage('tcl', __webpack_require__(431));
+	hljs.registerLanguage('tex', __webpack_require__(432));
+	hljs.registerLanguage('thrift', __webpack_require__(433));
+	hljs.registerLanguage('tp', __webpack_require__(434));
+	hljs.registerLanguage('twig', __webpack_require__(435));
+	hljs.registerLanguage('typescript', __webpack_require__(436));
+	hljs.registerLanguage('vala', __webpack_require__(437));
+	hljs.registerLanguage('vbnet', __webpack_require__(438));
+	hljs.registerLanguage('vbscript', __webpack_require__(439));
+	hljs.registerLanguage('vbscript-html', __webpack_require__(440));
+	hljs.registerLanguage('verilog', __webpack_require__(441));
+	hljs.registerLanguage('vhdl', __webpack_require__(442));
+	hljs.registerLanguage('vim', __webpack_require__(443));
+	hljs.registerLanguage('x86asm', __webpack_require__(444));
+	hljs.registerLanguage('xl', __webpack_require__(445));
+	hljs.registerLanguage('xquery', __webpack_require__(446));
+	hljs.registerLanguage('yaml', __webpack_require__(447));
+	hljs.registerLanguage('zephir', __webpack_require__(448));
 
 	module.exports = hljs;
 
 /***/ },
-/* 308 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -36718,7 +36637,7 @@
 
 
 /***/ },
-/* 309 */
+/* 308 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs){
@@ -36801,7 +36720,7 @@
 	};
 
 /***/ },
-/* 310 */
+/* 309 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36843,7 +36762,7 @@
 	};
 
 /***/ },
-/* 311 */
+/* 310 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36920,7 +36839,7 @@
 	};
 
 /***/ },
-/* 312 */
+/* 311 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36970,7 +36889,7 @@
 	};
 
 /***/ },
-/* 313 */
+/* 312 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37060,7 +36979,7 @@
 	};
 
 /***/ },
-/* 314 */
+/* 313 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37156,7 +37075,7 @@
 	};
 
 /***/ },
-/* 315 */
+/* 314 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37262,7 +37181,7 @@
 	};
 
 /***/ },
-/* 316 */
+/* 315 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37454,7 +37373,7 @@
 	};
 
 /***/ },
-/* 317 */
+/* 316 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -37602,7 +37521,7 @@
 	};
 
 /***/ },
-/* 318 */
+/* 317 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37654,7 +37573,7 @@
 	};
 
 /***/ },
-/* 319 */
+/* 318 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -39412,7 +39331,7 @@
 	};
 
 /***/ },
-/* 320 */
+/* 319 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -39478,7 +39397,7 @@
 	};
 
 /***/ },
-/* 321 */
+/* 320 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -39513,7 +39432,7 @@
 	};
 
 /***/ },
-/* 322 */
+/* 321 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -39592,7 +39511,7 @@
 	};
 
 /***/ },
-/* 323 */
+/* 322 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs){
@@ -39633,7 +39552,7 @@
 	};
 
 /***/ },
-/* 324 */
+/* 323 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -39717,7 +39636,7 @@
 	};
 
 /***/ },
-/* 325 */
+/* 324 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -39770,7 +39689,7 @@
 	};
 
 /***/ },
-/* 326 */
+/* 325 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -39841,7 +39760,7 @@
 	};
 
 /***/ },
-/* 327 */
+/* 326 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -39940,7 +39859,7 @@
 	};
 
 /***/ },
-/* 328 */
+/* 327 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -39959,7 +39878,7 @@
 	};
 
 /***/ },
-/* 329 */
+/* 328 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -40001,7 +39920,7 @@
 	};
 
 /***/ },
-/* 330 */
+/* 329 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -40144,7 +40063,7 @@
 	};
 
 /***/ },
-/* 331 */
+/* 330 */
 /***/ function(module, exports) {
 
 	module.exports = function cos (hljs) {
@@ -40271,7 +40190,7 @@
 	};
 
 /***/ },
-/* 332 */
+/* 331 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -40417,7 +40336,7 @@
 	};
 
 /***/ },
-/* 333 */
+/* 332 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -40515,7 +40434,7 @@
 	};
 
 /***/ },
-/* 334 */
+/* 333 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -40695,7 +40614,7 @@
 	};
 
 /***/ },
-/* 335 */
+/* 334 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -40813,7 +40732,7 @@
 	};
 
 /***/ },
-/* 336 */
+/* 335 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -40914,7 +40833,7 @@
 	};
 
 /***/ },
-/* 337 */
+/* 336 */
 /***/ function(module, exports) {
 
 	module.exports = /**
@@ -41176,7 +41095,7 @@
 	};
 
 /***/ },
-/* 338 */
+/* 337 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -41281,7 +41200,7 @@
 	};
 
 /***/ },
-/* 339 */
+/* 338 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -41386,7 +41305,7 @@
 	};
 
 /***/ },
-/* 340 */
+/* 339 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -41457,7 +41376,7 @@
 	};
 
 /***/ },
-/* 341 */
+/* 340 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -41501,7 +41420,7 @@
 	};
 
 /***/ },
-/* 342 */
+/* 341 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -41569,7 +41488,7 @@
 	};
 
 /***/ },
-/* 343 */
+/* 342 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -41602,7 +41521,7 @@
 	};
 
 /***/ },
-/* 344 */
+/* 343 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -41635,7 +41554,7 @@
 	};
 
 /***/ },
-/* 345 */
+/* 344 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -41691,7 +41610,7 @@
 	};
 
 /***/ },
-/* 346 */
+/* 345 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -41727,7 +41646,7 @@
 	};
 
 /***/ },
-/* 347 */
+/* 346 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -41828,7 +41747,7 @@
 	};
 
 /***/ },
-/* 348 */
+/* 347 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -41915,7 +41834,7 @@
 	};
 
 /***/ },
-/* 349 */
+/* 348 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42079,7 +41998,7 @@
 	};
 
 /***/ },
-/* 350 */
+/* 349 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42098,7 +42017,7 @@
 	};
 
 /***/ },
-/* 351 */
+/* 350 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42148,7 +42067,7 @@
 	};
 
 /***/ },
-/* 352 */
+/* 351 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42298,7 +42217,7 @@
 	};
 
 /***/ },
-/* 353 */
+/* 352 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42331,7 +42250,7 @@
 	};
 
 /***/ },
-/* 354 */
+/* 353 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42406,7 +42325,7 @@
 	};
 
 /***/ },
-/* 355 */
+/* 354 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42469,7 +42388,7 @@
 	};
 
 /***/ },
-/* 356 */
+/* 355 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -42509,7 +42428,7 @@
 	};
 
 /***/ },
-/* 357 */
+/* 356 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42580,7 +42499,7 @@
 	};
 
 /***/ },
-/* 358 */
+/* 357 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -42620,7 +42539,7 @@
 	};
 
 /***/ },
-/* 359 */
+/* 358 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42741,7 +42660,7 @@
 	};
 
 /***/ },
-/* 360 */
+/* 359 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42783,7 +42702,7 @@
 	};
 
 /***/ },
-/* 361 */
+/* 360 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42810,7 +42729,7 @@
 	};
 
 /***/ },
-/* 362 */
+/* 361 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42849,7 +42768,7 @@
 	};
 
 /***/ },
-/* 363 */
+/* 362 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -42947,7 +42866,7 @@
 	};
 
 /***/ },
-/* 364 */
+/* 363 */
 /***/ function(module, exports) {
 
 	module.exports = // TODO support filter tags like :javascript, support inline HTML
@@ -43058,7 +42977,7 @@
 	};
 
 /***/ },
-/* 365 */
+/* 364 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43096,7 +43015,7 @@
 	};
 
 /***/ },
-/* 366 */
+/* 365 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43222,7 +43141,7 @@
 	};
 
 /***/ },
-/* 367 */
+/* 366 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43284,7 +43203,7 @@
 	};
 
 /***/ },
-/* 368 */
+/* 367 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43333,7 +43252,7 @@
 	};
 
 /***/ },
-/* 369 */
+/* 368 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43378,7 +43297,7 @@
 	};
 
 /***/ },
-/* 370 */
+/* 369 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43439,7 +43358,7 @@
 	};
 
 /***/ },
-/* 371 */
+/* 370 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43509,7 +43428,7 @@
 	};
 
 /***/ },
-/* 372 */
+/* 371 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43589,7 +43508,7 @@
 	};
 
 /***/ },
-/* 373 */
+/* 372 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43699,7 +43618,7 @@
 	};
 
 /***/ },
-/* 374 */
+/* 373 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43812,7 +43731,7 @@
 	};
 
 /***/ },
-/* 375 */
+/* 374 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -43853,7 +43772,7 @@
 	};
 
 /***/ },
-/* 376 */
+/* 375 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -44035,7 +43954,7 @@
 	};
 
 /***/ },
-/* 377 */
+/* 376 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -44140,7 +44059,7 @@
 	};
 
 /***/ },
-/* 378 */
+/* 377 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -44312,7 +44231,7 @@
 	};
 
 /***/ },
-/* 379 */
+/* 378 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -44447,7 +44366,7 @@
 	};
 
 /***/ },
-/* 380 */
+/* 379 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -44554,7 +44473,7 @@
 	};
 
 /***/ },
-/* 381 */
+/* 380 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -44714,7 +44633,7 @@
 	};
 
 /***/ },
-/* 382 */
+/* 381 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -44867,7 +44786,7 @@
 	};
 
 /***/ },
-/* 383 */
+/* 382 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -44927,7 +44846,7 @@
 	};
 
 /***/ },
-/* 384 */
+/* 383 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -44976,7 +44895,7 @@
 	};
 
 /***/ },
-/* 385 */
+/* 384 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -45038,7 +44957,7 @@
 	};
 
 /***/ },
-/* 386 */
+/* 385 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -45130,7 +45049,7 @@
 	};
 
 /***/ },
-/* 387 */
+/* 386 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -45359,7 +45278,7 @@
 	};
 
 /***/ },
-/* 388 */
+/* 387 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -45445,7 +45364,7 @@
 	};
 
 /***/ },
-/* 389 */
+/* 388 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -45535,7 +45454,7 @@
 	};
 
 /***/ },
-/* 390 */
+/* 389 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -45558,7 +45477,7 @@
 	};
 
 /***/ },
-/* 391 */
+/* 390 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -45718,7 +45637,7 @@
 	};
 
 /***/ },
-/* 392 */
+/* 391 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -45747,7 +45666,7 @@
 	};
 
 /***/ },
-/* 393 */
+/* 392 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -45826,7 +45745,7 @@
 	};
 
 /***/ },
-/* 394 */
+/* 393 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -45923,7 +45842,7 @@
 	};
 
 /***/ },
-/* 395 */
+/* 394 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -45972,7 +45891,7 @@
 	};
 
 /***/ },
-/* 396 */
+/* 395 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46025,7 +45944,7 @@
 	};
 
 /***/ },
-/* 397 */
+/* 396 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46115,7 +46034,7 @@
 	};
 
 /***/ },
-/* 398 */
+/* 397 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46197,7 +46116,7 @@
 	};
 
 /***/ },
-/* 399 */
+/* 398 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46272,7 +46191,7 @@
 	};
 
 /***/ },
-/* 400 */
+/* 399 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46333,7 +46252,7 @@
 	};
 
 /***/ },
-/* 401 */
+/* 400 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46406,7 +46325,7 @@
 	};
 
 /***/ },
-/* 402 */
+/* 401 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46458,7 +46377,7 @@
 	};
 
 /***/ },
-/* 403 */
+/* 402 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46514,7 +46433,7 @@
 	};
 
 /***/ },
-/* 404 */
+/* 403 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46643,7 +46562,7 @@
 	};
 
 /***/ },
-/* 405 */
+/* 404 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46699,7 +46618,7 @@
 	};
 
 /***/ },
-/* 406 */
+/* 405 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46751,7 +46670,7 @@
 	};
 
 /***/ },
-/* 407 */
+/* 406 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46785,7 +46704,7 @@
 	};
 
 /***/ },
-/* 408 */
+/* 407 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46877,7 +46796,7 @@
 	};
 
 /***/ },
-/* 409 */
+/* 408 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -46917,7 +46836,7 @@
 	};
 
 /***/ },
-/* 410 */
+/* 409 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -47036,7 +46955,7 @@
 	};
 
 /***/ },
-/* 411 */
+/* 410 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -47125,7 +47044,7 @@
 	};
 
 /***/ },
-/* 412 */
+/* 411 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -47152,7 +47071,7 @@
 	};
 
 /***/ },
-/* 413 */
+/* 412 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -47226,7 +47145,7 @@
 	};
 
 /***/ },
-/* 414 */
+/* 413 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -47257,7 +47176,7 @@
 	};
 
 /***/ },
-/* 415 */
+/* 414 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -47328,7 +47247,7 @@
 	};
 
 /***/ },
-/* 416 */
+/* 415 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -47368,7 +47287,7 @@
 	};
 
 /***/ },
-/* 417 */
+/* 416 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -47433,7 +47352,7 @@
 	};
 
 /***/ },
-/* 418 */
+/* 417 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -47533,7 +47452,7 @@
 	};
 
 /***/ },
-/* 419 */
+/* 418 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -47652,7 +47571,7 @@
 	};
 
 /***/ },
-/* 420 */
+/* 419 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -47777,7 +47696,7 @@
 	};
 
 /***/ },
-/* 421 */
+/* 420 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -47835,7 +47754,7 @@
 	};
 
 /***/ },
-/* 422 */
+/* 421 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -47937,7 +47856,7 @@
 	};
 
 /***/ },
-/* 423 */
+/* 422 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -47997,7 +47916,7 @@
 	};
 
 /***/ },
-/* 424 */
+/* 423 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -48051,7 +47970,7 @@
 	};
 
 /***/ },
-/* 425 */
+/* 424 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -48120,7 +48039,7 @@
 	};
 
 /***/ },
-/* 426 */
+/* 425 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -48221,7 +48140,7 @@
 	};
 
 /***/ },
-/* 427 */
+/* 426 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -48384,7 +48303,7 @@
 	};
 
 /***/ },
-/* 428 */
+/* 427 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -48426,7 +48345,7 @@
 	};
 
 /***/ },
-/* 429 */
+/* 428 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -48477,7 +48396,7 @@
 	};
 
 /***/ },
-/* 430 */
+/* 429 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -48921,7 +48840,7 @@
 	};
 
 /***/ },
-/* 431 */
+/* 430 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -49044,7 +48963,7 @@
 	};
 
 /***/ },
-/* 432 */
+/* 431 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -49109,7 +49028,7 @@
 	};
 
 /***/ },
-/* 433 */
+/* 432 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -49175,7 +49094,7 @@
 	};
 
 /***/ },
-/* 434 */
+/* 433 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -49214,7 +49133,7 @@
 	};
 
 /***/ },
-/* 435 */
+/* 434 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -49302,7 +49221,7 @@
 	};
 
 /***/ },
-/* 436 */
+/* 435 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -49372,7 +49291,7 @@
 	};
 
 /***/ },
-/* 437 */
+/* 436 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -49480,7 +49399,7 @@
 	};
 
 /***/ },
-/* 438 */
+/* 437 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -49534,7 +49453,7 @@
 	};
 
 /***/ },
-/* 439 */
+/* 438 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -49594,7 +49513,7 @@
 	};
 
 /***/ },
-/* 440 */
+/* 439 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -49637,7 +49556,7 @@
 	};
 
 /***/ },
-/* 441 */
+/* 440 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -49653,7 +49572,7 @@
 	};
 
 /***/ },
-/* 442 */
+/* 441 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -49695,7 +49614,7 @@
 	};
 
 /***/ },
-/* 443 */
+/* 442 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -49755,7 +49674,7 @@
 	};
 
 /***/ },
-/* 444 */
+/* 443 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -49822,7 +49741,7 @@
 	};
 
 /***/ },
-/* 445 */
+/* 444 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -49960,7 +49879,7 @@
 	};
 
 /***/ },
-/* 446 */
+/* 445 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -50037,7 +49956,7 @@
 	};
 
 /***/ },
-/* 447 */
+/* 446 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -50113,7 +50032,7 @@
 	};
 
 /***/ },
-/* 448 */
+/* 447 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -50201,7 +50120,7 @@
 	};
 
 /***/ },
-/* 449 */
+/* 448 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -50312,7 +50231,7 @@
 	};
 
 /***/ },
-/* 450 */
+/* 449 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -50379,7 +50298,7 @@
 	});
 
 /***/ },
-/* 451 */
+/* 450 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -50454,7 +50373,7 @@
 	});
 
 /***/ },
-/* 452 */
+/* 451 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -50510,7 +50429,7 @@
 	          " ",
 	          _react2.default.createElement("br", null),
 	          "    ",
-	          "className='datepicker__input red-border' />"
+	          "className='red-border' />"
 	        )
 	      ),
 	      _react2.default.createElement(
@@ -50519,14 +50438,14 @@
 	        _react2.default.createElement(_reactDatepicker2.default, {
 	          selected: this.state.startDate,
 	          onChange: this.handleChange,
-	          className: "datepicker__input red-border" })
+	          className: "red-border" })
 	      )
 	    );
 	  }
 	});
 
 /***/ },
-/* 453 */
+/* 452 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -50575,7 +50494,7 @@
 	});
 
 /***/ },
-/* 454 */
+/* 453 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -50662,7 +50581,7 @@
 	});
 
 /***/ },
-/* 455 */
+/* 454 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -50741,7 +50660,7 @@
 	});
 
 /***/ },
-/* 456 */
+/* 455 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -50820,7 +50739,7 @@
 	});
 
 /***/ },
-/* 457 */
+/* 456 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -50893,6 +50812,89 @@
 	          onChange: this.handleChange,
 	          includeDates: [(0, _moment2.default)(), (0, _moment2.default)().add(1, "days")],
 	          placeholderText: "This only includes today and tomorrow" })
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 457 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDatepicker = __webpack_require__(157);
+
+	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
+
+	var _moment = __webpack_require__(183);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _react2.default.createClass({
+	  displayName: "FilterDates",
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      date: null
+	    };
+	  },
+	  handleChange: function handleChange(date) {
+	    this.setState({
+	      date: date
+	    });
+	  },
+	  isWeekday: function isWeekday(date) {
+	    var day = date.day();
+	    return day !== 0 && day !== 6;
+	  },
+	  render: function render() {
+	    return _react2.default.createElement(
+	      "div",
+	      { className: "row" },
+	      _react2.default.createElement(
+	        "pre",
+	        { className: "column example__code" },
+	        _react2.default.createElement(
+	          "code",
+	          { className: "jsx" },
+	          "<DatePicker",
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "selected={this.state.date}",
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "onChange={this.handleChange}",
+	          _react2.default.createElement("br", null),
+	          _react2.default.createElement(
+	            "strong",
+	            null,
+	            "    ",
+	            "filterDate={this.isWeekday}"
+	          ),
+	          _react2.default.createElement("br", null),
+	          "    ",
+	          "placeholderText=\"Select a weekday\" />"
+	        )
+	      ),
+	      _react2.default.createElement(
+	        "div",
+	        { className: "column" },
+	        _react2.default.createElement(_reactDatepicker2.default, {
+	          selected: this.state.date,
+	          onChange: this.handleChange,
+	          filterDate: this.isWeekday,
+	          placeholderText: "Select a weekday" })
 	      )
 	    );
 	  }
@@ -51003,12 +51005,17 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
-	  displayName: "Disabled",
+	  displayName: "ClearInput",
 
 	  getInitialState: function getInitialState() {
 	    return {
 	      startDate: (0, _moment2.default)()
 	    };
+	  },
+	  handleChange: function handleChange(date) {
+	    this.setState({
+	      startDate: date
+	    });
 	  },
 	  render: function render() {
 	    return _react2.default.createElement(
@@ -51026,6 +51033,9 @@
 	          "selected={this.state.startDate}",
 	          _react2.default.createElement("br", null),
 	          "    ",
+	          "onChange={this.handleChange}",
+	          _react2.default.createElement("br", null),
+	          "    ",
 	          "isClearable={true} />",
 	          _react2.default.createElement("br", null),
 	          "    ",
@@ -51037,6 +51047,7 @@
 	        { className: "column" },
 	        _react2.default.createElement(_reactDatepicker2.default, {
 	          selected: this.state.startDate,
+	          onChange: this.handleChange,
 	          isClearable: true,
 	          placeholderText: "I have been cleared!" })
 	      )
@@ -51188,110 +51199,6 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
-	  displayName: "ClearCallbacks",
-
-	  getInitialState: function getInitialState() {
-	    return {
-	      startDate: null
-	    };
-	  },
-
-	  handleChange: function handleChange(date) {
-	    this.setState({
-	      startDate: date
-	    });
-	  },
-
-	  handleOnClear: function handleOnClear() {
-	    console.log("Date has been cleared");
-	  },
-
-	  render: function render() {
-	    return _react2.default.createElement(
-	      "div",
-	      { className: "row" },
-	      _react2.default.createElement(
-	        "pre",
-	        { className: "column example__code" },
-	        _react2.default.createElement(
-	          "code",
-	          { className: "js" },
-	          "handleOnClear: function (date) {",
-	          _react2.default.createElement("br", null),
-	          "          ",
-	          "console.log('Date has been cleared');",
-	          _react2.default.createElement("br", null),
-	          "};"
-	        ),
-	        _react2.default.createElement("br", null),
-	        _react2.default.createElement(
-	          "code",
-	          { className: "jsx" },
-	          "<DatePicker",
-	          _react2.default.createElement("br", null),
-	          "    ",
-	          "key='example9'",
-	          _react2.default.createElement("br", null),
-	          "    ",
-	          "selected={this.state.startDate}",
-	          _react2.default.createElement("br", null),
-	          "    ",
-	          "onChange={this.handleChange}",
-	          _react2.default.createElement("br", null),
-	          _react2.default.createElement(
-	            "strong",
-	            null,
-	            "    ",
-	            "onClear={this.handleOnClear}"
-	          ),
-	          _react2.default.createElement("br", null),
-	          "    ",
-	          "isClearable={true}",
-	          _react2.default.createElement("br", null),
-	          "    ",
-	          "placeholderText=\"View clear callbacks in console\" />"
-	        )
-	      ),
-	      _react2.default.createElement(
-	        "div",
-	        { className: "column" },
-	        _react2.default.createElement(_reactDatepicker2.default, {
-	          key: "example9",
-	          selected: this.state.startDate,
-	          onChange: this.handleChange,
-	          onClear: this.handleOnClear,
-	          isClearable: true,
-	          placeholderText: "View clear callbacks in console" })
-	      )
-	    );
-	  }
-	});
-
-/***/ },
-/* 462 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDatepicker = __webpack_require__(157);
-
-	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
-
-	var _moment = __webpack_require__(183);
-
-	var _moment2 = _interopRequireDefault(_moment);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = _react2.default.createClass({
 	  displayName: "Weekdays",
 
 	  getInitialState: function getInitialState() {
@@ -51340,7 +51247,7 @@
 	});
 
 /***/ },
-/* 463 */
+/* 462 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51419,7 +51326,7 @@
 	});
 
 /***/ },
-/* 464 */
+/* 463 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51523,7 +51430,7 @@
 	module.exports = DateRange;
 
 /***/ },
-/* 465 */
+/* 464 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51594,7 +51501,7 @@
 	});
 
 /***/ },
-/* 466 */
+/* 465 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51671,15 +51578,15 @@
 	});
 
 /***/ },
-/* 467 */
+/* 466 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
+/* 467 */
+466,
 /* 468 */
-467,
-/* 469 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
