@@ -19547,11 +19547,7 @@
 	          open: this.state.open }),
 	        this.renderClearButton()
 	      ),
-	      _react2.default.createElement(
-	        "div",
-	        null,
-	        this.renderCalendar()
-	      )
+	      this.renderCalendar()
 	    );
 	  }
 	});
