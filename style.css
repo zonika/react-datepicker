@@ -251,6 +251,9 @@
   text-align: center;
   font-weight: bold;
   padding: 5px 0; }
+
+.datepicker__tether-element {
+  z-index: 2147483647; }
 html,
 body,
 div,
@@ -490,7 +493,7 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
   color: #aaa; }
 
 .hero {
-  color: white;
+  color: #fff;
   background-color: #216ba5; }
   .hero__content {
     text-align: center;
@@ -530,7 +533,7 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
       margin: 0;
       margin-right: 20px;
       border: 1px solid #e4e4e4;
-      background: white;
+      background: #fff;
       border-radius: 4px;
       overflow: hidden; } }
 
@@ -584,20 +587,22 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
       border: 0; }
 
 .red-border {
-  border-color: red; }
+  border-color: #f00; }
 
 .hero__content, .wrapper {
   max-width: 1100px;
   margin: 0 auto; }
 
-html, body {
+html,
+body {
   height: 100%;
   background: #f5f5f5;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   color: #555;
   font-size: 14px;
   line-height: 21px; }
-  html input, body input {
+  html input,
+  body input {
     width: 100%; }
 
 a {
@@ -619,13 +624,13 @@ h2 {
   line-height: 1.4; }
 
 h1 {
-  padding-bottom: 0.3em;
+  padding-bottom: .3em;
   font-size: 2.25em;
   line-height: 1.2;
   border-bottom: 1px solid #eee; }
 
 h2 {
-  padding-bottom: 0.3em;
+  padding-bottom: .3em;
   font-size: 1.75em;
   line-height: 1.225;
   border-bottom: 1px solid #eee; }
@@ -635,7 +640,7 @@ code {
   border: 1px solid #ccc;
   margin: 0;
   font-size: 85%;
-  background-color: #E8E7E7;
+  background-color: #e8e7e7;
   border-radius: 3px;
   font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; }
 
