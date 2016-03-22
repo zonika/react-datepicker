@@ -19036,7 +19036,7 @@
 
 	var _example_components2 = _interopRequireDefault(_example_components);
 
-	var _hero_example = __webpack_require__(442);
+	var _hero_example = __webpack_require__(443);
 
 	var _hero_example2 = _interopRequireDefault(_hero_example);
 
@@ -19170,77 +19170,77 @@
 
 	var _default2 = _interopRequireDefault(_default);
 
-	var _code_example_component = __webpack_require__(423);
+	var _code_example_component = __webpack_require__(424);
 
 	var _code_example_component2 = _interopRequireDefault(_code_example_component);
 
-	var _custom_date_format = __webpack_require__(424);
+	var _custom_date_format = __webpack_require__(425);
 
 	var _custom_date_format2 = _interopRequireDefault(_custom_date_format);
 
-	var _custom_class_name = __webpack_require__(425);
+	var _custom_class_name = __webpack_require__(426);
 
 	var _custom_class_name2 = _interopRequireDefault(_custom_class_name);
 
-	var _placeholder_text = __webpack_require__(426);
+	var _placeholder_text = __webpack_require__(427);
 
 	var _placeholder_text2 = _interopRequireDefault(_placeholder_text);
 
-	var _specific_date_range = __webpack_require__(427);
+	var _specific_date_range = __webpack_require__(428);
 
 	var _specific_date_range2 = _interopRequireDefault(_specific_date_range);
 
-	var _locale = __webpack_require__(428);
+	var _locale = __webpack_require__(429);
 
 	var _locale2 = _interopRequireDefault(_locale);
 
-	var _exclude_dates = __webpack_require__(429);
+	var _exclude_dates = __webpack_require__(430);
 
 	var _exclude_dates2 = _interopRequireDefault(_exclude_dates);
 
-	var _include_dates = __webpack_require__(430);
+	var _include_dates = __webpack_require__(431);
 
 	var _include_dates2 = _interopRequireDefault(_include_dates);
 
-	var _filter_dates = __webpack_require__(431);
+	var _filter_dates = __webpack_require__(432);
 
 	var _filter_dates2 = _interopRequireDefault(_filter_dates);
 
-	var _disabled = __webpack_require__(432);
+	var _disabled = __webpack_require__(433);
 
 	var _disabled2 = _interopRequireDefault(_disabled);
 
-	var _clear_input = __webpack_require__(433);
+	var _clear_input = __webpack_require__(434);
 
 	var _clear_input2 = _interopRequireDefault(_clear_input);
 
-	var _on_blur_callbacks = __webpack_require__(434);
+	var _on_blur_callbacks = __webpack_require__(435);
 
 	var _on_blur_callbacks2 = _interopRequireDefault(_on_blur_callbacks);
 
-	var _placement = __webpack_require__(435);
+	var _placement = __webpack_require__(436);
 
 	var _placement2 = _interopRequireDefault(_placement);
 
-	var _date_range = __webpack_require__(436);
+	var _date_range = __webpack_require__(437);
 
 	var _date_range2 = _interopRequireDefault(_date_range);
 
-	var _tab_index = __webpack_require__(437);
+	var _tab_index = __webpack_require__(438);
 
 	var _tab_index2 = _interopRequireDefault(_tab_index);
 
-	var _year_dropdown = __webpack_require__(438);
+	var _year_dropdown = __webpack_require__(439);
 
 	var _year_dropdown2 = _interopRequireDefault(_year_dropdown);
 
-	var _today = __webpack_require__(439);
+	var _today = __webpack_require__(440);
 
 	var _today2 = _interopRequireDefault(_today);
 
-	__webpack_require__(440);
-
 	__webpack_require__(441);
+
+	__webpack_require__(442);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35467,9 +35467,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactTether = __webpack_require__(420);
+	var _reactTether = __webpack_require__(421);
 
 	var _reactTether2 = _interopRequireDefault(_reactTether);
+
+	var _classnames = __webpack_require__(420);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
 
 	var _date_utils = __webpack_require__(412);
 
@@ -35568,8 +35572,13 @@
 	  onInputClick: function onInputClick() {
 	    this.setOpen(true);
 	  },
-	  handleInputDone: function handleInputDone() {
-	    this.setOpen(false);
+	  onInputKeyDown: function onInputKeyDown(event) {
+	    if (event.key === 'Enter' || event.key === 'Escape') {
+	      event.preventDefault();
+	      this.setOpen(false);
+	    } else if (event.key === 'Tab') {
+	      this.setOpen(false);
+	    }
 	  },
 	  onClearClick: function onClearClick(event) {
 	    event.preventDefault();
@@ -35596,9 +35605,38 @@
 	      showYearDropdown: this.props.showYearDropdown,
 	      todayButton: this.props.todayButton });
 	  },
+	  renderDateInput: function renderDateInput() {
+	    var className = (0, _classnames2.default)(this.props.className, {
+	      'ignore-react-onclickoutside': this.state.open
+	    });
+	    return _react2.default.createElement(_date_input2.default, {
+	      ref: 'input',
+	      id: this.props.id,
+	      name: this.props.name,
+	      date: this.props.selected,
+	      locale: this.props.locale,
+	      minDate: this.props.minDate,
+	      maxDate: this.props.maxDate,
+	      excludeDates: this.props.excludeDates,
+	      includeDates: this.props.includeDates,
+	      filterDate: this.props.filterDate,
+	      dateFormat: this.props.dateFormat,
+	      onFocus: this.handleFocus,
+	      onBlur: this.handleBlur,
+	      onClick: this.onInputClick,
+	      onKeyDown: this.onInputKeyDown,
+	      onChangeDate: this.setSelected,
+	      placeholder: this.props.placeholderText,
+	      disabled: this.props.disabled,
+	      className: className,
+	      title: this.props.title,
+	      readOnly: this.props.readOnly,
+	      required: this.props.required,
+	      tabIndex: this.props.tabIndex });
+	  },
 	  renderClearButton: function renderClearButton() {
 	    if (this.props.isClearable && this.props.selected != null) {
-	      return _react2.default.createElement('a', { className: 'close-icon', href: '#', onClick: this.onClearClick });
+	      return _react2.default.createElement('a', { className: 'react-datepicker__close-icon', href: '#', onClick: this.onClearClick });
 	    } else {
 	      return null;
 	    }
@@ -35607,7 +35645,7 @@
 	    return _react2.default.createElement(
 	      _reactTether2.default,
 	      {
-	        classPrefix: "datepicker__tether",
+	        classPrefix: "react-datepicker__tether",
 	        attachment: this.props.popoverAttachment,
 	        targetAttachment: this.props.popoverTargetAttachment,
 	        targetOffset: this.props.popoverTargetOffset,
@@ -35615,32 +35653,8 @@
 	        constraints: this.props.tetherConstraints },
 	      _react2.default.createElement(
 	        'div',
-	        { className: 'datepicker__input-container' },
-	        _react2.default.createElement(_date_input2.default, {
-	          ref: 'input',
-	          id: this.props.id,
-	          name: this.props.name,
-	          date: this.props.selected,
-	          locale: this.props.locale,
-	          minDate: this.props.minDate,
-	          maxDate: this.props.maxDate,
-	          excludeDates: this.props.excludeDates,
-	          includeDates: this.props.includeDates,
-	          filterDate: this.props.filterDate,
-	          dateFormat: this.props.dateFormat,
-	          onFocus: this.handleFocus,
-	          onBlur: this.handleBlur,
-	          handleClick: this.onInputClick,
-	          handleDone: this.handleInputDone,
-	          setSelected: this.setSelected,
-	          placeholderText: this.props.placeholderText,
-	          disabled: this.props.disabled,
-	          className: this.props.className,
-	          title: this.props.title,
-	          readOnly: this.props.readOnly,
-	          required: this.props.required,
-	          tabIndex: this.props.tabIndex,
-	          open: this.state.open }),
+	        { className: 'react-datepicker__input-container' },
+	        this.renderDateInput(),
 	        this.renderClearButton()
 	      ),
 	      this.renderCalendar()
@@ -35656,6 +35670,8 @@
 
 	'use strict';
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _moment = __webpack_require__(312);
 
 	var _moment2 = _interopRequireDefault(_moment);
@@ -35663,10 +35679,6 @@
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
-
-	var _classnames = __webpack_require__(411);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
 
 	var _date_utils = __webpack_require__(412);
 
@@ -35676,28 +35688,18 @@
 	  displayName: 'DateInput',
 
 	  propTypes: {
-	    className: _react2.default.PropTypes.string,
 	    date: _react2.default.PropTypes.object,
 	    dateFormat: _react2.default.PropTypes.string,
 	    disabled: _react2.default.PropTypes.bool,
 	    excludeDates: _react2.default.PropTypes.array,
 	    filterDate: _react2.default.PropTypes.func,
-	    handleClick: _react2.default.PropTypes.func,
-	    handleDone: _react2.default.PropTypes.func,
-	    id: _react2.default.PropTypes.string,
 	    includeDates: _react2.default.PropTypes.array,
 	    locale: _react2.default.PropTypes.string,
 	    maxDate: _react2.default.PropTypes.object,
 	    minDate: _react2.default.PropTypes.object,
-	    name: _react2.default.PropTypes.string,
 	    onBlur: _react2.default.PropTypes.func,
-	    onFocus: _react2.default.PropTypes.func,
-	    open: _react2.default.PropTypes.bool,
-	    placeholderText: _react2.default.PropTypes.string,
-	    readOnly: _react2.default.PropTypes.bool,
-	    required: _react2.default.PropTypes.bool,
-	    setSelected: _react2.default.PropTypes.func,
-	    tabIndex: _react2.default.PropTypes.number
+	    onChange: _react2.default.PropTypes.func,
+	    onChangeDate: _react2.default.PropTypes.func
 	  },
 
 	  getDefaultProps: function getDefaultProps() {
@@ -35707,47 +35709,43 @@
 	  },
 	  getInitialState: function getInitialState() {
 	    return {
-	      maybeDate: this.safeDateFormat(this.props.date)
+	      maybeDate: this.safeDateFormat(this.props)
 	    };
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(newProps) {
-	    if (!(0, _date_utils.isSameDay)(newProps.date, this.props.date)) {
+	    if (!(0, _date_utils.isSameDay)(newProps.date, this.props.date) || newProps.locale !== this.props.locale || newProps.dateFormat !== this.props.dateFormat) {
 	      this.setState({
-	        maybeDate: this.safeDateFormat(newProps.date)
+	        maybeDate: this.safeDateFormat(newProps)
 	      });
 	    }
 	  },
 	  handleChange: function handleChange(event) {
-	    var value = event.target.value;
-	    var date = (0, _moment2.default)(value, this.props.dateFormat, true);
-	    if (date.isValid() && !(0, _date_utils.isDayDisabled)(date, this.props)) {
-	      this.props.setSelected(date);
-	    } else if (value === '') {
-	      this.props.setSelected(null);
+	    if (this.props.onChange) {
+	      this.props.onChange(event);
+	    }
+	    if (!event.isDefaultPrevented()) {
+	      this.handleChangeDate(event.target.value);
+	    }
+	  },
+	  handleChangeDate: function handleChangeDate(value) {
+	    if (this.props.onChangeDate) {
+	      var date = (0, _moment2.default)(value, this.props.dateFormat, this.props.locale || _moment2.default.locale(), true);
+	      if (date.isValid() && !(0, _date_utils.isDayDisabled)(date, this.props)) {
+	        this.props.onChangeDate(date);
+	      } else if (value === '') {
+	        this.props.onChangeDate(null);
+	      }
 	    }
 	    this.setState({
 	      maybeDate: value
 	    });
 	  },
-	  safeDateFormat: function safeDateFormat(date) {
-	    return date && date.clone().locale(this.props.locale || _moment2.default.locale()).format(this.props.dateFormat);
-	  },
-	  handleKeyDown: function handleKeyDown(event) {
-	    if (event.key === 'Enter' || event.key === 'Escape') {
-	      event.preventDefault();
-	      this.props.handleDone();
-	    } else if (event.key === 'Tab') {
-	      this.props.handleDone();
-	    }
-	  },
-	  handleClick: function handleClick(event) {
-	    if (!this.props.disabled) {
-	      this.props.handleClick(event);
-	    }
+	  safeDateFormat: function safeDateFormat(props) {
+	    return props.date && props.date.clone().locale(props.locale || _moment2.default.locale()).format(props.dateFormat);
 	  },
 	  handleBlur: function handleBlur(event) {
 	    this.setState({
-	      maybeDate: this.safeDateFormat(this.props.date)
+	      maybeDate: this.safeDateFormat(this.props)
 	    });
 	    if (this.props.onBlur) {
 	      this.props.onBlur(event);
@@ -35756,27 +35754,14 @@
 	  focus: function focus() {
 	    this.refs.input.focus();
 	  },
-	  getClassNames: function getClassNames() {
-	    return (0, _classnames2.default)('datepicker__input', { 'ignore-react-onclickoutside': this.props.open }, this.props.className);
-	  },
 	  render: function render() {
-	    return _react2.default.createElement('input', {
+	    return _react2.default.createElement('input', _extends({
 	      ref: 'input',
-	      type: 'text',
-	      id: this.props.id,
-	      name: this.props.name,
+	      type: 'text'
+	    }, this.props, {
 	      value: this.state.maybeDate,
-	      onClick: this.handleClick,
-	      onKeyDown: this.handleKeyDown,
-	      onFocus: this.props.onFocus,
 	      onBlur: this.handleBlur,
-	      onChange: this.handleChange,
-	      className: this.getClassNames(),
-	      disabled: this.props.disabled,
-	      placeholder: this.props.placeholderText,
-	      readOnly: this.props.readOnly,
-	      required: this.props.required,
-	      tabIndex: this.props.tabIndex });
+	      onChange: this.handleChange }));
 	  }
 	});
 
@@ -35787,7 +35772,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {//! moment.js
-	//! version : 2.11.2
+	//! version : 2.12.0
 	//! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 	//! license : MIT
 	//! momentjs.com
@@ -35811,7 +35796,7 @@
 	    }
 
 	    function isArray(input) {
-	        return Object.prototype.toString.call(input) === '[object Array]';
+	        return input instanceof Array || Object.prototype.toString.call(input) === '[object Array]';
 	    }
 
 	    function isDate(input) {
@@ -36017,7 +36002,82 @@
 	        return diffs + lengthDiff;
 	    }
 
-	    function Locale() {
+	    function warn(msg) {
+	        if (utils_hooks__hooks.suppressDeprecationWarnings === false &&
+	                (typeof console !==  'undefined') && console.warn) {
+	            console.warn('Deprecation warning: ' + msg);
+	        }
+	    }
+
+	    function deprecate(msg, fn) {
+	        var firstTime = true;
+
+	        return extend(function () {
+	            if (firstTime) {
+	                warn(msg + '\nArguments: ' + Array.prototype.slice.call(arguments).join(', ') + '\n' + (new Error()).stack);
+	                firstTime = false;
+	            }
+	            return fn.apply(this, arguments);
+	        }, fn);
+	    }
+
+	    var deprecations = {};
+
+	    function deprecateSimple(name, msg) {
+	        if (!deprecations[name]) {
+	            warn(msg);
+	            deprecations[name] = true;
+	        }
+	    }
+
+	    utils_hooks__hooks.suppressDeprecationWarnings = false;
+
+	    function isFunction(input) {
+	        return input instanceof Function || Object.prototype.toString.call(input) === '[object Function]';
+	    }
+
+	    function isObject(input) {
+	        return Object.prototype.toString.call(input) === '[object Object]';
+	    }
+
+	    function locale_set__set (config) {
+	        var prop, i;
+	        for (i in config) {
+	            prop = config[i];
+	            if (isFunction(prop)) {
+	                this[i] = prop;
+	            } else {
+	                this['_' + i] = prop;
+	            }
+	        }
+	        this._config = config;
+	        // Lenient ordinal parsing accepts just a number in addition to
+	        // number + (possibly) stuff coming from _ordinalParseLenient.
+	        this._ordinalParseLenient = new RegExp(this._ordinalParse.source + '|' + (/\d{1,2}/).source);
+	    }
+
+	    function mergeConfigs(parentConfig, childConfig) {
+	        var res = extend({}, parentConfig), prop;
+	        for (prop in childConfig) {
+	            if (hasOwnProp(childConfig, prop)) {
+	                if (isObject(parentConfig[prop]) && isObject(childConfig[prop])) {
+	                    res[prop] = {};
+	                    extend(res[prop], parentConfig[prop]);
+	                    extend(res[prop], childConfig[prop]);
+	                } else if (childConfig[prop] != null) {
+	                    res[prop] = childConfig[prop];
+	                } else {
+	                    delete res[prop];
+	                }
+	            }
+	        }
+	        return res;
+	    }
+
+	    function Locale(config) {
+	        if (config != null) {
+	            this.set(config);
+	        }
 	    }
 
 	    // internal storage for locale config files
@@ -36093,11 +36153,25 @@
 	        return globalLocale._abbr;
 	    }
 
-	    function defineLocale (name, values) {
-	        if (values !== null) {
-	            values.abbr = name;
-	            locales[name] = locales[name] || new Locale();
-	            locales[name].set(values);
+	    function defineLocale (name, config) {
+	        if (config !== null) {
+	            config.abbr = name;
+	            if (locales[name] != null) {
+	                deprecateSimple('defineLocaleOverride',
+	                        'use moment.updateLocale(localeName, config) to change ' +
+	                        'an existing locale. moment.defineLocale(localeName, ' +
+	                        'config) should only be used for creating a new locale');
+	                config = mergeConfigs(locales[name]._config, config);
+	            } else if (config.parentLocale != null) {
+	                if (locales[config.parentLocale] != null) {
+	                    config = mergeConfigs(locales[config.parentLocale]._config, config);
+	                } else {
+	                    // treat as if there is no base config
+	                    deprecateSimple('parentLocaleUndefined',
+	                            'specified parentLocale is not defined yet');
+	                }
+	            }
+	            locales[name] = new Locale(config);
 
 	            // backwards compat for now: also set the locale
 	            locale_locales__getSetGlobalLocale(name);
@@ -36108,6 +36182,31 @@
 	            delete locales[name];
 	            return null;
 	        }
+	    }
+
+	    function updateLocale(name, config) {
+	        if (config != null) {
+	            var locale;
+	            if (locales[name] != null) {
+	                config = mergeConfigs(locales[name]._config, config);
+	            }
+	            locale = new Locale(config);
+	            locale.parentLocale = locales[name];
+	            locales[name] = locale;
+
+	            // backwards compat for now: also set the locale
+	            locale_locales__getSetGlobalLocale(name);
+	        } else {
+	            // pass null for config to unupdate, useful for tests
+	            if (locales[name] != null) {
+	                if (locales[name].parentLocale != null) {
+	                    locales[name] = locales[name].parentLocale;
+	                } else if (locales[name] != null) {
+	                    delete locales[name];
+	                }
+	            }
+	        }
+	        return locales[name];
 	    }
 
 	    // returns locale data
@@ -36132,6 +36231,10 @@
 	        }
 
 	        return chooseLocale(key);
+	    }
+
+	    function locale_locales__listLocales() {
+	        return Object.keys(locales);
 	    }
 
 	    var aliases = {};
@@ -36160,10 +36263,6 @@
 	        }
 
 	        return normalizedInput;
-	    }
-
-	    function isFunction(input) {
-	        return input instanceof Function || Object.prototype.toString.call(input) === '[object Function]';
 	    }
 
 	    function makeGetSet (unit, keepTime) {
@@ -36499,12 +36598,15 @@
 	            return mom;
 	        }
 
-	        // TODO: Move this out of here!
 	        if (typeof value === 'string') {
-	            value = mom.localeData().monthsParse(value);
-	            // TODO: Another silent failure?
-	            if (typeof value !== 'number') {
-	                return mom;
+	            if (/^\d+$/.test(value)) {
+	                value = toInt(value);
+	            } else {
+	                value = mom.localeData().monthsParse(value);
+	                // TODO: Another silent failure?
+	                if (typeof value !== 'number') {
+	                    return mom;
+	                }
 	            }
 	        }
 
@@ -36622,36 +36724,6 @@
 
 	        return m;
 	    }
-
-	    function warn(msg) {
-	        if (utils_hooks__hooks.suppressDeprecationWarnings === false &&
-	                (typeof console !==  'undefined') && console.warn) {
-	            console.warn('Deprecation warning: ' + msg);
-	        }
-	    }
-
-	    function deprecate(msg, fn) {
-	        var firstTime = true;
-
-	        return extend(function () {
-	            if (firstTime) {
-	                warn(msg + '\nArguments: ' + Array.prototype.slice.call(arguments).join(', ') + '\n' + (new Error()).stack);
-	                firstTime = false;
-	            }
-	            return fn.apply(this, arguments);
-	        }, fn);
-	    }
-
-	    var deprecations = {};
-
-	    function deprecateSimple(name, msg) {
-	        if (!deprecations[name]) {
-	            warn(msg);
-	            deprecations[name] = true;
-	        }
-	    }
-
-	    utils_hooks__hooks.suppressDeprecationWarnings = false;
 
 	    // iso 8601 regex
 	    // 0000-00-00 0000-W00 or 0000-W00-0 + T + 00 or 00:00 or 00:00:00 or 00:00:00.000 + +00:00 or +0000 or +00)
@@ -37298,7 +37370,7 @@
 	    }
 
 	    var prototypeMin = deprecate(
-	         'moment().min is deprecated, use moment.min instead. https://github.com/moment/moment/issues/1548',
+	         'moment().min is deprecated, use moment.max instead. https://github.com/moment/moment/issues/1548',
 	         function () {
 	             var other = local__createLocal.apply(null, arguments);
 	             if (this.isValid() && other.isValid()) {
@@ -37310,7 +37382,7 @@
 	     );
 
 	    var prototypeMax = deprecate(
-	        'moment().max is deprecated, use moment.max instead. https://github.com/moment/moment/issues/1548',
+	        'moment().max is deprecated, use moment.min instead. https://github.com/moment/moment/issues/1548',
 	        function () {
 	            var other = local__createLocal.apply(null, arguments);
 	            if (this.isValid() && other.isValid()) {
@@ -37608,7 +37680,8 @@
 
 	    // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
 	    // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
-	    var isoRegex = /^(-)?P(?:(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?|([0-9,.]*)W)$/;
+	    // and further modified to allow for strings containing both week and day
+	    var isoRegex = /^(-)?P(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)W)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?$/;
 
 	    function create__createDuration (input, key) {
 	        var duration = input,
@@ -37646,11 +37719,11 @@
 	            duration = {
 	                y : parseIso(match[2], sign),
 	                M : parseIso(match[3], sign),
-	                d : parseIso(match[4], sign),
-	                h : parseIso(match[5], sign),
-	                m : parseIso(match[6], sign),
-	                s : parseIso(match[7], sign),
-	                w : parseIso(match[8], sign)
+	                w : parseIso(match[4], sign),
+	                d : parseIso(match[5], sign),
+	                h : parseIso(match[6], sign),
+	                m : parseIso(match[7], sign),
+	                s : parseIso(match[8], sign)
 	            };
 	        } else if (duration == null) {// checks for null or undefined
 	            duration = {};
@@ -37714,6 +37787,14 @@
 	        return res;
 	    }
 
+	    function absRound (number) {
+	        if (number < 0) {
+	            return Math.round(-1 * number) * -1;
+	        } else {
+	            return Math.round(number);
+	        }
+	    }
+
 	    // TODO: remove 'name' arg after deprecation is removed
 	    function createAdder(direction, name) {
 	        return function (val, period) {
@@ -37733,8 +37814,8 @@
 
 	    function add_subtract__addSubtract (mom, duration, isAdding, updateOffset) {
 	        var milliseconds = duration._milliseconds,
-	            days = duration._days,
-	            months = duration._months;
+	            days = absRound(duration._days),
+	            months = absRound(duration._months);
 
 	        if (!mom.isValid()) {
 	            // No op
@@ -38060,8 +38141,8 @@
 	    }
 
 	    function toJSON () {
-	        // JSON.stringify(new Date(NaN)) === 'null'
-	        return this.isValid() ? this.toISOString() : 'null';
+	        // new Date(NaN).toJSON() === null
+	        return this.isValid() ? this.toISOString() : null;
 	    }
 
 	    function moment_valid__isValid () {
@@ -38171,7 +38252,6 @@
 	        var dayOfYearData = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy),
 	            date = createUTCDate(dayOfYearData.year, 0, dayOfYearData.dayOfYear);
 
-	        // console.log("got", weekYear, week, weekday, "set", date.toISOString());
 	        this.year(date.getUTCFullYear());
 	        this.month(date.getUTCMonth());
 	        this.date(date.getUTCDate());
@@ -38881,21 +38961,6 @@
 	        return isFunction(format) ? format(output) : format.replace(/%s/i, output);
 	    }
 
-	    function locale_set__set (config) {
-	        var prop, i;
-	        for (i in config) {
-	            prop = config[i];
-	            if (isFunction(prop)) {
-	                this[i] = prop;
-	            } else {
-	                this['_' + i] = prop;
-	            }
-	        }
-	        // Lenient ordinal parsing accepts just a number in addition to
-	        // number + (possibly) stuff coming from _ordinalParseLenient.
-	        this._ordinalParseLenient = new RegExp(this._ordinalParse.source + '|' + (/\d{1,2}/).source);
-	    }
-
 	    var prototype__proto = Locale.prototype;
 
 	    prototype__proto._calendar       = defaultCalendar;
@@ -39359,7 +39424,7 @@
 	    // Side effect imports
 
 
-	    utils_hooks__hooks.version = '2.11.2';
+	    utils_hooks__hooks.version = '2.12.0';
 
 	    setHookCallback(local__createLocal);
 
@@ -39382,6 +39447,8 @@
 	    utils_hooks__hooks.monthsShort           = lists__listMonthsShort;
 	    utils_hooks__hooks.weekdaysMin           = lists__listWeekdaysMin;
 	    utils_hooks__hooks.defineLocale          = defineLocale;
+	    utils_hooks__hooks.updateLocale          = updateLocale;
+	    utils_hooks__hooks.locales               = locale_locales__listLocales;
 	    utils_hooks__hooks.weekdaysShort         = lists__listWeekdaysShort;
 	    utils_hooks__hooks.normalizeUnits        = normalizeUnits;
 	    utils_hooks__hooks.relativeTimeThreshold = duration_humanize__getSetRelativeTimeThreshold;
@@ -39551,62 +39618,64 @@
 		"./nl.js": 381,
 		"./nn": 382,
 		"./nn.js": 382,
-		"./pl": 383,
-		"./pl.js": 383,
-		"./pt": 384,
-		"./pt-br": 385,
-		"./pt-br.js": 385,
-		"./pt.js": 384,
-		"./ro": 386,
-		"./ro.js": 386,
-		"./ru": 387,
-		"./ru.js": 387,
-		"./se": 388,
-		"./se.js": 388,
-		"./si": 389,
-		"./si.js": 389,
-		"./sk": 390,
-		"./sk.js": 390,
-		"./sl": 391,
-		"./sl.js": 391,
-		"./sq": 392,
-		"./sq.js": 392,
-		"./sr": 393,
-		"./sr-cyrl": 394,
-		"./sr-cyrl.js": 394,
-		"./sr.js": 393,
-		"./sv": 395,
-		"./sv.js": 395,
-		"./sw": 396,
-		"./sw.js": 396,
-		"./ta": 397,
-		"./ta.js": 397,
-		"./te": 398,
-		"./te.js": 398,
-		"./th": 399,
-		"./th.js": 399,
-		"./tl-ph": 400,
-		"./tl-ph.js": 400,
-		"./tlh": 401,
-		"./tlh.js": 401,
-		"./tr": 402,
-		"./tr.js": 402,
-		"./tzl": 403,
-		"./tzl.js": 403,
-		"./tzm": 404,
-		"./tzm-latn": 405,
-		"./tzm-latn.js": 405,
-		"./tzm.js": 404,
-		"./uk": 406,
-		"./uk.js": 406,
-		"./uz": 407,
-		"./uz.js": 407,
-		"./vi": 408,
-		"./vi.js": 408,
-		"./zh-cn": 409,
-		"./zh-cn.js": 409,
-		"./zh-tw": 410,
-		"./zh-tw.js": 410
+		"./pa-in": 383,
+		"./pa-in.js": 383,
+		"./pl": 384,
+		"./pl.js": 384,
+		"./pt": 385,
+		"./pt-br": 386,
+		"./pt-br.js": 386,
+		"./pt.js": 385,
+		"./ro": 387,
+		"./ro.js": 387,
+		"./ru": 388,
+		"./ru.js": 388,
+		"./se": 389,
+		"./se.js": 389,
+		"./si": 390,
+		"./si.js": 390,
+		"./sk": 391,
+		"./sk.js": 391,
+		"./sl": 392,
+		"./sl.js": 392,
+		"./sq": 393,
+		"./sq.js": 393,
+		"./sr": 394,
+		"./sr-cyrl": 395,
+		"./sr-cyrl.js": 395,
+		"./sr.js": 394,
+		"./sv": 396,
+		"./sv.js": 396,
+		"./sw": 397,
+		"./sw.js": 397,
+		"./ta": 398,
+		"./ta.js": 398,
+		"./te": 399,
+		"./te.js": 399,
+		"./th": 400,
+		"./th.js": 400,
+		"./tl-ph": 401,
+		"./tl-ph.js": 401,
+		"./tlh": 402,
+		"./tlh.js": 402,
+		"./tr": 403,
+		"./tr.js": 403,
+		"./tzl": 404,
+		"./tzl.js": 404,
+		"./tzm": 405,
+		"./tzm-latn": 406,
+		"./tzm-latn.js": 406,
+		"./tzm.js": 405,
+		"./uk": 407,
+		"./uk.js": 407,
+		"./uz": 408,
+		"./uz.js": 408,
+		"./vi": 409,
+		"./vi.js": 409,
+		"./zh-cn": 410,
+		"./zh-cn.js": 410,
+		"./zh-tw": 411,
+		"./zh-tw.js": 411
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -40498,12 +40567,18 @@
 	            });
 	        },
 	        meridiemParse: /রাত|সকাল|দুপুর|বিকাল|রাত/,
-	        isPM: function (input) {
-	            return /^(দুপুর|বিকাল|রাত)$/.test(input);
+	        meridiemHour : function (hour, meridiem) {
+	            if (hour === 12) {
+	                hour = 0;
+	            }
+	            if ((meridiem === 'রাত' && hour >= 4) ||
+	                    (meridiem === 'দুপুর' && hour < 5) ||
+	                    meridiem === 'বিকাল') {
+	                return hour + 12;
+	            } else {
+	                return hour;
+	            }
 	        },
-	        //Bengali is a vast language its spoken
-	        //in different forms in various parts of the world.
-	        //I have just generalized with most common one used
 	        meridiem : function (hour, minute, isLower) {
 	            if (hour < 4) {
 	                return 'রাত';
@@ -40615,8 +40690,17 @@
 	            });
 	        },
 	        meridiemParse: /མཚན་མོ|ཞོགས་ཀས|ཉིན་གུང|དགོང་དག|མཚན་མོ/,
-	        isPM: function (input) {
-	            return /^(ཉིན་གུང|དགོང་དག|མཚན་མོ)$/.test(input);
+	        meridiemHour : function (hour, meridiem) {
+	            if (hour === 12) {
+	                hour = 0;
+	            }
+	            if ((meridiem === 'མཚན་མོ' && hour >= 4) ||
+	                    (meridiem === 'ཉིན་གུང' && hour < 5) ||
+	                    meridiem === 'དགོང་དག') {
+	                return hour + 12;
+	            } else {
+	                return hour;
+	            }
 	        },
 	        meridiem : function (hour, minute, isLower) {
 	            if (hour < 4) {
@@ -41585,7 +41669,7 @@
 	        },
 	        meridiemParse: /މކ|މފ/,
 	        isPM : function (input) {
-	            return '' === input;
+	            return 'މފ' === input;
 	        },
 	        meridiem : function (hour, minute, isLower) {
 	            if (hour < 12) {
@@ -41830,9 +41914,9 @@
 	            LT : 'h:mm A',
 	            LTS : 'h:mm:ss A',
 	            L : 'YYYY-MM-DD',
-	            LL : 'D MMMM, YYYY',
-	            LLL : 'D MMMM, YYYY h:mm A',
-	            LLLL : 'dddd, D MMMM, YYYY h:mm A'
+	            LL : 'MMMM D, YYYY',
+	            LLL : 'MMMM D, YYYY h:mm A',
+	            LLLL : 'dddd, MMMM D, YYYY h:mm A'
 	        },
 	        calendar : {
 	            sameDay : '[Today at] LT',
@@ -43187,6 +43271,23 @@
 	                }
 	                return number + ' שנים';
 	            }
+	        },
+	        meridiemParse: /אחה"צ|לפנה"צ|אחרי הצהריים|לפני הצהריים|לפנות בוקר|בבוקר|בערב/i,
+	        isPM : function (input) {
+	            return /^(אחה"צ|אחרי הצהריים|בערב)$/.test(input);
+	        },
+	        meridiem : function (hour, minute, isLower) {
+	            if (hour < 5) {
+	                return 'לפנות בוקר';
+	            } else if (hour < 10) {
+	                return 'בבוקר';
+	            } else if (hour < 12) {
+	                return isLower ? 'לפנה"צ' : 'לפני הצהריים';
+	            } else if (hour < 18) {
+	                return isLower ? 'אחה"צ' : 'אחרי הצהריים';
+	            } else {
+	                return 'בערב';
+	            }
 	        }
 	    });
 
@@ -43858,7 +43959,7 @@
 	        longDateFormat : {
 	            LT : 'H:mm',
 	            LTS : 'H:mm:ss',
-	            L : 'DD/MM/YYYY',
+	            L : 'DD.MM.YYYY',
 	            LL : 'D. MMMM YYYY',
 	            LLL : 'D. MMMM YYYY [kl.] H:mm',
 	            LLLL : 'dddd, D. MMMM YYYY [kl.] H:mm'
@@ -44019,6 +44120,17 @@
 	            lastDay : '[昨日] LT',
 	            lastWeek : '[前週]dddd LT',
 	            sameElse : 'L'
+	        },
+	        ordinalParse : /\d{1,2}日/,
+	        ordinal : function (number, period) {
+	            switch (period) {
+	            case 'd':
+	            case 'D':
+	            case 'DDD':
+	                return number + '日';
+	            default:
+	                return number;
+	            }
 	        },
 	        relativeTime : {
 	            future : '%s後',
@@ -45136,8 +45248,17 @@
 	            yy : '%d വർഷം'
 	        },
 	        meridiemParse: /രാത്രി|രാവിലെ|ഉച്ച കഴിഞ്ഞ്|വൈകുന്നേരം|രാത്രി/i,
-	        isPM : function (input) {
-	            return /^(ഉച്ച കഴിഞ്ഞ്|വൈകുന്നേരം|രാത്രി)$/.test(input);
+	        meridiemHour : function (hour, meridiem) {
+	            if (hour === 12) {
+	                hour = 0;
+	            }
+	            if ((meridiem === 'രാത്രി' && hour >= 4) ||
+	                    meridiem === 'ഉച്ച കഴിഞ്ഞ്' ||
+	                    meridiem === 'വൈകുന്നേരം') {
+	                return hour + 12;
+	            } else {
+	                return hour;
+	            }
 	        },
 	        meridiem : function (hour, minute, isLower) {
 	            if (hour < 4) {
@@ -45923,6 +46044,134 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
+	//! locale : punjabi india (pa-in)
+	//! author : Harpreet Singh : https://github.com/harpreetkhalsagtbit
+
+	;(function (global, factory) {
+	    true ? factory(__webpack_require__(312)) :
+	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
+	   factory(global.moment)
+	}(this, function (moment) { 'use strict';
+
+
+	    var symbolMap = {
+	        '1': '੧',
+	        '2': '੨',
+	        '3': '੩',
+	        '4': '੪',
+	        '5': '੫',
+	        '6': '੬',
+	        '7': '੭',
+	        '8': '੮',
+	        '9': '੯',
+	        '0': '੦'
+	    },
+	    numberMap = {
+	        '੧': '1',
+	        '੨': '2',
+	        '੩': '3',
+	        '੪': '4',
+	        '੫': '5',
+	        '੬': '6',
+	        '੭': '7',
+	        '੮': '8',
+	        '੯': '9',
+	        '੦': '0'
+	    };
+
+	    var pa_in = moment.defineLocale('pa-in', {
+	        // There are months name as per Nanakshahi Calender but they are not used as rigidly in modern Punjabi.
+	        months : 'ਜਨਵਰੀ_ਫ਼ਰਵਰੀ_ਮਾਰਚ_ਅਪ੍ਰੈਲ_ਮਈ_ਜੂਨ_ਜੁਲਾਈ_ਅਗਸਤ_ਸਤੰਬਰ_ਅਕਤੂਬਰ_ਨਵੰਬਰ_ਦਸੰਬਰ'.split('_'),
+	        monthsShort : 'ਜਨਵਰੀ_ਫ਼ਰਵਰੀ_ਮਾਰਚ_ਅਪ੍ਰੈਲ_ਮਈ_ਜੂਨ_ਜੁਲਾਈ_ਅਗਸਤ_ਸਤੰਬਰ_ਅਕਤੂਬਰ_ਨਵੰਬਰ_ਦਸੰਬਰ'.split('_'),
+	        weekdays : 'ਐਤਵਾਰ_ਸੋਮਵਾਰ_ਮੰਗਲਵਾਰ_ਬੁਧਵਾਰ_ਵੀਰਵਾਰ_ਸ਼ੁੱਕਰਵਾਰ_ਸ਼ਨੀਚਰਵਾਰ'.split('_'),
+	        weekdaysShort : 'ਐਤ_ਸੋਮ_ਮੰਗਲ_ਬੁਧ_ਵੀਰ_ਸ਼ੁਕਰ_ਸ਼ਨੀ'.split('_'),
+	        weekdaysMin : 'ਐਤ_ਸੋਮ_ਮੰਗਲ_ਬੁਧ_ਵੀਰ_ਸ਼ੁਕਰ_ਸ਼ਨੀ'.split('_'),
+	        longDateFormat : {
+	            LT : 'A h:mm ਵਜੇ',
+	            LTS : 'A h:mm:ss ਵਜੇ',
+	            L : 'DD/MM/YYYY',
+	            LL : 'D MMMM YYYY',
+	            LLL : 'D MMMM YYYY, A h:mm ਵਜੇ',
+	            LLLL : 'dddd, D MMMM YYYY, A h:mm ਵਜੇ'
+	        },
+	        calendar : {
+	            sameDay : '[ਅਜ] LT',
+	            nextDay : '[ਕਲ] LT',
+	            nextWeek : 'dddd, LT',
+	            lastDay : '[ਕਲ] LT',
+	            lastWeek : '[ਪਿਛਲੇ] dddd, LT',
+	            sameElse : 'L'
+	        },
+	        relativeTime : {
+	            future : '%s ਵਿੱਚ',
+	            past : '%s ਪਿਛਲੇ',
+	            s : 'ਕੁਝ ਸਕਿੰਟ',
+	            m : 'ਇਕ ਮਿੰਟ',
+	            mm : '%d ਮਿੰਟ',
+	            h : 'ਇੱਕ ਘੰਟਾ',
+	            hh : '%d ਘੰਟੇ',
+	            d : 'ਇੱਕ ਦਿਨ',
+	            dd : '%d ਦਿਨ',
+	            M : 'ਇੱਕ ਮਹੀਨਾ',
+	            MM : '%d ਮਹੀਨੇ',
+	            y : 'ਇੱਕ ਸਾਲ',
+	            yy : '%d ਸਾਲ'
+	        },
+	        preparse: function (string) {
+	            return string.replace(/[੧੨੩੪੫੬੭੮੯੦]/g, function (match) {
+	                return numberMap[match];
+	            });
+	        },
+	        postformat: function (string) {
+	            return string.replace(/\d/g, function (match) {
+	                return symbolMap[match];
+	            });
+	        },
+	        // Punjabi notation for meridiems are quite fuzzy in practice. While there exists
+	        // a rigid notion of a 'Pahar' it is not used as rigidly in modern Punjabi.
+	        meridiemParse: /ਰਾਤ|ਸਵੇਰ|ਦੁਪਹਿਰ|ਸ਼ਾਮ/,
+	        meridiemHour : function (hour, meridiem) {
+	            if (hour === 12) {
+	                hour = 0;
+	            }
+	            if (meridiem === 'ਰਾਤ') {
+	                return hour < 4 ? hour : hour + 12;
+	            } else if (meridiem === 'ਸਵੇਰ') {
+	                return hour;
+	            } else if (meridiem === 'ਦੁਪਹਿਰ') {
+	                return hour >= 10 ? hour : hour + 12;
+	            } else if (meridiem === 'ਸ਼ਾਮ') {
+	                return hour + 12;
+	            }
+	        },
+	        meridiem : function (hour, minute, isLower) {
+	            if (hour < 4) {
+	                return 'ਰਾਤ';
+	            } else if (hour < 10) {
+	                return 'ਸਵੇਰ';
+	            } else if (hour < 17) {
+	                return 'ਦੁਪਹਿਰ';
+	            } else if (hour < 20) {
+	                return 'ਸ਼ਾਮ';
+	            } else {
+	                return 'ਰਾਤ';
+	            }
+	        },
+	        week : {
+	            dow : 0, // Sunday is the first day of the week.
+	            doy : 6  // The week that contains Jan 1st is the first week of the year.
+	        }
+	    });
+
+	    return pa_in;
+
+	}));
+
+/***/ },
+/* 384 */
+/***/ function(module, exports, __webpack_require__) {
+
+	//! moment.js locale configuration
 	//! locale : polish (pl)
 	//! author : Rafal Hirsz : https://github.com/evoL
 
@@ -46028,7 +46277,7 @@
 	}));
 
 /***/ },
-/* 384 */
+/* 385 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46096,7 +46345,7 @@
 	}));
 
 /***/ },
-/* 385 */
+/* 386 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46113,7 +46362,7 @@
 	    var pt_br = moment.defineLocale('pt-br', {
 	        months : 'Janeiro_Fevereiro_Março_Abril_Maio_Junho_Julho_Agosto_Setembro_Outubro_Novembro_Dezembro'.split('_'),
 	        monthsShort : 'Jan_Fev_Mar_Abr_Mai_Jun_Jul_Ago_Set_Out_Nov_Dez'.split('_'),
-	        weekdays : 'Domingo_Segunda-Feira_Terça-Feira_Quarta-Feira_Quinta-Feira_Sexta-Feira_Sábado'.split('_'),
+	        weekdays : 'Domingo_Segunda-feira_Terça-feira_Quarta-feira_Quinta-feira_Sexta-feira_Sábado'.split('_'),
 	        weekdaysShort : 'Dom_Seg_Ter_Qua_Qui_Sex_Sáb'.split('_'),
 	        weekdaysMin : 'Dom_2ª_3ª_4ª_5ª_6ª_Sáb'.split('_'),
 	        longDateFormat : {
@@ -46160,7 +46409,7 @@
 	}));
 
 /***/ },
-/* 386 */
+/* 387 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46238,13 +46487,14 @@
 	}));
 
 /***/ },
-/* 387 */
+/* 388 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
 	//! locale : russian (ru)
 	//! author : Viktorminator : https://github.com/Viktorminator
 	//! Author : Menelion Elensúle : https://github.com/Oire
+	//! author : Коренберг Марк : https://github.com/socketpair
 
 	;(function (global, factory) {
 	    true ? factory(__webpack_require__(312)) :
@@ -46274,22 +46524,23 @@
 	    }
 	    var monthsParse = [/^янв/i, /^фев/i, /^мар/i, /^апр/i, /^ма[й|я]/i, /^июн/i, /^июл/i, /^авг/i, /^сен/i, /^окт/i, /^ноя/i, /^дек/i];
 
+	    // http://new.gramota.ru/spravka/rules/139-prop : § 103
 	    var ru = moment.defineLocale('ru', {
 	        months : {
-	            format: 'Января_Февраля_Марта_Апреля_Мая_Июня_Июля_Августа_Сентября_Октября_Ноября_Декабря'.split('_'),
-	            standalone: 'Январь_Февраль_Март_Апрель_Май_Июнь_Июль_Август_Сентябрь_Октябрь_Ноябрь_Декабрь'.split('_')
+	            format: 'января_февраля_марта_апреля_мая_июня_июля_августа_сентября_октября_ноября_декабря'.split('_'),
+	            standalone: 'январь_февраль_март_апрель_май_июнь_июль_август_сентябрь_октябрь_ноябрь_декабрь'.split('_')
 	        },
 	        monthsShort : {
 	            format: 'янв_фев_мар_апр_мая_июня_июля_авг_сен_окт_ноя_дек'.split('_'),
 	            standalone: 'янв_фев_март_апр_май_июнь_июль_авг_сен_окт_ноя_дек'.split('_')
 	        },
 	        weekdays : {
-	            standalone: 'Воскресенье_Понедельник_Вторник_Среда_Четверг_Пятница_Суббота'.split('_'),
-	            format: 'Воскресенье_Понедельник_Вторник_Среду_Четверг_Пятницу_Субботу'.split('_'),
+	            standalone: 'воскресенье_понедельник_вторник_среда_четверг_пятница_суббота'.split('_'),
+	            format: 'воскресенье_понедельник_вторник_среду_четверг_пятницу_субботу'.split('_'),
 	            isFormat: /\[ ?[Вв] ?(?:прошлую|следующую|эту)? ?\] ?dddd/
 	        },
-	        weekdaysShort : 'Вс_Пн_Вт_Ср_Чт_Пт_Сб'.split('_'),
-	        weekdaysMin : 'Вс_Пн_Вт_Ср_Чт_Пт_Сб'.split('_'),
+	        weekdaysShort : 'вс_пн_вт_ср_чт_пт_сб'.split('_'),
+	        weekdaysMin : 'вс_пн_вт_ср_чт_пт_сб'.split('_'),
 	        monthsParse : monthsParse,
 	        longMonthsParse : monthsParse,
 	        shortMonthsParse : monthsParse,
@@ -46408,7 +46659,7 @@
 	}));
 
 /***/ },
-/* 388 */
+/* 389 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46473,7 +46724,7 @@
 	}));
 
 /***/ },
-/* 389 */
+/* 390 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46529,6 +46780,10 @@
 	        ordinal : function (number) {
 	            return number + ' වැනි';
 	        },
+	        meridiemParse : /පෙර වරු|පස් වරු|පෙ.ව|ප.ව./,
+	        isPM : function (input) {
+	            return input === 'ප.ව.' || input === 'පස් වරු';
+	        },
 	        meridiem : function (hours, minutes, isLower) {
 	            if (hours > 11) {
 	                return isLower ? 'ප.ව.' : 'පස් වරු';
@@ -46543,7 +46798,7 @@
 	}));
 
 /***/ },
-/* 390 */
+/* 391 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46697,7 +46952,7 @@
 	}));
 
 /***/ },
-/* 391 */
+/* 392 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46861,7 +47116,7 @@
 	}));
 
 /***/ },
-/* 392 */
+/* 393 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46934,7 +47189,7 @@
 	}));
 
 /***/ },
-/* 393 */
+/* 394 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47046,7 +47301,7 @@
 	}));
 
 /***/ },
-/* 394 */
+/* 395 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47158,7 +47413,7 @@
 	}));
 
 /***/ },
-/* 395 */
+/* 396 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47229,7 +47484,7 @@
 	}));
 
 /***/ },
-/* 396 */
+/* 397 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47291,7 +47546,7 @@
 	}));
 
 /***/ },
-/* 397 */
+/* 398 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47424,7 +47679,7 @@
 	}));
 
 /***/ },
-/* 398 */
+/* 399 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47516,7 +47771,7 @@
 	}));
 
 /***/ },
-/* 399 */
+/* 400 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47585,7 +47840,7 @@
 	}));
 
 /***/ },
-/* 400 */
+/* 401 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47651,7 +47906,7 @@
 	}));
 
 /***/ },
-/* 401 */
+/* 402 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47774,7 +48029,7 @@
 	}));
 
 /***/ },
-/* 402 */
+/* 403 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47868,7 +48123,7 @@
 	}));
 
 /***/ },
-/* 403 */
+/* 404 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47898,6 +48153,10 @@
 	            LL : 'D. MMMM [dallas] YYYY',
 	            LLL : 'D. MMMM [dallas] YYYY HH.mm',
 	            LLLL : 'dddd, [li] D. MMMM [dallas] YYYY HH.mm'
+	        },
+	        meridiemParse: /d\'o|d\'a/i,
+	        isPM : function (input) {
+	            return 'd\'o' === input.toLowerCase();
 	        },
 	        meridiem : function (hours, minutes, isLower) {
 	            if (hours > 11) {
@@ -47959,7 +48218,7 @@
 	}));
 
 /***/ },
-/* 404 */
+/* 405 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48021,7 +48280,7 @@
 	}));
 
 /***/ },
-/* 405 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48083,7 +48342,7 @@
 	}));
 
 /***/ },
-/* 406 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48233,7 +48492,7 @@
 	}));
 
 /***/ },
-/* 407 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48295,7 +48554,7 @@
 	}));
 
 /***/ },
-/* 408 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48315,6 +48574,17 @@
 	        weekdays : 'chủ nhật_thứ hai_thứ ba_thứ tư_thứ năm_thứ sáu_thứ bảy'.split('_'),
 	        weekdaysShort : 'CN_T2_T3_T4_T5_T6_T7'.split('_'),
 	        weekdaysMin : 'CN_T2_T3_T4_T5_T6_T7'.split('_'),
+	        meridiemParse: /sa|ch/i,
+	        isPM : function (input) {
+	            return /^ch$/i.test(input);
+	        },
+	        meridiem : function (hours, minutes, isLower) {
+	            if (hours < 12) {
+	                return isLower ? 'sa' : 'SA';
+	            } else {
+	                return isLower ? 'ch' : 'CH';
+	            }
+	        },
 	        longDateFormat : {
 	            LT : 'HH:mm',
 	            LTS : 'HH:mm:ss',
@@ -48365,7 +48635,7 @@
 	}));
 
 /***/ },
-/* 409 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48496,7 +48766,7 @@
 	}));
 
 /***/ },
-/* 410 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48601,60 +48871,6 @@
 	}));
 
 /***/ },
-/* 411 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	  Copyright (c) 2016 Jed Watson.
-	  Licensed under the MIT License (MIT), see
-	  http://jedwatson.github.io/classnames
-	*/
-	/* global define */
-
-	(function () {
-		'use strict';
-
-		var hasOwn = {}.hasOwnProperty;
-
-		function classNames () {
-			var classes = [];
-
-			for (var i = 0; i < arguments.length; i++) {
-				var arg = arguments[i];
-				if (!arg) continue;
-
-				var argType = typeof arg;
-
-				if (argType === 'string' || argType === 'number') {
-					classes.push(arg);
-				} else if (Array.isArray(arg)) {
-					classes.push(classNames.apply(null, arg));
-				} else if (argType === 'object') {
-					for (var key in arg) {
-						if (hasOwn.call(arg, key) && arg[key]) {
-							classes.push(key);
-						}
-					}
-				}
-			}
-
-			return classes.join(' ');
-		}
-
-		if (typeof module !== 'undefined' && module.exports) {
-			module.exports = classNames;
-		} else if (true) {
-			// register as 'classnames', consistent with npm package name
-			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
-				return classNames;
-			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-		} else {
-			window.classNames = classNames;
-		}
-	}());
-
-
-/***/ },
 /* 412 */
 /***/ function(module, exports) {
 
@@ -48665,6 +48881,8 @@
 	});
 	exports.isSameDay = isSameDay;
 	exports.isDayDisabled = isDayDisabled;
+	exports.allDaysDisabledBefore = allDaysDisabledBefore;
+	exports.allDaysDisabledAfter = allDaysDisabledAfter;
 	function isSameDay(moment1, moment2) {
 	  if (moment1 && moment2) {
 	    return moment1.isSame(moment2, 'day');
@@ -48687,6 +48905,30 @@
 	  }) || includeDates && !includeDates.some(function (includeDate) {
 	    return isSameDay(day, includeDate);
 	  }) || filterDate && !filterDate(day.clone()) || false;
+	}
+
+	function allDaysDisabledBefore(day, unit) {
+	  var _ref2 = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	  var minDate = _ref2.minDate;
+	  var includeDates = _ref2.includeDates;
+
+	  var dateBefore = day.clone().subtract(1, unit);
+	  return minDate && dateBefore.isBefore(minDate, unit) || includeDates && includeDates.every(function (includeDate) {
+	    return dateBefore.isBefore(includeDate, unit);
+	  }) || false;
+	}
+
+	function allDaysDisabledAfter(day, unit) {
+	  var _ref3 = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	  var maxDate = _ref3.maxDate;
+	  var includeDates = _ref3.includeDates;
+
+	  var dateAfter = day.clone().add(1, unit);
+	  return maxDate && dateAfter.isAfter(maxDate, unit) || includeDates && includeDates.every(function (includeDate) {
+	    return dateAfter.isAfter(includeDate, unit);
+	  }) || false;
 	}
 
 /***/ },
@@ -48796,15 +49038,31 @@
 	      var day = startOfWeek.clone().add(offset, 'days');
 	      return _react2.default.createElement(
 	        'div',
-	        { key: offset, className: 'datepicker__day' },
+	        { key: offset, className: 'react-datepicker__day' },
 	        day.localeData().weekdaysMin(day)
 	      );
 	    });
 	  },
+	  renderPreviousMonthButton: function renderPreviousMonthButton() {
+	    if ((0, _date_utils.allDaysDisabledBefore)(this.state.date, 'month', this.props)) {
+	      return;
+	    }
+	    return _react2.default.createElement('a', {
+	      className: 'react-datepicker__navigation react-datepicker__navigation--previous',
+	      onClick: this.decreaseMonth });
+	  },
+	  renderNextMonthButton: function renderNextMonthButton() {
+	    if ((0, _date_utils.allDaysDisabledAfter)(this.state.date, 'month', this.props)) {
+	      return;
+	    }
+	    return _react2.default.createElement('a', {
+	      className: 'react-datepicker__navigation react-datepicker__navigation--next',
+	      onClick: this.increaseMonth });
+	  },
 	  renderCurrentMonth: function renderCurrentMonth() {
-	    var classes = ['datepicker__current-month'];
+	    var classes = ['react-datepicker__current-month'];
 	    if (this.props.showYearDropdown) {
-	      classes.push('datepicker__current-month--hasYearDropdown');
+	      classes.push('react-datepicker__current-month--hasYearDropdown');
 	    }
 	    return _react2.default.createElement(
 	      'div',
@@ -48828,7 +49086,7 @@
 	    }
 	    return _react2.default.createElement(
 	      'div',
-	      { className: 'datepicker__today-button', onClick: function onClick() {
+	      { className: 'react-datepicker__today-button', onClick: function onClick() {
 	          return _this.props.onSelect((0, _moment2.default)());
 	        } },
 	      this.props.todayButton
@@ -48837,17 +49095,15 @@
 	  render: function render() {
 	    return _react2.default.createElement(
 	      'div',
-	      { className: 'datepicker' },
-	      _react2.default.createElement('div', { className: 'datepicker__triangle' }),
+	      { className: 'react-datepicker' },
+	      _react2.default.createElement('div', { className: 'react-datepicker__triangle' }),
 	      _react2.default.createElement(
 	        'div',
-	        { className: 'datepicker__header' },
-	        _react2.default.createElement('a', { className: 'datepicker__navigation datepicker__navigation--previous',
-	          onClick: this.decreaseMonth }),
+	        { className: 'react-datepicker__header' },
+	        this.renderPreviousMonthButton(),
 	        this.renderCurrentMonth(),
 	        this.renderYearDropdown(),
-	        _react2.default.createElement('a', { className: 'datepicker__navigation datepicker__navigation--next',
-	          onClick: this.increaseMonth }),
+	        this.renderNextMonthButton(),
 	        _react2.default.createElement(
 	          'div',
 	          null,
@@ -48904,13 +49160,13 @@
 	  renderReadView: function renderReadView() {
 	    return _react2.default.createElement(
 	      'div',
-	      { className: 'datepicker__year-read-view', onClick: this.toggleDropdown },
+	      { className: 'react-datepicker__year-read-view', onClick: this.toggleDropdown },
 	      _react2.default.createElement(
 	        'span',
-	        { className: 'datepicker__year-read-view--selected-year' },
+	        { className: 'react-datepicker__year-read-view--selected-year' },
 	        this.props.year
 	      ),
-	      _react2.default.createElement('span', { className: 'datepicker__year-read-view--down-arrow' })
+	      _react2.default.createElement('span', { className: 'react-datepicker__year-read-view--down-arrow' })
 	    );
 	  },
 	  renderDropdown: function renderDropdown() {
@@ -48984,12 +49240,12 @@
 	    var options = this.state.yearsList.map(function (year) {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'datepicker__year-option',
+	        { className: 'react-datepicker__year-option',
 	          key: year,
 	          onClick: _this.onChange.bind(_this, year) },
 	        selectedYear === year ? _react2.default.createElement(
 	          'span',
-	          { className: 'datepicker__year-option--selected' },
+	          { className: 'react-datepicker__year-option--selected' },
 	          '✓'
 	        ) : '',
 	        year
@@ -48998,19 +49254,19 @@
 
 	    options.unshift(_react2.default.createElement(
 	      'div',
-	      { className: 'datepicker__year-option',
+	      { className: 'react-datepicker__year-option',
 	        ref: "upcoming",
 	        key: "upcoming",
 	        onClick: this.incrementYears },
-	      _react2.default.createElement('a', { className: 'datepicker__navigation datepicker__navigation--years datepicker__navigation--years-upcoming' })
+	      _react2.default.createElement('a', { className: 'react-datepicker__navigation react-datepicker__navigation--years react-datepicker__navigation--years-upcoming' })
 	    ));
 	    options.push(_react2.default.createElement(
 	      'div',
-	      { className: 'datepicker__year-option',
+	      { className: 'react-datepicker__year-option',
 	        ref: "previous",
 	        key: "previous",
 	        onClick: this.decrementYears },
-	      _react2.default.createElement('a', { className: 'datepicker__navigation datepicker__navigation--years datepicker__navigation--years-previous' })
+	      _react2.default.createElement('a', { className: 'react-datepicker__navigation react-datepicker__navigation--years react-datepicker__navigation--years-previous' })
 	    ));
 	    return options;
 	  },
@@ -49038,7 +49294,7 @@
 	  render: function render() {
 	    return _react2.default.createElement(
 	      'div',
-	      { className: 'datepicker__year-dropdown' },
+	      { className: 'react-datepicker__year-dropdown' },
 	      this.renderOptions()
 	    );
 	  }
@@ -49250,7 +49506,7 @@
 	  render: function render() {
 	    return _react2.default.createElement(
 	      'div',
-	      { className: 'datepicker__month' },
+	      { className: 'react-datepicker__month' },
 	      this.renderWeeks()
 	    );
 	  }
@@ -49320,7 +49576,7 @@
 	  render: function render() {
 	    return _react2.default.createElement(
 	      'div',
-	      { className: 'datepicker__week' },
+	      { className: 'react-datepicker__week' },
 	      this.renderDays()
 	    );
 	  }
@@ -49342,7 +49598,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _classnames = __webpack_require__(411);
+	var _classnames = __webpack_require__(420);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -49398,13 +49654,13 @@
 	    return this.props.month !== undefined && this.props.month !== this.props.day.month();
 	  },
 	  getClassNames: function getClassNames() {
-	    return (0, _classnames2.default)('datepicker__day', {
-	      'datepicker__day--disabled': this.isDisabled(),
-	      'datepicker__day--selected': this.isSameDay(this.props.selected),
-	      'datepicker__day--in-range': this.isInRange(),
-	      'datepicker__day--today': this.isSameDay((0, _moment2.default)()),
-	      'datepicker__day--weekend': this.isWeekend(),
-	      'datepicker__day--outside-month': this.isOutsideMonth()
+	    return (0, _classnames2.default)('react-datepicker__day', {
+	      'react-datepicker__day--disabled': this.isDisabled(),
+	      'react-datepicker__day--selected': this.isSameDay(this.props.selected),
+	      'react-datepicker__day--in-range': this.isInRange(),
+	      'react-datepicker__day--today': this.isSameDay((0, _moment2.default)()),
+	      'react-datepicker__day--weekend': this.isWeekend(),
+	      'react-datepicker__day--outside-month': this.isOutsideMonth()
 	    });
 	  },
 	  render: function render() {
@@ -49422,6 +49678,60 @@
 /* 420 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2016 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+	/* global define */
+
+	(function () {
+		'use strict';
+
+		var hasOwn = {}.hasOwnProperty;
+
+		function classNames () {
+			var classes = [];
+
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (!arg) continue;
+
+				var argType = typeof arg;
+
+				if (argType === 'string' || argType === 'number') {
+					classes.push(arg);
+				} else if (Array.isArray(arg)) {
+					classes.push(classNames.apply(null, arg));
+				} else if (argType === 'object') {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				}
+			}
+
+			return classes.join(' ');
+		}
+
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else if (true) {
+			// register as 'classnames', consistent with npm package name
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return classNames;
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else {
+			window.classNames = classNames;
+		}
+	}());
+
+
+/***/ },
+/* 421 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
@@ -49430,7 +49740,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _TetherComponent = __webpack_require__(421);
+	var _TetherComponent = __webpack_require__(422);
 
 	var _TetherComponent2 = _interopRequireDefault(_TetherComponent);
 
@@ -49438,7 +49748,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 421 */
+/* 422 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49469,7 +49779,7 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _tether = __webpack_require__(422);
+	var _tether = __webpack_require__(423);
 
 	var _tether2 = _interopRequireDefault(_tether);
 
@@ -49657,7 +49967,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 422 */
+/* 423 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! tether 1.2.0 */
@@ -51389,7 +51699,7 @@
 
 
 /***/ },
-/* 423 */
+/* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51428,7 +51738,7 @@
 	});
 
 /***/ },
-/* 424 */
+/* 425 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51503,7 +51813,7 @@
 	});
 
 /***/ },
-/* 425 */
+/* 426 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51575,7 +51885,7 @@
 	});
 
 /***/ },
-/* 426 */
+/* 427 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51620,7 +51930,7 @@
 	});
 
 /***/ },
-/* 427 */
+/* 428 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51707,7 +52017,7 @@
 	});
 
 /***/ },
-/* 428 */
+/* 429 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51782,7 +52092,7 @@
 	});
 
 /***/ },
-/* 429 */
+/* 430 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51861,7 +52171,7 @@
 	});
 
 /***/ },
-/* 430 */
+/* 431 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51940,7 +52250,7 @@
 	});
 
 /***/ },
-/* 431 */
+/* 432 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52019,7 +52329,7 @@
 	});
 
 /***/ },
-/* 432 */
+/* 433 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52095,7 +52405,7 @@
 	});
 
 /***/ },
-/* 433 */
+/* 434 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52170,7 +52480,7 @@
 	});
 
 /***/ },
-/* 434 */
+/* 435 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52286,7 +52596,7 @@
 	});
 
 /***/ },
-/* 435 */
+/* 436 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52365,7 +52675,7 @@
 	});
 
 /***/ },
-/* 436 */
+/* 437 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52469,7 +52779,7 @@
 	module.exports = DateRange;
 
 /***/ },
-/* 437 */
+/* 438 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52540,7 +52850,7 @@
 	});
 
 /***/ },
-/* 438 */
+/* 439 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52617,7 +52927,7 @@
 	});
 
 /***/ },
-/* 439 */
+/* 440 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52685,15 +52995,15 @@
 	});
 
 /***/ },
-/* 440 */
+/* 441 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 441 */
-440,
 /* 442 */
+441,
+/* 443 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
