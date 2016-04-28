@@ -103,23 +103,20 @@
       .react-datepicker__navigation--years-upcoming:hover {
         border-bottom-color: #b3b3b3; }
 
-.react-datepicker__week-day {
-  color: #ccc;
-  display: inline-block;
-  width: 28px;
-  line-height: 24px; }
-
 .react-datepicker__month {
   margin: 5px;
   text-align: center; }
 
+.react-datepicker__day-name,
 .react-datepicker__day {
   color: #000;
   display: inline-block;
   width: 24px;
   line-height: 24px;
   text-align: center;
-  margin: 2px;
+  margin: 2px; }
+
+.react-datepicker__day {
   cursor: pointer; }
   .react-datepicker__day:hover {
     border-radius: 4px;
@@ -139,7 +136,8 @@
       background-color: transparent; }
 
 .react-datepicker__input-container {
-  position: relative; }
+  position: relative;
+  display: inline-block; }
 
 .react-datepicker__year-read-view {
   width: 50%;
