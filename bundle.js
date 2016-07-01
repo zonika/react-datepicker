@@ -80,11 +80,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(33);
+	var _reactDom = __webpack_require__(35);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _root = __webpack_require__(164);
+	var _root = __webpack_require__(165);
 
 	var _root2 = _interopRequireDefault(_root);
 
@@ -122,14 +122,14 @@
 
 	var ReactChildren = __webpack_require__(5);
 	var ReactComponent = __webpack_require__(16);
-	var ReactClass = __webpack_require__(22);
-	var ReactDOMFactories = __webpack_require__(27);
+	var ReactClass = __webpack_require__(24);
+	var ReactDOMFactories = __webpack_require__(29);
 	var ReactElement = __webpack_require__(8);
-	var ReactElementValidator = __webpack_require__(28);
-	var ReactPropTypes = __webpack_require__(30);
-	var ReactVersion = __webpack_require__(31);
+	var ReactElementValidator = __webpack_require__(30);
+	var ReactPropTypes = __webpack_require__(32);
+	var ReactVersion = __webpack_require__(33);
 
-	var onlyChild = __webpack_require__(32);
+	var onlyChild = __webpack_require__(34);
 	var warning = __webpack_require__(10);
 
 	var createElement = ReactElement.createElement;
@@ -197,8 +197,8 @@
 /* 4 */
 /***/ function(module, exports) {
 
-	/* eslint-disable no-unused-vars */
 	'use strict';
+	/* eslint-disable no-unused-vars */
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
@@ -210,7 +210,51 @@
 		return Object(val);
 	}
 
-	module.exports = Object.assign || function (target, source) {
+	function shouldUseNative() {
+		try {
+			if (!Object.assign) {
+				return false;
+			}
+
+			// Detect buggy property enumeration order in older V8 versions.
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+			var test1 = new String('abc');  // eslint-disable-line
+			test1[5] = 'de';
+			if (Object.getOwnPropertyNames(test1)[0] === '5') {
+				return false;
+			}
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+			var test2 = {};
+			for (var i = 0; i < 10; i++) {
+				test2['_' + String.fromCharCode(i)] = i;
+			}
+			var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+				return test2[n];
+			});
+			if (order2.join('') !== '0123456789') {
+				return false;
+			}
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+			var test3 = {};
+			'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+				test3[letter] = letter;
+			});
+			if (Object.keys(Object.assign({}, test3)).join('') !==
+					'abcdefghijklmnopqrst') {
+				return false;
+			}
+
+			return true;
+		} catch (e) {
+			// We don't expect any of the above to throw, but better to be safe.
+			return false;
+		}
+	}
+
+	module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 		var from;
 		var to = toObject(target);
 		var symbols;
@@ -299,6 +343,8 @@
 	/**
 	 * Iterates through children that are typically specified as `props.children`.
 	 *
+	 * See https://facebook.github.io/react/docs/top-level-api.html#react.children.foreach
+	 *
 	 * The provided forEachFunc(child, index) will be called for each
 	 * leaf child.
 	 *
@@ -374,7 +420,9 @@
 	/**
 	 * Maps children that are typically specified as `props.children`.
 	 *
-	 * The provided mapFunction(child, index) will be called for each
+	 * See https://facebook.github.io/react/docs/top-level-api.html#react.children.map
+	 *
+	 * The provided mapFunction(child, key, index) will be called for each
 	 * leaf child.
 	 *
 	 * @param {?*} children Children tree container.
@@ -399,6 +447,8 @@
 	 * Count the number of children that are typically specified as
 	 * `props.children`.
 	 *
+	 * See https://facebook.github.io/react/docs/top-level-api.html#react.children.count
+	 *
 	 * @param {?*} children Children tree container.
 	 * @return {number} The number of children.
 	 */
@@ -409,6 +459,8 @@
 	/**
 	 * Flatten a children object (typically specified as `props.children`) and
 	 * return an array with appropriately re-keyed children.
+	 *
+	 * See https://facebook.github.io/react/docs/top-level-api.html#react.children.toarray
 	 */
 	function toArray(children) {
 	  var result = [];
@@ -723,6 +775,10 @@
 	  return element;
 	};
 
+	/**
+	 * Create and return a new ReactElement of the given type.
+	 * See https://facebook.github.io/react/docs/top-level-api.html#react.createelement
+	 */
 	ReactElement.createElement = function (type, config, children) {
 	  var propName;
 
@@ -736,6 +792,11 @@
 
 	  if (config != null) {
 	    if (false) {
+	      process.env.NODE_ENV !== 'production' ? warning(
+	      /* eslint-disable no-proto */
+	      config.__proto__ == null || config.__proto__ === Object.prototype,
+	      /* eslint-enable no-proto */
+	      'React.createElement(...): Expected props argument to be a plain object. ' + 'Properties defined in its prototype chain will be ignored.') : void 0;
 	      ref = !config.hasOwnProperty('ref') || Object.getOwnPropertyDescriptor(config, 'ref').get ? null : config.ref;
 	      key = !config.hasOwnProperty('key') || Object.getOwnPropertyDescriptor(config, 'key').get ? null : '' + config.key;
 	    } else {
@@ -807,6 +868,10 @@
 	  return ReactElement(type, key, ref, self, source, ReactCurrentOwner.current, props);
 	};
 
+	/**
+	 * Return a function that produces ReactElements of a given type.
+	 * See https://facebook.github.io/react/docs/top-level-api.html#react.createfactory
+	 */
 	ReactElement.createFactory = function (type) {
 	  var factory = ReactElement.createElement.bind(null, type);
 	  // Expose the type on the factory and the prototype so that it can be
@@ -824,6 +889,10 @@
 	  return newElement;
 	};
 
+	/**
+	 * Clone and return a new ReactElement using element as the starting point.
+	 * See https://facebook.github.io/react/docs/top-level-api.html#react.cloneelement
+	 */
 	ReactElement.cloneElement = function (element, config, children) {
 	  var propName;
 
@@ -844,6 +913,13 @@
 	  var owner = element._owner;
 
 	  if (config != null) {
+	    if (false) {
+	      process.env.NODE_ENV !== 'production' ? warning(
+	      /* eslint-disable no-proto */
+	      config.__proto__ == null || config.__proto__ === Object.prototype,
+	      /* eslint-enable no-proto */
+	      'React.cloneElement(...): Expected props argument to be a plain object. ' + 'Properties defined in its prototype chain will be ignored.') : void 0;
+	    }
 	    if (config.ref !== undefined) {
 	      // Silently steal the ref from the parent.
 	      ref = config.ref;
@@ -886,6 +962,8 @@
 	};
 
 	/**
+	 * Verifies the object is a ReactElement.
+	 * See https://facebook.github.io/react/docs/top-level-api.html#react.isvalidelement
 	 * @param {?object} object
 	 * @return {boolean} True if `object` is a valid component.
 	 * @final
@@ -960,7 +1038,7 @@
 	var warning = emptyFunction;
 
 	if (false) {
-	  warning = function (condition, format) {
+	  warning = function warning(condition, format) {
 	    for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
 	      args[_key - 2] = arguments[_key];
 	    }
@@ -1007,6 +1085,7 @@
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
+	 * 
 	 */
 
 	function makeEmptyFunction(arg) {
@@ -1020,7 +1099,7 @@
 	 * primarily useful idiomatically for overridable function endpoints which
 	 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
 	 */
-	function emptyFunction() {}
+	var emptyFunction = function emptyFunction() {};
 
 	emptyFunction.thatReturns = makeEmptyFunction;
 	emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
@@ -1356,7 +1435,7 @@
 	var ReactInstrumentation = __webpack_require__(18);
 
 	var canDefineProperty = __webpack_require__(12);
-	var emptyObject = __webpack_require__(21);
+	var emptyObject = __webpack_require__(23);
 	var invariant = __webpack_require__(7);
 	var warning = __webpack_require__(10);
 
@@ -1599,7 +1678,9 @@
 
 	'use strict';
 
-	var ReactInvalidSetStateWarningDevTool = __webpack_require__(20);
+	var ExecutionEnvironment = __webpack_require__(20);
+
+	var performanceNow = __webpack_require__(21);
 	var warning = __webpack_require__(10);
 
 	var eventHandlers = [];
@@ -1620,6 +1701,70 @@
 	  }
 	}
 
+	var isProfiling = false;
+	var flushHistory = [];
+	var currentFlushNesting = 0;
+	var currentFlushMeasurements = null;
+	var currentFlushStartTime = null;
+	var currentTimerDebugID = null;
+	var currentTimerStartTime = null;
+	var currentTimerType = null;
+
+	function clearHistory() {
+	  ReactComponentTreeDevtool.purgeUnmountedComponents();
+	  ReactNativeOperationHistoryDevtool.clearHistory();
+	}
+
+	function getTreeSnapshot(registeredIDs) {
+	  return registeredIDs.reduce(function (tree, id) {
+	    var ownerID = ReactComponentTreeDevtool.getOwnerID(id);
+	    var parentID = ReactComponentTreeDevtool.getParentID(id);
+	    tree[id] = {
+	      displayName: ReactComponentTreeDevtool.getDisplayName(id),
+	      text: ReactComponentTreeDevtool.getText(id),
+	      updateCount: ReactComponentTreeDevtool.getUpdateCount(id),
+	      childIDs: ReactComponentTreeDevtool.getChildIDs(id),
+	      // Text nodes don't have owners but this is close enough.
+	      ownerID: ownerID || ReactComponentTreeDevtool.getOwnerID(parentID),
+	      parentID: parentID
+	    };
+	    return tree;
+	  }, {});
+	}
+
+	function resetMeasurements() {
+	  if (false) {
+	    var previousStartTime = currentFlushStartTime;
+	    var previousMeasurements = currentFlushMeasurements || [];
+	    var previousOperations = ReactNativeOperationHistoryDevtool.getHistory();
+
+	    if (!isProfiling || currentFlushNesting === 0) {
+	      currentFlushStartTime = null;
+	      currentFlushMeasurements = null;
+	      clearHistory();
+	      return;
+	    }
+
+	    if (previousMeasurements.length || previousOperations.length) {
+	      var registeredIDs = ReactComponentTreeDevtool.getRegisteredIDs();
+	      flushHistory.push({
+	        duration: performanceNow() - previousStartTime,
+	        measurements: previousMeasurements || [],
+	        operations: previousOperations || [],
+	        treeSnapshot: getTreeSnapshot(registeredIDs)
+	      });
+	    }
+
+	    clearHistory();
+	    currentFlushStartTime = performanceNow();
+	    currentFlushMeasurements = [];
+	  }
+	}
+
+	function checkDebugID(debugID) {
+	   false ? warning(debugID, 'ReactDebugTool: debugID may not be empty.') : void 0;
+	}
+
 	var ReactDebugTool = {
 	  addDevtool: function (devtool) {
 	    eventHandlers.push(devtool);
@@ -1632,76 +1777,252 @@
 	      }
 	    }
 	  },
+	  beginProfiling: function () {
+	    if (false) {
+	      if (isProfiling) {
+	        return;
+	      }
+
+	      isProfiling = true;
+	      flushHistory.length = 0;
+	      resetMeasurements();
+	    }
+	  },
+	  endProfiling: function () {
+	    if (false) {
+	      if (!isProfiling) {
+	        return;
+	      }
+
+	      isProfiling = false;
+	      resetMeasurements();
+	    }
+	  },
+	  getFlushHistory: function () {
+	    if (false) {
+	      return flushHistory;
+	    }
+	  },
+	  onBeginFlush: function () {
+	    if (false) {
+	      currentFlushNesting++;
+	      resetMeasurements();
+	    }
+	    emitEvent('onBeginFlush');
+	  },
+	  onEndFlush: function () {
+	    if (false) {
+	      resetMeasurements();
+	      currentFlushNesting--;
+	    }
+	    emitEvent('onEndFlush');
+	  },
+	  onBeginLifeCycleTimer: function (debugID, timerType) {
+	    checkDebugID(debugID);
+	    emitEvent('onBeginLifeCycleTimer', debugID, timerType);
+	    if (false) {
+	      if (isProfiling && currentFlushNesting > 0) {
+	        process.env.NODE_ENV !== 'production' ? warning(!currentTimerType, 'There is an internal error in the React performance measurement code. ' + 'Did not expect %s timer to start while %s timer is still in ' + 'progress for %s instance.', timerType, currentTimerType || 'no', debugID === currentTimerDebugID ? 'the same' : 'another') : void 0;
+	        currentTimerStartTime = performanceNow();
+	        currentTimerDebugID = debugID;
+	        currentTimerType = timerType;
+	      }
+	    }
+	  },
+	  onEndLifeCycleTimer: function (debugID, timerType) {
+	    checkDebugID(debugID);
+	    if (false) {
+	      if (isProfiling && currentFlushNesting > 0) {
+	        process.env.NODE_ENV !== 'production' ? warning(currentTimerType === timerType, 'There is an internal error in the React performance measurement code. ' + 'We did not expect %s timer to stop while %s timer is still in ' + 'progress for %s instance. Please report this as a bug in React.', timerType, currentTimerType || 'no', debugID === currentTimerDebugID ? 'the same' : 'another') : void 0;
+	        currentFlushMeasurements.push({
+	          timerType: timerType,
+	          instanceID: debugID,
+	          duration: performanceNow() - currentTimerStartTime
+	        });
+	        currentTimerStartTime = null;
+	        currentTimerDebugID = null;
+	        currentTimerType = null;
+	      }
+	    }
+	    emitEvent('onEndLifeCycleTimer', debugID, timerType);
+	  },
+	  onBeginReconcilerTimer: function (debugID, timerType) {
+	    checkDebugID(debugID);
+	    emitEvent('onBeginReconcilerTimer', debugID, timerType);
+	  },
+	  onEndReconcilerTimer: function (debugID, timerType) {
+	    checkDebugID(debugID);
+	    emitEvent('onEndReconcilerTimer', debugID, timerType);
+	  },
 	  onBeginProcessingChildContext: function () {
 	    emitEvent('onBeginProcessingChildContext');
 	  },
 	  onEndProcessingChildContext: function () {
 	    emitEvent('onEndProcessingChildContext');
 	  },
+	  onNativeOperation: function (debugID, type, payload) {
+	    checkDebugID(debugID);
+	    emitEvent('onNativeOperation', debugID, type, payload);
+	  },
 	  onSetState: function () {
 	    emitEvent('onSetState');
 	  },
-	  onMountRootComponent: function (internalInstance) {
-	    emitEvent('onMountRootComponent', internalInstance);
+	  onSetDisplayName: function (debugID, displayName) {
+	    checkDebugID(debugID);
+	    emitEvent('onSetDisplayName', debugID, displayName);
 	  },
-	  onMountComponent: function (internalInstance) {
-	    emitEvent('onMountComponent', internalInstance);
+	  onSetChildren: function (debugID, childDebugIDs) {
+	    checkDebugID(debugID);
+	    emitEvent('onSetChildren', debugID, childDebugIDs);
 	  },
-	  onUpdateComponent: function (internalInstance) {
-	    emitEvent('onUpdateComponent', internalInstance);
+	  onSetOwner: function (debugID, ownerDebugID) {
+	    checkDebugID(debugID);
+	    emitEvent('onSetOwner', debugID, ownerDebugID);
 	  },
-	  onUnmountComponent: function (internalInstance) {
-	    emitEvent('onUnmountComponent', internalInstance);
+	  onSetText: function (debugID, text) {
+	    checkDebugID(debugID);
+	    emitEvent('onSetText', debugID, text);
+	  },
+	  onMountRootComponent: function (debugID) {
+	    checkDebugID(debugID);
+	    emitEvent('onMountRootComponent', debugID);
+	  },
+	  onMountComponent: function (debugID) {
+	    checkDebugID(debugID);
+	    emitEvent('onMountComponent', debugID);
+	  },
+	  onUpdateComponent: function (debugID) {
+	    checkDebugID(debugID);
+	    emitEvent('onUpdateComponent', debugID);
+	  },
+	  onUnmountComponent: function (debugID) {
+	    checkDebugID(debugID);
+	    emitEvent('onUnmountComponent', debugID);
 	  }
 	};
 
-	ReactDebugTool.addDevtool(ReactInvalidSetStateWarningDevTool);
+	if (false) {
+	  var ReactInvalidSetStateWarningDevTool = require('./ReactInvalidSetStateWarningDevTool');
+	  var ReactNativeOperationHistoryDevtool = require('./ReactNativeOperationHistoryDevtool');
+	  var ReactComponentTreeDevtool = require('./ReactComponentTreeDevtool');
+	  ReactDebugTool.addDevtool(ReactInvalidSetStateWarningDevTool);
+	  ReactDebugTool.addDevtool(ReactComponentTreeDevtool);
+	  ReactDebugTool.addDevtool(ReactNativeOperationHistoryDevtool);
+	  var url = ExecutionEnvironment.canUseDOM && window.location.href || '';
+	  if (/[?&]react_perf\b/.test(url)) {
+	    ReactDebugTool.beginProfiling();
+	  }
+	}
 
 	module.exports = ReactDebugTool;
 
 /***/ },
 /* 20 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	/**
-	 * Copyright 2016-present, Facebook, Inc.
+	 * Copyright (c) 2013-present, Facebook, Inc.
 	 * All rights reserved.
 	 *
 	 * This source code is licensed under the BSD-style license found in the
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
-	 * @providesModule ReactInvalidSetStateWarningDevTool
 	 */
 
 	'use strict';
 
-	var warning = __webpack_require__(10);
+	var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
-	if (false) {
-	  var processingChildContext = false;
+	/**
+	 * Simple, lightweight module assisting with the detection and context of
+	 * Worker. Helps avoid circular dependencies and allows code to reason about
+	 * whether or not they are in a Worker, even if they never include the main
+	 * `ReactWorker` dependency.
+	 */
+	var ExecutionEnvironment = {
 
-	  var warnInvalidSetState = function () {
-	    process.env.NODE_ENV !== 'production' ? warning(!processingChildContext, 'setState(...): Cannot call setState() inside getChildContext()') : void 0;
-	  };
-	}
+	  canUseDOM: canUseDOM,
 
-	var ReactInvalidSetStateWarningDevTool = {
-	  onBeginProcessingChildContext: function () {
-	    processingChildContext = true;
-	  },
-	  onEndProcessingChildContext: function () {
-	    processingChildContext = false;
-	  },
-	  onSetState: function () {
-	    warnInvalidSetState();
-	  }
+	  canUseWorkers: typeof Worker !== 'undefined',
+
+	  canUseEventListeners: canUseDOM && !!(window.addEventListener || window.attachEvent),
+
+	  canUseViewport: canUseDOM && !!window.screen,
+
+	  isInWorker: !canUseDOM // For now, this is true - might change in the future.
+
 	};
 
-	module.exports = ReactInvalidSetStateWarningDevTool;
+	module.exports = ExecutionEnvironment;
 
 /***/ },
 /* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @typechecks
+	 */
+
+	var performance = __webpack_require__(22);
+
+	var performanceNow;
+
+	/**
+	 * Detect if we can use `window.performance.now()` and gracefully fallback to
+	 * `Date.now()` if it doesn't exist. We need to support Firefox < 15 for now
+	 * because of Facebook's testing infrastructure.
+	 */
+	if (performance.now) {
+	  performanceNow = function performanceNow() {
+	    return performance.now();
+	  };
+	} else {
+	  performanceNow = function performanceNow() {
+	    return Date.now();
+	  };
+	}
+
+	module.exports = performanceNow;
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @typechecks
+	 */
+
+	'use strict';
+
+	var ExecutionEnvironment = __webpack_require__(20);
+
+	var performance;
+
+	if (ExecutionEnvironment.canUseDOM) {
+	  performance = window.performance || window.msPerformance || window.webkitPerformance;
+	}
+
+	module.exports = performance || {};
+
+/***/ },
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1725,7 +2046,7 @@
 	module.exports = emptyObject;
 
 /***/ },
-/* 22 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1745,14 +2066,14 @@
 
 	var ReactComponent = __webpack_require__(16);
 	var ReactElement = __webpack_require__(8);
-	var ReactPropTypeLocations = __webpack_require__(23);
-	var ReactPropTypeLocationNames = __webpack_require__(25);
+	var ReactPropTypeLocations = __webpack_require__(25);
+	var ReactPropTypeLocationNames = __webpack_require__(27);
 	var ReactNoopUpdateQueue = __webpack_require__(17);
 
-	var emptyObject = __webpack_require__(21);
+	var emptyObject = __webpack_require__(23);
 	var invariant = __webpack_require__(7);
-	var keyMirror = __webpack_require__(24);
-	var keyOf = __webpack_require__(26);
+	var keyMirror = __webpack_require__(26);
+	var keyOf = __webpack_require__(28);
 	var warning = __webpack_require__(10);
 
 	var MIXINS_KEY = keyOf({ mixins: null });
@@ -2357,6 +2678,7 @@
 
 	  /**
 	   * Creates a composite component class given a class specification.
+	   * See https://facebook.github.io/react/docs/top-level-api.html#react.createclass
 	   *
 	   * @param {object} spec Class specification (which must define `render`).
 	   * @return {function} Component constructor function.
@@ -2453,7 +2775,7 @@
 	module.exports = ReactClass;
 
 /***/ },
-/* 23 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2469,7 +2791,7 @@
 
 	'use strict';
 
-	var keyMirror = __webpack_require__(24);
+	var keyMirror = __webpack_require__(26);
 
 	var ReactPropTypeLocations = keyMirror({
 	  prop: null,
@@ -2480,7 +2802,7 @@
 	module.exports = ReactPropTypeLocations;
 
 /***/ },
-/* 24 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2516,7 +2838,7 @@
 	 * @param {object} obj
 	 * @return {object}
 	 */
-	var keyMirror = function (obj) {
+	var keyMirror = function keyMirror(obj) {
 	  var ret = {};
 	  var key;
 	  !(obj instanceof Object && !Array.isArray(obj)) ?  false ? invariant(false, 'keyMirror(...): Argument must be an object.') : invariant(false) : void 0;
@@ -2532,7 +2854,7 @@
 	module.exports = keyMirror;
 
 /***/ },
-/* 25 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2561,7 +2883,7 @@
 	module.exports = ReactPropTypeLocationNames;
 
 /***/ },
-/* 26 */
+/* 28 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2586,7 +2908,7 @@
 	 * 'xa12' in that case. Resolve keys you want to use once at startup time, then
 	 * reuse those resolutions.
 	 */
-	var keyOf = function (oneKeyObj) {
+	var keyOf = function keyOf(oneKeyObj) {
 	  var key;
 	  for (key in oneKeyObj) {
 	    if (!oneKeyObj.hasOwnProperty(key)) {
@@ -2600,7 +2922,7 @@
 	module.exports = keyOf;
 
 /***/ },
-/* 27 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2617,9 +2939,9 @@
 	'use strict';
 
 	var ReactElement = __webpack_require__(8);
-	var ReactElementValidator = __webpack_require__(28);
+	var ReactElementValidator = __webpack_require__(30);
 
-	var mapObject = __webpack_require__(29);
+	var mapObject = __webpack_require__(31);
 
 	/**
 	 * Create a factory that creates HTML tag elements.
@@ -2781,7 +3103,7 @@
 	module.exports = ReactDOMFactories;
 
 /***/ },
-/* 28 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2805,8 +3127,8 @@
 	'use strict';
 
 	var ReactElement = __webpack_require__(8);
-	var ReactPropTypeLocations = __webpack_require__(23);
-	var ReactPropTypeLocationNames = __webpack_require__(25);
+	var ReactPropTypeLocations = __webpack_require__(25);
+	var ReactPropTypeLocationNames = __webpack_require__(27);
 	var ReactCurrentOwner = __webpack_require__(9);
 
 	var canDefineProperty = __webpack_require__(12);
@@ -3067,7 +3389,7 @@
 	module.exports = ReactElementValidator;
 
 /***/ },
-/* 29 */
+/* 31 */
 /***/ function(module, exports) {
 
 	/**
@@ -3122,7 +3444,7 @@
 	module.exports = mapObject;
 
 /***/ },
-/* 30 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3139,7 +3461,7 @@
 	'use strict';
 
 	var ReactElement = __webpack_require__(8);
-	var ReactPropTypeLocationNames = __webpack_require__(25);
+	var ReactPropTypeLocationNames = __webpack_require__(27);
 
 	var emptyFunction = __webpack_require__(11);
 	var getIteratorFn = __webpack_require__(14);
@@ -3507,7 +3829,7 @@
 	module.exports = ReactPropTypes;
 
 /***/ },
-/* 31 */
+/* 33 */
 /***/ function(module, exports) {
 
 	/**
@@ -3523,10 +3845,10 @@
 
 	'use strict';
 
-	module.exports = '15.0.2';
+	module.exports = '15.1.0';
 
 /***/ },
-/* 32 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3547,10 +3869,13 @@
 
 	/**
 	 * Returns the first child in a collection of children and verifies that there
-	 * is only one child in the collection. The current implementation of this
-	 * function assumes that a single child gets passed without a wrapper, but the
-	 * purpose of this helper function is to abstract away the particular structure
-	 * of children.
+	 * is only one child in the collection.
+	 *
+	 * See https://facebook.github.io/react/docs/top-level-api.html#react.children.only
+	 *
+	 * The current implementation of this function assumes that a single child gets
+	 * passed without a wrapper, but the purpose of this helper function is to
+	 * abstract away the particular structure of children.
 	 *
 	 * @param {?object} children Child collection structure.
 	 * @return {ReactElement} The first and only `ReactElement` contained in the
@@ -3564,16 +3889,16 @@
 	module.exports = onlyChild;
 
 /***/ },
-/* 33 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(34);
+	module.exports = __webpack_require__(36);
 
 
 /***/ },
-/* 34 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3591,26 +3916,23 @@
 
 	'use strict';
 
-	var ReactDOMComponentTree = __webpack_require__(35);
-	var ReactDefaultInjection = __webpack_require__(38);
-	var ReactMount = __webpack_require__(156);
-	var ReactPerf = __webpack_require__(58);
+	var ReactDOMComponentTree = __webpack_require__(37);
+	var ReactDefaultInjection = __webpack_require__(40);
+	var ReactMount = __webpack_require__(157);
 	var ReactReconciler = __webpack_require__(59);
-	var ReactUpdates = __webpack_require__(55);
-	var ReactVersion = __webpack_require__(31);
+	var ReactUpdates = __webpack_require__(56);
+	var ReactVersion = __webpack_require__(33);
 
-	var findDOMNode = __webpack_require__(161);
-	var getNativeComponentFromComposite = __webpack_require__(162);
-	var renderSubtreeIntoContainer = __webpack_require__(163);
+	var findDOMNode = __webpack_require__(162);
+	var getNativeComponentFromComposite = __webpack_require__(163);
+	var renderSubtreeIntoContainer = __webpack_require__(164);
 	var warning = __webpack_require__(10);
 
 	ReactDefaultInjection.inject();
 
-	var render = ReactPerf.measure('React', 'render', ReactMount.render);
-
 	var React = {
 	  findDOMNode: findDOMNode,
-	  render: render,
+	  render: ReactMount.render,
 	  unmountComponentAtNode: ReactMount.unmountComponentAtNode,
 	  version: ReactVersion,
 
@@ -3682,7 +4004,7 @@
 	module.exports = React;
 
 /***/ },
-/* 35 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3698,8 +4020,8 @@
 
 	'use strict';
 
-	var DOMProperty = __webpack_require__(36);
-	var ReactDOMComponentFlags = __webpack_require__(37);
+	var DOMProperty = __webpack_require__(38);
+	var ReactDOMComponentFlags = __webpack_require__(39);
 
 	var invariant = __webpack_require__(7);
 
@@ -3873,7 +4195,7 @@
 	module.exports = ReactDOMComponentTree;
 
 /***/ },
-/* 36 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4091,7 +4413,7 @@
 	module.exports = DOMProperty;
 
 /***/ },
-/* 37 */
+/* 39 */
 /***/ function(module, exports) {
 
 	/**
@@ -4114,7 +4436,7 @@
 	module.exports = ReactDOMComponentFlags;
 
 /***/ },
-/* 38 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4130,25 +4452,24 @@
 
 	'use strict';
 
-	var BeforeInputEventPlugin = __webpack_require__(39);
-	var ChangeEventPlugin = __webpack_require__(54);
+	var BeforeInputEventPlugin = __webpack_require__(41);
+	var ChangeEventPlugin = __webpack_require__(55);
 	var DefaultEventPluginOrder = __webpack_require__(66);
 	var EnterLeaveEventPlugin = __webpack_require__(67);
-	var ExecutionEnvironment = __webpack_require__(48);
 	var HTMLDOMPropertyConfig = __webpack_require__(72);
 	var ReactComponentBrowserEnvironment = __webpack_require__(73);
-	var ReactDOMComponent = __webpack_require__(86);
-	var ReactDOMComponentTree = __webpack_require__(35);
-	var ReactDOMEmptyComponent = __webpack_require__(127);
-	var ReactDOMTreeTraversal = __webpack_require__(128);
-	var ReactDOMTextComponent = __webpack_require__(129);
-	var ReactDefaultBatchingStrategy = __webpack_require__(130);
-	var ReactEventListener = __webpack_require__(131);
-	var ReactInjection = __webpack_require__(134);
-	var ReactReconcileTransaction = __webpack_require__(135);
-	var SVGDOMPropertyConfig = __webpack_require__(143);
-	var SelectEventPlugin = __webpack_require__(144);
-	var SimpleEventPlugin = __webpack_require__(145);
+	var ReactDOMComponent = __webpack_require__(87);
+	var ReactDOMComponentTree = __webpack_require__(37);
+	var ReactDOMEmptyComponent = __webpack_require__(128);
+	var ReactDOMTreeTraversal = __webpack_require__(129);
+	var ReactDOMTextComponent = __webpack_require__(130);
+	var ReactDefaultBatchingStrategy = __webpack_require__(131);
+	var ReactEventListener = __webpack_require__(132);
+	var ReactInjection = __webpack_require__(135);
+	var ReactReconcileTransaction = __webpack_require__(136);
+	var SVGDOMPropertyConfig = __webpack_require__(144);
+	var SelectEventPlugin = __webpack_require__(145);
+	var SimpleEventPlugin = __webpack_require__(146);
 
 	var alreadyInjected = false;
 
@@ -4197,14 +4518,6 @@
 	  ReactInjection.Updates.injectBatchingStrategy(ReactDefaultBatchingStrategy);
 
 	  ReactInjection.Component.injectEnvironment(ReactComponentBrowserEnvironment);
-
-	  if (false) {
-	    var url = ExecutionEnvironment.canUseDOM && window.location.href || '';
-	    if (/[?&]react_perf\b/.test(url)) {
-	      var ReactDefaultPerf = require('./ReactDefaultPerf');
-	      ReactDefaultPerf.start();
-	    }
-	  }
 	}
 
 	module.exports = {
@@ -4212,7 +4525,7 @@
 	};
 
 /***/ },
-/* 39 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4228,14 +4541,14 @@
 
 	'use strict';
 
-	var EventConstants = __webpack_require__(40);
-	var EventPropagators = __webpack_require__(41);
-	var ExecutionEnvironment = __webpack_require__(48);
-	var FallbackCompositionState = __webpack_require__(49);
-	var SyntheticCompositionEvent = __webpack_require__(51);
-	var SyntheticInputEvent = __webpack_require__(53);
+	var EventConstants = __webpack_require__(42);
+	var EventPropagators = __webpack_require__(43);
+	var ExecutionEnvironment = __webpack_require__(20);
+	var FallbackCompositionState = __webpack_require__(50);
+	var SyntheticCompositionEvent = __webpack_require__(52);
+	var SyntheticInputEvent = __webpack_require__(54);
 
-	var keyOf = __webpack_require__(26);
+	var keyOf = __webpack_require__(28);
 
 	var END_KEYCODES = [9, 13, 27, 32]; // Tab, Return, Esc, Space
 	var START_KEYCODE = 229;
@@ -4605,7 +4918,7 @@
 	module.exports = BeforeInputEventPlugin;
 
 /***/ },
-/* 40 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4621,7 +4934,7 @@
 
 	'use strict';
 
-	var keyMirror = __webpack_require__(24);
+	var keyMirror = __webpack_require__(26);
 
 	var PropagationPhases = keyMirror({ bubbled: null, captured: null });
 
@@ -4707,7 +5020,7 @@
 	module.exports = EventConstants;
 
 /***/ },
-/* 41 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4723,12 +5036,12 @@
 
 	'use strict';
 
-	var EventConstants = __webpack_require__(40);
-	var EventPluginHub = __webpack_require__(42);
-	var EventPluginUtils = __webpack_require__(44);
+	var EventConstants = __webpack_require__(42);
+	var EventPluginHub = __webpack_require__(44);
+	var EventPluginUtils = __webpack_require__(46);
 
-	var accumulateInto = __webpack_require__(46);
-	var forEachAccumulated = __webpack_require__(47);
+	var accumulateInto = __webpack_require__(48);
+	var forEachAccumulated = __webpack_require__(49);
 	var warning = __webpack_require__(10);
 
 	var PropagationPhases = EventConstants.PropagationPhases;
@@ -4849,7 +5162,7 @@
 	module.exports = EventPropagators;
 
 /***/ },
-/* 42 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4865,12 +5178,12 @@
 
 	'use strict';
 
-	var EventPluginRegistry = __webpack_require__(43);
-	var EventPluginUtils = __webpack_require__(44);
-	var ReactErrorUtils = __webpack_require__(45);
+	var EventPluginRegistry = __webpack_require__(45);
+	var EventPluginUtils = __webpack_require__(46);
+	var ReactErrorUtils = __webpack_require__(47);
 
-	var accumulateInto = __webpack_require__(46);
-	var forEachAccumulated = __webpack_require__(47);
+	var accumulateInto = __webpack_require__(48);
+	var forEachAccumulated = __webpack_require__(49);
 	var invariant = __webpack_require__(7);
 
 	/**
@@ -5089,7 +5402,7 @@
 	module.exports = EventPluginHub;
 
 /***/ },
-/* 43 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5335,7 +5648,7 @@
 	module.exports = EventPluginRegistry;
 
 /***/ },
-/* 44 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5351,8 +5664,8 @@
 
 	'use strict';
 
-	var EventConstants = __webpack_require__(40);
-	var ReactErrorUtils = __webpack_require__(45);
+	var EventConstants = __webpack_require__(42);
+	var ReactErrorUtils = __webpack_require__(47);
 
 	var invariant = __webpack_require__(7);
 	var warning = __webpack_require__(10);
@@ -5567,7 +5880,7 @@
 	module.exports = EventPluginUtils;
 
 /***/ },
-/* 45 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5648,7 +5961,7 @@
 	module.exports = ReactErrorUtils;
 
 /***/ },
-/* 46 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5712,7 +6025,7 @@
 	module.exports = accumulateInto;
 
 /***/ },
-/* 47 */
+/* 49 */
 /***/ function(module, exports) {
 
 	/**
@@ -5747,47 +6060,7 @@
 	module.exports = forEachAccumulated;
 
 /***/ },
-/* 48 */
-/***/ function(module, exports) {
-
-	/**
-	 * Copyright (c) 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 */
-
-	'use strict';
-
-	var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
-
-	/**
-	 * Simple, lightweight module assisting with the detection and context of
-	 * Worker. Helps avoid circular dependencies and allows code to reason about
-	 * whether or not they are in a Worker, even if they never include the main
-	 * `ReactWorker` dependency.
-	 */
-	var ExecutionEnvironment = {
-
-	  canUseDOM: canUseDOM,
-
-	  canUseWorkers: typeof Worker !== 'undefined',
-
-	  canUseEventListeners: canUseDOM && !!(window.addEventListener || window.attachEvent),
-
-	  canUseViewport: canUseDOM && !!window.screen,
-
-	  isInWorker: !canUseDOM // For now, this is true - might change in the future.
-
-	};
-
-	module.exports = ExecutionEnvironment;
-
-/***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5807,7 +6080,7 @@
 
 	var PooledClass = __webpack_require__(6);
 
-	var getTextContentAccessor = __webpack_require__(50);
+	var getTextContentAccessor = __webpack_require__(51);
 
 	/**
 	 * This helper class stores information about text content of a target node,
@@ -5887,7 +6160,7 @@
 	module.exports = FallbackCompositionState;
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5903,7 +6176,7 @@
 
 	'use strict';
 
-	var ExecutionEnvironment = __webpack_require__(48);
+	var ExecutionEnvironment = __webpack_require__(20);
 
 	var contentKey = null;
 
@@ -5925,7 +6198,7 @@
 	module.exports = getTextContentAccessor;
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5941,7 +6214,7 @@
 
 	'use strict';
 
-	var SyntheticEvent = __webpack_require__(52);
+	var SyntheticEvent = __webpack_require__(53);
 
 	/**
 	 * @interface Event
@@ -5966,7 +6239,7 @@
 	module.exports = SyntheticCompositionEvent;
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6232,7 +6505,7 @@
 	}
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6248,7 +6521,7 @@
 
 	'use strict';
 
-	var SyntheticEvent = __webpack_require__(52);
+	var SyntheticEvent = __webpack_require__(53);
 
 	/**
 	 * @interface Event
@@ -6274,7 +6547,7 @@
 	module.exports = SyntheticInputEvent;
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6290,18 +6563,18 @@
 
 	'use strict';
 
-	var EventConstants = __webpack_require__(40);
-	var EventPluginHub = __webpack_require__(42);
-	var EventPropagators = __webpack_require__(41);
-	var ExecutionEnvironment = __webpack_require__(48);
-	var ReactDOMComponentTree = __webpack_require__(35);
-	var ReactUpdates = __webpack_require__(55);
-	var SyntheticEvent = __webpack_require__(52);
+	var EventConstants = __webpack_require__(42);
+	var EventPluginHub = __webpack_require__(44);
+	var EventPropagators = __webpack_require__(43);
+	var ExecutionEnvironment = __webpack_require__(20);
+	var ReactDOMComponentTree = __webpack_require__(37);
+	var ReactUpdates = __webpack_require__(56);
+	var SyntheticEvent = __webpack_require__(53);
 
 	var getEventTarget = __webpack_require__(63);
 	var isEventSupported = __webpack_require__(64);
 	var isTextInputElement = __webpack_require__(65);
-	var keyOf = __webpack_require__(26);
+	var keyOf = __webpack_require__(28);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
 
@@ -6604,7 +6877,7 @@
 	module.exports = ChangeEventPlugin;
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6622,16 +6895,17 @@
 
 	var _assign = __webpack_require__(4);
 
-	var CallbackQueue = __webpack_require__(56);
+	var CallbackQueue = __webpack_require__(57);
 	var PooledClass = __webpack_require__(6);
-	var ReactFeatureFlags = __webpack_require__(57);
-	var ReactPerf = __webpack_require__(58);
+	var ReactFeatureFlags = __webpack_require__(58);
+	var ReactInstrumentation = __webpack_require__(18);
 	var ReactReconciler = __webpack_require__(59);
 	var Transaction = __webpack_require__(62);
 
 	var invariant = __webpack_require__(7);
 
 	var dirtyComponents = [];
+	var updateBatchNumber = 0;
 	var asapCallbackQueue = CallbackQueue.getPooled();
 	var asapEnqueued = false;
 
@@ -6726,6 +7000,13 @@
 	  // them before their children by sorting the array.
 	  dirtyComponents.sort(mountOrderComparator);
 
+	  // Any updates enqueued while reconciling must be performed after this entire
+	  // batch. Otherwise, if dirtyComponents is [A, B] where A has children B and
+	  // C, B could update twice in a single batch if C's render enqueues an update
+	  // to B (since B would have already updated, we should skip it, and the only
+	  // way we can know to do so is by checking the batch counter).
+	  updateBatchNumber++;
+
 	  for (var i = 0; i < len; i++) {
 	    // If a component is unmounted before pending changes apply, it will still
 	    // be here, but we assume that it has cleared its _pendingCallbacks and
@@ -6749,7 +7030,7 @@
 	      console.time(markerName);
 	    }
 
-	    ReactReconciler.performUpdateIfNecessary(component, transaction.reconcileTransaction);
+	    ReactReconciler.performUpdateIfNecessary(component, transaction.reconcileTransaction, updateBatchNumber);
 
 	    if (markerName) {
 	      console.timeEnd(markerName);
@@ -6764,6 +7045,10 @@
 	}
 
 	var flushBatchedUpdates = function () {
+	  if (false) {
+	    ReactInstrumentation.debugTool.onBeginFlush();
+	  }
+
 	  // ReactUpdatesFlushTransaction's wrappers will clear the dirtyComponents
 	  // array and perform any updates enqueued by mount-ready handlers (i.e.,
 	  // componentDidUpdate) but we need to check here too in order to catch
@@ -6783,8 +7068,11 @@
 	      CallbackQueue.release(queue);
 	    }
 	  }
+
+	  if (false) {
+	    ReactInstrumentation.debugTool.onEndFlush();
+	  }
 	};
-	flushBatchedUpdates = ReactPerf.measure('ReactUpdates', 'flushBatchedUpdates', flushBatchedUpdates);
 
 	/**
 	 * Mark a component as needing a rerender, adding an optional callback to a
@@ -6805,6 +7093,9 @@
 	  }
 
 	  dirtyComponents.push(component);
+	  if (component._updateBatchNumber == null) {
+	    component._updateBatchNumber = updateBatchNumber + 1;
+	  }
 	}
 
 	/**
@@ -6850,7 +7141,7 @@
 	module.exports = ReactUpdates;
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6960,7 +7251,7 @@
 	module.exports = CallbackQueue;
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports) {
 
 	/**
@@ -6986,107 +7277,6 @@
 	module.exports = ReactFeatureFlags;
 
 /***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactPerf
-	 */
-
-	'use strict';
-
-	/**
-	 * ReactPerf is a general AOP system designed to measure performance. This
-	 * module only has the hooks: see ReactDefaultPerf for the analysis tool.
-	 */
-
-	var ReactPerf = {
-	  /**
-	   * Boolean to enable/disable measurement. Set to false by default to prevent
-	   * accidental logging and perf loss.
-	   */
-	  enableMeasure: false,
-
-	  /**
-	   * Holds onto the measure function in use. By default, don't measure
-	   * anything, but we'll override this if we inject a measure function.
-	   */
-	  storedMeasure: _noMeasure,
-
-	  /**
-	   * @param {object} object
-	   * @param {string} objectName
-	   * @param {object<string>} methodNames
-	   */
-	  measureMethods: function (object, objectName, methodNames) {
-	    if (false) {
-	      for (var key in methodNames) {
-	        if (!methodNames.hasOwnProperty(key)) {
-	          continue;
-	        }
-	        object[key] = ReactPerf.measure(objectName, methodNames[key], object[key]);
-	      }
-	    }
-	  },
-
-	  /**
-	   * Use this to wrap methods you want to measure. Zero overhead in production.
-	   *
-	   * @param {string} objName
-	   * @param {string} fnName
-	   * @param {function} func
-	   * @return {function}
-	   */
-	  measure: function (objName, fnName, func) {
-	    if (false) {
-	      var measuredFunc = null;
-	      var wrapper = function () {
-	        if (ReactPerf.enableMeasure) {
-	          if (!measuredFunc) {
-	            measuredFunc = ReactPerf.storedMeasure(objName, fnName, func);
-	          }
-	          return measuredFunc.apply(this, arguments);
-	        }
-	        return func.apply(this, arguments);
-	      };
-	      wrapper.displayName = objName + '_' + fnName;
-	      return wrapper;
-	    }
-	    return func;
-	  },
-
-	  injection: {
-	    /**
-	     * @param {function} measure
-	     */
-	    injectMeasure: function (measure) {
-	      ReactPerf.storedMeasure = measure;
-	    }
-	  }
-	};
-
-	/**
-	 * Simply passes through the measured function, without measuring it.
-	 *
-	 * @param {string} objName
-	 * @param {string} fnName
-	 * @param {function} func
-	 * @return {function}
-	 */
-	function _noMeasure(objName, fnName, func) {
-	  return func;
-	}
-
-	module.exports = ReactPerf;
-
-/***/ },
 /* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -7105,6 +7295,8 @@
 
 	var ReactRef = __webpack_require__(60);
 	var ReactInstrumentation = __webpack_require__(18);
+
+	var invariant = __webpack_require__(7);
 
 	/**
 	 * Helper to call ReactRef.attachRefs with this composite component, split out
@@ -7128,12 +7320,20 @@
 	   * @internal
 	   */
 	  mountComponent: function (internalInstance, transaction, nativeParent, nativeContainerInfo, context) {
+	    if (false) {
+	      if (internalInstance._debugID !== 0) {
+	        ReactInstrumentation.debugTool.onBeginReconcilerTimer(internalInstance._debugID, 'mountComponent');
+	      }
+	    }
 	    var markup = internalInstance.mountComponent(transaction, nativeParent, nativeContainerInfo, context);
 	    if (internalInstance._currentElement && internalInstance._currentElement.ref != null) {
 	      transaction.getReactMountReady().enqueue(attachRefs, internalInstance);
 	    }
 	    if (false) {
-	      ReactInstrumentation.debugTool.onMountComponent(internalInstance);
+	      if (internalInstance._debugID !== 0) {
+	        ReactInstrumentation.debugTool.onEndReconcilerTimer(internalInstance._debugID, 'mountComponent');
+	        ReactInstrumentation.debugTool.onMountComponent(internalInstance._debugID);
+	      }
 	    }
 	    return markup;
 	  },
@@ -7153,10 +7353,18 @@
 	   * @internal
 	   */
 	  unmountComponent: function (internalInstance, safely) {
+	    if (false) {
+	      if (internalInstance._debugID !== 0) {
+	        ReactInstrumentation.debugTool.onBeginReconcilerTimer(internalInstance._debugID, 'unmountComponent');
+	      }
+	    }
 	    ReactRef.detachRefs(internalInstance, internalInstance._currentElement);
 	    internalInstance.unmountComponent(safely);
 	    if (false) {
-	      ReactInstrumentation.debugTool.onUnmountComponent(internalInstance);
+	      if (internalInstance._debugID !== 0) {
+	        ReactInstrumentation.debugTool.onEndReconcilerTimer(internalInstance._debugID, 'unmountComponent');
+	        ReactInstrumentation.debugTool.onUnmountComponent(internalInstance._debugID);
+	      }
 	    }
 	  },
 
@@ -7186,6 +7394,12 @@
 	      return;
 	    }
 
+	    if (false) {
+	      if (internalInstance._debugID !== 0) {
+	        ReactInstrumentation.debugTool.onBeginReconcilerTimer(internalInstance._debugID, 'receiveComponent');
+	      }
+	    }
+
 	    var refsChanged = ReactRef.shouldUpdateRefs(prevElement, nextElement);
 
 	    if (refsChanged) {
@@ -7199,7 +7413,10 @@
 	    }
 
 	    if (false) {
-	      ReactInstrumentation.debugTool.onUpdateComponent(internalInstance);
+	      if (internalInstance._debugID !== 0) {
+	        ReactInstrumentation.debugTool.onEndReconcilerTimer(internalInstance._debugID, 'receiveComponent');
+	        ReactInstrumentation.debugTool.onUpdateComponent(internalInstance._debugID);
+	      }
 	    }
 	  },
 
@@ -7210,10 +7427,24 @@
 	   * @param {ReactReconcileTransaction} transaction
 	   * @internal
 	   */
-	  performUpdateIfNecessary: function (internalInstance, transaction) {
+	  performUpdateIfNecessary: function (internalInstance, transaction, updateBatchNumber) {
+	    if (internalInstance._updateBatchNumber !== updateBatchNumber) {
+	      // The component's enqueued batch number should always be the current
+	      // batch or the following one.
+	      !(internalInstance._updateBatchNumber == null || internalInstance._updateBatchNumber === updateBatchNumber + 1) ?  false ? invariant(false, 'performUpdateIfNecessary: Unexpected batch number (current %s, ' + 'pending %s)', updateBatchNumber, internalInstance._updateBatchNumber) : invariant(false) : void 0;
+	      return;
+	    }
+	    if (false) {
+	      if (internalInstance._debugID !== 0) {
+	        ReactInstrumentation.debugTool.onBeginReconcilerTimer(internalInstance._debugID, 'performUpdateIfNecessary');
+	      }
+	    }
 	    internalInstance.performUpdateIfNecessary(transaction);
 	    if (false) {
-	      ReactInstrumentation.debugTool.onUpdateComponent(internalInstance);
+	      if (internalInstance._debugID !== 0) {
+	        ReactInstrumentation.debugTool.onEndReconcilerTimer(internalInstance._debugID, 'performUpdateIfNecessary');
+	        ReactInstrumentation.debugTool.onUpdateComponent(internalInstance._debugID);
+	      }
 	    }
 	  }
 
@@ -7694,7 +7925,7 @@
 
 	'use strict';
 
-	var ExecutionEnvironment = __webpack_require__(48);
+	var ExecutionEnvironment = __webpack_require__(20);
 
 	var useHasFeature;
 	if (ExecutionEnvironment.canUseDOM) {
@@ -7805,7 +8036,7 @@
 
 	'use strict';
 
-	var keyOf = __webpack_require__(26);
+	var keyOf = __webpack_require__(28);
 
 	/**
 	 * Module that is injectable into `EventPluginHub`, that specifies a
@@ -7837,12 +8068,12 @@
 
 	'use strict';
 
-	var EventConstants = __webpack_require__(40);
-	var EventPropagators = __webpack_require__(41);
-	var ReactDOMComponentTree = __webpack_require__(35);
+	var EventConstants = __webpack_require__(42);
+	var EventPropagators = __webpack_require__(43);
+	var ReactDOMComponentTree = __webpack_require__(37);
 	var SyntheticMouseEvent = __webpack_require__(68);
 
-	var keyOf = __webpack_require__(26);
+	var keyOf = __webpack_require__(28);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
 
@@ -8024,7 +8255,7 @@
 
 	'use strict';
 
-	var SyntheticEvent = __webpack_require__(52);
+	var SyntheticEvent = __webpack_require__(53);
 
 	var getEventTarget = __webpack_require__(63);
 
@@ -8168,7 +8399,7 @@
 
 	'use strict';
 
-	var DOMProperty = __webpack_require__(36);
+	var DOMProperty = __webpack_require__(38);
 
 	var MUST_USE_PROPERTY = DOMProperty.injection.MUST_USE_PROPERTY;
 	var HAS_BOOLEAN_VALUE = DOMProperty.injection.HAS_BOOLEAN_VALUE;
@@ -8383,8 +8614,7 @@
 	'use strict';
 
 	var DOMChildrenOperations = __webpack_require__(74);
-	var ReactDOMIDOperations = __webpack_require__(85);
-	var ReactPerf = __webpack_require__(58);
+	var ReactDOMIDOperations = __webpack_require__(86);
 
 	/**
 	 * Abstracts away all functionality of the reconciler that requires knowledge of
@@ -8408,10 +8638,6 @@
 
 	};
 
-	ReactPerf.measureMethods(ReactComponentBrowserEnvironment, 'ReactComponentBrowserEnvironment', {
-	  replaceNodeWithMarkup: 'replaceNodeWithMarkup'
-	});
-
 	module.exports = ReactComponentBrowserEnvironment;
 
 /***/ },
@@ -8432,13 +8658,14 @@
 	'use strict';
 
 	var DOMLazyTree = __webpack_require__(75);
-	var Danger = __webpack_require__(80);
-	var ReactMultiChildUpdateTypes = __webpack_require__(84);
-	var ReactPerf = __webpack_require__(58);
+	var Danger = __webpack_require__(81);
+	var ReactMultiChildUpdateTypes = __webpack_require__(85);
+	var ReactDOMComponentTree = __webpack_require__(37);
+	var ReactInstrumentation = __webpack_require__(18);
 
-	var createMicrosoftUnsafeLocalFunction = __webpack_require__(76);
-	var setInnerHTML = __webpack_require__(79);
-	var setTextContent = __webpack_require__(77);
+	var createMicrosoftUnsafeLocalFunction = __webpack_require__(77);
+	var setInnerHTML = __webpack_require__(80);
+	var setTextContent = __webpack_require__(78);
 
 	function getNodeAfter(parentNode, node) {
 	  // Special case for text components, which return [open, close] comments
@@ -8529,6 +8756,25 @@
 	      removeDelimitedText(parentNode, openingComment, closingComment);
 	    }
 	  }
+
+	  if (false) {
+	    ReactInstrumentation.debugTool.onNativeOperation(ReactDOMComponentTree.getInstanceFromNode(openingComment)._debugID, 'replace text', stringText);
+	  }
+	}
+
+	var dangerouslyReplaceNodeWithMarkup = Danger.dangerouslyReplaceNodeWithMarkup;
+	if (false) {
+	  dangerouslyReplaceNodeWithMarkup = function (oldChild, markup, prevInstance) {
+	    Danger.dangerouslyReplaceNodeWithMarkup(oldChild, markup);
+	    if (prevInstance._debugID !== 0) {
+	      ReactInstrumentation.debugTool.onNativeOperation(prevInstance._debugID, 'replace with', markup.toString());
+	    } else {
+	      var nextInstance = ReactDOMComponentTree.getInstanceFromNode(markup.node);
+	      if (nextInstance._debugID !== 0) {
+	        ReactInstrumentation.debugTool.onNativeOperation(nextInstance._debugID, 'mount', markup.toString());
+	      }
+	    }
+	  };
 	}
 
 	/**
@@ -8536,7 +8782,7 @@
 	 */
 	var DOMChildrenOperations = {
 
-	  dangerouslyReplaceNodeWithMarkup: Danger.dangerouslyReplaceNodeWithMarkup,
+	  dangerouslyReplaceNodeWithMarkup: dangerouslyReplaceNodeWithMarkup,
 
 	  replaceDelimitedText: replaceDelimitedText,
 
@@ -8548,33 +8794,48 @@
 	   * @internal
 	   */
 	  processUpdates: function (parentNode, updates) {
+	    if (false) {
+	      var parentNodeDebugID = ReactDOMComponentTree.getInstanceFromNode(parentNode)._debugID;
+	    }
+
 	    for (var k = 0; k < updates.length; k++) {
 	      var update = updates[k];
 	      switch (update.type) {
 	        case ReactMultiChildUpdateTypes.INSERT_MARKUP:
 	          insertLazyTreeChildAt(parentNode, update.content, getNodeAfter(parentNode, update.afterNode));
+	          if (false) {
+	            ReactInstrumentation.debugTool.onNativeOperation(parentNodeDebugID, 'insert child', { toIndex: update.toIndex, content: update.content.toString() });
+	          }
 	          break;
 	        case ReactMultiChildUpdateTypes.MOVE_EXISTING:
 	          moveChild(parentNode, update.fromNode, getNodeAfter(parentNode, update.afterNode));
+	          if (false) {
+	            ReactInstrumentation.debugTool.onNativeOperation(parentNodeDebugID, 'move child', { fromIndex: update.fromIndex, toIndex: update.toIndex });
+	          }
 	          break;
 	        case ReactMultiChildUpdateTypes.SET_MARKUP:
 	          setInnerHTML(parentNode, update.content);
+	          if (false) {
+	            ReactInstrumentation.debugTool.onNativeOperation(parentNodeDebugID, 'replace children', update.content.toString());
+	          }
 	          break;
 	        case ReactMultiChildUpdateTypes.TEXT_CONTENT:
 	          setTextContent(parentNode, update.content);
+	          if (false) {
+	            ReactInstrumentation.debugTool.onNativeOperation(parentNodeDebugID, 'replace text', update.content.toString());
+	          }
 	          break;
 	        case ReactMultiChildUpdateTypes.REMOVE_NODE:
 	          removeChild(parentNode, update.fromNode);
+	          if (false) {
+	            ReactInstrumentation.debugTool.onNativeOperation(parentNodeDebugID, 'remove child', { fromIndex: update.fromIndex });
+	          }
 	          break;
 	      }
 	    }
 	  }
 
 	};
-
-	ReactPerf.measureMethods(DOMChildrenOperations, 'DOMChildrenOperations', {
-	  replaceDelimitedText: 'replaceDelimitedText'
-	});
 
 	module.exports = DOMChildrenOperations;
 
@@ -8595,8 +8856,13 @@
 
 	'use strict';
 
-	var createMicrosoftUnsafeLocalFunction = __webpack_require__(76);
-	var setTextContent = __webpack_require__(77);
+	var DOMNamespaces = __webpack_require__(76);
+
+	var createMicrosoftUnsafeLocalFunction = __webpack_require__(77);
+	var setTextContent = __webpack_require__(78);
+
+	var ELEMENT_NODE_TYPE = 1;
+	var DOCUMENT_FRAGMENT_NODE_TYPE = 11;
 
 	/**
 	 * In IE (8-11) and Edge, appending nodes with no children is dramatically
@@ -8632,8 +8898,10 @@
 	  // DocumentFragments aren't actually part of the DOM after insertion so
 	  // appending children won't update the DOM. We need to ensure the fragment
 	  // is properly populated first, breaking out of our lazy approach for just
-	  // this level.
-	  if (tree.node.nodeType === 11) {
+	  // this level. Also, some <object> plugins (like Flash Player) will read
+	  // <param> nodes immediately upon insertion into the DOM, so <object>
+	  // must also be populated prior to insertion into the DOM.
+	  if (tree.node.nodeType === DOCUMENT_FRAGMENT_NODE_TYPE || tree.node.nodeType === ELEMENT_NODE_TYPE && tree.node.nodeName.toLowerCase() === 'object' && (tree.node.namespaceURI == null || tree.node.namespaceURI === DOMNamespaces.html)) {
 	    insertTreeChildren(tree);
 	    parentNode.insertBefore(tree.node, referenceNode);
 	  } else {
@@ -8671,12 +8939,17 @@
 	  }
 	}
 
+	function toString() {
+	  return this.node.nodeName;
+	}
+
 	function DOMLazyTree(node) {
 	  return {
 	    node: node,
 	    children: [],
 	    html: null,
-	    text: null
+	    text: null,
+	    toString: toString
 	  };
 	}
 
@@ -8690,6 +8963,31 @@
 
 /***/ },
 /* 76 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule DOMNamespaces
+	 */
+
+	'use strict';
+
+	var DOMNamespaces = {
+	  html: 'http://www.w3.org/1999/xhtml',
+	  mathml: 'http://www.w3.org/1998/Math/MathML',
+	  svg: 'http://www.w3.org/2000/svg'
+	};
+
+	module.exports = DOMNamespaces;
+
+/***/ },
+/* 77 */
 /***/ function(module, exports) {
 
 	/**
@@ -8726,7 +9024,7 @@
 	module.exports = createMicrosoftUnsafeLocalFunction;
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8742,9 +9040,9 @@
 
 	'use strict';
 
-	var ExecutionEnvironment = __webpack_require__(48);
-	var escapeTextContentForBrowser = __webpack_require__(78);
-	var setInnerHTML = __webpack_require__(79);
+	var ExecutionEnvironment = __webpack_require__(20);
+	var escapeTextContentForBrowser = __webpack_require__(79);
+	var setInnerHTML = __webpack_require__(80);
 
 	/**
 	 * Set the textContent property of a node, ensuring that whitespace is preserved
@@ -8771,7 +9069,7 @@
 	module.exports = setTextContent;
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports) {
 
 	/**
@@ -8814,7 +9112,7 @@
 	module.exports = escapeTextContentForBrowser;
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8830,12 +9128,12 @@
 
 	'use strict';
 
-	var ExecutionEnvironment = __webpack_require__(48);
+	var ExecutionEnvironment = __webpack_require__(20);
 
 	var WHITESPACE_TEST = /^[ \r\n\t\f]/;
 	var NONVISIBLE_TEST = /<(!--|link|noscript|meta|script|style)[ \r\n\t\f\/>]/;
 
-	var createMicrosoftUnsafeLocalFunction = __webpack_require__(76);
+	var createMicrosoftUnsafeLocalFunction = __webpack_require__(77);
 
 	/**
 	 * Set the innerHTML property of a node, ensuring that whitespace is preserved
@@ -8901,7 +9199,7 @@
 	module.exports = setInnerHTML;
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8918,11 +9216,11 @@
 	'use strict';
 
 	var DOMLazyTree = __webpack_require__(75);
-	var ExecutionEnvironment = __webpack_require__(48);
+	var ExecutionEnvironment = __webpack_require__(20);
 
-	var createNodesFromMarkup = __webpack_require__(81);
+	var createNodesFromMarkup = __webpack_require__(82);
 	var emptyFunction = __webpack_require__(11);
-	var getMarkupWrap = __webpack_require__(83);
+	var getMarkupWrap = __webpack_require__(84);
 	var invariant = __webpack_require__(7);
 
 	var OPEN_TAG_NAME_EXP = /^(<[^ \/>]+)/;
@@ -9050,7 +9348,7 @@
 	module.exports = Danger;
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9068,10 +9366,10 @@
 
 	/*eslint-disable fb-www/unsafe-html*/
 
-	var ExecutionEnvironment = __webpack_require__(48);
+	var ExecutionEnvironment = __webpack_require__(20);
 
-	var createArrayFromMixed = __webpack_require__(82);
-	var getMarkupWrap = __webpack_require__(83);
+	var createArrayFromMixed = __webpack_require__(83);
+	var getMarkupWrap = __webpack_require__(84);
 	var invariant = __webpack_require__(7);
 
 	/**
@@ -9138,7 +9436,7 @@
 	module.exports = createNodesFromMarkup;
 
 /***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9269,7 +9567,7 @@
 	module.exports = createArrayFromMixed;
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9286,7 +9584,7 @@
 
 	/*eslint-disable fb-www/unsafe-html */
 
-	var ExecutionEnvironment = __webpack_require__(48);
+	var ExecutionEnvironment = __webpack_require__(20);
 
 	var invariant = __webpack_require__(7);
 
@@ -9368,7 +9666,7 @@
 	module.exports = getMarkupWrap;
 
 /***/ },
-/* 84 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -9384,7 +9682,7 @@
 
 	'use strict';
 
-	var keyMirror = __webpack_require__(24);
+	var keyMirror = __webpack_require__(26);
 
 	/**
 	 * When a component's children are updated, a series of update configuration
@@ -9405,7 +9703,7 @@
 	module.exports = ReactMultiChildUpdateTypes;
 
 /***/ },
-/* 85 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -9422,8 +9720,7 @@
 	'use strict';
 
 	var DOMChildrenOperations = __webpack_require__(74);
-	var ReactDOMComponentTree = __webpack_require__(35);
-	var ReactPerf = __webpack_require__(58);
+	var ReactDOMComponentTree = __webpack_require__(37);
 
 	/**
 	 * Operations used to process updates to DOM nodes.
@@ -9442,14 +9739,10 @@
 	  }
 	};
 
-	ReactPerf.measureMethods(ReactDOMIDOperations, 'ReactDOMIDOperations', {
-	  dangerouslyProcessChildrenUpdates: 'dangerouslyProcessChildrenUpdates'
-	});
-
 	module.exports = ReactDOMIDOperations;
 
 /***/ },
-/* 86 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -9469,33 +9762,35 @@
 
 	var _assign = __webpack_require__(4);
 
-	var AutoFocusUtils = __webpack_require__(87);
-	var CSSPropertyOperations = __webpack_require__(89);
+	var AutoFocusUtils = __webpack_require__(88);
+	var CSSPropertyOperations = __webpack_require__(90);
 	var DOMLazyTree = __webpack_require__(75);
-	var DOMNamespaces = __webpack_require__(97);
-	var DOMProperty = __webpack_require__(36);
+	var DOMNamespaces = __webpack_require__(76);
+	var DOMProperty = __webpack_require__(38);
 	var DOMPropertyOperations = __webpack_require__(98);
-	var EventConstants = __webpack_require__(40);
-	var EventPluginHub = __webpack_require__(42);
-	var EventPluginRegistry = __webpack_require__(43);
+	var EventConstants = __webpack_require__(42);
+	var EventPluginHub = __webpack_require__(44);
+	var EventPluginRegistry = __webpack_require__(45);
 	var ReactBrowserEventEmitter = __webpack_require__(103);
 	var ReactComponentBrowserEnvironment = __webpack_require__(73);
 	var ReactDOMButton = __webpack_require__(106);
-	var ReactDOMComponentFlags = __webpack_require__(37);
-	var ReactDOMComponentTree = __webpack_require__(35);
+	var ReactDOMComponentFlags = __webpack_require__(39);
+	var ReactDOMComponentTree = __webpack_require__(37);
 	var ReactDOMInput = __webpack_require__(108);
 	var ReactDOMOption = __webpack_require__(110);
 	var ReactDOMSelect = __webpack_require__(111);
 	var ReactDOMTextarea = __webpack_require__(112);
+	var ReactInstrumentation = __webpack_require__(18);
 	var ReactMultiChild = __webpack_require__(113);
-	var ReactPerf = __webpack_require__(58);
+	var ReactServerRenderingTransaction = __webpack_require__(125);
 
-	var escapeTextContentForBrowser = __webpack_require__(78);
+	var emptyFunction = __webpack_require__(11);
+	var escapeTextContentForBrowser = __webpack_require__(79);
 	var invariant = __webpack_require__(7);
 	var isEventSupported = __webpack_require__(64);
-	var keyOf = __webpack_require__(26);
-	var shallowEqual = __webpack_require__(125);
-	var validateDOMNesting = __webpack_require__(126);
+	var keyOf = __webpack_require__(28);
+	var shallowEqual = __webpack_require__(126);
+	var validateDOMNesting = __webpack_require__(127);
 	var warning = __webpack_require__(10);
 
 	var Flags = ReactDOMComponentFlags;
@@ -9608,6 +9903,9 @@
 	}
 
 	function enqueuePutListener(inst, registrationName, listener, transaction) {
+	  if (transaction instanceof ReactServerRenderingTransaction) {
+	    return;
+	  }
 	  if (false) {
 	    // IE8 has no API for event capturing and the `onScroll` event doesn't
 	    // bubble.
@@ -9616,10 +9914,6 @@
 	  var containerInfo = inst._nativeContainerInfo;
 	  var isDocumentFragment = containerInfo._node && containerInfo._node.nodeType === DOC_FRAGMENT_TYPE;
 	  var doc = isDocumentFragment ? containerInfo._node : containerInfo._ownerDocument;
-	  if (!doc) {
-	    // Server rendering.
-	    return;
-	  }
 	  listenTo(registrationName, doc);
 	  transaction.getReactMountReady().enqueue(putListener, {
 	    inst: inst,
@@ -9636,6 +9930,19 @@
 	function optionPostMount() {
 	  var inst = this;
 	  ReactDOMOption.postMountWrapper(inst);
+	}
+
+	var setContentChildForInstrumentation = emptyFunction;
+	if (false) {
+	  setContentChildForInstrumentation = function (contentToUse) {
+	    var debugID = this._debugID;
+	    var contentDebugID = debugID + '#text';
+	    this._contentDebugID = contentDebugID;
+	    ReactInstrumentation.debugTool.onSetDisplayName(contentDebugID, '#text');
+	    ReactInstrumentation.debugTool.onSetText(contentDebugID, '' + contentToUse);
+	    ReactInstrumentation.debugTool.onMountComponent(contentDebugID);
+	    ReactInstrumentation.debugTool.onSetChildren(debugID, [contentDebugID]);
+	  };
 	}
 
 	// There are so many media events, it makes sense to just
@@ -9798,6 +10105,7 @@
 	  this._flags = 0;
 	  if (false) {
 	    this._ancestorInfo = null;
+	    this._contentDebugID = null;
 	  }
 	}
 
@@ -9913,7 +10221,7 @@
 	          div.innerHTML = '<' + type + '></' + type + '>';
 	          el = div.removeChild(div.firstChild);
 	        } else {
-	          el = ownerDocument.createElement(this._currentElement.type);
+	          el = ownerDocument.createElement(this._currentElement.type, props.is || null);
 	        }
 	      } else {
 	        el = ownerDocument.createElementNS(namespaceURI, this._currentElement.type);
@@ -10043,6 +10351,9 @@
 	      if (contentToUse != null) {
 	        // TODO: Validate that text is allowed as a child of this node
 	        ret = escapeTextContentForBrowser(contentToUse);
+	        if (false) {
+	          setContentChildForInstrumentation.call(this, contentToUse);
+	        }
 	      } else if (childrenToUse != null) {
 	        var mountImages = this.mountChildren(childrenToUse, transaction, context);
 	        ret = mountImages.join('');
@@ -10077,6 +10388,9 @@
 	      var childrenToUse = contentToUse != null ? null : props.children;
 	      if (contentToUse != null) {
 	        // TODO: Validate that text is allowed as a child of this node
+	        if (false) {
+	          setContentChildForInstrumentation.call(this, contentToUse);
+	        }
 	        DOMLazyTree.queueText(lazyTree, contentToUse);
 	      } else if (childrenToUse != null) {
 	        var mountImages = this.mountChildren(childrenToUse, transaction, context);
@@ -10285,17 +10599,34 @@
 	      this.updateChildren(null, transaction, context);
 	    } else if (lastHasContentOrHtml && !nextHasContentOrHtml) {
 	      this.updateTextContent('');
+	      if (false) {
+	        ReactInstrumentation.debugTool.onSetChildren(this._debugID, []);
+	      }
 	    }
 
 	    if (nextContent != null) {
 	      if (lastContent !== nextContent) {
 	        this.updateTextContent('' + nextContent);
+	        if (false) {
+	          this._contentDebugID = this._debugID + '#text';
+	          setContentChildForInstrumentation.call(this, nextContent);
+	        }
 	      }
 	    } else if (nextHtml != null) {
 	      if (lastHtml !== nextHtml) {
 	        this.updateMarkup('' + nextHtml);
 	      }
+	      if (false) {
+	        ReactInstrumentation.debugTool.onSetChildren(this._debugID, []);
+	      }
 	    } else if (nextChildren != null) {
+	      if (false) {
+	        if (this._contentDebugID) {
+	          ReactInstrumentation.debugTool.onUnmountComponent(this._contentDebugID);
+	          this._contentDebugID = null;
+	        }
+	      }
+
 	      this.updateChildren(nextChildren, transaction, context);
 	    }
 	  },
@@ -10345,6 +10676,13 @@
 	    this._rootNodeID = null;
 	    this._domID = null;
 	    this._wrapperState = null;
+
+	    if (false) {
+	      if (this._contentDebugID) {
+	        ReactInstrumentation.debugTool.onUnmountComponent(this._contentDebugID);
+	        this._contentDebugID = null;
+	      }
+	    }
 	  },
 
 	  getPublicInstance: function () {
@@ -10353,17 +10691,12 @@
 
 	};
 
-	ReactPerf.measureMethods(ReactDOMComponent.Mixin, 'ReactDOMComponent', {
-	  mountComponent: 'mountComponent',
-	  receiveComponent: 'receiveComponent'
-	});
-
 	_assign(ReactDOMComponent.prototype, ReactDOMComponent.Mixin, ReactMultiChild.Mixin);
 
 	module.exports = ReactDOMComponent;
 
 /***/ },
-/* 87 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10379,9 +10712,9 @@
 
 	'use strict';
 
-	var ReactDOMComponentTree = __webpack_require__(35);
+	var ReactDOMComponentTree = __webpack_require__(37);
 
-	var focusNode = __webpack_require__(88);
+	var focusNode = __webpack_require__(89);
 
 	var AutoFocusUtils = {
 	  focusDOMComponent: function () {
@@ -10392,7 +10725,7 @@
 	module.exports = AutoFocusUtils;
 
 /***/ },
-/* 88 */
+/* 89 */
 /***/ function(module, exports) {
 
 	/**
@@ -10423,7 +10756,7 @@
 	module.exports = focusNode;
 
 /***/ },
-/* 89 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10439,14 +10772,14 @@
 
 	'use strict';
 
-	var CSSProperty = __webpack_require__(90);
-	var ExecutionEnvironment = __webpack_require__(48);
-	var ReactPerf = __webpack_require__(58);
+	var CSSProperty = __webpack_require__(91);
+	var ExecutionEnvironment = __webpack_require__(20);
+	var ReactInstrumentation = __webpack_require__(18);
 
-	var camelizeStyleName = __webpack_require__(91);
-	var dangerousStyleValue = __webpack_require__(93);
-	var hyphenateStyleName = __webpack_require__(94);
-	var memoizeStringOnly = __webpack_require__(96);
+	var camelizeStyleName = __webpack_require__(92);
+	var dangerousStyleValue = __webpack_require__(94);
+	var hyphenateStyleName = __webpack_require__(95);
+	var memoizeStringOnly = __webpack_require__(97);
 	var warning = __webpack_require__(10);
 
 	var processStyleName = memoizeStringOnly(function (styleName) {
@@ -10595,6 +10928,10 @@
 	   * @param {ReactDOMComponent} component
 	   */
 	  setValueForStyles: function (node, styles, component) {
+	    if (false) {
+	      ReactInstrumentation.debugTool.onNativeOperation(component._debugID, 'update styles', styles);
+	    }
+
 	    var style = node.style;
 	    for (var styleName in styles) {
 	      if (!styles.hasOwnProperty(styleName)) {
@@ -10626,14 +10963,10 @@
 
 	};
 
-	ReactPerf.measureMethods(CSSPropertyOperations, 'CSSPropertyOperations', {
-	  setValueForStyles: 'setValueForStyles'
-	});
-
 	module.exports = CSSPropertyOperations;
 
 /***/ },
-/* 90 */
+/* 91 */
 /***/ function(module, exports) {
 
 	/**
@@ -10786,7 +11119,7 @@
 	module.exports = CSSProperty;
 
 /***/ },
-/* 91 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10802,7 +11135,7 @@
 
 	'use strict';
 
-	var camelize = __webpack_require__(92);
+	var camelize = __webpack_require__(93);
 
 	var msPattern = /^-ms-/;
 
@@ -10830,7 +11163,7 @@
 	module.exports = camelizeStyleName;
 
 /***/ },
-/* 92 */
+/* 93 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10866,7 +11199,7 @@
 	module.exports = camelize;
 
 /***/ },
-/* 93 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10882,7 +11215,7 @@
 
 	'use strict';
 
-	var CSSProperty = __webpack_require__(90);
+	var CSSProperty = __webpack_require__(91);
 	var warning = __webpack_require__(10);
 
 	var isUnitlessNumber = CSSProperty.isUnitlessNumber;
@@ -10948,7 +11281,7 @@
 	module.exports = dangerousStyleValue;
 
 /***/ },
-/* 94 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10964,7 +11297,7 @@
 
 	'use strict';
 
-	var hyphenate = __webpack_require__(95);
+	var hyphenate = __webpack_require__(96);
 
 	var msPattern = /^ms-/;
 
@@ -10991,7 +11324,7 @@
 	module.exports = hyphenateStyleName;
 
 /***/ },
-/* 95 */
+/* 96 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11028,7 +11361,7 @@
 	module.exports = hyphenate;
 
 /***/ },
-/* 96 */
+/* 97 */
 /***/ function(module, exports) {
 
 	/**
@@ -11039,6 +11372,7 @@
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
+	 * 
 	 * @typechecks static-only
 	 */
 
@@ -11046,9 +11380,6 @@
 
 	/**
 	 * Memoizes the return value of a function that accepts one string argument.
-	 *
-	 * @param {function} callback
-	 * @return {function}
 	 */
 
 	function memoizeStringOnly(callback) {
@@ -11062,31 +11393,6 @@
 	}
 
 	module.exports = memoizeStringOnly;
-
-/***/ },
-/* 97 */
-/***/ function(module, exports) {
-
-	/**
-	 * Copyright 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule DOMNamespaces
-	 */
-
-	'use strict';
-
-	var DOMNamespaces = {
-	  html: 'http://www.w3.org/1999/xhtml',
-	  mathml: 'http://www.w3.org/1998/Math/MathML',
-	  svg: 'http://www.w3.org/2000/svg'
-	};
-
-	module.exports = DOMNamespaces;
 
 /***/ },
 /* 98 */
@@ -11105,9 +11411,10 @@
 
 	'use strict';
 
-	var DOMProperty = __webpack_require__(36);
+	var DOMProperty = __webpack_require__(38);
+	var ReactDOMComponentTree = __webpack_require__(37);
 	var ReactDOMInstrumentation = __webpack_require__(99);
-	var ReactPerf = __webpack_require__(58);
+	var ReactInstrumentation = __webpack_require__(18);
 
 	var quoteAttributeValueForBrowser = __webpack_require__(102);
 	var warning = __webpack_require__(10);
@@ -11215,9 +11522,6 @@
 	   * @param {*} value
 	   */
 	  setValueForProperty: function (node, name, value) {
-	    if (false) {
-	      ReactDOMInstrumentation.debugTool.onSetValueForProperty(node, name, value);
-	    }
 	    var propertyInfo = DOMProperty.properties.hasOwnProperty(name) ? DOMProperty.properties[name] : null;
 	    if (propertyInfo) {
 	      var mutationMethod = propertyInfo.mutationMethod;
@@ -11225,6 +11529,7 @@
 	        mutationMethod(node, value);
 	      } else if (shouldIgnoreValue(propertyInfo, value)) {
 	        this.deleteValueForProperty(node, name);
+	        return;
 	      } else if (propertyInfo.mustUseProperty) {
 	        var propName = propertyInfo.propertyName;
 	        // Must explicitly cast values for HAS_SIDE_EFFECTS-properties to the
@@ -11249,6 +11554,14 @@
 	      }
 	    } else if (DOMProperty.isCustomAttribute(name)) {
 	      DOMPropertyOperations.setValueForAttribute(node, name, value);
+	      return;
+	    }
+
+	    if (false) {
+	      ReactDOMInstrumentation.debugTool.onSetValueForProperty(node, name, value);
+	      var payload = {};
+	      payload[name] = value;
+	      ReactInstrumentation.debugTool.onNativeOperation(ReactDOMComponentTree.getInstanceFromNode(node)._debugID, 'update attribute', payload);
 	    }
 	  },
 
@@ -11261,6 +11574,12 @@
 	    } else {
 	      node.setAttribute(name, '' + value);
 	    }
+
+	    if (false) {
+	      var payload = {};
+	      payload[name] = value;
+	      ReactInstrumentation.debugTool.onNativeOperation(ReactDOMComponentTree.getInstanceFromNode(node)._debugID, 'update attribute', payload);
+	    }
 	  },
 
 	  /**
@@ -11270,9 +11589,6 @@
 	   * @param {string} name
 	   */
 	  deleteValueForProperty: function (node, name) {
-	    if (false) {
-	      ReactDOMInstrumentation.debugTool.onDeleteValueForProperty(node, name);
-	    }
 	    var propertyInfo = DOMProperty.properties.hasOwnProperty(name) ? DOMProperty.properties[name] : null;
 	    if (propertyInfo) {
 	      var mutationMethod = propertyInfo.mutationMethod;
@@ -11294,15 +11610,14 @@
 	    } else if (DOMProperty.isCustomAttribute(name)) {
 	      node.removeAttribute(name);
 	    }
+
+	    if (false) {
+	      ReactDOMInstrumentation.debugTool.onDeleteValueForProperty(node, name);
+	      ReactInstrumentation.debugTool.onNativeOperation(ReactDOMComponentTree.getInstanceFromNode(node)._debugID, 'remove attribute', name);
+	    }
 	  }
 
 	};
-
-	ReactPerf.measureMethods(DOMPropertyOperations, 'DOMPropertyOperations', {
-	  setValueForProperty: 'setValueForProperty',
-	  setValueForAttribute: 'setValueForAttribute',
-	  deleteValueForProperty: 'deleteValueForProperty'
-	});
 
 	module.exports = DOMPropertyOperations;
 
@@ -11410,8 +11725,8 @@
 
 	'use strict';
 
-	var DOMProperty = __webpack_require__(36);
-	var EventPluginRegistry = __webpack_require__(43);
+	var DOMProperty = __webpack_require__(38);
+	var EventPluginRegistry = __webpack_require__(45);
 
 	var warning = __webpack_require__(10);
 
@@ -11479,7 +11794,7 @@
 
 	'use strict';
 
-	var escapeTextContentForBrowser = __webpack_require__(78);
+	var escapeTextContentForBrowser = __webpack_require__(79);
 
 	/**
 	 * Escapes attribute value to prevent scripting attacks.
@@ -11512,8 +11827,8 @@
 
 	var _assign = __webpack_require__(4);
 
-	var EventConstants = __webpack_require__(40);
-	var EventPluginRegistry = __webpack_require__(43);
+	var EventConstants = __webpack_require__(42);
+	var EventPluginRegistry = __webpack_require__(45);
 	var ReactEventEmitterMixin = __webpack_require__(104);
 	var ViewportMetrics = __webpack_require__(70);
 
@@ -11832,7 +12147,7 @@
 
 	'use strict';
 
-	var EventPluginHub = __webpack_require__(42);
+	var EventPluginHub = __webpack_require__(44);
 
 	function runEventQueueInBatch(events) {
 	  EventPluginHub.enqueueEvents(events);
@@ -11870,7 +12185,7 @@
 
 	'use strict';
 
-	var ExecutionEnvironment = __webpack_require__(48);
+	var ExecutionEnvironment = __webpack_require__(20);
 
 	/**
 	 * Generate a mapping of standard vendor prefixes using the defined style property and event name.
@@ -12065,8 +12380,8 @@
 	var DisabledInputUtils = __webpack_require__(107);
 	var DOMPropertyOperations = __webpack_require__(98);
 	var LinkedValueUtils = __webpack_require__(109);
-	var ReactDOMComponentTree = __webpack_require__(35);
-	var ReactUpdates = __webpack_require__(55);
+	var ReactDOMComponentTree = __webpack_require__(37);
+	var ReactUpdates = __webpack_require__(56);
 
 	var invariant = __webpack_require__(7);
 	var warning = __webpack_require__(10);
@@ -12134,6 +12449,8 @@
 	    if (false) {
 	      LinkedValueUtils.checkPropTypes('input', props, inst._currentElement._owner);
 
+	      var owner = inst._currentElement._owner;
+
 	      if (props.valueLink !== undefined && !didWarnValueLink) {
 	        process.env.NODE_ENV !== 'production' ? warning(false, '`valueLink` prop on `input` is deprecated; set `value` and `onChange` instead.') : void 0;
 	        didWarnValueLink = true;
@@ -12143,11 +12460,11 @@
 	        didWarnCheckedLink = true;
 	      }
 	      if (props.checked !== undefined && props.defaultChecked !== undefined && !didWarnCheckedDefaultChecked) {
-	        process.env.NODE_ENV !== 'production' ? warning(false, 'Input elements must be either controlled or uncontrolled ' + '(specify either the checked prop, or the defaultChecked prop, but not ' + 'both). Decide between using a controlled or uncontrolled input ' + 'element and remove one of these props. More info: ' + 'https://fb.me/react-controlled-components') : void 0;
+	        process.env.NODE_ENV !== 'production' ? warning(false, '%s contains an input of type %s with both checked and defaultChecked props. ' + 'Input elements must be either controlled or uncontrolled ' + '(specify either the checked prop, or the defaultChecked prop, but not ' + 'both). Decide between using a controlled or uncontrolled input ' + 'element and remove one of these props. More info: ' + 'https://fb.me/react-controlled-components', owner && owner.getName() || 'A component', props.type) : void 0;
 	        didWarnCheckedDefaultChecked = true;
 	      }
 	      if (props.value !== undefined && props.defaultValue !== undefined && !didWarnValueDefaultValue) {
-	        process.env.NODE_ENV !== 'production' ? warning(false, 'Input elements must be either controlled or uncontrolled ' + '(specify either the value prop, or the defaultValue prop, but not ' + 'both). Decide between using a controlled or uncontrolled input ' + 'element and remove one of these props. More info: ' + 'https://fb.me/react-controlled-components') : void 0;
+	        process.env.NODE_ENV !== 'production' ? warning(false, '%s contains an input of type %s with both value and defaultValue props. ' + 'Input elements must be either controlled or uncontrolled ' + '(specify either the value prop, or the defaultValue prop, but not ' + 'both). Decide between using a controlled or uncontrolled input ' + 'element and remove one of these props. More info: ' + 'https://fb.me/react-controlled-components', owner && owner.getName() || 'A component', props.type) : void 0;
 	        didWarnValueDefaultValue = true;
 	      }
 	      warnIfValueIsNull(props);
@@ -12178,7 +12495,7 @@
 	      var owner = inst._currentElement._owner;
 
 	      if ((initialValue || !inst._wrapperState.controlled) && controlled && !didWarnUncontrolledToControlled) {
-	        process.env.NODE_ENV !== 'production' ? warning(false, '%s is changing a uncontrolled input of type %s to be controlled. ' + 'Input elements should not switch from uncontrolled to controlled (or vice versa). ' + 'Decide between using a controlled or uncontrolled input ' + 'element for the lifetime of the component. More info: https://fb.me/react-controlled-components', owner && owner.getName() || 'A component', props.type) : void 0;
+	        process.env.NODE_ENV !== 'production' ? warning(false, '%s is changing an uncontrolled input of type %s to be controlled. ' + 'Input elements should not switch from uncontrolled to controlled (or vice versa). ' + 'Decide between using a controlled or uncontrolled input ' + 'element for the lifetime of the component. More info: https://fb.me/react-controlled-components', owner && owner.getName() || 'A component', props.type) : void 0;
 	        didWarnUncontrolledToControlled = true;
 	      }
 	      if (inst._wrapperState.controlled && (defaultValue || !controlled) && !didWarnControlledToUncontrolled) {
@@ -12269,8 +12586,8 @@
 
 	'use strict';
 
-	var ReactPropTypes = __webpack_require__(30);
-	var ReactPropTypeLocations = __webpack_require__(23);
+	var ReactPropTypes = __webpack_require__(32);
+	var ReactPropTypeLocations = __webpack_require__(25);
 
 	var invariant = __webpack_require__(7);
 	var warning = __webpack_require__(10);
@@ -12410,7 +12727,7 @@
 	var _assign = __webpack_require__(4);
 
 	var ReactChildren = __webpack_require__(5);
-	var ReactDOMComponentTree = __webpack_require__(35);
+	var ReactDOMComponentTree = __webpack_require__(37);
 	var ReactDOMSelect = __webpack_require__(111);
 
 	var warning = __webpack_require__(10);
@@ -12525,8 +12842,8 @@
 
 	var DisabledInputUtils = __webpack_require__(107);
 	var LinkedValueUtils = __webpack_require__(109);
-	var ReactDOMComponentTree = __webpack_require__(35);
-	var ReactUpdates = __webpack_require__(55);
+	var ReactDOMComponentTree = __webpack_require__(37);
+	var ReactUpdates = __webpack_require__(56);
 
 	var warning = __webpack_require__(10);
 
@@ -12744,8 +13061,8 @@
 	var DisabledInputUtils = __webpack_require__(107);
 	var DOMPropertyOperations = __webpack_require__(98);
 	var LinkedValueUtils = __webpack_require__(109);
-	var ReactDOMComponentTree = __webpack_require__(35);
-	var ReactUpdates = __webpack_require__(55);
+	var ReactDOMComponentTree = __webpack_require__(37);
+	var ReactUpdates = __webpack_require__(56);
 
 	var invariant = __webpack_require__(7);
 	var warning = __webpack_require__(10);
@@ -12887,12 +13204,14 @@
 	'use strict';
 
 	var ReactComponentEnvironment = __webpack_require__(114);
-	var ReactMultiChildUpdateTypes = __webpack_require__(84);
+	var ReactInstrumentation = __webpack_require__(18);
+	var ReactMultiChildUpdateTypes = __webpack_require__(85);
 
 	var ReactCurrentOwner = __webpack_require__(9);
 	var ReactReconciler = __webpack_require__(59);
 	var ReactChildReconciler = __webpack_require__(115);
 
+	var emptyFunction = __webpack_require__(11);
 	var flattenChildren = __webpack_require__(124);
 	var invariant = __webpack_require__(7);
 
@@ -13009,6 +13328,15 @@
 	  ReactComponentEnvironment.processChildrenUpdates(inst, updateQueue);
 	}
 
+	var setChildrenForInstrumentation = emptyFunction;
+	if (false) {
+	  setChildrenForInstrumentation = function (children) {
+	    ReactInstrumentation.debugTool.onSetChildren(this._debugID, children ? Object.keys(children).map(function (key) {
+	      return children[key]._debugID;
+	    }) : []);
+	  };
+	}
+
 	/**
 	 * ReactMultiChild are capable of reconciling multiple children.
 	 *
@@ -13070,6 +13398,7 @@
 	    mountChildren: function (nestedChildren, transaction, context) {
 	      var children = this._reconcilerInstantiateChildren(nestedChildren, transaction, context);
 	      this._renderedChildren = children;
+
 	      var mountImages = [];
 	      var index = 0;
 	      for (var name in children) {
@@ -13080,6 +13409,11 @@
 	          mountImages.push(mountImage);
 	        }
 	      }
+
+	      if (false) {
+	        setChildrenForInstrumentation.call(this, children);
+	      }
+
 	      return mountImages;
 	    },
 
@@ -13186,6 +13520,10 @@
 	        processQueue(this, updates);
 	      }
 	      this._renderedChildren = nextChildren;
+
+	      if (false) {
+	        setChildrenForInstrumentation.call(this, nextChildren);
+	      }
 	    },
 
 	    /**
@@ -13484,6 +13822,7 @@
 	var ReactCompositeComponent = __webpack_require__(117);
 	var ReactEmptyComponent = __webpack_require__(122);
 	var ReactNativeComponent = __webpack_require__(123);
+	var ReactInstrumentation = __webpack_require__(18);
 
 	var invariant = __webpack_require__(7);
 	var warning = __webpack_require__(10);
@@ -13506,6 +13845,21 @@
 	  return '';
 	}
 
+	function getDisplayName(instance) {
+	  var element = instance._currentElement;
+	  if (element == null) {
+	    return '#empty';
+	  } else if (typeof element === 'string' || typeof element === 'number') {
+	    return '#text';
+	  } else if (typeof element.type === 'string') {
+	    return element.type;
+	  } else if (instance.getName) {
+	    return instance.getName() || 'Unknown';
+	  } else {
+	    return element.type.displayName || element.type.name || 'Unknown';
+	  }
+	}
+
 	/**
 	 * Check if the type reference is a known internal type. I.e. not a user
 	 * provided composite type.
@@ -13517,6 +13871,8 @@
 	  return typeof type === 'function' && typeof type.prototype !== 'undefined' && typeof type.prototype.mountComponent === 'function' && typeof type.prototype.receiveComponent === 'function';
 	}
 
+	var nextDebugID = 1;
+
 	/**
 	 * Given a ReactNode, create an instance that will actually be mounted.
 	 *
@@ -13527,7 +13883,8 @@
 	function instantiateReactComponent(node) {
 	  var instance;
 
-	  if (node === null || node === false) {
+	  var isEmpty = node === null || node === false;
+	  if (isEmpty) {
 	    instance = ReactEmptyComponent.create(instantiateReactComponent);
 	  } else if (typeof node === 'object') {
 	    var element = node;
@@ -13565,6 +13922,20 @@
 	    instance._warnedAboutRefsInRender = false;
 	  }
 
+	  if (false) {
+	    var debugID = isEmpty ? 0 : nextDebugID++;
+	    instance._debugID = debugID;
+
+	    if (debugID !== 0) {
+	      var displayName = getDisplayName(instance);
+	      ReactInstrumentation.debugTool.onSetDisplayName(debugID, displayName);
+	      var owner = node && node._owner;
+	      if (owner) {
+	        ReactInstrumentation.debugTool.onSetOwner(debugID, owner._debugID);
+	      }
+	    }
+	  }
+
 	  // Internal instances should fully constructed at this point, so they should
 	  // not get any new fields added to them at this point.
 	  if (false) {
@@ -13600,17 +13971,16 @@
 	var ReactComponentEnvironment = __webpack_require__(114);
 	var ReactCurrentOwner = __webpack_require__(9);
 	var ReactElement = __webpack_require__(8);
-	var ReactErrorUtils = __webpack_require__(45);
+	var ReactErrorUtils = __webpack_require__(47);
 	var ReactInstanceMap = __webpack_require__(118);
 	var ReactInstrumentation = __webpack_require__(18);
 	var ReactNodeTypes = __webpack_require__(119);
-	var ReactPerf = __webpack_require__(58);
-	var ReactPropTypeLocations = __webpack_require__(23);
-	var ReactPropTypeLocationNames = __webpack_require__(25);
+	var ReactPropTypeLocations = __webpack_require__(25);
+	var ReactPropTypeLocationNames = __webpack_require__(27);
 	var ReactReconciler = __webpack_require__(59);
 	var ReactUpdateQueue = __webpack_require__(120);
 
-	var emptyObject = __webpack_require__(21);
+	var emptyObject = __webpack_require__(23);
 	var invariant = __webpack_require__(7);
 	var shouldUpdateReactComponent = __webpack_require__(121);
 	var warning = __webpack_require__(10);
@@ -13637,6 +14007,28 @@
 	function warnIfInvalidElement(Component, element) {
 	  if (false) {
 	    process.env.NODE_ENV !== 'production' ? warning(element === null || element === false || ReactElement.isValidElement(element), '%s(...): A valid React element (or null) must be returned. You may have ' + 'returned undefined, an array or some other invalid object.', Component.displayName || Component.name || 'Component') : void 0;
+	  }
+	}
+
+	function invokeComponentDidMountWithTimer() {
+	  var publicInstance = this._instance;
+	  if (this._debugID !== 0) {
+	    ReactInstrumentation.debugTool.onBeginLifeCycleTimer(this._debugID, 'componentDidMount');
+	  }
+	  publicInstance.componentDidMount();
+	  if (this._debugID !== 0) {
+	    ReactInstrumentation.debugTool.onEndLifeCycleTimer(this._debugID, 'componentDidMount');
+	  }
+	}
+
+	function invokeComponentDidUpdateWithTimer(prevProps, prevState, prevContext) {
+	  var publicInstance = this._instance;
+	  if (this._debugID !== 0) {
+	    ReactInstrumentation.debugTool.onBeginLifeCycleTimer(this._debugID, 'componentDidUpdate');
+	  }
+	  publicInstance.componentDidUpdate(prevProps, prevState, prevContext);
+	  if (this._debugID !== 0) {
+	    ReactInstrumentation.debugTool.onEndLifeCycleTimer(this._debugID, 'componentDidUpdate');
 	  }
 	}
 
@@ -13699,6 +14091,7 @@
 	    this._nativeContainerInfo = null;
 
 	    // See ReactUpdateQueue
+	    this._updateBatchNumber = null;
 	    this._pendingElement = null;
 	    this._pendingStateQueue = null;
 	    this._pendingReplaceState = false;
@@ -13807,7 +14200,11 @@
 	    }
 
 	    if (inst.componentDidMount) {
-	      transaction.getReactMountReady().enqueue(inst.componentDidMount, inst);
+	      if (false) {
+	        transaction.getReactMountReady().enqueue(invokeComponentDidMountWithTimer, this);
+	      } else {
+	        transaction.getReactMountReady().enqueue(inst.componentDidMount, inst);
+	      }
 	    }
 
 	    return markup;
@@ -13828,11 +14225,35 @@
 
 	  _constructComponentWithoutOwner: function (publicProps, publicContext) {
 	    var Component = this._currentElement.type;
+	    var instanceOrElement;
 	    if (shouldConstruct(Component)) {
-	      return new Component(publicProps, publicContext, ReactUpdateQueue);
+	      if (false) {
+	        if (this._debugID !== 0) {
+	          ReactInstrumentation.debugTool.onBeginLifeCycleTimer(this._debugID, 'ctor');
+	        }
+	      }
+	      instanceOrElement = new Component(publicProps, publicContext, ReactUpdateQueue);
+	      if (false) {
+	        if (this._debugID !== 0) {
+	          ReactInstrumentation.debugTool.onEndLifeCycleTimer(this._debugID, 'ctor');
+	        }
+	      }
 	    } else {
-	      return Component(publicProps, publicContext, ReactUpdateQueue);
+	      // This can still be an instance in case of factory components
+	      // but we'll count this as time spent rendering as the more common case.
+	      if (false) {
+	        if (this._debugID !== 0) {
+	          ReactInstrumentation.debugTool.onBeginLifeCycleTimer(this._debugID, 'render');
+	        }
+	      }
+	      instanceOrElement = Component(publicProps, publicContext, ReactUpdateQueue);
+	      if (false) {
+	        if (this._debugID !== 0) {
+	          ReactInstrumentation.debugTool.onEndLifeCycleTimer(this._debugID, 'render');
+	        }
+	      }
 	    }
+	    return instanceOrElement;
 	  },
 
 	  performInitialMountWithErrorHandling: function (renderedElement, nativeParent, nativeContainerInfo, transaction, context) {
@@ -13862,7 +14283,17 @@
 	  performInitialMount: function (renderedElement, nativeParent, nativeContainerInfo, transaction, context) {
 	    var inst = this._instance;
 	    if (inst.componentWillMount) {
+	      if (false) {
+	        if (this._debugID !== 0) {
+	          ReactInstrumentation.debugTool.onBeginLifeCycleTimer(this._debugID, 'componentWillMount');
+	        }
+	      }
 	      inst.componentWillMount();
+	      if (false) {
+	        if (this._debugID !== 0) {
+	          ReactInstrumentation.debugTool.onEndLifeCycleTimer(this._debugID, 'componentWillMount');
+	        }
+	      }
 	      // When mounting, calls to `setState` by `componentWillMount` will set
 	      // `this._pendingStateQueue` without triggering a re-render.
 	      if (this._pendingStateQueue) {
@@ -13879,6 +14310,12 @@
 	    this._renderedComponent = this._instantiateReactComponent(renderedElement);
 
 	    var markup = ReactReconciler.mountComponent(this._renderedComponent, transaction, nativeParent, nativeContainerInfo, this._processChildContext(context));
+
+	    if (false) {
+	      if (this._debugID !== 0) {
+	        ReactInstrumentation.debugTool.onSetChildren(this._debugID, this._renderedComponent._debugID !== 0 ? [this._renderedComponent._debugID] : []);
+	      }
+	    }
 
 	    return markup;
 	  },
@@ -13901,11 +14338,21 @@
 
 	    if (inst.componentWillUnmount && !inst._calledComponentWillUnmount) {
 	      inst._calledComponentWillUnmount = true;
+	      if (false) {
+	        if (this._debugID !== 0) {
+	          ReactInstrumentation.debugTool.onBeginLifeCycleTimer(this._debugID, 'componentWillUnmount');
+	        }
+	      }
 	      if (safely) {
 	        var name = this.getName() + '.componentWillUnmount()';
 	        ReactErrorUtils.invokeGuardedCallback(name, inst.componentWillUnmount.bind(inst));
 	      } else {
 	        inst.componentWillUnmount();
+	      }
+	      if (false) {
+	        if (this._debugID !== 0) {
+	          ReactInstrumentation.debugTool.onEndLifeCycleTimer(this._debugID, 'componentWillUnmount');
+	        }
 	      }
 	    }
 
@@ -14089,10 +14536,10 @@
 	  performUpdateIfNecessary: function (transaction) {
 	    if (this._pendingElement != null) {
 	      ReactReconciler.receiveComponent(this, this._pendingElement, transaction, this._context);
-	    }
-
-	    if (this._pendingStateQueue !== null || this._pendingForceUpdate) {
+	    } else if (this._pendingStateQueue !== null || this._pendingForceUpdate) {
 	      this.updateComponent(transaction, this._currentElement, this._currentElement, this._context, this._context);
+	    } else {
+	      this._updateBatchNumber = null;
 	    }
 	  },
 
@@ -14139,17 +14586,41 @@
 	    // _pendingStateQueue which will ensure that any state updates gets
 	    // immediately reconciled instead of waiting for the next batch.
 	    if (willReceive && inst.componentWillReceiveProps) {
+	      if (false) {
+	        if (this._debugID !== 0) {
+	          ReactInstrumentation.debugTool.onBeginLifeCycleTimer(this._debugID, 'componentWillReceiveProps');
+	        }
+	      }
 	      inst.componentWillReceiveProps(nextProps, nextContext);
+	      if (false) {
+	        if (this._debugID !== 0) {
+	          ReactInstrumentation.debugTool.onEndLifeCycleTimer(this._debugID, 'componentWillReceiveProps');
+	        }
+	      }
 	    }
 
 	    var nextState = this._processPendingState(nextProps, nextContext);
+	    var shouldUpdate = true;
 
-	    var shouldUpdate = this._pendingForceUpdate || !inst.shouldComponentUpdate || inst.shouldComponentUpdate(nextProps, nextState, nextContext);
+	    if (!this._pendingForceUpdate && inst.shouldComponentUpdate) {
+	      if (false) {
+	        if (this._debugID !== 0) {
+	          ReactInstrumentation.debugTool.onBeginLifeCycleTimer(this._debugID, 'shouldComponentUpdate');
+	        }
+	      }
+	      shouldUpdate = inst.shouldComponentUpdate(nextProps, nextState, nextContext);
+	      if (false) {
+	        if (this._debugID !== 0) {
+	          ReactInstrumentation.debugTool.onEndLifeCycleTimer(this._debugID, 'shouldComponentUpdate');
+	        }
+	      }
+	    }
 
 	    if (false) {
 	      process.env.NODE_ENV !== 'production' ? warning(shouldUpdate !== undefined, '%s.shouldComponentUpdate(): Returned undefined instead of a ' + 'boolean value. Make sure to return true or false.', this.getName() || 'ReactCompositeComponent') : void 0;
 	    }
 
+	    this._updateBatchNumber = null;
 	    if (shouldUpdate) {
 	      this._pendingForceUpdate = false;
 	      // Will set `this.props`, `this.state` and `this.context`.
@@ -14215,7 +14686,17 @@
 	    }
 
 	    if (inst.componentWillUpdate) {
+	      if (false) {
+	        if (this._debugID !== 0) {
+	          ReactInstrumentation.debugTool.onBeginLifeCycleTimer(this._debugID, 'componentWillUpdate');
+	        }
+	      }
 	      inst.componentWillUpdate(nextProps, nextState, nextContext);
+	      if (false) {
+	        if (this._debugID !== 0) {
+	          ReactInstrumentation.debugTool.onEndLifeCycleTimer(this._debugID, 'componentWillUpdate');
+	        }
+	      }
 	    }
 
 	    this._currentElement = nextElement;
@@ -14227,7 +14708,11 @@
 	    this._updateRenderedComponent(transaction, unmaskedContext);
 
 	    if (hasComponentDidUpdate) {
-	      transaction.getReactMountReady().enqueue(inst.componentDidUpdate.bind(inst, prevProps, prevState, prevContext), inst);
+	      if (false) {
+	        transaction.getReactMountReady().enqueue(invokeComponentDidUpdateWithTimer.bind(this, prevProps, prevState, prevContext), this);
+	      } else {
+	        transaction.getReactMountReady().enqueue(inst.componentDidUpdate.bind(inst, prevProps, prevState, prevContext), inst);
+	      }
 	    }
 	  },
 
@@ -14249,8 +14734,16 @@
 
 	      this._renderedNodeType = ReactNodeTypes.getType(nextRenderedElement);
 	      this._renderedComponent = this._instantiateReactComponent(nextRenderedElement);
+
 	      var nextMarkup = ReactReconciler.mountComponent(this._renderedComponent, transaction, this._nativeParent, this._nativeContainerInfo, this._processChildContext(context));
-	      this._replaceNodeWithMarkup(oldNativeNode, nextMarkup);
+
+	      if (false) {
+	        if (this._debugID !== 0) {
+	          ReactInstrumentation.debugTool.onSetChildren(this._debugID, this._renderedComponent._debugID !== 0 ? [this._renderedComponent._debugID] : []);
+	        }
+	      }
+
+	      this._replaceNodeWithMarkup(oldNativeNode, nextMarkup, prevComponentInstance);
 	    }
 	  },
 
@@ -14259,8 +14752,8 @@
 	   *
 	   * @protected
 	   */
-	  _replaceNodeWithMarkup: function (oldNativeNode, nextMarkup) {
-	    ReactComponentEnvironment.replaceNodeWithMarkup(oldNativeNode, nextMarkup);
+	  _replaceNodeWithMarkup: function (oldNativeNode, nextMarkup, prevInstance) {
+	    ReactComponentEnvironment.replaceNodeWithMarkup(oldNativeNode, nextMarkup, prevInstance);
 	  },
 
 	  /**
@@ -14268,7 +14761,19 @@
 	   */
 	  _renderValidatedComponentWithoutOwnerOrContext: function () {
 	    var inst = this._instance;
+
+	    if (false) {
+	      if (this._debugID !== 0) {
+	        ReactInstrumentation.debugTool.onBeginLifeCycleTimer(this._debugID, 'render');
+	      }
+	    }
 	    var renderedComponent = inst.render();
+	    if (false) {
+	      if (this._debugID !== 0) {
+	        ReactInstrumentation.debugTool.onEndLifeCycleTimer(this._debugID, 'render');
+	      }
+	    }
+
 	    if (false) {
 	      // We allow auto-mocks to proceed as if they're returning null.
 	      if (renderedComponent === undefined && inst.render._isMockFunction) {
@@ -14295,6 +14800,7 @@
 	    !(
 	    // TODO: An `isValidNode` function would probably be more appropriate
 	    renderedComponent === null || renderedComponent === false || ReactElement.isValidElement(renderedComponent)) ?  false ? invariant(false, '%s.render(): A valid React element (or null) must be returned. You may have ' + 'returned undefined, an array or some other invalid object.', this.getName() || 'ReactCompositeComponent') : invariant(false) : void 0;
+
 	    return renderedComponent;
 	  },
 
@@ -14362,12 +14868,6 @@
 	  _instantiateReactComponent: null
 
 	};
-
-	ReactPerf.measureMethods(ReactCompositeComponentMixin, 'ReactCompositeComponent', {
-	  mountComponent: 'mountComponent',
-	  updateComponent: 'updateComponent',
-	  _renderValidatedComponent: '_renderValidatedComponent'
-	});
 
 	var ReactCompositeComponent = {
 
@@ -14491,7 +14991,7 @@
 
 	var ReactCurrentOwner = __webpack_require__(9);
 	var ReactInstanceMap = __webpack_require__(118);
-	var ReactUpdates = __webpack_require__(55);
+	var ReactUpdates = __webpack_require__(56);
 
 	var invariant = __webpack_require__(7);
 	var warning = __webpack_require__(10);
@@ -14930,6 +15430,84 @@
 
 /***/ },
 /* 125 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2014-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactServerRenderingTransaction
+	 */
+
+	'use strict';
+
+	var _assign = __webpack_require__(4);
+
+	var PooledClass = __webpack_require__(6);
+	var Transaction = __webpack_require__(62);
+
+	/**
+	 * Executed within the scope of the `Transaction` instance. Consider these as
+	 * being member methods, but with an implied ordering while being isolated from
+	 * each other.
+	 */
+	var TRANSACTION_WRAPPERS = [];
+
+	var noopCallbackQueue = {
+	  enqueue: function () {}
+	};
+
+	/**
+	 * @class ReactServerRenderingTransaction
+	 * @param {boolean} renderToStaticMarkup
+	 */
+	function ReactServerRenderingTransaction(renderToStaticMarkup) {
+	  this.reinitializeTransaction();
+	  this.renderToStaticMarkup = renderToStaticMarkup;
+	  this.useCreateElement = false;
+	}
+
+	var Mixin = {
+	  /**
+	   * @see Transaction
+	   * @abstract
+	   * @final
+	   * @return {array} Empty list of operation wrap procedures.
+	   */
+	  getTransactionWrappers: function () {
+	    return TRANSACTION_WRAPPERS;
+	  },
+
+	  /**
+	   * @return {object} The queue to collect `onDOMReady` callbacks with.
+	   */
+	  getReactMountReady: function () {
+	    return noopCallbackQueue;
+	  },
+
+	  /**
+	   * `PooledClass` looks for this, and will invoke this before allowing this
+	   * instance to be reused.
+	   */
+	  destructor: function () {},
+
+	  checkpoint: function () {},
+
+	  rollback: function () {}
+	};
+
+	_assign(ReactServerRenderingTransaction.prototype, Transaction.Mixin, Mixin);
+
+	PooledClass.addPoolingTo(ReactServerRenderingTransaction);
+
+	module.exports = ReactServerRenderingTransaction;
+
+/***/ },
+/* 126 */
 /***/ function(module, exports) {
 
 	/**
@@ -15000,7 +15578,7 @@
 	module.exports = shallowEqual;
 
 /***/ },
-/* 126 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15374,7 +15952,7 @@
 	module.exports = validateDOMNesting;
 
 /***/ },
-/* 127 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15393,7 +15971,7 @@
 	var _assign = __webpack_require__(4);
 
 	var DOMLazyTree = __webpack_require__(75);
-	var ReactDOMComponentTree = __webpack_require__(35);
+	var ReactDOMComponentTree = __webpack_require__(37);
 
 	var ReactDOMEmptyComponent = function (instantiate) {
 	  // ReactCompositeComponent uses this:
@@ -15439,7 +16017,7 @@
 	module.exports = ReactDOMEmptyComponent;
 
 /***/ },
-/* 128 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15578,7 +16156,7 @@
 	};
 
 /***/ },
-/* 129 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15598,12 +16176,12 @@
 
 	var DOMChildrenOperations = __webpack_require__(74);
 	var DOMLazyTree = __webpack_require__(75);
-	var ReactDOMComponentTree = __webpack_require__(35);
-	var ReactPerf = __webpack_require__(58);
+	var ReactDOMComponentTree = __webpack_require__(37);
+	var ReactInstrumentation = __webpack_require__(18);
 
-	var escapeTextContentForBrowser = __webpack_require__(78);
+	var escapeTextContentForBrowser = __webpack_require__(79);
 	var invariant = __webpack_require__(7);
-	var validateDOMNesting = __webpack_require__(126);
+	var validateDOMNesting = __webpack_require__(127);
 
 	/**
 	 * Text nodes violate a couple assumptions that React makes about components:
@@ -15647,6 +16225,8 @@
 	   */
 	  mountComponent: function (transaction, nativeParent, nativeContainerInfo, context) {
 	    if (false) {
+	      ReactInstrumentation.debugTool.onSetText(this._debugID, this._stringText);
+
 	      var parentInfo;
 	      if (nativeParent != null) {
 	        parentInfo = nativeParent._ancestorInfo;
@@ -15710,6 +16290,10 @@
 	        this._stringText = nextStringText;
 	        var commentNodes = this.getNativeNode();
 	        DOMChildrenOperations.replaceDelimitedText(commentNodes[0], commentNodes[1], nextStringText);
+
+	        if (false) {
+	          ReactInstrumentation.debugTool.onSetText(this._debugID, nextStringText);
+	        }
 	      }
 	    }
 	  },
@@ -15744,15 +16328,10 @@
 
 	});
 
-	ReactPerf.measureMethods(ReactDOMTextComponent.prototype, 'ReactDOMTextComponent', {
-	  mountComponent: 'mountComponent',
-	  receiveComponent: 'receiveComponent'
-	});
-
 	module.exports = ReactDOMTextComponent;
 
 /***/ },
-/* 130 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15770,7 +16349,7 @@
 
 	var _assign = __webpack_require__(4);
 
-	var ReactUpdates = __webpack_require__(55);
+	var ReactUpdates = __webpack_require__(56);
 	var Transaction = __webpack_require__(62);
 
 	var emptyFunction = __webpack_require__(11);
@@ -15825,7 +16404,7 @@
 	module.exports = ReactDefaultBatchingStrategy;
 
 /***/ },
-/* 131 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15843,14 +16422,14 @@
 
 	var _assign = __webpack_require__(4);
 
-	var EventListener = __webpack_require__(132);
-	var ExecutionEnvironment = __webpack_require__(48);
+	var EventListener = __webpack_require__(133);
+	var ExecutionEnvironment = __webpack_require__(20);
 	var PooledClass = __webpack_require__(6);
-	var ReactDOMComponentTree = __webpack_require__(35);
-	var ReactUpdates = __webpack_require__(55);
+	var ReactDOMComponentTree = __webpack_require__(37);
+	var ReactUpdates = __webpack_require__(56);
 
 	var getEventTarget = __webpack_require__(63);
-	var getUnboundedScrollPosition = __webpack_require__(133);
+	var getUnboundedScrollPosition = __webpack_require__(134);
 
 	/**
 	 * Find the deepest React component completely containing the root of the
@@ -15987,7 +16566,7 @@
 	module.exports = ReactEventListener;
 
 /***/ },
-/* 132 */
+/* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16025,18 +16604,18 @@
 	   * @param {function} callback Callback function.
 	   * @return {object} Object with a `remove` method.
 	   */
-	  listen: function (target, eventType, callback) {
+	  listen: function listen(target, eventType, callback) {
 	    if (target.addEventListener) {
 	      target.addEventListener(eventType, callback, false);
 	      return {
-	        remove: function () {
+	        remove: function remove() {
 	          target.removeEventListener(eventType, callback, false);
 	        }
 	      };
 	    } else if (target.attachEvent) {
 	      target.attachEvent('on' + eventType, callback);
 	      return {
-	        remove: function () {
+	        remove: function remove() {
 	          target.detachEvent('on' + eventType, callback);
 	        }
 	      };
@@ -16051,11 +16630,11 @@
 	   * @param {function} callback Callback function.
 	   * @return {object} Object with a `remove` method.
 	   */
-	  capture: function (target, eventType, callback) {
+	  capture: function capture(target, eventType, callback) {
 	    if (target.addEventListener) {
 	      target.addEventListener(eventType, callback, true);
 	      return {
-	        remove: function () {
+	        remove: function remove() {
 	          target.removeEventListener(eventType, callback, true);
 	        }
 	      };
@@ -16069,13 +16648,13 @@
 	    }
 	  },
 
-	  registerDefault: function () {}
+	  registerDefault: function registerDefault() {}
 	};
 
 	module.exports = EventListener;
 
 /***/ },
-/* 133 */
+/* 134 */
 /***/ function(module, exports) {
 
 	/**
@@ -16118,7 +16697,7 @@
 	module.exports = getUnboundedScrollPosition;
 
 /***/ },
-/* 134 */
+/* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16134,16 +16713,15 @@
 
 	'use strict';
 
-	var DOMProperty = __webpack_require__(36);
-	var EventPluginHub = __webpack_require__(42);
-	var EventPluginUtils = __webpack_require__(44);
+	var DOMProperty = __webpack_require__(38);
+	var EventPluginHub = __webpack_require__(44);
+	var EventPluginUtils = __webpack_require__(46);
 	var ReactComponentEnvironment = __webpack_require__(114);
-	var ReactClass = __webpack_require__(22);
+	var ReactClass = __webpack_require__(24);
 	var ReactEmptyComponent = __webpack_require__(122);
 	var ReactBrowserEventEmitter = __webpack_require__(103);
 	var ReactNativeComponent = __webpack_require__(123);
-	var ReactPerf = __webpack_require__(58);
-	var ReactUpdates = __webpack_require__(55);
+	var ReactUpdates = __webpack_require__(56);
 
 	var ReactInjection = {
 	  Component: ReactComponentEnvironment.injection,
@@ -16154,14 +16732,13 @@
 	  EventPluginUtils: EventPluginUtils.injection,
 	  EventEmitter: ReactBrowserEventEmitter.injection,
 	  NativeComponent: ReactNativeComponent.injection,
-	  Perf: ReactPerf.injection,
 	  Updates: ReactUpdates.injection
 	};
 
 	module.exports = ReactInjection;
 
 /***/ },
-/* 135 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16179,10 +16756,10 @@
 
 	var _assign = __webpack_require__(4);
 
-	var CallbackQueue = __webpack_require__(56);
+	var CallbackQueue = __webpack_require__(57);
 	var PooledClass = __webpack_require__(6);
 	var ReactBrowserEventEmitter = __webpack_require__(103);
-	var ReactInputSelection = __webpack_require__(136);
+	var ReactInputSelection = __webpack_require__(137);
 	var Transaction = __webpack_require__(62);
 
 	/**
@@ -16328,7 +16905,7 @@
 	module.exports = ReactReconcileTransaction;
 
 /***/ },
-/* 136 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16344,11 +16921,11 @@
 
 	'use strict';
 
-	var ReactDOMSelection = __webpack_require__(137);
+	var ReactDOMSelection = __webpack_require__(138);
 
-	var containsNode = __webpack_require__(139);
-	var focusNode = __webpack_require__(88);
-	var getActiveElement = __webpack_require__(142);
+	var containsNode = __webpack_require__(140);
+	var focusNode = __webpack_require__(89);
+	var getActiveElement = __webpack_require__(143);
 
 	function isInDocument(node) {
 	  return containsNode(document.documentElement, node);
@@ -16457,7 +17034,7 @@
 	module.exports = ReactInputSelection;
 
 /***/ },
-/* 137 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16473,10 +17050,10 @@
 
 	'use strict';
 
-	var ExecutionEnvironment = __webpack_require__(48);
+	var ExecutionEnvironment = __webpack_require__(20);
 
-	var getNodeForCharacterOffset = __webpack_require__(138);
-	var getTextContentAccessor = __webpack_require__(50);
+	var getNodeForCharacterOffset = __webpack_require__(139);
+	var getTextContentAccessor = __webpack_require__(51);
 
 	/**
 	 * While `isCollapsed` is available on the Selection object and `collapsed`
@@ -16674,7 +17251,7 @@
 	module.exports = ReactDOMSelection;
 
 /***/ },
-/* 138 */
+/* 139 */
 /***/ function(module, exports) {
 
 	/**
@@ -16753,54 +17330,6 @@
 	module.exports = getNodeForCharacterOffset;
 
 /***/ },
-/* 139 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Copyright (c) 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @typechecks
-	 */
-
-	var isTextNode = __webpack_require__(140);
-
-	/*eslint-disable no-bitwise */
-
-	/**
-	 * Checks if a given DOM node contains or is another DOM node.
-	 *
-	 * @param {?DOMNode} outerNode Outer DOM node.
-	 * @param {?DOMNode} innerNode Inner DOM node.
-	 * @return {boolean} True if `outerNode` contains or is `innerNode`.
-	 */
-	function containsNode(outerNode, innerNode) {
-	  if (!outerNode || !innerNode) {
-	    return false;
-	  } else if (outerNode === innerNode) {
-	    return true;
-	  } else if (isTextNode(outerNode)) {
-	    return false;
-	  } else if (isTextNode(innerNode)) {
-	    return containsNode(outerNode, innerNode.parentNode);
-	  } else if (outerNode.contains) {
-	    return outerNode.contains(innerNode);
-	  } else if (outerNode.compareDocumentPosition) {
-	    return !!(outerNode.compareDocumentPosition(innerNode) & 16);
-	  } else {
-	    return false;
-	  }
-	}
-
-	module.exports = containsNode;
-
-/***/ },
 /* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -16814,10 +17343,54 @@
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
+	 * 
+	 */
+
+	var isTextNode = __webpack_require__(141);
+
+	/*eslint-disable no-bitwise */
+
+	/**
+	 * Checks if a given DOM node contains or is another DOM node.
+	 */
+	function containsNode(outerNode, innerNode) {
+	  if (!outerNode || !innerNode) {
+	    return false;
+	  } else if (outerNode === innerNode) {
+	    return true;
+	  } else if (isTextNode(outerNode)) {
+	    return false;
+	  } else if (isTextNode(innerNode)) {
+	    return containsNode(outerNode, innerNode.parentNode);
+	  } else if ('contains' in outerNode) {
+	    return outerNode.contains(innerNode);
+	  } else if (outerNode.compareDocumentPosition) {
+	    return !!(outerNode.compareDocumentPosition(innerNode) & 16);
+	  } else {
+	    return false;
+	  }
+	}
+
+	module.exports = containsNode;
+
+/***/ },
+/* 141 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
 	 * @typechecks
 	 */
 
-	var isNode = __webpack_require__(141);
+	var isNode = __webpack_require__(142);
 
 	/**
 	 * @param {*} object The object to check.
@@ -16830,7 +17403,7 @@
 	module.exports = isTextNode;
 
 /***/ },
-/* 141 */
+/* 142 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -16857,7 +17430,7 @@
 	module.exports = isNode;
 
 /***/ },
-/* 142 */
+/* 143 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -16896,7 +17469,7 @@
 	module.exports = getActiveElement;
 
 /***/ },
-/* 143 */
+/* 144 */
 /***/ function(module, exports) {
 
 	/**
@@ -17201,7 +17774,7 @@
 	module.exports = SVGDOMPropertyConfig;
 
 /***/ },
-/* 144 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17217,17 +17790,17 @@
 
 	'use strict';
 
-	var EventConstants = __webpack_require__(40);
-	var EventPropagators = __webpack_require__(41);
-	var ExecutionEnvironment = __webpack_require__(48);
-	var ReactDOMComponentTree = __webpack_require__(35);
-	var ReactInputSelection = __webpack_require__(136);
-	var SyntheticEvent = __webpack_require__(52);
+	var EventConstants = __webpack_require__(42);
+	var EventPropagators = __webpack_require__(43);
+	var ExecutionEnvironment = __webpack_require__(20);
+	var ReactDOMComponentTree = __webpack_require__(37);
+	var ReactInputSelection = __webpack_require__(137);
+	var SyntheticEvent = __webpack_require__(53);
 
-	var getActiveElement = __webpack_require__(142);
+	var getActiveElement = __webpack_require__(143);
 	var isTextInputElement = __webpack_require__(65);
-	var keyOf = __webpack_require__(26);
-	var shallowEqual = __webpack_require__(125);
+	var keyOf = __webpack_require__(28);
+	var shallowEqual = __webpack_require__(126);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
 
@@ -17402,7 +17975,7 @@
 	module.exports = SelectEventPlugin;
 
 /***/ },
-/* 145 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17418,26 +17991,26 @@
 
 	'use strict';
 
-	var EventConstants = __webpack_require__(40);
-	var EventListener = __webpack_require__(132);
-	var EventPropagators = __webpack_require__(41);
-	var ReactDOMComponentTree = __webpack_require__(35);
-	var SyntheticAnimationEvent = __webpack_require__(146);
-	var SyntheticClipboardEvent = __webpack_require__(147);
-	var SyntheticEvent = __webpack_require__(52);
-	var SyntheticFocusEvent = __webpack_require__(148);
-	var SyntheticKeyboardEvent = __webpack_require__(149);
+	var EventConstants = __webpack_require__(42);
+	var EventListener = __webpack_require__(133);
+	var EventPropagators = __webpack_require__(43);
+	var ReactDOMComponentTree = __webpack_require__(37);
+	var SyntheticAnimationEvent = __webpack_require__(147);
+	var SyntheticClipboardEvent = __webpack_require__(148);
+	var SyntheticEvent = __webpack_require__(53);
+	var SyntheticFocusEvent = __webpack_require__(149);
+	var SyntheticKeyboardEvent = __webpack_require__(150);
 	var SyntheticMouseEvent = __webpack_require__(68);
-	var SyntheticDragEvent = __webpack_require__(152);
-	var SyntheticTouchEvent = __webpack_require__(153);
-	var SyntheticTransitionEvent = __webpack_require__(154);
+	var SyntheticDragEvent = __webpack_require__(153);
+	var SyntheticTouchEvent = __webpack_require__(154);
+	var SyntheticTransitionEvent = __webpack_require__(155);
 	var SyntheticUIEvent = __webpack_require__(69);
-	var SyntheticWheelEvent = __webpack_require__(155);
+	var SyntheticWheelEvent = __webpack_require__(156);
 
 	var emptyFunction = __webpack_require__(11);
-	var getEventCharCode = __webpack_require__(150);
+	var getEventCharCode = __webpack_require__(151);
 	var invariant = __webpack_require__(7);
-	var keyOf = __webpack_require__(26);
+	var keyOf = __webpack_require__(28);
 
 	var topLevelTypes = EventConstants.topLevelTypes;
 
@@ -18034,7 +18607,7 @@
 	module.exports = SimpleEventPlugin;
 
 /***/ },
-/* 146 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18050,7 +18623,7 @@
 
 	'use strict';
 
-	var SyntheticEvent = __webpack_require__(52);
+	var SyntheticEvent = __webpack_require__(53);
 
 	/**
 	 * @interface Event
@@ -18078,7 +18651,7 @@
 	module.exports = SyntheticAnimationEvent;
 
 /***/ },
-/* 147 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18094,7 +18667,7 @@
 
 	'use strict';
 
-	var SyntheticEvent = __webpack_require__(52);
+	var SyntheticEvent = __webpack_require__(53);
 
 	/**
 	 * @interface Event
@@ -18121,7 +18694,7 @@
 	module.exports = SyntheticClipboardEvent;
 
 /***/ },
-/* 148 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18162,7 +18735,7 @@
 	module.exports = SyntheticFocusEvent;
 
 /***/ },
-/* 149 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18180,8 +18753,8 @@
 
 	var SyntheticUIEvent = __webpack_require__(69);
 
-	var getEventCharCode = __webpack_require__(150);
-	var getEventKey = __webpack_require__(151);
+	var getEventCharCode = __webpack_require__(151);
+	var getEventKey = __webpack_require__(152);
 	var getEventModifierState = __webpack_require__(71);
 
 	/**
@@ -18251,7 +18824,7 @@
 	module.exports = SyntheticKeyboardEvent;
 
 /***/ },
-/* 150 */
+/* 151 */
 /***/ function(module, exports) {
 
 	/**
@@ -18306,7 +18879,7 @@
 	module.exports = getEventCharCode;
 
 /***/ },
-/* 151 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18322,7 +18895,7 @@
 
 	'use strict';
 
-	var getEventCharCode = __webpack_require__(150);
+	var getEventCharCode = __webpack_require__(151);
 
 	/**
 	 * Normalization of deprecated HTML5 `key` values
@@ -18413,7 +18986,7 @@
 	module.exports = getEventKey;
 
 /***/ },
-/* 152 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18454,7 +19027,7 @@
 	module.exports = SyntheticDragEvent;
 
 /***/ },
-/* 153 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18504,7 +19077,7 @@
 	module.exports = SyntheticTouchEvent;
 
 /***/ },
-/* 154 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18520,7 +19093,7 @@
 
 	'use strict';
 
-	var SyntheticEvent = __webpack_require__(52);
+	var SyntheticEvent = __webpack_require__(53);
 
 	/**
 	 * @interface Event
@@ -18548,7 +19121,7 @@
 	module.exports = SyntheticTransitionEvent;
 
 /***/ },
-/* 155 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18607,7 +19180,7 @@
 	module.exports = SyntheticWheelEvent;
 
 /***/ },
-/* 156 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18624,25 +19197,24 @@
 	'use strict';
 
 	var DOMLazyTree = __webpack_require__(75);
-	var DOMProperty = __webpack_require__(36);
+	var DOMProperty = __webpack_require__(38);
 	var ReactBrowserEventEmitter = __webpack_require__(103);
 	var ReactCurrentOwner = __webpack_require__(9);
-	var ReactDOMComponentTree = __webpack_require__(35);
-	var ReactDOMContainerInfo = __webpack_require__(157);
-	var ReactDOMFeatureFlags = __webpack_require__(158);
+	var ReactDOMComponentTree = __webpack_require__(37);
+	var ReactDOMContainerInfo = __webpack_require__(158);
+	var ReactDOMFeatureFlags = __webpack_require__(159);
 	var ReactElement = __webpack_require__(8);
-	var ReactFeatureFlags = __webpack_require__(57);
+	var ReactFeatureFlags = __webpack_require__(58);
 	var ReactInstrumentation = __webpack_require__(18);
-	var ReactMarkupChecksum = __webpack_require__(159);
-	var ReactPerf = __webpack_require__(58);
+	var ReactMarkupChecksum = __webpack_require__(160);
 	var ReactReconciler = __webpack_require__(59);
 	var ReactUpdateQueue = __webpack_require__(120);
-	var ReactUpdates = __webpack_require__(55);
+	var ReactUpdates = __webpack_require__(56);
 
-	var emptyObject = __webpack_require__(21);
+	var emptyObject = __webpack_require__(23);
 	var instantiateReactComponent = __webpack_require__(116);
 	var invariant = __webpack_require__(7);
-	var setInnerHTML = __webpack_require__(79);
+	var setInnerHTML = __webpack_require__(80);
 	var shouldUpdateReactComponent = __webpack_require__(121);
 	var warning = __webpack_require__(10);
 
@@ -18872,6 +19444,10 @@
 	   * @return {ReactComponent} nextComponent
 	   */
 	  _renderNewRootComponent: function (nextElement, container, shouldReuseMarkup, context) {
+	    if (false) {
+	      ReactInstrumentation.debugTool.onBeginFlush();
+	    }
+
 	    // Various parts of our code (such as ReactCompositeComponent's
 	    // _renderValidatedComponent) assume that calls to render aren't nested;
 	    // verify that that's the case.
@@ -18881,6 +19457,12 @@
 
 	    ReactBrowserEventEmitter.ensureScrollValueMonitoring();
 	    var componentInstance = instantiateReactComponent(nextElement);
+
+	    if (false) {
+	      // Mute future events from the top level wrapper.
+	      // It is an implementation detail that devtools should not know about.
+	      componentInstance._debugID = 0;
+	    }
 
 	    // The initial render is synchronous but any updates that happen during
 	    // rendering, in componentWillMount or componentDidMount, will be batched
@@ -18892,7 +19474,9 @@
 	    instancesByReactRootID[wrapperID] = componentInstance;
 
 	    if (false) {
-	      ReactInstrumentation.debugTool.onMountRootComponent(componentInstance);
+	      // The instance here is TopLevelWrapper so we report mount for its child.
+	      ReactInstrumentation.debugTool.onMountRootComponent(componentInstance._renderedComponent._debugID);
+	      ReactInstrumentation.debugTool.onEndFlush();
 	    }
 
 	    return componentInstance;
@@ -18972,6 +19556,7 @@
 
 	  /**
 	   * Renders a React component into the DOM in the supplied `container`.
+	   * See https://facebook.github.io/react/docs/top-level-api.html#reactdom.render
 	   *
 	   * If the React component was previously rendered into `container`, this will
 	   * perform an update on it and only mutate the DOM as necessary to reflect the
@@ -18988,6 +19573,7 @@
 
 	  /**
 	   * Unmounts and destroys the React component rendered in the `container`.
+	   * See https://facebook.github.io/react/docs/top-level-api.html#reactdom.unmountcomponentatnode
 	   *
 	   * @param {DOMElement} container DOM element containing a React component.
 	   * @return {boolean} True if a component was found in and unmounted from
@@ -19079,18 +19665,20 @@
 	      setInnerHTML(container, markup);
 	      ReactDOMComponentTree.precacheNode(instance, container.firstChild);
 	    }
+
+	    if (false) {
+	      var nativeNode = ReactDOMComponentTree.getInstanceFromNode(container.firstChild);
+	      if (nativeNode._debugID !== 0) {
+	        ReactInstrumentation.debugTool.onNativeOperation(nativeNode._debugID, 'mount', markup.toString());
+	      }
+	    }
 	  }
 	};
-
-	ReactPerf.measureMethods(ReactMount, 'ReactMount', {
-	  _renderNewRootComponent: '_renderNewRootComponent',
-	  _mountImageIntoNode: '_mountImageIntoNode'
-	});
 
 	module.exports = ReactMount;
 
 /***/ },
-/* 157 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19106,7 +19694,7 @@
 
 	'use strict';
 
-	var validateDOMNesting = __webpack_require__(126);
+	var validateDOMNesting = __webpack_require__(127);
 
 	var DOC_NODE_TYPE = 9;
 
@@ -19128,7 +19716,7 @@
 	module.exports = ReactDOMContainerInfo;
 
 /***/ },
-/* 158 */
+/* 159 */
 /***/ function(module, exports) {
 
 	/**
@@ -19151,7 +19739,7 @@
 	module.exports = ReactDOMFeatureFlags;
 
 /***/ },
-/* 159 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19167,7 +19755,7 @@
 
 	'use strict';
 
-	var adler32 = __webpack_require__(160);
+	var adler32 = __webpack_require__(161);
 
 	var TAG_END = /\/?>/;
 	var COMMENT_START = /^<\!\-\-/;
@@ -19206,7 +19794,7 @@
 	module.exports = ReactMarkupChecksum;
 
 /***/ },
-/* 160 */
+/* 161 */
 /***/ function(module, exports) {
 
 	/**
@@ -19254,7 +19842,7 @@
 	module.exports = adler32;
 
 /***/ },
-/* 161 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19271,15 +19859,17 @@
 	'use strict';
 
 	var ReactCurrentOwner = __webpack_require__(9);
-	var ReactDOMComponentTree = __webpack_require__(35);
+	var ReactDOMComponentTree = __webpack_require__(37);
 	var ReactInstanceMap = __webpack_require__(118);
 
-	var getNativeComponentFromComposite = __webpack_require__(162);
+	var getNativeComponentFromComposite = __webpack_require__(163);
 	var invariant = __webpack_require__(7);
 	var warning = __webpack_require__(10);
 
 	/**
 	 * Returns the DOM node rendered by this element.
+	 *
+	 * See https://facebook.github.io/react/docs/top-level-api.html#reactdom.finddomnode
 	 *
 	 * @param {ReactComponent|DOMElement} componentOrElement
 	 * @return {?DOMElement} The root node of this element.
@@ -19315,7 +19905,7 @@
 	module.exports = findDOMNode;
 
 /***/ },
-/* 162 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19350,7 +19940,7 @@
 	module.exports = getNativeComponentFromComposite;
 
 /***/ },
-/* 163 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19366,12 +19956,12 @@
 
 	'use strict';
 
-	var ReactMount = __webpack_require__(156);
+	var ReactMount = __webpack_require__(157);
 
 	module.exports = ReactMount.renderSubtreeIntoContainer;
 
 /***/ },
-/* 164 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19384,11 +19974,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _example_components = __webpack_require__(165);
+	var _example_components = __webpack_require__(166);
 
 	var _example_components2 = _interopRequireDefault(_example_components);
 
-	var _hero_example = __webpack_require__(456);
+	var _hero_example = __webpack_require__(469);
 
 	var _hero_example2 = _interopRequireDefault(_hero_example);
 
@@ -19501,7 +20091,7 @@
 	});
 
 /***/ },
-/* 165 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19514,85 +20104,93 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _highlight = __webpack_require__(166);
+	var _highlight = __webpack_require__(167);
 
 	var _highlight2 = _interopRequireDefault(_highlight);
 
-	var _default = __webpack_require__(320);
+	var _default = __webpack_require__(331);
 
 	var _default2 = _interopRequireDefault(_default);
 
-	var _code_example_component = __webpack_require__(437);
+	var _code_example_component = __webpack_require__(448);
 
 	var _code_example_component2 = _interopRequireDefault(_code_example_component);
 
-	var _custom_date_format = __webpack_require__(438);
+	var _custom_date_format = __webpack_require__(449);
 
 	var _custom_date_format2 = _interopRequireDefault(_custom_date_format);
 
-	var _custom_class_name = __webpack_require__(439);
+	var _custom_class_name = __webpack_require__(450);
 
 	var _custom_class_name2 = _interopRequireDefault(_custom_class_name);
 
-	var _placeholder_text = __webpack_require__(440);
+	var _placeholder_text = __webpack_require__(451);
 
 	var _placeholder_text2 = _interopRequireDefault(_placeholder_text);
 
-	var _specific_date_range = __webpack_require__(441);
+	var _specific_date_range = __webpack_require__(452);
 
 	var _specific_date_range2 = _interopRequireDefault(_specific_date_range);
 
-	var _locale = __webpack_require__(442);
+	var _locale = __webpack_require__(453);
 
 	var _locale2 = _interopRequireDefault(_locale);
 
-	var _exclude_dates = __webpack_require__(443);
+	var _exclude_dates = __webpack_require__(454);
 
 	var _exclude_dates2 = _interopRequireDefault(_exclude_dates);
 
-	var _include_dates = __webpack_require__(444);
+	var _include_dates = __webpack_require__(455);
 
 	var _include_dates2 = _interopRequireDefault(_include_dates);
 
-	var _filter_dates = __webpack_require__(445);
+	var _filter_dates = __webpack_require__(456);
 
 	var _filter_dates2 = _interopRequireDefault(_filter_dates);
 
-	var _disabled = __webpack_require__(446);
+	var _disabled = __webpack_require__(457);
 
 	var _disabled2 = _interopRequireDefault(_disabled);
 
-	var _clear_input = __webpack_require__(447);
+	var _clear_input = __webpack_require__(458);
 
 	var _clear_input2 = _interopRequireDefault(_clear_input);
 
-	var _on_blur_callbacks = __webpack_require__(448);
+	var _on_blur_callbacks = __webpack_require__(459);
 
 	var _on_blur_callbacks2 = _interopRequireDefault(_on_blur_callbacks);
 
-	var _placement = __webpack_require__(449);
+	var _placement = __webpack_require__(460);
 
 	var _placement2 = _interopRequireDefault(_placement);
 
-	var _date_range = __webpack_require__(450);
+	var _date_range = __webpack_require__(461);
 
 	var _date_range2 = _interopRequireDefault(_date_range);
 
-	var _tab_index = __webpack_require__(451);
+	var _tab_index = __webpack_require__(462);
 
 	var _tab_index2 = _interopRequireDefault(_tab_index);
 
-	var _year_dropdown = __webpack_require__(452);
+	var _year_dropdown = __webpack_require__(463);
 
 	var _year_dropdown2 = _interopRequireDefault(_year_dropdown);
 
-	var _today = __webpack_require__(453);
+	var _today = __webpack_require__(464);
 
 	var _today2 = _interopRequireDefault(_today);
 
-	__webpack_require__(454);
+	var _inline = __webpack_require__(465);
 
-	__webpack_require__(455);
+	var _inline2 = _interopRequireDefault(_inline);
+
+	var _open_to_date = __webpack_require__(466);
+
+	var _open_to_date2 = _interopRequireDefault(_open_to_date);
+
+	__webpack_require__(467);
+
+	__webpack_require__(468);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19655,6 +20253,12 @@
 	  }, {
 	    title: 'Year dropdown',
 	    component: _react2.default.createElement(_year_dropdown2.default, null)
+	  }, {
+	    title: 'Inline version',
+	    component: _react2.default.createElement(_inline2.default, null)
+	  }, {
+	    title: 'Open to date',
+	    component: _react2.default.createElement(_open_to_date2.default, null)
 	  }],
 
 	  renderExamples: function renderExamples() {
@@ -19703,168 +20307,178 @@
 	});
 
 /***/ },
-/* 166 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var hljs = __webpack_require__(167);
+	var hljs = __webpack_require__(168);
 
-	hljs.registerLanguage('1c', __webpack_require__(168));
-	hljs.registerLanguage('accesslog', __webpack_require__(169));
-	hljs.registerLanguage('actionscript', __webpack_require__(170));
-	hljs.registerLanguage('apache', __webpack_require__(171));
-	hljs.registerLanguage('applescript', __webpack_require__(172));
-	hljs.registerLanguage('arduino', __webpack_require__(173));
-	hljs.registerLanguage('armasm', __webpack_require__(174));
-	hljs.registerLanguage('xml', __webpack_require__(175));
-	hljs.registerLanguage('asciidoc', __webpack_require__(176));
-	hljs.registerLanguage('aspectj', __webpack_require__(177));
-	hljs.registerLanguage('autohotkey', __webpack_require__(178));
-	hljs.registerLanguage('autoit', __webpack_require__(179));
-	hljs.registerLanguage('avrasm', __webpack_require__(180));
-	hljs.registerLanguage('axapta', __webpack_require__(181));
-	hljs.registerLanguage('bash', __webpack_require__(182));
-	hljs.registerLanguage('basic', __webpack_require__(183));
-	hljs.registerLanguage('brainfuck', __webpack_require__(184));
-	hljs.registerLanguage('cal', __webpack_require__(185));
-	hljs.registerLanguage('capnproto', __webpack_require__(186));
-	hljs.registerLanguage('ceylon', __webpack_require__(187));
-	hljs.registerLanguage('clojure', __webpack_require__(188));
-	hljs.registerLanguage('clojure-repl', __webpack_require__(189));
-	hljs.registerLanguage('cmake', __webpack_require__(190));
-	hljs.registerLanguage('coffeescript', __webpack_require__(191));
-	hljs.registerLanguage('cos', __webpack_require__(192));
-	hljs.registerLanguage('cpp', __webpack_require__(193));
-	hljs.registerLanguage('crmsh', __webpack_require__(194));
-	hljs.registerLanguage('crystal', __webpack_require__(195));
-	hljs.registerLanguage('cs', __webpack_require__(196));
-	hljs.registerLanguage('csp', __webpack_require__(197));
-	hljs.registerLanguage('css', __webpack_require__(198));
-	hljs.registerLanguage('d', __webpack_require__(199));
-	hljs.registerLanguage('markdown', __webpack_require__(200));
-	hljs.registerLanguage('dart', __webpack_require__(201));
-	hljs.registerLanguage('delphi', __webpack_require__(202));
-	hljs.registerLanguage('diff', __webpack_require__(203));
-	hljs.registerLanguage('django', __webpack_require__(204));
-	hljs.registerLanguage('dns', __webpack_require__(205));
-	hljs.registerLanguage('dockerfile', __webpack_require__(206));
-	hljs.registerLanguage('dos', __webpack_require__(207));
-	hljs.registerLanguage('dts', __webpack_require__(208));
-	hljs.registerLanguage('dust', __webpack_require__(209));
-	hljs.registerLanguage('elixir', __webpack_require__(210));
-	hljs.registerLanguage('elm', __webpack_require__(211));
-	hljs.registerLanguage('ruby', __webpack_require__(212));
-	hljs.registerLanguage('erb', __webpack_require__(213));
-	hljs.registerLanguage('erlang-repl', __webpack_require__(214));
-	hljs.registerLanguage('erlang', __webpack_require__(215));
-	hljs.registerLanguage('fix', __webpack_require__(216));
-	hljs.registerLanguage('fortran', __webpack_require__(217));
-	hljs.registerLanguage('fsharp', __webpack_require__(218));
-	hljs.registerLanguage('gams', __webpack_require__(219));
-	hljs.registerLanguage('gauss', __webpack_require__(220));
-	hljs.registerLanguage('gcode', __webpack_require__(221));
-	hljs.registerLanguage('gherkin', __webpack_require__(222));
-	hljs.registerLanguage('glsl', __webpack_require__(223));
-	hljs.registerLanguage('go', __webpack_require__(224));
-	hljs.registerLanguage('golo', __webpack_require__(225));
-	hljs.registerLanguage('gradle', __webpack_require__(226));
-	hljs.registerLanguage('groovy', __webpack_require__(227));
-	hljs.registerLanguage('haml', __webpack_require__(228));
-	hljs.registerLanguage('handlebars', __webpack_require__(229));
-	hljs.registerLanguage('haskell', __webpack_require__(230));
-	hljs.registerLanguage('haxe', __webpack_require__(231));
-	hljs.registerLanguage('hsp', __webpack_require__(232));
-	hljs.registerLanguage('htmlbars', __webpack_require__(233));
-	hljs.registerLanguage('http', __webpack_require__(234));
-	hljs.registerLanguage('inform7', __webpack_require__(235));
-	hljs.registerLanguage('ini', __webpack_require__(236));
-	hljs.registerLanguage('irpf90', __webpack_require__(237));
-	hljs.registerLanguage('java', __webpack_require__(238));
-	hljs.registerLanguage('javascript', __webpack_require__(239));
-	hljs.registerLanguage('json', __webpack_require__(240));
-	hljs.registerLanguage('julia', __webpack_require__(241));
-	hljs.registerLanguage('kotlin', __webpack_require__(242));
-	hljs.registerLanguage('lasso', __webpack_require__(243));
-	hljs.registerLanguage('less', __webpack_require__(244));
-	hljs.registerLanguage('lisp', __webpack_require__(245));
-	hljs.registerLanguage('livecodeserver', __webpack_require__(246));
-	hljs.registerLanguage('livescript', __webpack_require__(247));
-	hljs.registerLanguage('lua', __webpack_require__(248));
-	hljs.registerLanguage('makefile', __webpack_require__(249));
-	hljs.registerLanguage('mathematica', __webpack_require__(250));
-	hljs.registerLanguage('matlab', __webpack_require__(251));
-	hljs.registerLanguage('maxima', __webpack_require__(252));
-	hljs.registerLanguage('mel', __webpack_require__(253));
-	hljs.registerLanguage('mercury', __webpack_require__(254));
-	hljs.registerLanguage('mipsasm', __webpack_require__(255));
-	hljs.registerLanguage('mizar', __webpack_require__(256));
-	hljs.registerLanguage('perl', __webpack_require__(257));
-	hljs.registerLanguage('mojolicious', __webpack_require__(258));
-	hljs.registerLanguage('monkey', __webpack_require__(259));
-	hljs.registerLanguage('moonscript', __webpack_require__(260));
-	hljs.registerLanguage('nginx', __webpack_require__(261));
-	hljs.registerLanguage('nimrod', __webpack_require__(262));
-	hljs.registerLanguage('nix', __webpack_require__(263));
-	hljs.registerLanguage('nsis', __webpack_require__(264));
-	hljs.registerLanguage('objectivec', __webpack_require__(265));
-	hljs.registerLanguage('ocaml', __webpack_require__(266));
-	hljs.registerLanguage('openscad', __webpack_require__(267));
-	hljs.registerLanguage('oxygene', __webpack_require__(268));
-	hljs.registerLanguage('parser3', __webpack_require__(269));
-	hljs.registerLanguage('pf', __webpack_require__(270));
-	hljs.registerLanguage('php', __webpack_require__(271));
-	hljs.registerLanguage('powershell', __webpack_require__(272));
-	hljs.registerLanguage('processing', __webpack_require__(273));
-	hljs.registerLanguage('profile', __webpack_require__(274));
-	hljs.registerLanguage('prolog', __webpack_require__(275));
-	hljs.registerLanguage('protobuf', __webpack_require__(276));
-	hljs.registerLanguage('puppet', __webpack_require__(277));
-	hljs.registerLanguage('python', __webpack_require__(278));
-	hljs.registerLanguage('q', __webpack_require__(279));
-	hljs.registerLanguage('qml', __webpack_require__(280));
-	hljs.registerLanguage('r', __webpack_require__(281));
-	hljs.registerLanguage('rib', __webpack_require__(282));
-	hljs.registerLanguage('roboconf', __webpack_require__(283));
-	hljs.registerLanguage('rsl', __webpack_require__(284));
-	hljs.registerLanguage('ruleslanguage', __webpack_require__(285));
-	hljs.registerLanguage('rust', __webpack_require__(286));
-	hljs.registerLanguage('scala', __webpack_require__(287));
-	hljs.registerLanguage('scheme', __webpack_require__(288));
-	hljs.registerLanguage('scilab', __webpack_require__(289));
-	hljs.registerLanguage('scss', __webpack_require__(290));
-	hljs.registerLanguage('smali', __webpack_require__(291));
-	hljs.registerLanguage('smalltalk', __webpack_require__(292));
-	hljs.registerLanguage('sml', __webpack_require__(293));
-	hljs.registerLanguage('sqf', __webpack_require__(294));
-	hljs.registerLanguage('sql', __webpack_require__(295));
-	hljs.registerLanguage('stan', __webpack_require__(296));
-	hljs.registerLanguage('stata', __webpack_require__(297));
-	hljs.registerLanguage('step21', __webpack_require__(298));
-	hljs.registerLanguage('stylus', __webpack_require__(299));
-	hljs.registerLanguage('swift', __webpack_require__(300));
-	hljs.registerLanguage('taggerscript', __webpack_require__(301));
-	hljs.registerLanguage('tcl', __webpack_require__(302));
-	hljs.registerLanguage('tex', __webpack_require__(303));
-	hljs.registerLanguage('thrift', __webpack_require__(304));
-	hljs.registerLanguage('tp', __webpack_require__(305));
-	hljs.registerLanguage('twig', __webpack_require__(306));
-	hljs.registerLanguage('typescript', __webpack_require__(307));
-	hljs.registerLanguage('vala', __webpack_require__(308));
-	hljs.registerLanguage('vbnet', __webpack_require__(309));
-	hljs.registerLanguage('vbscript', __webpack_require__(310));
-	hljs.registerLanguage('vbscript-html', __webpack_require__(311));
-	hljs.registerLanguage('verilog', __webpack_require__(312));
-	hljs.registerLanguage('vhdl', __webpack_require__(313));
-	hljs.registerLanguage('vim', __webpack_require__(314));
-	hljs.registerLanguage('x86asm', __webpack_require__(315));
-	hljs.registerLanguage('xl', __webpack_require__(316));
-	hljs.registerLanguage('xquery', __webpack_require__(317));
-	hljs.registerLanguage('yaml', __webpack_require__(318));
-	hljs.registerLanguage('zephir', __webpack_require__(319));
+	hljs.registerLanguage('1c', __webpack_require__(169));
+	hljs.registerLanguage('accesslog', __webpack_require__(170));
+	hljs.registerLanguage('actionscript', __webpack_require__(171));
+	hljs.registerLanguage('ada', __webpack_require__(172));
+	hljs.registerLanguage('apache', __webpack_require__(173));
+	hljs.registerLanguage('applescript', __webpack_require__(174));
+	hljs.registerLanguage('cpp', __webpack_require__(175));
+	hljs.registerLanguage('arduino', __webpack_require__(176));
+	hljs.registerLanguage('armasm', __webpack_require__(177));
+	hljs.registerLanguage('xml', __webpack_require__(178));
+	hljs.registerLanguage('asciidoc', __webpack_require__(179));
+	hljs.registerLanguage('aspectj', __webpack_require__(180));
+	hljs.registerLanguage('autohotkey', __webpack_require__(181));
+	hljs.registerLanguage('autoit', __webpack_require__(182));
+	hljs.registerLanguage('avrasm', __webpack_require__(183));
+	hljs.registerLanguage('axapta', __webpack_require__(184));
+	hljs.registerLanguage('bash', __webpack_require__(185));
+	hljs.registerLanguage('basic', __webpack_require__(186));
+	hljs.registerLanguage('bnf', __webpack_require__(187));
+	hljs.registerLanguage('brainfuck', __webpack_require__(188));
+	hljs.registerLanguage('cal', __webpack_require__(189));
+	hljs.registerLanguage('capnproto', __webpack_require__(190));
+	hljs.registerLanguage('ceylon', __webpack_require__(191));
+	hljs.registerLanguage('clojure', __webpack_require__(192));
+	hljs.registerLanguage('clojure-repl', __webpack_require__(193));
+	hljs.registerLanguage('cmake', __webpack_require__(194));
+	hljs.registerLanguage('coffeescript', __webpack_require__(195));
+	hljs.registerLanguage('coq', __webpack_require__(196));
+	hljs.registerLanguage('cos', __webpack_require__(197));
+	hljs.registerLanguage('crmsh', __webpack_require__(198));
+	hljs.registerLanguage('crystal', __webpack_require__(199));
+	hljs.registerLanguage('cs', __webpack_require__(200));
+	hljs.registerLanguage('csp', __webpack_require__(201));
+	hljs.registerLanguage('css', __webpack_require__(202));
+	hljs.registerLanguage('d', __webpack_require__(203));
+	hljs.registerLanguage('markdown', __webpack_require__(204));
+	hljs.registerLanguage('dart', __webpack_require__(205));
+	hljs.registerLanguage('delphi', __webpack_require__(206));
+	hljs.registerLanguage('diff', __webpack_require__(207));
+	hljs.registerLanguage('django', __webpack_require__(208));
+	hljs.registerLanguage('dns', __webpack_require__(209));
+	hljs.registerLanguage('dockerfile', __webpack_require__(210));
+	hljs.registerLanguage('dos', __webpack_require__(211));
+	hljs.registerLanguage('dsconfig', __webpack_require__(212));
+	hljs.registerLanguage('dts', __webpack_require__(213));
+	hljs.registerLanguage('dust', __webpack_require__(214));
+	hljs.registerLanguage('elixir', __webpack_require__(215));
+	hljs.registerLanguage('elm', __webpack_require__(216));
+	hljs.registerLanguage('ruby', __webpack_require__(217));
+	hljs.registerLanguage('erb', __webpack_require__(218));
+	hljs.registerLanguage('erlang-repl', __webpack_require__(219));
+	hljs.registerLanguage('erlang', __webpack_require__(220));
+	hljs.registerLanguage('excel', __webpack_require__(221));
+	hljs.registerLanguage('fix', __webpack_require__(222));
+	hljs.registerLanguage('fortran', __webpack_require__(223));
+	hljs.registerLanguage('fsharp', __webpack_require__(224));
+	hljs.registerLanguage('gams', __webpack_require__(225));
+	hljs.registerLanguage('gauss', __webpack_require__(226));
+	hljs.registerLanguage('gcode', __webpack_require__(227));
+	hljs.registerLanguage('gherkin', __webpack_require__(228));
+	hljs.registerLanguage('glsl', __webpack_require__(229));
+	hljs.registerLanguage('go', __webpack_require__(230));
+	hljs.registerLanguage('golo', __webpack_require__(231));
+	hljs.registerLanguage('gradle', __webpack_require__(232));
+	hljs.registerLanguage('groovy', __webpack_require__(233));
+	hljs.registerLanguage('haml', __webpack_require__(234));
+	hljs.registerLanguage('handlebars', __webpack_require__(235));
+	hljs.registerLanguage('haskell', __webpack_require__(236));
+	hljs.registerLanguage('haxe', __webpack_require__(237));
+	hljs.registerLanguage('hsp', __webpack_require__(238));
+	hljs.registerLanguage('htmlbars', __webpack_require__(239));
+	hljs.registerLanguage('http', __webpack_require__(240));
+	hljs.registerLanguage('inform7', __webpack_require__(241));
+	hljs.registerLanguage('ini', __webpack_require__(242));
+	hljs.registerLanguage('irpf90', __webpack_require__(243));
+	hljs.registerLanguage('java', __webpack_require__(244));
+	hljs.registerLanguage('javascript', __webpack_require__(245));
+	hljs.registerLanguage('json', __webpack_require__(246));
+	hljs.registerLanguage('julia', __webpack_require__(247));
+	hljs.registerLanguage('kotlin', __webpack_require__(248));
+	hljs.registerLanguage('lasso', __webpack_require__(249));
+	hljs.registerLanguage('ldif', __webpack_require__(250));
+	hljs.registerLanguage('less', __webpack_require__(251));
+	hljs.registerLanguage('lisp', __webpack_require__(252));
+	hljs.registerLanguage('livecodeserver', __webpack_require__(253));
+	hljs.registerLanguage('livescript', __webpack_require__(254));
+	hljs.registerLanguage('lsl', __webpack_require__(255));
+	hljs.registerLanguage('lua', __webpack_require__(256));
+	hljs.registerLanguage('makefile', __webpack_require__(257));
+	hljs.registerLanguage('mathematica', __webpack_require__(258));
+	hljs.registerLanguage('matlab', __webpack_require__(259));
+	hljs.registerLanguage('maxima', __webpack_require__(260));
+	hljs.registerLanguage('mel', __webpack_require__(261));
+	hljs.registerLanguage('mercury', __webpack_require__(262));
+	hljs.registerLanguage('mipsasm', __webpack_require__(263));
+	hljs.registerLanguage('mizar', __webpack_require__(264));
+	hljs.registerLanguage('perl', __webpack_require__(265));
+	hljs.registerLanguage('mojolicious', __webpack_require__(266));
+	hljs.registerLanguage('monkey', __webpack_require__(267));
+	hljs.registerLanguage('moonscript', __webpack_require__(268));
+	hljs.registerLanguage('nginx', __webpack_require__(269));
+	hljs.registerLanguage('nimrod', __webpack_require__(270));
+	hljs.registerLanguage('nix', __webpack_require__(271));
+	hljs.registerLanguage('nsis', __webpack_require__(272));
+	hljs.registerLanguage('objectivec', __webpack_require__(273));
+	hljs.registerLanguage('ocaml', __webpack_require__(274));
+	hljs.registerLanguage('openscad', __webpack_require__(275));
+	hljs.registerLanguage('oxygene', __webpack_require__(276));
+	hljs.registerLanguage('parser3', __webpack_require__(277));
+	hljs.registerLanguage('pf', __webpack_require__(278));
+	hljs.registerLanguage('php', __webpack_require__(279));
+	hljs.registerLanguage('pony', __webpack_require__(280));
+	hljs.registerLanguage('powershell', __webpack_require__(281));
+	hljs.registerLanguage('processing', __webpack_require__(282));
+	hljs.registerLanguage('profile', __webpack_require__(283));
+	hljs.registerLanguage('prolog', __webpack_require__(284));
+	hljs.registerLanguage('protobuf', __webpack_require__(285));
+	hljs.registerLanguage('puppet', __webpack_require__(286));
+	hljs.registerLanguage('purebasic', __webpack_require__(287));
+	hljs.registerLanguage('python', __webpack_require__(288));
+	hljs.registerLanguage('q', __webpack_require__(289));
+	hljs.registerLanguage('qml', __webpack_require__(290));
+	hljs.registerLanguage('r', __webpack_require__(291));
+	hljs.registerLanguage('rib', __webpack_require__(292));
+	hljs.registerLanguage('roboconf', __webpack_require__(293));
+	hljs.registerLanguage('rsl', __webpack_require__(294));
+	hljs.registerLanguage('ruleslanguage', __webpack_require__(295));
+	hljs.registerLanguage('rust', __webpack_require__(296));
+	hljs.registerLanguage('scala', __webpack_require__(297));
+	hljs.registerLanguage('scheme', __webpack_require__(298));
+	hljs.registerLanguage('scilab', __webpack_require__(299));
+	hljs.registerLanguage('scss', __webpack_require__(300));
+	hljs.registerLanguage('smali', __webpack_require__(301));
+	hljs.registerLanguage('smalltalk', __webpack_require__(302));
+	hljs.registerLanguage('sml', __webpack_require__(303));
+	hljs.registerLanguage('sqf', __webpack_require__(304));
+	hljs.registerLanguage('sql', __webpack_require__(305));
+	hljs.registerLanguage('stan', __webpack_require__(306));
+	hljs.registerLanguage('stata', __webpack_require__(307));
+	hljs.registerLanguage('step21', __webpack_require__(308));
+	hljs.registerLanguage('stylus', __webpack_require__(309));
+	hljs.registerLanguage('swift', __webpack_require__(310));
+	hljs.registerLanguage('taggerscript', __webpack_require__(311));
+	hljs.registerLanguage('yaml', __webpack_require__(312));
+	hljs.registerLanguage('tap', __webpack_require__(313));
+	hljs.registerLanguage('tcl', __webpack_require__(314));
+	hljs.registerLanguage('tex', __webpack_require__(315));
+	hljs.registerLanguage('thrift', __webpack_require__(316));
+	hljs.registerLanguage('tp', __webpack_require__(317));
+	hljs.registerLanguage('twig', __webpack_require__(318));
+	hljs.registerLanguage('typescript', __webpack_require__(319));
+	hljs.registerLanguage('vala', __webpack_require__(320));
+	hljs.registerLanguage('vbnet', __webpack_require__(321));
+	hljs.registerLanguage('vbscript', __webpack_require__(322));
+	hljs.registerLanguage('vbscript-html', __webpack_require__(323));
+	hljs.registerLanguage('verilog', __webpack_require__(324));
+	hljs.registerLanguage('vhdl', __webpack_require__(325));
+	hljs.registerLanguage('vim', __webpack_require__(326));
+	hljs.registerLanguage('x86asm', __webpack_require__(327));
+	hljs.registerLanguage('xl', __webpack_require__(328));
+	hljs.registerLanguage('xquery', __webpack_require__(329));
+	hljs.registerLanguage('zephir', __webpack_require__(330));
 
 	module.exports = hljs;
 
 /***/ },
-/* 167 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -19875,8 +20489,8 @@
 	(function(factory) {
 
 	  // Find the global object for export to both the browser and web workers.
-	  var globalObject = typeof window == 'object' && window ||
-	                     typeof self == 'object' && self;
+	  var globalObject = typeof window === 'object' && window ||
+	                     typeof self === 'object' && self;
 
 	  // Setup highlight.js for different environments. First is Node.js or
 	  // CommonJS.
@@ -19896,11 +20510,43 @@
 	  }
 
 	}(function(hljs) {
+	  // Convenience variables for build-in objects
+	  var ArrayProto = [],
+	      objectKeys = Object.keys;
+
+	  // Global internal variables used within the highlight.js library.
+	  var languages = {},
+	      aliases   = {};
+
+	  // Regular expressions used throughout the highlight.js library.
+	  var noHighlightRe    = /^(no-?highlight|plain|text)$/i,
+	      languagePrefixRe = /\blang(?:uage)?-([\w-]+)\b/i,
+	      fixMarkupRe      = /((^(<[^>]+>|\t|)+|(?:\n)))/gm;
+
+	  var spanEndTag = '</span>';
+
+	  // Global options used when within external APIs. This is modified when
+	  // calling the `hljs.configure` function.
+	  var options = {
+	    classPrefix: 'hljs-',
+	    tabReplace: null,
+	    useBR: false,
+	    languages: undefined
+	  };
+
+	  // Object map that is used to escape some common HTML characters.
+	  var escapeRegexMap = {
+	    '&': '&amp;',
+	    '<': '&lt;',
+	    '>': '&gt;'
+	  };
 
 	  /* Utility functions */
 
 	  function escape(value) {
-	    return value.replace(/&/gm, '&amp;').replace(/</gm, '&lt;').replace(/>/gm, '&gt;');
+	    return value.replace(/[&<>]/gm, function(character) {
+	      return escapeRegexMap[character];
+	    });
 	  }
 
 	  function tag(node) {
@@ -19909,35 +20555,40 @@
 
 	  function testRe(re, lexeme) {
 	    var match = re && re.exec(lexeme);
-	    return match && match.index == 0;
+	    return match && match.index === 0;
 	  }
 
 	  function isNotHighlighted(language) {
-	    return (/^(no-?highlight|plain|text)$/i).test(language);
+	    return noHighlightRe.test(language);
 	  }
 
 	  function blockLanguage(block) {
-	    var i, match, length,
-	        classes = block.className + ' ';
+	    var i, match, length, _class;
+	    var classes = block.className + ' ';
 
 	    classes += block.parentNode ? block.parentNode.className : '';
 
 	    // language-* takes precedence over non-prefixed class names.
-	    match = (/\blang(?:uage)?-([\w-]+)\b/i).exec(classes);
+	    match = languagePrefixRe.exec(classes);
 	    if (match) {
 	      return getLanguage(match[1]) ? match[1] : 'no-highlight';
 	    }
 
 	    classes = classes.split(/\s+/);
+
 	    for (i = 0, length = classes.length; i < length; i++) {
-	      if (getLanguage(classes[i]) || isNotHighlighted(classes[i])) {
-	        return classes[i];
+	      _class = classes[i]
+
+	      if (isNotHighlighted(_class) || getLanguage(_class)) {
+	        return _class;
 	      }
 	    }
 	  }
 
 	  function inherit(parent, obj) {
-	    var result = {}, key;
+	    var key;
+	    var result = {};
+
 	    for (key in parent)
 	      result[key] = parent[key];
 	    if (obj)
@@ -19952,9 +20603,9 @@
 	    var result = [];
 	    (function _nodeStream(node, offset) {
 	      for (var child = node.firstChild; child; child = child.nextSibling) {
-	        if (child.nodeType == 3)
+	        if (child.nodeType === 3)
 	          offset += child.nodeValue.length;
-	        else if (child.nodeType == 1) {
+	        else if (child.nodeType === 1) {
 	          result.push({
 	            event: 'start',
 	            offset: offset,
@@ -19987,7 +20638,7 @@
 	      if (!original.length || !highlighted.length) {
 	        return original.length ? original : highlighted;
 	      }
-	      if (original[0].offset != highlighted[0].offset) {
+	      if (original[0].offset !== highlighted[0].offset) {
 	        return (original[0].offset < highlighted[0].offset) ? original : highlighted;
 	      }
 
@@ -20006,12 +20657,12 @@
 
 	      ... which is collapsed to:
 	      */
-	      return highlighted[0].event == 'start' ? original : highlighted;
+	      return highlighted[0].event === 'start' ? original : highlighted;
 	    }
 
 	    function open(node) {
 	      function attr_str(a) {return ' ' + a.nodeName + '="' + escape(a.value) + '"';}
-	      result += '<' + tag(node) + Array.prototype.map.call(node.attributes, attr_str).join('') + '>';
+	      result += '<' + tag(node) + ArrayProto.map.call(node.attributes, attr_str).join('') + '>';
 	    }
 
 	    function close(node) {
@@ -20019,14 +20670,14 @@
 	    }
 
 	    function render(event) {
-	      (event.event == 'start' ? open : close)(event.node);
+	      (event.event === 'start' ? open : close)(event.node);
 	    }
 
 	    while (original.length || highlighted.length) {
 	      var stream = selectStream();
 	      result += escape(value.substr(processed, stream[0].offset - processed));
 	      processed = stream[0].offset;
-	      if (stream == original) {
+	      if (stream === original) {
 	        /*
 	        On any opening or closing tag of the original markup we first close
 	        the entire highlighted node stack, then render the original tag along
@@ -20037,10 +20688,10 @@
 	        do {
 	          render(stream.splice(0, 1)[0]);
 	          stream = selectStream();
-	        } while (stream == original && stream.length && stream[0].offset == processed);
+	        } while (stream === original && stream.length && stream[0].offset === processed);
 	        nodeStack.reverse().forEach(open);
 	      } else {
-	        if (stream[0].event == 'start') {
+	        if (stream[0].event === 'start') {
 	          nodeStack.push(stream[0].node);
 	        } else {
 	          nodeStack.pop();
@@ -20085,10 +20736,10 @@
 	          });
 	        };
 
-	        if (typeof mode.keywords == 'string') { // string
+	        if (typeof mode.keywords === 'string') { // string
 	          flatten('keyword', mode.keywords);
 	        } else {
-	          Object.keys(mode.keywords).forEach(function (className) {
+	          objectKeys(mode.keywords).forEach(function (className) {
 	            flatten(className, mode.keywords[className]);
 	          });
 	        }
@@ -20113,7 +20764,7 @@
 	      }
 	      if (mode.illegal)
 	        mode.illegalRe = langRe(mode.illegal);
-	      if (mode.relevance === undefined)
+	      if (mode.relevance == null)
 	        mode.relevance = 1;
 	      if (!mode.contains) {
 	        mode.contains = [];
@@ -20123,7 +20774,7 @@
 	        if (c.variants) {
 	          c.variants.forEach(function(v) {expanded_contains.push(inherit(c, v));});
 	        } else {
-	          expanded_contains.push(c == 'self' ? mode : c);
+	          expanded_contains.push(c === 'self' ? mode : c);
 	        }
 	      });
 	      mode.contains = expanded_contains;
@@ -20189,7 +20840,7 @@
 	    function buildSpan(classname, insideSpan, leaveOpen, noPrefix) {
 	      var classPrefix = noPrefix ? '' : options.classPrefix,
 	          openSpan    = '<span class="' + classPrefix,
-	          closeSpan   = leaveOpen ? '' : '</span>';
+	          closeSpan   = leaveOpen ? '' : spanEndTag
 
 	      openSpan += classname + '">';
 
@@ -20197,15 +20848,19 @@
 	    }
 
 	    function processKeywords() {
+	      var keyword_match, last_index, match, result;
+
 	      if (!top.keywords)
 	        return escape(mode_buffer);
-	      var result = '';
-	      var last_index = 0;
+
+	      result = '';
+	      last_index = 0;
 	      top.lexemesRe.lastIndex = 0;
-	      var match = top.lexemesRe.exec(mode_buffer);
+	      match = top.lexemesRe.exec(mode_buffer);
+
 	      while (match) {
 	        result += escape(mode_buffer.substr(last_index, match.index - last_index));
-	        var keyword_match = keywordMatch(top, match);
+	        keyword_match = keywordMatch(top, match);
 	        if (keyword_match) {
 	          relevance += keyword_match[1];
 	          result += buildSpan(keyword_match[0], escape(match[0]));
@@ -20219,7 +20874,7 @@
 	    }
 
 	    function processSubLanguage() {
-	      var explicit = typeof top.subLanguage == 'string';
+	      var explicit = typeof top.subLanguage === 'string';
 	      if (explicit && !languages[top.subLanguage]) {
 	        return escape(mode_buffer);
 	      }
@@ -20242,11 +20897,11 @@
 	    }
 
 	    function processBuffer() {
-	      result += (top.subLanguage !== undefined ? processSubLanguage() : processKeywords());
+	      result += (top.subLanguage != null ? processSubLanguage() : processKeywords());
 	      mode_buffer = '';
 	    }
 
-	    function startNewMode(mode, lexeme) {
+	    function startNewMode(mode) {
 	      result += mode.className? buildSpan(mode.className, '', true): '';
 	      top = Object.create(mode, {parent: {value: top}});
 	    }
@@ -20255,7 +20910,7 @@
 
 	      mode_buffer += buffer;
 
-	      if (lexeme === undefined) {
+	      if (lexeme == null) {
 	        processBuffer();
 	        return 0;
 	      }
@@ -20293,13 +20948,13 @@
 	        }
 	        do {
 	          if (top.className) {
-	            result += '</span>';
+	            result += spanEndTag;
 	          }
 	          if (!top.skip) {
 	            relevance += top.relevance;
 	          }
 	          top = top.parent;
-	        } while (top != end_mode.parent);
+	        } while (top !== end_mode.parent);
 	        if (end_mode.starts) {
 	          startNewMode(end_mode.starts, '');
 	        }
@@ -20327,7 +20982,7 @@
 	    var top = continuation || language;
 	    var continuations = {}; // keep continuations for sub-languages
 	    var result = '', current;
-	    for(current = top; current != language; current = current.parent) {
+	    for(current = top; current !== language; current = current.parent) {
 	      if (current.className) {
 	        result = buildSpan(current.className, '', true) + result;
 	      }
@@ -20347,7 +21002,7 @@
 	      processLexeme(value.substr(index));
 	      for(current = top; current.parent; current = current.parent) { // close dangling modes
 	        if (current.className) {
-	          result += '</span>';
+	          result += spanEndTag;
 	        }
 	      }
 	      return {
@@ -20357,7 +21012,7 @@
 	        top: top
 	      };
 	    } catch (e) {
-	      if (e.message.indexOf('Illegal') != -1) {
+	      if (e.message && e.message.indexOf('Illegal') !== -1) {
 	        return {
 	          relevance: 0,
 	          value: escape(value)
@@ -20380,7 +21035,7 @@
 
 	  */
 	  function highlightAuto(text, languageSubset) {
-	    languageSubset = languageSubset || options.languages || Object.keys(languages);
+	    languageSubset = languageSubset || options.languages || objectKeys(languages);
 	    var result = {
 	      relevance: 0,
 	      value: escape(text)
@@ -20411,15 +21066,15 @@
 
 	  */
 	  function fixMarkup(value) {
-	    if (options.tabReplace) {
-	      value = value.replace(/^((<[^>]+>|\t)+)/gm, function(match, p1 /*..., offset, s*/) {
-	        return p1.replace(/\t/g, options.tabReplace);
+	    return !(options.tabReplace || options.useBR)
+	      ? value
+	      : value.replace(fixMarkupRe, function(match, p1) {
+	          if (options.useBR && match === '\n') {
+	            return '<br>';
+	          } else if (options.tabReplace) {
+	            return p1.replace(/\t/g, options.tabReplace);
+	          }
 	      });
-	    }
-	    if (options.useBR) {
-	      value = value.replace(/\n/g, '<br>');
-	    }
-	    return value;
 	  }
 
 	  function buildClassName(prevClassName, currentLang, resultLang) {
@@ -20442,23 +21097,24 @@
 	  two optional parameters for fixMarkup.
 	  */
 	  function highlightBlock(block) {
+	    var node, originalStream, result, resultNode, text;
 	    var language = blockLanguage(block);
+
 	    if (isNotHighlighted(language))
 	        return;
 
-	    var node;
 	    if (options.useBR) {
 	      node = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
 	      node.innerHTML = block.innerHTML.replace(/\n/g, '').replace(/<br[ \/]*>/g, '\n');
 	    } else {
 	      node = block;
 	    }
-	    var text = node.textContent;
-	    var result = language ? highlight(language, text, true) : highlightAuto(text);
+	    text = node.textContent;
+	    result = language ? highlight(language, text, true) : highlightAuto(text);
 
-	    var originalStream = nodeStream(node);
+	    originalStream = nodeStream(node);
 	    if (originalStream.length) {
-	      var resultNode = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+	      resultNode = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
 	      resultNode.innerHTML = result.value;
 	      result.value = mergeStreams(originalStream, nodeStream(resultNode), text);
 	    }
@@ -20478,13 +21134,6 @@
 	    }
 	  }
 
-	  var options = {
-	    classPrefix: 'hljs-',
-	    tabReplace: null,
-	    useBR: false,
-	    languages: undefined
-	  };
-
 	  /*
 	  Updates highlight.js global options with values passed in the form of an object.
 	  */
@@ -20501,7 +21150,7 @@
 	    initHighlighting.called = true;
 
 	    var blocks = document.querySelectorAll('pre code');
-	    Array.prototype.forEach.call(blocks, highlightBlock);
+	    ArrayProto.forEach.call(blocks, highlightBlock);
 	  }
 
 	  /*
@@ -20512,9 +21161,6 @@
 	    addEventListener('load', initHighlighting, false);
 	  }
 
-	  var languages = {};
-	  var aliases = {};
-
 	  function registerLanguage(name, language) {
 	    var lang = languages[name] = language(hljs);
 	    if (lang.aliases) {
@@ -20523,7 +21169,7 @@
 	  }
 
 	  function listLanguages() {
-	    return Object.keys(languages);
+	    return objectKeys(languages);
 	  }
 
 	  function getLanguage(name) {
@@ -20584,7 +21230,7 @@
 	    mode.contains.push(hljs.PHRASAL_WORDS_MODE);
 	    mode.contains.push({
 	      className: 'doctag',
-	      begin: "(?:TODO|FIXME|NOTE|BUG|XXX):",
+	      begin: '(?:TODO|FIXME|NOTE|BUG|XXX):',
 	      relevance: 0
 	    });
 	    return mode;
@@ -20654,7 +21300,7 @@
 
 
 /***/ },
-/* 168 */
+/* 169 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs){
@@ -20737,7 +21383,7 @@
 	};
 
 /***/ },
-/* 169 */
+/* 170 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -20779,7 +21425,7 @@
 	};
 
 /***/ },
-/* 170 */
+/* 171 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -20857,7 +21503,184 @@
 	};
 
 /***/ },
-/* 171 */
+/* 172 */
+/***/ function(module, exports) {
+
+	module.exports = // We try to support full Ada2012
+	//
+	// We highlight all appearances of types, keywords, literals (string, char, number, bool)
+	// and titles (user defined function/procedure/package)
+	// CSS classes are set accordingly
+	//
+	// Languages causing problems for language detection:
+	// xml (broken by Foo : Bar type), elm (broken by Foo : Bar type), vbscript-html (broken by body keyword)
+	// sql (ada default.txt has a lot of sql keywords)
+
+	function(hljs) {
+	    // Regular expression for Ada numeric literals.
+	    // stolen form the VHDL highlighter
+
+	    // Decimal literal:
+	    var INTEGER_RE = '\\d(_|\\d)*';
+	    var EXPONENT_RE = '[eE][-+]?' + INTEGER_RE;
+	    var DECIMAL_LITERAL_RE = INTEGER_RE + '(\\.' + INTEGER_RE + ')?' + '(' + EXPONENT_RE + ')?';
+
+	    // Based literal:
+	    var BASED_INTEGER_RE = '\\w+';
+	    var BASED_LITERAL_RE = INTEGER_RE + '#' + BASED_INTEGER_RE + '(\\.' + BASED_INTEGER_RE + ')?' + '#' + '(' + EXPONENT_RE + ')?';
+
+	    var NUMBER_RE = '\\b(' + BASED_LITERAL_RE + '|' + DECIMAL_LITERAL_RE + ')';
+
+	    // Identifier regex
+	    var ID_REGEX = '[A-Za-z](_?[A-Za-z0-9.])*';
+
+	    // bad chars, only allowed in literals
+	    var BAD_CHARS = '[]{}%#\'\"'
+
+	    // Ada doesn't have block comments, only line comments
+	    var COMMENTS = hljs.COMMENT('--', '$');
+
+	    // variable declarations of the form
+	    // Foo : Bar := Baz;
+	    // where only Bar will be highlighted
+	    var VAR_DECLS = {
+	        // TODO: These spaces are not required by the Ada syntax
+	        // however, I have yet to see handwritten Ada code where
+	        // someone does not put spaces around :
+	        begin: '\\s+:\\s+', end: '\\s*(:=|;|\\)|=>|$)',
+	        // endsWithParent: true,
+	        // returnBegin: true,
+	        illegal: BAD_CHARS,
+	        contains: [
+	            {
+	                // workaround to avoid highlighting
+	                // named loops and declare blocks
+	                beginKeywords: 'loop for declare others',
+	                endsParent: true,
+	            },
+	            {
+	                // properly highlight all modifiers
+	                className: 'keyword',
+	                beginKeywords: 'not null constant access function procedure in out aliased exception'
+	            },
+	            {
+	                className: 'type',
+	                begin: ID_REGEX,
+	                endsParent: true,
+	                relevance: 0,
+	            }
+	        ]
+	    };
+
+	    return {
+	        case_insensitive: true,
+	        keywords: {
+	            keyword:
+	                'abort else new return abs elsif not reverse abstract end ' +
+	                'accept entry select access exception of separate aliased exit or some ' +
+	                'all others subtype and for out synchronized array function overriding ' +
+	                'at tagged generic package task begin goto pragma terminate ' +
+	                'body private then if procedure type case in protected constant interface ' +
+	                'is raise use declare range delay limited record when delta loop rem while ' +
+	                'digits renames with do mod requeue xor',
+	            literal:
+	                'True False',
+	        },
+	        contains: [
+	            COMMENTS,
+	            // strings "foobar"
+	            {
+	                className: 'string',
+	                begin: /"/, end: /"/,
+	                contains: [{begin: /""/, relevance: 0}]
+	            },
+	            // characters ''
+	            {
+	                // character literals always contain one char
+	                className: 'string',
+	                begin: /'.'/
+	            },
+	            {
+	                // number literals
+	                className: 'number',
+	                begin: NUMBER_RE,
+	                relevance: 0
+	            },
+	            {
+	                // Attributes
+	                className: 'symbol',
+	                begin: "'" + ID_REGEX,
+	            },
+	            {
+	                // package definition, maybe inside generic
+	                className: 'title',
+	                begin: '(\\bwith\\s+)?(\\bprivate\\s+)?\\bpackage\\s+(\\bbody\\s+)?', end: '(is|$)',
+	                keywords: 'package body',
+	                excludeBegin: true,
+	                excludeEnd: true,
+	                illegal: BAD_CHARS
+	            },
+	            {
+	                // function/procedure declaration/definition
+	                // maybe inside generic
+	                begin: '(\\b(with|overriding)\\s+)?\\b(function|procedure)\\s+', end: '(\\bis|\\bwith|\\brenames|\\)\\s*;)',
+	                keywords: 'overriding function procedure with is renames return',
+	                // we need to re-match the 'function' keyword, so that
+	                // the title mode below matches only exactly once
+	                returnBegin: true,
+	                contains:
+	                [
+	                    COMMENTS,
+	                    {
+	                        // name of the function/procedure
+	                        className: 'title',
+	                        begin: '(\\bwith\\s+)?\\b(function|procedure)\\s+',
+	                        end: '(\\(|\\s+|$)',
+	                        excludeBegin: true,
+	                        excludeEnd: true,
+	                        illegal: BAD_CHARS
+	                    },
+	                    // 'self'
+	                    // // parameter types
+	                    VAR_DECLS,
+	                    {
+	                        // return type
+	                        className: 'type',
+	                        begin: '\\breturn\\s+', end: '(\\s+|;|$)',
+	                        keywords: 'return',
+	                        excludeBegin: true,
+	                        excludeEnd: true,
+	                        // we are done with functions
+	                        endsParent: true,
+	                        illegal: BAD_CHARS
+
+	                    },
+	                ]
+	            },
+	            {
+	                // new type declarations
+	                // maybe inside generic
+	                className: 'type',
+	                begin: '\\b(sub)?type\\s+', end: '\\s+',
+	                keywords: 'type',
+	                excludeBegin: true,
+	                illegal: BAD_CHARS
+	            },
+
+	            // see comment above the definition
+	            VAR_DECLS,
+
+	            // no markup
+	            // relevance boosters for small snippets
+	            // {begin: '\\s*=>\\s*'},
+	            // {begin: '\\s*:=\\s*'},
+	            // {begin: '\\s+:=\\s+'},
+	        ]
+	    };
+	};
+
+/***/ },
+/* 173 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -20907,7 +21730,7 @@
 	};
 
 /***/ },
-/* 172 */
+/* 174 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -20997,165 +21820,281 @@
 	};
 
 /***/ },
-/* 173 */
+/* 175 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
+	  var CPP_PRIMITIVE_TYPES = {
+	    className: 'keyword',
+	    begin: '\\b[a-z\\d_]*_t\\b'
+	  };
 
-		// CPP Strings
-		var STRINGS = {
-		    className: 'string',
-		    variants: [
-		      hljs.inherit(hljs.QUOTE_STRING_MODE, { begin: '((u8?|U)|L)?"' }),
-		      {
-		        begin: '(u8?|U)?R"', end: '"',
-		        contains: [hljs.BACKSLASH_ESCAPE]
-		      },
-		      {
-		        begin: '\'\\\\?.', end: '\'',
-		        illegal: '.'
-		      }
-		    ]
-		  };
+	  var STRINGS = {
+	    className: 'string',
+	    variants: [
+	      {
+	        begin: '(u8?|U)?L?"', end: '"',
+	        illegal: '\\n',
+	        contains: [hljs.BACKSLASH_ESCAPE]
+	      },
+	      {
+	        begin: '(u8?|U)?R"', end: '"',
+	        contains: [hljs.BACKSLASH_ESCAPE]
+	      },
+	      {
+	        begin: '\'\\\\?.', end: '\'',
+	        illegal: '.'
+	      }
+	    ]
+	  };
 
-		// CPP preprocessor
-		var PREPROCESSOR =       {
-		    className: 'meta',
-		    begin: '#', end: '$',
-		    keywords: {'meta-keyword': 'if else elif endif define undef warning error line ' +
-		                  'pragma ifdef ifndef'},
-		    contains: [
-		      {
-		        begin: /\\\n/, relevance: 0
-		      },
-		      {
-		        beginKeywords: 'include', end: '$',
-		        keywords: {'meta-keyword': 'include'},
-		        contains: [
-		          hljs.inherit(STRINGS, {className: 'meta-string'}),
-		          {
-		            className: 'meta-string',
-		            begin: '<', end: '>',
-		            illegal: '\\n',
-		          }
-		        ]
-		      },
-		      STRINGS,
-		      hljs.C_LINE_COMMENT_MODE,
-		      hljs.C_BLOCK_COMMENT_MODE
-		    ]
-		  };
+	  var NUMBERS = {
+	    className: 'number',
+	    variants: [
+	      { begin: '\\b(0b[01\'_]+)' },
+	      { begin: '\\b([\\d\'_]+(\\.[\\d\'_]*)?|\\.[\\d\'_]+)(u|U|l|L|ul|UL|f|F|b|B)' },
+	      { begin: '(-?)(\\b0[xX][a-fA-F0-9\'_]+|(\\b[\\d\'_]+(\\.[\\d\'_]*)?|\\.[\\d\'_]+)([eE][-+]?[\\d\'_]+)?)' }
+	    ],
+	    relevance: 0
+	  };
 
-	  	return {
-		    keywords: {
-		      keyword: 'boolean byte word string String array ' +
-		      // CPP keywords
-		      'int float private char export virtual operator sizeof uint8_t uint16_t ' +
-		      'uint32_t uint64_t int8_t int16_t int32_t int64_t ' +
-		      'dynamic_cast typedef const_cast const struct static_cast union namespace ' +
-		      'unsigned long volatile static protected bool template mutable public friend ' +
-		      'auto void enum extern using class asm typeid ' +
-		      'short reinterpret_cast double register explicit signed typename this ' +
-		      'inline delete alignof constexpr decltype ' +
-		      'noexcept static_assert thread_local restrict _Bool complex _Complex _Imaginary ' +
-		      'atomic_bool atomic_char atomic_schar ' +
-		      'atomic_uchar atomic_short atomic_ushort atomic_int atomic_uint atomic_long atomic_ulong atomic_llong ' +
-		      'atomic_ullong',
-		      built_in:
-	              'setup loop while catch for if do goto try switch case else ' +
-	              'default break continue return ' +
-	              'KeyboardController MouseController SoftwareSerial ' +
-		            'EthernetServer EthernetClient LiquidCrystal ' +
-		            'RobotControl GSMVoiceCall EthernetUDP EsploraTFT ' +
-		            'HttpClient RobotMotor WiFiClient GSMScanner ' +
-		            'FileSystem Scheduler GSMServer YunClient YunServer ' +
-		            'IPAddress GSMClient GSMModem Keyboard Ethernet ' +
-		            'Console GSMBand Esplora Stepper Process ' +
-		            'WiFiUDP GSM_SMS Mailbox USBHost Firmata PImage ' +
-		            'Client Server GSMPIN FileIO Bridge Serial ' +
-		            'EEPROM Stream Mouse Audio Servo File Task ' +
-		            'GPRS WiFi Wire TFT GSM SPI SD ' +
-		            'runShellCommandAsynchronously analogWriteResolution ' +
-		            'retrieveCallingNumber printFirmwareVersion ' +
-		            'analogReadResolution sendDigitalPortPair ' +
-		            'noListenOnLocalhost readJoystickButton setFirmwareVersion ' +
-		            'readJoystickSwitch scrollDisplayRight getVoiceCallStatus ' +
-		            'scrollDisplayLeft writeMicroseconds delayMicroseconds ' +
-		            'beginTransmission getSignalStrength runAsynchronously ' +
-		            'getAsynchronously listenOnLocalhost getCurrentCarrier ' +
-		            'readAccelerometer messageAvailable sendDigitalPorts ' +
-		            'lineFollowConfig countryNameWrite runShellCommand ' +
-		            'readStringUntil rewindDirectory readTemperature ' +
-		            'setClockDivider readLightSensor endTransmission ' +
-		            'analogReference detachInterrupt countryNameRead ' +
-		            'attachInterrupt encryptionType readBytesUntil ' +
-		            'robotNameWrite readMicrophone robotNameRead cityNameWrite ' +
-		            'userNameWrite readJoystickY readJoystickX mouseReleased ' +
-		            'openNextFile scanNetworks noInterrupts digitalWrite ' +
-		            'beginSpeaker mousePressed isActionDone mouseDragged ' +
-		            'displayLogos noAutoscroll addParameter remoteNumber ' +
-		            'getModifiers keyboardRead userNameRead waitContinue ' +
-		            'processInput parseCommand printVersion readNetworks ' +
-		            'writeMessage blinkVersion cityNameRead readMessage ' +
-		            'setDataMode parsePacket isListening setBitOrder ' +
-		            'beginPacket isDirectory motorsWrite drawCompass ' +
-		            'digitalRead clearScreen serialEvent rightToLeft ' +
-		            'setTextSize leftToRight requestFrom keyReleased ' +
-		            'compassRead analogWrite interrupts WiFiServer ' +
-		            'disconnect playMelody parseFloat autoscroll ' +
-		            'getPINUsed setPINUsed setTimeout sendAnalog ' +
-		            'readSlider analogRead beginWrite createChar ' +
-		            'motorsStop keyPressed tempoWrite readButton ' +
-		            'subnetMask debugPrint macAddress writeGreen ' +
-		            'randomSeed attachGPRS readString sendString ' +
-		            'remotePort releaseAll mouseMoved background ' +
-		            'getXChange getYChange answerCall getResult ' +
-		            'voiceCall endPacket constrain getSocket writeJSON ' +
-		            'getButton available connected findUntil readBytes ' +
-		            'exitValue readGreen writeBlue startLoop IPAddress ' +
-		            'isPressed sendSysex pauseMode gatewayIP setCursor ' +
-		            'getOemKey tuneWrite noDisplay loadImage switchPIN ' +
-		            'onRequest onReceive changePIN playFile noBuffer ' +
-		            'parseInt overflow checkPIN knobRead beginTFT ' +
-		            'bitClear updateIR bitWrite position writeRGB ' +
-		            'highByte writeRed setSpeed readBlue noStroke ' +
-		            'remoteIP transfer shutdown hangCall beginSMS ' +
-		            'endWrite attached maintain noCursor checkReg ' +
-		            'checkPUK shiftOut isValid shiftIn pulseIn ' +
-		            'connect println localIP pinMode getIMEI ' +
-		            'display noBlink process getBand running beginSD ' +
-		            'drawBMP lowByte setBand release bitRead prepare ' +
-		            'pointTo readRed setMode noFill remove listen ' +
-		            'stroke detach attach noTone exists buffer ' +
-		            'height bitSet circle config cursor random ' +
-		            'IRread setDNS endSMS getKey micros ' +
-		            'millis begin print write ready flush width ' +
-		            'isPIN blink clear press mkdir rmdir close ' +
-		            'point yield image BSSID click delay ' +
-		            'read text move peek beep rect line open ' +
-		            'seek fill size turn stop home find ' +
-		            'step tone sqrt RSSI SSID ' +
-		            'end bit tan cos sin pow map abs max ' +
-		            'min get run put',
-		        literal: 'DIGITAL_MESSAGE FIRMATA_STRING ANALOG_MESSAGE ' +
-		            'REPORT_DIGITAL REPORT_ANALOG INPUT_PULLUP ' +
-		            'SET_PIN_MODE INTERNAL2V56 SYSTEM_RESET LED_BUILTIN ' +
-		            'INTERNAL1V1 SYSEX_START INTERNAL EXTERNAL ' +
-		            'DEFAULT OUTPUT INPUT HIGH LOW'
-		    },
-		    contains: [
-		      PREPROCESSOR,
-		      hljs.C_LINE_COMMENT_MODE,
-		      hljs.C_BLOCK_COMMENT_MODE,
-		      hljs.APOS_STRING_MODE,
-		      hljs.QUOTE_STRING_MODE,
-		      hljs.C_NUMBER_MODE
-		    ]
-	    };
+	  var PREPROCESSOR =       {
+	    className: 'meta',
+	    begin: /#\s*[a-z]+\b/, end: /$/,
+	    keywords: {
+	      'meta-keyword':
+	        'if else elif endif define undef warning error line ' +
+	        'pragma ifdef ifndef include'
+	    },
+	    contains: [
+	      {
+	        begin: /\\\n/, relevance: 0
+	      },
+	      hljs.inherit(STRINGS, {className: 'meta-string'}),
+	      {
+	        className: 'meta-string',
+	        begin: '<', end: '>',
+	        illegal: '\\n',
+	      },
+	      hljs.C_LINE_COMMENT_MODE,
+	      hljs.C_BLOCK_COMMENT_MODE
+	    ]
+	  };
+
+	  var FUNCTION_TITLE = hljs.IDENT_RE + '\\s*\\(';
+
+	  var CPP_KEYWORDS = {
+	    keyword: 'int float while private char catch export virtual operator sizeof ' +
+	      'dynamic_cast|10 typedef const_cast|10 const struct for static_cast|10 union namespace ' +
+	      'unsigned long volatile static protected bool template mutable if public friend ' +
+	      'do goto auto void enum else break extern using class asm case typeid ' +
+	      'short reinterpret_cast|10 default double register explicit signed typename try this ' +
+	      'switch continue inline delete alignof constexpr decltype ' +
+	      'noexcept static_assert thread_local restrict _Bool complex _Complex _Imaginary ' +
+	      'atomic_bool atomic_char atomic_schar ' +
+	      'atomic_uchar atomic_short atomic_ushort atomic_int atomic_uint atomic_long atomic_ulong atomic_llong ' +
+	      'atomic_ullong new throw return',
+	    built_in: 'std string cin cout cerr clog stdin stdout stderr stringstream istringstream ostringstream ' +
+	      'auto_ptr deque list queue stack vector map set bitset multiset multimap unordered_set ' +
+	      'unordered_map unordered_multiset unordered_multimap array shared_ptr abort abs acos ' +
+	      'asin atan2 atan calloc ceil cosh cos exit exp fabs floor fmod fprintf fputs free frexp ' +
+	      'fscanf isalnum isalpha iscntrl isdigit isgraph islower isprint ispunct isspace isupper ' +
+	      'isxdigit tolower toupper labs ldexp log10 log malloc realloc memchr memcmp memcpy memset modf pow ' +
+	      'printf putchar puts scanf sinh sin snprintf sprintf sqrt sscanf strcat strchr strcmp ' +
+	      'strcpy strcspn strlen strncat strncmp strncpy strpbrk strrchr strspn strstr tanh tan ' +
+	      'vfprintf vprintf vsprintf endl initializer_list unique_ptr',
+	    literal: 'true false nullptr NULL'
+	  };
+
+	  var EXPRESSION_CONTAINS = [
+	    CPP_PRIMITIVE_TYPES,
+	    hljs.C_LINE_COMMENT_MODE,
+	    hljs.C_BLOCK_COMMENT_MODE,
+	    NUMBERS,
+	    STRINGS
+	  ];
+
+	  return {
+	    aliases: ['c', 'cc', 'h', 'c++', 'h++', 'hpp'],
+	    keywords: CPP_KEYWORDS,
+	    illegal: '</',
+	    contains: EXPRESSION_CONTAINS.concat([
+	      PREPROCESSOR,
+	      {
+	        begin: '\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<', end: '>',
+	        keywords: CPP_KEYWORDS,
+	        contains: ['self', CPP_PRIMITIVE_TYPES]
+	      },
+	      {
+	        begin: hljs.IDENT_RE + '::',
+	        keywords: CPP_KEYWORDS
+	      },
+	      {
+	        // This mode covers expression context where we can't expect a function
+	        // definition and shouldn't highlight anything that looks like one:
+	        // `return some()`, `else if()`, `(x*sum(1, 2))`
+	        variants: [
+	          {begin: /=/, end: /;/},
+	          {begin: /\(/, end: /\)/},
+	          {beginKeywords: 'new throw return else', end: /;/}
+	        ],
+	        keywords: CPP_KEYWORDS,
+	        contains: EXPRESSION_CONTAINS.concat([
+	          {
+	            begin: /\(/, end: /\)/,
+	            keywords: CPP_KEYWORDS,
+	            contains: EXPRESSION_CONTAINS.concat(['self']),
+	            relevance: 0
+	          }
+	        ]),
+	        relevance: 0
+	      },
+	      {
+	        className: 'function',
+	        begin: '(' + hljs.IDENT_RE + '[\\*&\\s]+)+' + FUNCTION_TITLE,
+	        returnBegin: true, end: /[{;=]/,
+	        excludeEnd: true,
+	        keywords: CPP_KEYWORDS,
+	        illegal: /[^\w\s\*&]/,
+	        contains: [
+	          {
+	            begin: FUNCTION_TITLE, returnBegin: true,
+	            contains: [hljs.TITLE_MODE],
+	            relevance: 0
+	          },
+	          {
+	            className: 'params',
+	            begin: /\(/, end: /\)/,
+	            keywords: CPP_KEYWORDS,
+	            relevance: 0,
+	            contains: [
+	              hljs.C_LINE_COMMENT_MODE,
+	              hljs.C_BLOCK_COMMENT_MODE,
+	              STRINGS,
+	              NUMBERS,
+	              CPP_PRIMITIVE_TYPES
+	            ]
+	          },
+	          hljs.C_LINE_COMMENT_MODE,
+	          hljs.C_BLOCK_COMMENT_MODE,
+	          PREPROCESSOR
+	        ]
+	      }
+	    ]),
+	    exports: {
+	      preprocessor: PREPROCESSOR,
+	      strings: STRINGS,
+	      keywords: CPP_KEYWORDS
+	    }
+	  };
 	};
 
 /***/ },
-/* 174 */
+/* 176 */
+/***/ function(module, exports) {
+
+	module.exports = function(hljs) {
+	  var CPP = hljs.getLanguage('cpp').exports;
+		return {
+	    keywords: {
+	      keyword:
+	        'boolean byte word string String array ' + CPP.keywords.keyword,
+	      built_in:
+	        'setup loop while catch for if do goto try switch case else ' +
+	        'default break continue return ' +
+	        'KeyboardController MouseController SoftwareSerial ' +
+	        'EthernetServer EthernetClient LiquidCrystal ' +
+	        'RobotControl GSMVoiceCall EthernetUDP EsploraTFT ' +
+	        'HttpClient RobotMotor WiFiClient GSMScanner ' +
+	        'FileSystem Scheduler GSMServer YunClient YunServer ' +
+	        'IPAddress GSMClient GSMModem Keyboard Ethernet ' +
+	        'Console GSMBand Esplora Stepper Process ' +
+	        'WiFiUDP GSM_SMS Mailbox USBHost Firmata PImage ' +
+	        'Client Server GSMPIN FileIO Bridge Serial ' +
+	        'EEPROM Stream Mouse Audio Servo File Task ' +
+	        'GPRS WiFi Wire TFT GSM SPI SD ' +
+	        'runShellCommandAsynchronously analogWriteResolution ' +
+	        'retrieveCallingNumber printFirmwareVersion ' +
+	        'analogReadResolution sendDigitalPortPair ' +
+	        'noListenOnLocalhost readJoystickButton setFirmwareVersion ' +
+	        'readJoystickSwitch scrollDisplayRight getVoiceCallStatus ' +
+	        'scrollDisplayLeft writeMicroseconds delayMicroseconds ' +
+	        'beginTransmission getSignalStrength runAsynchronously ' +
+	        'getAsynchronously listenOnLocalhost getCurrentCarrier ' +
+	        'readAccelerometer messageAvailable sendDigitalPorts ' +
+	        'lineFollowConfig countryNameWrite runShellCommand ' +
+	        'readStringUntil rewindDirectory readTemperature ' +
+	        'setClockDivider readLightSensor endTransmission ' +
+	        'analogReference detachInterrupt countryNameRead ' +
+	        'attachInterrupt encryptionType readBytesUntil ' +
+	        'robotNameWrite readMicrophone robotNameRead cityNameWrite ' +
+	        'userNameWrite readJoystickY readJoystickX mouseReleased ' +
+	        'openNextFile scanNetworks noInterrupts digitalWrite ' +
+	        'beginSpeaker mousePressed isActionDone mouseDragged ' +
+	        'displayLogos noAutoscroll addParameter remoteNumber ' +
+	        'getModifiers keyboardRead userNameRead waitContinue ' +
+	        'processInput parseCommand printVersion readNetworks ' +
+	        'writeMessage blinkVersion cityNameRead readMessage ' +
+	        'setDataMode parsePacket isListening setBitOrder ' +
+	        'beginPacket isDirectory motorsWrite drawCompass ' +
+	        'digitalRead clearScreen serialEvent rightToLeft ' +
+	        'setTextSize leftToRight requestFrom keyReleased ' +
+	        'compassRead analogWrite interrupts WiFiServer ' +
+	        'disconnect playMelody parseFloat autoscroll ' +
+	        'getPINUsed setPINUsed setTimeout sendAnalog ' +
+	        'readSlider analogRead beginWrite createChar ' +
+	        'motorsStop keyPressed tempoWrite readButton ' +
+	        'subnetMask debugPrint macAddress writeGreen ' +
+	        'randomSeed attachGPRS readString sendString ' +
+	        'remotePort releaseAll mouseMoved background ' +
+	        'getXChange getYChange answerCall getResult ' +
+	        'voiceCall endPacket constrain getSocket writeJSON ' +
+	        'getButton available connected findUntil readBytes ' +
+	        'exitValue readGreen writeBlue startLoop IPAddress ' +
+	        'isPressed sendSysex pauseMode gatewayIP setCursor ' +
+	        'getOemKey tuneWrite noDisplay loadImage switchPIN ' +
+	        'onRequest onReceive changePIN playFile noBuffer ' +
+	        'parseInt overflow checkPIN knobRead beginTFT ' +
+	        'bitClear updateIR bitWrite position writeRGB ' +
+	        'highByte writeRed setSpeed readBlue noStroke ' +
+	        'remoteIP transfer shutdown hangCall beginSMS ' +
+	        'endWrite attached maintain noCursor checkReg ' +
+	        'checkPUK shiftOut isValid shiftIn pulseIn ' +
+	        'connect println localIP pinMode getIMEI ' +
+	        'display noBlink process getBand running beginSD ' +
+	        'drawBMP lowByte setBand release bitRead prepare ' +
+	        'pointTo readRed setMode noFill remove listen ' +
+	        'stroke detach attach noTone exists buffer ' +
+	        'height bitSet circle config cursor random ' +
+	        'IRread setDNS endSMS getKey micros ' +
+	        'millis begin print write ready flush width ' +
+	        'isPIN blink clear press mkdir rmdir close ' +
+	        'point yield image BSSID click delay ' +
+	        'read text move peek beep rect line open ' +
+	        'seek fill size turn stop home find ' +
+	        'step tone sqrt RSSI SSID ' +
+	        'end bit tan cos sin pow map abs max ' +
+	        'min get run put',
+	      literal:
+	        'DIGITAL_MESSAGE FIRMATA_STRING ANALOG_MESSAGE ' +
+	        'REPORT_DIGITAL REPORT_ANALOG INPUT_PULLUP ' +
+	        'SET_PIN_MODE INTERNAL2V56 SYSTEM_RESET LED_BUILTIN ' +
+	        'INTERNAL1V1 SYSEX_START INTERNAL EXTERNAL ' +
+	        'DEFAULT OUTPUT INPUT HIGH LOW'
+	    },
+	    contains: [
+	      CPP.preprocessor,
+	      hljs.C_LINE_COMMENT_MODE,
+	      hljs.C_BLOCK_COMMENT_MODE,
+	      hljs.APOS_STRING_MODE,
+	      hljs.QUOTE_STRING_MODE,
+	      hljs.C_NUMBER_MODE
+	    ]
+	  };
+	};
+
+/***/ },
+/* 177 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21251,7 +22190,7 @@
 	};
 
 /***/ },
-/* 175 */
+/* 178 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21284,7 +22223,7 @@
 	    ]
 	  };
 	  return {
-	    aliases: ['html', 'xhtml', 'rss', 'atom', 'xsl', 'plist'],
+	    aliases: ['html', 'xhtml', 'rss', 'atom', 'xjb', 'xsd', 'xsl', 'plist'],
 	    case_insensitive: true,
 	    contains: [
 	      {
@@ -21358,7 +22297,7 @@
 	};
 
 /***/ },
-/* 176 */
+/* 179 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21550,7 +22489,7 @@
 	};
 
 /***/ },
-/* 177 */
+/* 180 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -21698,7 +22637,7 @@
 	};
 
 /***/ },
-/* 178 */
+/* 181 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21750,7 +22689,7 @@
 	};
 
 /***/ },
-/* 179 */
+/* 182 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21762,1596 +22701,8 @@
 
 	        LITERAL = 'True False And Null Not Or',
 
-	        BUILT_IN = 'Abs ACos AdlibRegister AdlibUnRegister Asc AscW ASin ' +
-	        'Assign ATan AutoItSetOption AutoItWinGetTitle ' +
-	        'AutoItWinSetTitle Beep Binary BinaryLen BinaryMid ' +
-	        'BinaryToString BitAND BitNOT BitOR BitRotate BitShift ' +
-	        'BitXOR BlockInput Break Call CDTray Ceiling Chr ' +
-	        'ChrW ClipGet ClipPut ConsoleRead ConsoleWrite ' +
-	        'ConsoleWriteError ControlClick ControlCommand ' +
-	        'ControlDisable ControlEnable ControlFocus ControlGetFocus ' +
-	        'ControlGetHandle ControlGetPos ControlGetText ControlHide ' +
-	        'ControlListView ControlMove ControlSend ControlSetText ' +
-	        'ControlShow ControlTreeView Cos Dec DirCopy DirCreate ' +
-	        'DirGetSize DirMove DirRemove DllCall DllCallAddress ' +
-	        'DllCallbackFree DllCallbackGetPtr DllCallbackRegister ' +
-	        'DllClose DllOpen DllStructCreate DllStructGetData ' +
-	        'DllStructGetPtr DllStructGetSize DllStructSetData ' +
-	        'DriveGetDrive DriveGetFileSystem DriveGetLabel ' +
-	        'DriveGetSerial DriveGetType DriveMapAdd DriveMapDel ' +
-	        'DriveMapGet DriveSetLabel DriveSpaceFree DriveSpaceTotal ' +
-	        'DriveStatus EnvGet EnvSet EnvUpdate Eval Execute Exp ' +
-	        'FileChangeDir FileClose FileCopy FileCreateNTFSLink ' +
-	        'FileCreateShortcut FileDelete FileExists FileFindFirstFile ' +
-	        'FileFindNextFile FileFlush FileGetAttrib FileGetEncoding ' +
-	        'FileGetLongName FileGetPos FileGetShortcut FileGetShortName ' +
-	        'FileGetSize FileGetTime FileGetVersion FileInstall ' +
-	        'FileMove FileOpen FileOpenDialog FileRead FileReadLine ' +
-	        'FileReadToArray FileRecycle FileRecycleEmpty FileSaveDialog ' +
-	        'FileSelectFolder FileSetAttrib FileSetEnd FileSetPos ' +
-	        'FileSetTime FileWrite FileWriteLine Floor FtpSetProxy ' +
-	        'FuncName GUICreate GUICtrlCreateAvi GUICtrlCreateButton ' +
-	        'GUICtrlCreateCheckbox GUICtrlCreateCombo ' +
-	        'GUICtrlCreateContextMenu GUICtrlCreateDate GUICtrlCreateDummy ' +
-	        'GUICtrlCreateEdit GUICtrlCreateGraphic GUICtrlCreateGroup ' +
-	        'GUICtrlCreateIcon GUICtrlCreateInput GUICtrlCreateLabel ' +
-	        'GUICtrlCreateList GUICtrlCreateListView ' +
-	        'GUICtrlCreateListViewItem GUICtrlCreateMenu ' +
-	        'GUICtrlCreateMenuItem GUICtrlCreateMonthCal GUICtrlCreateObj ' +
-	        'GUICtrlCreatePic GUICtrlCreateProgress GUICtrlCreateRadio ' +
-	        'GUICtrlCreateSlider GUICtrlCreateTab GUICtrlCreateTabItem ' +
-	        'GUICtrlCreateTreeView GUICtrlCreateTreeViewItem ' +
-	        'GUICtrlCreateUpdown GUICtrlDelete GUICtrlGetHandle ' +
-	        'GUICtrlGetState GUICtrlRead GUICtrlRecvMsg ' +
-	        'GUICtrlRegisterListViewSort GUICtrlSendMsg GUICtrlSendToDummy ' +
-	        'GUICtrlSetBkColor GUICtrlSetColor GUICtrlSetCursor ' +
-	        'GUICtrlSetData GUICtrlSetDefBkColor GUICtrlSetDefColor ' +
-	        'GUICtrlSetFont GUICtrlSetGraphic GUICtrlSetImage ' +
-	        'GUICtrlSetLimit GUICtrlSetOnEvent GUICtrlSetPos ' +
-	        'GUICtrlSetResizing GUICtrlSetState GUICtrlSetStyle ' +
-	        'GUICtrlSetTip GUIDelete GUIGetCursorInfo GUIGetMsg ' +
-	        'GUIGetStyle GUIRegisterMsg GUISetAccelerators GUISetBkColor ' +
-	        'GUISetCoord GUISetCursor GUISetFont GUISetHelp GUISetIcon ' +
-	        'GUISetOnEvent GUISetState GUISetStyle GUIStartGroup ' +
-	        'GUISwitch Hex HotKeySet HttpSetProxy HttpSetUserAgent ' +
-	        'HWnd InetClose InetGet InetGetInfo InetGetSize InetRead ' +
-	        'IniDelete IniRead IniReadSection IniReadSectionNames ' +
-	        'IniRenameSection IniWrite IniWriteSection InputBox Int ' +
-	        'IsAdmin IsArray IsBinary IsBool IsDeclared IsDllStruct ' +
-	        'IsFloat IsFunc IsHWnd IsInt IsKeyword IsNumber IsObj ' +
-	        'IsPtr IsString Log MemGetStats Mod MouseClick ' +
-	        'MouseClickDrag MouseDown MouseGetCursor MouseGetPos ' +
-	        'MouseMove MouseUp MouseWheel MsgBox Number ObjCreate ' +
-	        'ObjCreateInterface ObjEvent ObjGet ObjName ' +
-	        'OnAutoItExitRegister OnAutoItExitUnRegister Opt Ping ' +
-	        'PixelChecksum PixelGetColor PixelSearch ProcessClose ' +
-	        'ProcessExists ProcessGetStats ProcessList ' +
-	        'ProcessSetPriority ProcessWait ProcessWaitClose ProgressOff ' +
-	        'ProgressOn ProgressSet Ptr Random RegDelete RegEnumKey ' +
-	        'RegEnumVal RegRead RegWrite Round Run RunAs RunAsWait ' +
-	        'RunWait Send SendKeepActive SetError SetExtended ' +
-	        'ShellExecute ShellExecuteWait Shutdown Sin Sleep ' +
-	        'SoundPlay SoundSetWaveVolume SplashImageOn SplashOff ' +
-	        'SplashTextOn Sqrt SRandom StatusbarGetText StderrRead ' +
-	        'StdinWrite StdioClose StdoutRead String StringAddCR ' +
-	        'StringCompare StringFormat StringFromASCIIArray StringInStr ' +
-	        'StringIsAlNum StringIsAlpha StringIsASCII StringIsDigit ' +
-	        'StringIsFloat StringIsInt StringIsLower StringIsSpace ' +
-	        'StringIsUpper StringIsXDigit StringLeft StringLen ' +
-	        'StringLower StringMid StringRegExp StringRegExpReplace ' +
-	        'StringReplace StringReverse StringRight StringSplit ' +
-	        'StringStripCR StringStripWS StringToASCIIArray ' +
-	        'StringToBinary StringTrimLeft StringTrimRight StringUpper ' +
-	        'Tan TCPAccept TCPCloseSocket TCPConnect TCPListen ' +
-	        'TCPNameToIP TCPRecv TCPSend TCPShutdown TCPStartup ' +
-	        'TimerDiff TimerInit ToolTip TrayCreateItem TrayCreateMenu ' +
-	        'TrayGetMsg TrayItemDelete TrayItemGetHandle ' +
-	        'TrayItemGetState TrayItemGetText TrayItemSetOnEvent ' +
-	        'TrayItemSetState TrayItemSetText TraySetClick TraySetIcon ' +
-	        'TraySetOnEvent TraySetPauseIcon TraySetState TraySetToolTip ' +
-	        'TrayTip UBound UDPBind UDPCloseSocket UDPOpen UDPRecv ' +
-	        'UDPSend UDPShutdown UDPStartup VarGetType WinActivate ' +
-	        'WinActive WinClose WinExists WinFlash WinGetCaretPos ' +
-	        'WinGetClassList WinGetClientSize WinGetHandle WinGetPos ' +
-	        'WinGetProcess WinGetState WinGetText WinGetTitle WinKill ' +
-	        'WinList WinMenuSelectItem WinMinimizeAll WinMinimizeAllUndo ' +
-	        'WinMove WinSetOnTop WinSetState WinSetTitle WinSetTrans ' +
-	        'WinWait WinWaitActive WinWaitClose WinWaitNotActive ' +
-	        'Array1DToHistogram ArrayAdd ArrayBinarySearch ' +
-	        'ArrayColDelete ArrayColInsert ArrayCombinations ' +
-	        'ArrayConcatenate ArrayDelete ArrayDisplay ArrayExtract ' +
-	        'ArrayFindAll ArrayInsert ArrayMax ArrayMaxIndex ArrayMin ' +
-	        'ArrayMinIndex ArrayPermute ArrayPop ArrayPush ' +
-	        'ArrayReverse ArraySearch ArrayShuffle ArraySort ArraySwap ' +
-	        'ArrayToClip ArrayToString ArrayTranspose ArrayTrim ' +
-	        'ArrayUnique Assert ChooseColor ChooseFont ' +
-	        'ClipBoard_ChangeChain ClipBoard_Close ClipBoard_CountFormats ' +
-	        'ClipBoard_Empty ClipBoard_EnumFormats ClipBoard_FormatStr ' +
-	        'ClipBoard_GetData ClipBoard_GetDataEx ClipBoard_GetFormatName ' +
-	        'ClipBoard_GetOpenWindow ClipBoard_GetOwner ' +
-	        'ClipBoard_GetPriorityFormat ClipBoard_GetSequenceNumber ' +
-	        'ClipBoard_GetViewer ClipBoard_IsFormatAvailable ' +
-	        'ClipBoard_Open ClipBoard_RegisterFormat ClipBoard_SetData ' +
-	        'ClipBoard_SetDataEx ClipBoard_SetViewer ClipPutFile ' +
-	        'ColorConvertHSLtoRGB ColorConvertRGBtoHSL ColorGetBlue ' +
-	        'ColorGetCOLORREF ColorGetGreen ColorGetRed ColorGetRGB ' +
-	        'ColorSetCOLORREF ColorSetRGB Crypt_DecryptData ' +
-	        'Crypt_DecryptFile Crypt_DeriveKey Crypt_DestroyKey ' +
-	        'Crypt_EncryptData Crypt_EncryptFile Crypt_GenRandom ' +
-	        'Crypt_HashData Crypt_HashFile Crypt_Shutdown Crypt_Startup ' +
-	        'DateAdd DateDayOfWeek DateDaysInMonth DateDiff ' +
-	        'DateIsLeapYear DateIsValid DateTimeFormat DateTimeSplit ' +
-	        'DateToDayOfWeek DateToDayOfWeekISO DateToDayValue ' +
-	        'DateToMonth Date_Time_CompareFileTime ' +
-	        'Date_Time_DOSDateTimeToArray Date_Time_DOSDateTimeToFileTime ' +
-	        'Date_Time_DOSDateTimeToStr Date_Time_DOSDateToArray ' +
-	        'Date_Time_DOSDateToStr Date_Time_DOSTimeToArray ' +
-	        'Date_Time_DOSTimeToStr Date_Time_EncodeFileTime ' +
-	        'Date_Time_EncodeSystemTime Date_Time_FileTimeToArray ' +
-	        'Date_Time_FileTimeToDOSDateTime ' +
-	        'Date_Time_FileTimeToLocalFileTime Date_Time_FileTimeToStr ' +
-	        'Date_Time_FileTimeToSystemTime Date_Time_GetFileTime ' +
-	        'Date_Time_GetLocalTime Date_Time_GetSystemTime ' +
-	        'Date_Time_GetSystemTimeAdjustment ' +
-	        'Date_Time_GetSystemTimeAsFileTime Date_Time_GetSystemTimes ' +
-	        'Date_Time_GetTickCount Date_Time_GetTimeZoneInformation ' +
-	        'Date_Time_LocalFileTimeToFileTime Date_Time_SetFileTime ' +
-	        'Date_Time_SetLocalTime Date_Time_SetSystemTime ' +
-	        'Date_Time_SetSystemTimeAdjustment ' +
-	        'Date_Time_SetTimeZoneInformation Date_Time_SystemTimeToArray ' +
-	        'Date_Time_SystemTimeToDateStr Date_Time_SystemTimeToDateTimeStr ' +
-	        'Date_Time_SystemTimeToFileTime Date_Time_SystemTimeToTimeStr ' +
-	        'Date_Time_SystemTimeToTzSpecificLocalTime ' +
-	        'Date_Time_TzSpecificLocalTimeToSystemTime DayValueToDate ' +
-	        'DebugBugReportEnv DebugCOMError DebugOut DebugReport ' +
-	        'DebugReportEx DebugReportVar DebugSetup Degree ' +
-	        'EventLog__Backup EventLog__Clear EventLog__Close ' +
-	        'EventLog__Count EventLog__DeregisterSource EventLog__Full ' +
-	        'EventLog__Notify EventLog__Oldest EventLog__Open ' +
-	        'EventLog__OpenBackup EventLog__Read EventLog__RegisterSource ' +
-	        'EventLog__Report Excel_BookAttach Excel_BookClose ' +
-	        'Excel_BookList Excel_BookNew Excel_BookOpen ' +
-	        'Excel_BookOpenText Excel_BookSave Excel_BookSaveAs ' +
-	        'Excel_Close Excel_ColumnToLetter Excel_ColumnToNumber ' +
-	        'Excel_ConvertFormula Excel_Export Excel_FilterGet ' +
-	        'Excel_FilterSet Excel_Open Excel_PictureAdd Excel_Print ' +
-	        'Excel_RangeCopyPaste Excel_RangeDelete Excel_RangeFind ' +
-	        'Excel_RangeInsert Excel_RangeLinkAddRemove Excel_RangeRead ' +
-	        'Excel_RangeReplace Excel_RangeSort Excel_RangeValidate ' +
-	        'Excel_RangeWrite Excel_SheetAdd Excel_SheetCopyMove ' +
-	        'Excel_SheetDelete Excel_SheetList FileCountLines FileCreate ' +
-	        'FileListToArray FileListToArrayRec FilePrint ' +
-	        'FileReadToArray FileWriteFromArray FileWriteLog ' +
-	        'FileWriteToLine FTP_Close FTP_Command FTP_Connect ' +
-	        'FTP_DecodeInternetStatus FTP_DirCreate FTP_DirDelete ' +
-	        'FTP_DirGetCurrent FTP_DirPutContents FTP_DirSetCurrent ' +
-	        'FTP_FileClose FTP_FileDelete FTP_FileGet FTP_FileGetSize ' +
-	        'FTP_FileOpen FTP_FilePut FTP_FileRead FTP_FileRename ' +
-	        'FTP_FileTimeLoHiToStr FTP_FindFileClose FTP_FindFileFirst ' +
-	        'FTP_FindFileNext FTP_GetLastResponseInfo FTP_ListToArray ' +
-	        'FTP_ListToArray2D FTP_ListToArrayEx FTP_Open ' +
-	        'FTP_ProgressDownload FTP_ProgressUpload FTP_SetStatusCallback ' +
-	        'GDIPlus_ArrowCapCreate GDIPlus_ArrowCapDispose ' +
-	        'GDIPlus_ArrowCapGetFillState GDIPlus_ArrowCapGetHeight ' +
-	        'GDIPlus_ArrowCapGetMiddleInset GDIPlus_ArrowCapGetWidth ' +
-	        'GDIPlus_ArrowCapSetFillState GDIPlus_ArrowCapSetHeight ' +
-	        'GDIPlus_ArrowCapSetMiddleInset GDIPlus_ArrowCapSetWidth ' +
-	        'GDIPlus_BitmapApplyEffect GDIPlus_BitmapApplyEffectEx ' +
-	        'GDIPlus_BitmapCloneArea GDIPlus_BitmapConvertFormat ' +
-	        'GDIPlus_BitmapCreateApplyEffect ' +
-	        'GDIPlus_BitmapCreateApplyEffectEx ' +
-	        'GDIPlus_BitmapCreateDIBFromBitmap GDIPlus_BitmapCreateFromFile ' +
-	        'GDIPlus_BitmapCreateFromGraphics ' +
-	        'GDIPlus_BitmapCreateFromHBITMAP GDIPlus_BitmapCreateFromHICON ' +
-	        'GDIPlus_BitmapCreateFromHICON32 GDIPlus_BitmapCreateFromMemory ' +
-	        'GDIPlus_BitmapCreateFromResource GDIPlus_BitmapCreateFromScan0 ' +
-	        'GDIPlus_BitmapCreateFromStream ' +
-	        'GDIPlus_BitmapCreateHBITMAPFromBitmap GDIPlus_BitmapDispose ' +
-	        'GDIPlus_BitmapGetHistogram GDIPlus_BitmapGetHistogramEx ' +
-	        'GDIPlus_BitmapGetHistogramSize GDIPlus_BitmapGetPixel ' +
-	        'GDIPlus_BitmapLockBits GDIPlus_BitmapSetPixel ' +
-	        'GDIPlus_BitmapUnlockBits GDIPlus_BrushClone ' +
-	        'GDIPlus_BrushCreateSolid GDIPlus_BrushDispose ' +
-	        'GDIPlus_BrushGetSolidColor GDIPlus_BrushGetType ' +
-	        'GDIPlus_BrushSetSolidColor GDIPlus_ColorMatrixCreate ' +
-	        'GDIPlus_ColorMatrixCreateGrayScale ' +
-	        'GDIPlus_ColorMatrixCreateNegative ' +
-	        'GDIPlus_ColorMatrixCreateSaturation ' +
-	        'GDIPlus_ColorMatrixCreateScale ' +
-	        'GDIPlus_ColorMatrixCreateTranslate GDIPlus_CustomLineCapClone ' +
-	        'GDIPlus_CustomLineCapCreate GDIPlus_CustomLineCapDispose ' +
-	        'GDIPlus_CustomLineCapGetStrokeCaps ' +
-	        'GDIPlus_CustomLineCapSetStrokeCaps GDIPlus_Decoders ' +
-	        'GDIPlus_DecodersGetCount GDIPlus_DecodersGetSize ' +
-	        'GDIPlus_DrawImageFX GDIPlus_DrawImageFXEx ' +
-	        'GDIPlus_DrawImagePoints GDIPlus_EffectCreate ' +
-	        'GDIPlus_EffectCreateBlur GDIPlus_EffectCreateBrightnessContrast ' +
-	        'GDIPlus_EffectCreateColorBalance GDIPlus_EffectCreateColorCurve ' +
-	        'GDIPlus_EffectCreateColorLUT GDIPlus_EffectCreateColorMatrix ' +
-	        'GDIPlus_EffectCreateHueSaturationLightness ' +
-	        'GDIPlus_EffectCreateLevels GDIPlus_EffectCreateRedEyeCorrection ' +
-	        'GDIPlus_EffectCreateSharpen GDIPlus_EffectCreateTint ' +
-	        'GDIPlus_EffectDispose GDIPlus_EffectGetParameters ' +
-	        'GDIPlus_EffectSetParameters GDIPlus_Encoders ' +
-	        'GDIPlus_EncodersGetCLSID GDIPlus_EncodersGetCount ' +
-	        'GDIPlus_EncodersGetParamList GDIPlus_EncodersGetParamListSize ' +
-	        'GDIPlus_EncodersGetSize GDIPlus_FontCreate ' +
-	        'GDIPlus_FontDispose GDIPlus_FontFamilyCreate ' +
-	        'GDIPlus_FontFamilyCreateFromCollection ' +
-	        'GDIPlus_FontFamilyDispose GDIPlus_FontFamilyGetCellAscent ' +
-	        'GDIPlus_FontFamilyGetCellDescent GDIPlus_FontFamilyGetEmHeight ' +
-	        'GDIPlus_FontFamilyGetLineSpacing GDIPlus_FontGetHeight ' +
-	        'GDIPlus_FontPrivateAddFont GDIPlus_FontPrivateAddMemoryFont ' +
-	        'GDIPlus_FontPrivateCollectionDispose ' +
-	        'GDIPlus_FontPrivateCreateCollection GDIPlus_GraphicsClear ' +
-	        'GDIPlus_GraphicsCreateFromHDC GDIPlus_GraphicsCreateFromHWND ' +
-	        'GDIPlus_GraphicsDispose GDIPlus_GraphicsDrawArc ' +
-	        'GDIPlus_GraphicsDrawBezier GDIPlus_GraphicsDrawClosedCurve ' +
-	        'GDIPlus_GraphicsDrawClosedCurve2 GDIPlus_GraphicsDrawCurve ' +
-	        'GDIPlus_GraphicsDrawCurve2 GDIPlus_GraphicsDrawEllipse ' +
-	        'GDIPlus_GraphicsDrawImage GDIPlus_GraphicsDrawImagePointsRect ' +
-	        'GDIPlus_GraphicsDrawImageRect GDIPlus_GraphicsDrawImageRectRect ' +
-	        'GDIPlus_GraphicsDrawLine GDIPlus_GraphicsDrawPath ' +
-	        'GDIPlus_GraphicsDrawPie GDIPlus_GraphicsDrawPolygon ' +
-	        'GDIPlus_GraphicsDrawRect GDIPlus_GraphicsDrawString ' +
-	        'GDIPlus_GraphicsDrawStringEx GDIPlus_GraphicsFillClosedCurve ' +
-	        'GDIPlus_GraphicsFillClosedCurve2 GDIPlus_GraphicsFillEllipse ' +
-	        'GDIPlus_GraphicsFillPath GDIPlus_GraphicsFillPie ' +
-	        'GDIPlus_GraphicsFillPolygon GDIPlus_GraphicsFillRect ' +
-	        'GDIPlus_GraphicsFillRegion GDIPlus_GraphicsGetCompositingMode ' +
-	        'GDIPlus_GraphicsGetCompositingQuality GDIPlus_GraphicsGetDC ' +
-	        'GDIPlus_GraphicsGetInterpolationMode ' +
-	        'GDIPlus_GraphicsGetSmoothingMode GDIPlus_GraphicsGetTransform ' +
-	        'GDIPlus_GraphicsMeasureCharacterRanges ' +
-	        'GDIPlus_GraphicsMeasureString GDIPlus_GraphicsReleaseDC ' +
-	        'GDIPlus_GraphicsResetClip GDIPlus_GraphicsResetTransform ' +
-	        'GDIPlus_GraphicsRestore GDIPlus_GraphicsRotateTransform ' +
-	        'GDIPlus_GraphicsSave GDIPlus_GraphicsScaleTransform ' +
-	        'GDIPlus_GraphicsSetClipPath GDIPlus_GraphicsSetClipRect ' +
-	        'GDIPlus_GraphicsSetClipRegion ' +
-	        'GDIPlus_GraphicsSetCompositingMode ' +
-	        'GDIPlus_GraphicsSetCompositingQuality ' +
-	        'GDIPlus_GraphicsSetInterpolationMode ' +
-	        'GDIPlus_GraphicsSetPixelOffsetMode ' +
-	        'GDIPlus_GraphicsSetSmoothingMode ' +
-	        'GDIPlus_GraphicsSetTextRenderingHint ' +
-	        'GDIPlus_GraphicsSetTransform GDIPlus_GraphicsTransformPoints ' +
-	        'GDIPlus_GraphicsTranslateTransform GDIPlus_HatchBrushCreate ' +
-	        'GDIPlus_HICONCreateFromBitmap GDIPlus_ImageAttributesCreate ' +
-	        'GDIPlus_ImageAttributesDispose ' +
-	        'GDIPlus_ImageAttributesSetColorKeys ' +
-	        'GDIPlus_ImageAttributesSetColorMatrix GDIPlus_ImageDispose ' +
-	        'GDIPlus_ImageGetDimension GDIPlus_ImageGetFlags ' +
-	        'GDIPlus_ImageGetGraphicsContext GDIPlus_ImageGetHeight ' +
-	        'GDIPlus_ImageGetHorizontalResolution ' +
-	        'GDIPlus_ImageGetPixelFormat GDIPlus_ImageGetRawFormat ' +
-	        'GDIPlus_ImageGetThumbnail GDIPlus_ImageGetType ' +
-	        'GDIPlus_ImageGetVerticalResolution GDIPlus_ImageGetWidth ' +
-	        'GDIPlus_ImageLoadFromFile GDIPlus_ImageLoadFromStream ' +
-	        'GDIPlus_ImageResize GDIPlus_ImageRotateFlip ' +
-	        'GDIPlus_ImageSaveToFile GDIPlus_ImageSaveToFileEx ' +
-	        'GDIPlus_ImageSaveToStream GDIPlus_ImageScale ' +
-	        'GDIPlus_LineBrushCreate GDIPlus_LineBrushCreateFromRect ' +
-	        'GDIPlus_LineBrushCreateFromRectWithAngle ' +
-	        'GDIPlus_LineBrushGetColors GDIPlus_LineBrushGetRect ' +
-	        'GDIPlus_LineBrushMultiplyTransform ' +
-	        'GDIPlus_LineBrushResetTransform GDIPlus_LineBrushSetBlend ' +
-	        'GDIPlus_LineBrushSetColors GDIPlus_LineBrushSetGammaCorrection ' +
-	        'GDIPlus_LineBrushSetLinearBlend GDIPlus_LineBrushSetPresetBlend ' +
-	        'GDIPlus_LineBrushSetSigmaBlend GDIPlus_LineBrushSetTransform ' +
-	        'GDIPlus_MatrixClone GDIPlus_MatrixCreate ' +
-	        'GDIPlus_MatrixDispose GDIPlus_MatrixGetElements ' +
-	        'GDIPlus_MatrixInvert GDIPlus_MatrixMultiply ' +
-	        'GDIPlus_MatrixRotate GDIPlus_MatrixScale ' +
-	        'GDIPlus_MatrixSetElements GDIPlus_MatrixShear ' +
-	        'GDIPlus_MatrixTransformPoints GDIPlus_MatrixTranslate ' +
-	        'GDIPlus_PaletteInitialize GDIPlus_ParamAdd GDIPlus_ParamInit ' +
-	        'GDIPlus_ParamSize GDIPlus_PathAddArc GDIPlus_PathAddBezier ' +
-	        'GDIPlus_PathAddClosedCurve GDIPlus_PathAddClosedCurve2 ' +
-	        'GDIPlus_PathAddCurve GDIPlus_PathAddCurve2 ' +
-	        'GDIPlus_PathAddCurve3 GDIPlus_PathAddEllipse ' +
-	        'GDIPlus_PathAddLine GDIPlus_PathAddLine2 GDIPlus_PathAddPath ' +
-	        'GDIPlus_PathAddPie GDIPlus_PathAddPolygon ' +
-	        'GDIPlus_PathAddRectangle GDIPlus_PathAddString ' +
-	        'GDIPlus_PathBrushCreate GDIPlus_PathBrushCreateFromPath ' +
-	        'GDIPlus_PathBrushGetCenterPoint GDIPlus_PathBrushGetFocusScales ' +
-	        'GDIPlus_PathBrushGetPointCount GDIPlus_PathBrushGetRect ' +
-	        'GDIPlus_PathBrushGetWrapMode GDIPlus_PathBrushMultiplyTransform ' +
-	        'GDIPlus_PathBrushResetTransform GDIPlus_PathBrushSetBlend ' +
-	        'GDIPlus_PathBrushSetCenterColor GDIPlus_PathBrushSetCenterPoint ' +
-	        'GDIPlus_PathBrushSetFocusScales ' +
-	        'GDIPlus_PathBrushSetGammaCorrection ' +
-	        'GDIPlus_PathBrushSetLinearBlend GDIPlus_PathBrushSetPresetBlend ' +
-	        'GDIPlus_PathBrushSetSigmaBlend ' +
-	        'GDIPlus_PathBrushSetSurroundColor ' +
-	        'GDIPlus_PathBrushSetSurroundColorsWithCount ' +
-	        'GDIPlus_PathBrushSetTransform GDIPlus_PathBrushSetWrapMode ' +
-	        'GDIPlus_PathClone GDIPlus_PathCloseFigure GDIPlus_PathCreate ' +
-	        'GDIPlus_PathCreate2 GDIPlus_PathDispose GDIPlus_PathFlatten ' +
-	        'GDIPlus_PathGetData GDIPlus_PathGetFillMode ' +
-	        'GDIPlus_PathGetLastPoint GDIPlus_PathGetPointCount ' +
-	        'GDIPlus_PathGetPoints GDIPlus_PathGetWorldBounds ' +
-	        'GDIPlus_PathIsOutlineVisiblePoint GDIPlus_PathIsVisiblePoint ' +
-	        'GDIPlus_PathIterCreate GDIPlus_PathIterDispose ' +
-	        'GDIPlus_PathIterGetSubpathCount GDIPlus_PathIterNextMarkerPath ' +
-	        'GDIPlus_PathIterNextSubpathPath GDIPlus_PathIterRewind ' +
-	        'GDIPlus_PathReset GDIPlus_PathReverse GDIPlus_PathSetFillMode ' +
-	        'GDIPlus_PathSetMarker GDIPlus_PathStartFigure ' +
-	        'GDIPlus_PathTransform GDIPlus_PathWarp GDIPlus_PathWiden ' +
-	        'GDIPlus_PathWindingModeOutline GDIPlus_PenCreate ' +
-	        'GDIPlus_PenCreate2 GDIPlus_PenDispose GDIPlus_PenGetAlignment ' +
-	        'GDIPlus_PenGetColor GDIPlus_PenGetCustomEndCap ' +
-	        'GDIPlus_PenGetDashCap GDIPlus_PenGetDashStyle ' +
-	        'GDIPlus_PenGetEndCap GDIPlus_PenGetMiterLimit ' +
-	        'GDIPlus_PenGetWidth GDIPlus_PenSetAlignment ' +
-	        'GDIPlus_PenSetColor GDIPlus_PenSetCustomEndCap ' +
-	        'GDIPlus_PenSetDashCap GDIPlus_PenSetDashStyle ' +
-	        'GDIPlus_PenSetEndCap GDIPlus_PenSetLineCap ' +
-	        'GDIPlus_PenSetLineJoin GDIPlus_PenSetMiterLimit ' +
-	        'GDIPlus_PenSetStartCap GDIPlus_PenSetWidth ' +
-	        'GDIPlus_RectFCreate GDIPlus_RegionClone ' +
-	        'GDIPlus_RegionCombinePath GDIPlus_RegionCombineRect ' +
-	        'GDIPlus_RegionCombineRegion GDIPlus_RegionCreate ' +
-	        'GDIPlus_RegionCreateFromPath GDIPlus_RegionCreateFromRect ' +
-	        'GDIPlus_RegionDispose GDIPlus_RegionGetBounds ' +
-	        'GDIPlus_RegionGetHRgn GDIPlus_RegionTransform ' +
-	        'GDIPlus_RegionTranslate GDIPlus_Shutdown GDIPlus_Startup ' +
-	        'GDIPlus_StringFormatCreate GDIPlus_StringFormatDispose ' +
-	        'GDIPlus_StringFormatGetMeasurableCharacterRangeCount ' +
-	        'GDIPlus_StringFormatSetAlign GDIPlus_StringFormatSetLineAlign ' +
-	        'GDIPlus_StringFormatSetMeasurableCharacterRanges ' +
-	        'GDIPlus_TextureCreate GDIPlus_TextureCreate2 ' +
-	        'GDIPlus_TextureCreateIA GetIP GUICtrlAVI_Close ' +
-	        'GUICtrlAVI_Create GUICtrlAVI_Destroy GUICtrlAVI_IsPlaying ' +
-	        'GUICtrlAVI_Open GUICtrlAVI_OpenEx GUICtrlAVI_Play ' +
-	        'GUICtrlAVI_Seek GUICtrlAVI_Show GUICtrlAVI_Stop ' +
-	        'GUICtrlButton_Click GUICtrlButton_Create ' +
-	        'GUICtrlButton_Destroy GUICtrlButton_Enable ' +
-	        'GUICtrlButton_GetCheck GUICtrlButton_GetFocus ' +
-	        'GUICtrlButton_GetIdealSize GUICtrlButton_GetImage ' +
-	        'GUICtrlButton_GetImageList GUICtrlButton_GetNote ' +
-	        'GUICtrlButton_GetNoteLength GUICtrlButton_GetSplitInfo ' +
-	        'GUICtrlButton_GetState GUICtrlButton_GetText ' +
-	        'GUICtrlButton_GetTextMargin GUICtrlButton_SetCheck ' +
-	        'GUICtrlButton_SetDontClick GUICtrlButton_SetFocus ' +
-	        'GUICtrlButton_SetImage GUICtrlButton_SetImageList ' +
-	        'GUICtrlButton_SetNote GUICtrlButton_SetShield ' +
-	        'GUICtrlButton_SetSize GUICtrlButton_SetSplitInfo ' +
-	        'GUICtrlButton_SetState GUICtrlButton_SetStyle ' +
-	        'GUICtrlButton_SetText GUICtrlButton_SetTextMargin ' +
-	        'GUICtrlButton_Show GUICtrlComboBoxEx_AddDir ' +
-	        'GUICtrlComboBoxEx_AddString GUICtrlComboBoxEx_BeginUpdate ' +
-	        'GUICtrlComboBoxEx_Create GUICtrlComboBoxEx_CreateSolidBitMap ' +
-	        'GUICtrlComboBoxEx_DeleteString GUICtrlComboBoxEx_Destroy ' +
-	        'GUICtrlComboBoxEx_EndUpdate GUICtrlComboBoxEx_FindStringExact ' +
-	        'GUICtrlComboBoxEx_GetComboBoxInfo ' +
-	        'GUICtrlComboBoxEx_GetComboControl GUICtrlComboBoxEx_GetCount ' +
-	        'GUICtrlComboBoxEx_GetCurSel ' +
-	        'GUICtrlComboBoxEx_GetDroppedControlRect ' +
-	        'GUICtrlComboBoxEx_GetDroppedControlRectEx ' +
-	        'GUICtrlComboBoxEx_GetDroppedState ' +
-	        'GUICtrlComboBoxEx_GetDroppedWidth ' +
-	        'GUICtrlComboBoxEx_GetEditControl GUICtrlComboBoxEx_GetEditSel ' +
-	        'GUICtrlComboBoxEx_GetEditText ' +
-	        'GUICtrlComboBoxEx_GetExtendedStyle ' +
-	        'GUICtrlComboBoxEx_GetExtendedUI GUICtrlComboBoxEx_GetImageList ' +
-	        'GUICtrlComboBoxEx_GetItem GUICtrlComboBoxEx_GetItemEx ' +
-	        'GUICtrlComboBoxEx_GetItemHeight GUICtrlComboBoxEx_GetItemImage ' +
-	        'GUICtrlComboBoxEx_GetItemIndent ' +
-	        'GUICtrlComboBoxEx_GetItemOverlayImage ' +
-	        'GUICtrlComboBoxEx_GetItemParam ' +
-	        'GUICtrlComboBoxEx_GetItemSelectedImage ' +
-	        'GUICtrlComboBoxEx_GetItemText GUICtrlComboBoxEx_GetItemTextLen ' +
-	        'GUICtrlComboBoxEx_GetList GUICtrlComboBoxEx_GetListArray ' +
-	        'GUICtrlComboBoxEx_GetLocale GUICtrlComboBoxEx_GetLocaleCountry ' +
-	        'GUICtrlComboBoxEx_GetLocaleLang ' +
-	        'GUICtrlComboBoxEx_GetLocalePrimLang ' +
-	        'GUICtrlComboBoxEx_GetLocaleSubLang ' +
-	        'GUICtrlComboBoxEx_GetMinVisible GUICtrlComboBoxEx_GetTopIndex ' +
-	        'GUICtrlComboBoxEx_GetUnicode GUICtrlComboBoxEx_InitStorage ' +
-	        'GUICtrlComboBoxEx_InsertString GUICtrlComboBoxEx_LimitText ' +
-	        'GUICtrlComboBoxEx_ReplaceEditSel GUICtrlComboBoxEx_ResetContent ' +
-	        'GUICtrlComboBoxEx_SetCurSel GUICtrlComboBoxEx_SetDroppedWidth ' +
-	        'GUICtrlComboBoxEx_SetEditSel GUICtrlComboBoxEx_SetEditText ' +
-	        'GUICtrlComboBoxEx_SetExtendedStyle ' +
-	        'GUICtrlComboBoxEx_SetExtendedUI GUICtrlComboBoxEx_SetImageList ' +
-	        'GUICtrlComboBoxEx_SetItem GUICtrlComboBoxEx_SetItemEx ' +
-	        'GUICtrlComboBoxEx_SetItemHeight GUICtrlComboBoxEx_SetItemImage ' +
-	        'GUICtrlComboBoxEx_SetItemIndent ' +
-	        'GUICtrlComboBoxEx_SetItemOverlayImage ' +
-	        'GUICtrlComboBoxEx_SetItemParam ' +
-	        'GUICtrlComboBoxEx_SetItemSelectedImage ' +
-	        'GUICtrlComboBoxEx_SetMinVisible GUICtrlComboBoxEx_SetTopIndex ' +
-	        'GUICtrlComboBoxEx_SetUnicode GUICtrlComboBoxEx_ShowDropDown ' +
-	        'GUICtrlComboBox_AddDir GUICtrlComboBox_AddString ' +
-	        'GUICtrlComboBox_AutoComplete GUICtrlComboBox_BeginUpdate ' +
-	        'GUICtrlComboBox_Create GUICtrlComboBox_DeleteString ' +
-	        'GUICtrlComboBox_Destroy GUICtrlComboBox_EndUpdate ' +
-	        'GUICtrlComboBox_FindString GUICtrlComboBox_FindStringExact ' +
-	        'GUICtrlComboBox_GetComboBoxInfo GUICtrlComboBox_GetCount ' +
-	        'GUICtrlComboBox_GetCueBanner GUICtrlComboBox_GetCurSel ' +
-	        'GUICtrlComboBox_GetDroppedControlRect ' +
-	        'GUICtrlComboBox_GetDroppedControlRectEx ' +
-	        'GUICtrlComboBox_GetDroppedState GUICtrlComboBox_GetDroppedWidth ' +
-	        'GUICtrlComboBox_GetEditSel GUICtrlComboBox_GetEditText ' +
-	        'GUICtrlComboBox_GetExtendedUI ' +
-	        'GUICtrlComboBox_GetHorizontalExtent ' +
-	        'GUICtrlComboBox_GetItemHeight GUICtrlComboBox_GetLBText ' +
-	        'GUICtrlComboBox_GetLBTextLen GUICtrlComboBox_GetList ' +
-	        'GUICtrlComboBox_GetListArray GUICtrlComboBox_GetLocale ' +
-	        'GUICtrlComboBox_GetLocaleCountry GUICtrlComboBox_GetLocaleLang ' +
-	        'GUICtrlComboBox_GetLocalePrimLang ' +
-	        'GUICtrlComboBox_GetLocaleSubLang GUICtrlComboBox_GetMinVisible ' +
-	        'GUICtrlComboBox_GetTopIndex GUICtrlComboBox_InitStorage ' +
-	        'GUICtrlComboBox_InsertString GUICtrlComboBox_LimitText ' +
-	        'GUICtrlComboBox_ReplaceEditSel GUICtrlComboBox_ResetContent ' +
-	        'GUICtrlComboBox_SelectString GUICtrlComboBox_SetCueBanner ' +
-	        'GUICtrlComboBox_SetCurSel GUICtrlComboBox_SetDroppedWidth ' +
-	        'GUICtrlComboBox_SetEditSel GUICtrlComboBox_SetEditText ' +
-	        'GUICtrlComboBox_SetExtendedUI ' +
-	        'GUICtrlComboBox_SetHorizontalExtent ' +
-	        'GUICtrlComboBox_SetItemHeight GUICtrlComboBox_SetMinVisible ' +
-	        'GUICtrlComboBox_SetTopIndex GUICtrlComboBox_ShowDropDown ' +
-	        'GUICtrlDTP_Create GUICtrlDTP_Destroy GUICtrlDTP_GetMCColor ' +
-	        'GUICtrlDTP_GetMCFont GUICtrlDTP_GetMonthCal ' +
-	        'GUICtrlDTP_GetRange GUICtrlDTP_GetRangeEx ' +
-	        'GUICtrlDTP_GetSystemTime GUICtrlDTP_GetSystemTimeEx ' +
-	        'GUICtrlDTP_SetFormat GUICtrlDTP_SetMCColor ' +
-	        'GUICtrlDTP_SetMCFont GUICtrlDTP_SetRange ' +
-	        'GUICtrlDTP_SetRangeEx GUICtrlDTP_SetSystemTime ' +
-	        'GUICtrlDTP_SetSystemTimeEx GUICtrlEdit_AppendText ' +
-	        'GUICtrlEdit_BeginUpdate GUICtrlEdit_CanUndo ' +
-	        'GUICtrlEdit_CharFromPos GUICtrlEdit_Create ' +
-	        'GUICtrlEdit_Destroy GUICtrlEdit_EmptyUndoBuffer ' +
-	        'GUICtrlEdit_EndUpdate GUICtrlEdit_Find GUICtrlEdit_FmtLines ' +
-	        'GUICtrlEdit_GetCueBanner GUICtrlEdit_GetFirstVisibleLine ' +
-	        'GUICtrlEdit_GetLimitText GUICtrlEdit_GetLine ' +
-	        'GUICtrlEdit_GetLineCount GUICtrlEdit_GetMargins ' +
-	        'GUICtrlEdit_GetModify GUICtrlEdit_GetPasswordChar ' +
-	        'GUICtrlEdit_GetRECT GUICtrlEdit_GetRECTEx GUICtrlEdit_GetSel ' +
-	        'GUICtrlEdit_GetText GUICtrlEdit_GetTextLen ' +
-	        'GUICtrlEdit_HideBalloonTip GUICtrlEdit_InsertText ' +
-	        'GUICtrlEdit_LineFromChar GUICtrlEdit_LineIndex ' +
-	        'GUICtrlEdit_LineLength GUICtrlEdit_LineScroll ' +
-	        'GUICtrlEdit_PosFromChar GUICtrlEdit_ReplaceSel ' +
-	        'GUICtrlEdit_Scroll GUICtrlEdit_SetCueBanner ' +
-	        'GUICtrlEdit_SetLimitText GUICtrlEdit_SetMargins ' +
-	        'GUICtrlEdit_SetModify GUICtrlEdit_SetPasswordChar ' +
-	        'GUICtrlEdit_SetReadOnly GUICtrlEdit_SetRECT ' +
-	        'GUICtrlEdit_SetRECTEx GUICtrlEdit_SetRECTNP ' +
-	        'GUICtrlEdit_SetRectNPEx GUICtrlEdit_SetSel ' +
-	        'GUICtrlEdit_SetTabStops GUICtrlEdit_SetText ' +
-	        'GUICtrlEdit_ShowBalloonTip GUICtrlEdit_Undo ' +
-	        'GUICtrlHeader_AddItem GUICtrlHeader_ClearFilter ' +
-	        'GUICtrlHeader_ClearFilterAll GUICtrlHeader_Create ' +
-	        'GUICtrlHeader_CreateDragImage GUICtrlHeader_DeleteItem ' +
-	        'GUICtrlHeader_Destroy GUICtrlHeader_EditFilter ' +
-	        'GUICtrlHeader_GetBitmapMargin GUICtrlHeader_GetImageList ' +
-	        'GUICtrlHeader_GetItem GUICtrlHeader_GetItemAlign ' +
-	        'GUICtrlHeader_GetItemBitmap GUICtrlHeader_GetItemCount ' +
-	        'GUICtrlHeader_GetItemDisplay GUICtrlHeader_GetItemFlags ' +
-	        'GUICtrlHeader_GetItemFormat GUICtrlHeader_GetItemImage ' +
-	        'GUICtrlHeader_GetItemOrder GUICtrlHeader_GetItemParam ' +
-	        'GUICtrlHeader_GetItemRect GUICtrlHeader_GetItemRectEx ' +
-	        'GUICtrlHeader_GetItemText GUICtrlHeader_GetItemWidth ' +
-	        'GUICtrlHeader_GetOrderArray GUICtrlHeader_GetUnicodeFormat ' +
-	        'GUICtrlHeader_HitTest GUICtrlHeader_InsertItem ' +
-	        'GUICtrlHeader_Layout GUICtrlHeader_OrderToIndex ' +
-	        'GUICtrlHeader_SetBitmapMargin ' +
-	        'GUICtrlHeader_SetFilterChangeTimeout ' +
-	        'GUICtrlHeader_SetHotDivider GUICtrlHeader_SetImageList ' +
-	        'GUICtrlHeader_SetItem GUICtrlHeader_SetItemAlign ' +
-	        'GUICtrlHeader_SetItemBitmap GUICtrlHeader_SetItemDisplay ' +
-	        'GUICtrlHeader_SetItemFlags GUICtrlHeader_SetItemFormat ' +
-	        'GUICtrlHeader_SetItemImage GUICtrlHeader_SetItemOrder ' +
-	        'GUICtrlHeader_SetItemParam GUICtrlHeader_SetItemText ' +
-	        'GUICtrlHeader_SetItemWidth GUICtrlHeader_SetOrderArray ' +
-	        'GUICtrlHeader_SetUnicodeFormat GUICtrlIpAddress_ClearAddress ' +
-	        'GUICtrlIpAddress_Create GUICtrlIpAddress_Destroy ' +
-	        'GUICtrlIpAddress_Get GUICtrlIpAddress_GetArray ' +
-	        'GUICtrlIpAddress_GetEx GUICtrlIpAddress_IsBlank ' +
-	        'GUICtrlIpAddress_Set GUICtrlIpAddress_SetArray ' +
-	        'GUICtrlIpAddress_SetEx GUICtrlIpAddress_SetFocus ' +
-	        'GUICtrlIpAddress_SetFont GUICtrlIpAddress_SetRange ' +
-	        'GUICtrlIpAddress_ShowHide GUICtrlListBox_AddFile ' +
-	        'GUICtrlListBox_AddString GUICtrlListBox_BeginUpdate ' +
-	        'GUICtrlListBox_ClickItem GUICtrlListBox_Create ' +
-	        'GUICtrlListBox_DeleteString GUICtrlListBox_Destroy ' +
-	        'GUICtrlListBox_Dir GUICtrlListBox_EndUpdate ' +
-	        'GUICtrlListBox_FindInText GUICtrlListBox_FindString ' +
-	        'GUICtrlListBox_GetAnchorIndex GUICtrlListBox_GetCaretIndex ' +
-	        'GUICtrlListBox_GetCount GUICtrlListBox_GetCurSel ' +
-	        'GUICtrlListBox_GetHorizontalExtent GUICtrlListBox_GetItemData ' +
-	        'GUICtrlListBox_GetItemHeight GUICtrlListBox_GetItemRect ' +
-	        'GUICtrlListBox_GetItemRectEx GUICtrlListBox_GetListBoxInfo ' +
-	        'GUICtrlListBox_GetLocale GUICtrlListBox_GetLocaleCountry ' +
-	        'GUICtrlListBox_GetLocaleLang GUICtrlListBox_GetLocalePrimLang ' +
-	        'GUICtrlListBox_GetLocaleSubLang GUICtrlListBox_GetSel ' +
-	        'GUICtrlListBox_GetSelCount GUICtrlListBox_GetSelItems ' +
-	        'GUICtrlListBox_GetSelItemsText GUICtrlListBox_GetText ' +
-	        'GUICtrlListBox_GetTextLen GUICtrlListBox_GetTopIndex ' +
-	        'GUICtrlListBox_InitStorage GUICtrlListBox_InsertString ' +
-	        'GUICtrlListBox_ItemFromPoint GUICtrlListBox_ReplaceString ' +
-	        'GUICtrlListBox_ResetContent GUICtrlListBox_SelectString ' +
-	        'GUICtrlListBox_SelItemRange GUICtrlListBox_SelItemRangeEx ' +
-	        'GUICtrlListBox_SetAnchorIndex GUICtrlListBox_SetCaretIndex ' +
-	        'GUICtrlListBox_SetColumnWidth GUICtrlListBox_SetCurSel ' +
-	        'GUICtrlListBox_SetHorizontalExtent GUICtrlListBox_SetItemData ' +
-	        'GUICtrlListBox_SetItemHeight GUICtrlListBox_SetLocale ' +
-	        'GUICtrlListBox_SetSel GUICtrlListBox_SetTabStops ' +
-	        'GUICtrlListBox_SetTopIndex GUICtrlListBox_Sort ' +
-	        'GUICtrlListBox_SwapString GUICtrlListBox_UpdateHScroll ' +
-	        'GUICtrlListView_AddArray GUICtrlListView_AddColumn ' +
-	        'GUICtrlListView_AddItem GUICtrlListView_AddSubItem ' +
-	        'GUICtrlListView_ApproximateViewHeight ' +
-	        'GUICtrlListView_ApproximateViewRect ' +
-	        'GUICtrlListView_ApproximateViewWidth GUICtrlListView_Arrange ' +
-	        'GUICtrlListView_BeginUpdate GUICtrlListView_CancelEditLabel ' +
-	        'GUICtrlListView_ClickItem GUICtrlListView_CopyItems ' +
-	        'GUICtrlListView_Create GUICtrlListView_CreateDragImage ' +
-	        'GUICtrlListView_CreateSolidBitMap ' +
-	        'GUICtrlListView_DeleteAllItems GUICtrlListView_DeleteColumn ' +
-	        'GUICtrlListView_DeleteItem GUICtrlListView_DeleteItemsSelected ' +
-	        'GUICtrlListView_Destroy GUICtrlListView_DrawDragImage ' +
-	        'GUICtrlListView_EditLabel GUICtrlListView_EnableGroupView ' +
-	        'GUICtrlListView_EndUpdate GUICtrlListView_EnsureVisible ' +
-	        'GUICtrlListView_FindInText GUICtrlListView_FindItem ' +
-	        'GUICtrlListView_FindNearest GUICtrlListView_FindParam ' +
-	        'GUICtrlListView_FindText GUICtrlListView_GetBkColor ' +
-	        'GUICtrlListView_GetBkImage GUICtrlListView_GetCallbackMask ' +
-	        'GUICtrlListView_GetColumn GUICtrlListView_GetColumnCount ' +
-	        'GUICtrlListView_GetColumnOrder ' +
-	        'GUICtrlListView_GetColumnOrderArray ' +
-	        'GUICtrlListView_GetColumnWidth GUICtrlListView_GetCounterPage ' +
-	        'GUICtrlListView_GetEditControl ' +
-	        'GUICtrlListView_GetExtendedListViewStyle ' +
-	        'GUICtrlListView_GetFocusedGroup GUICtrlListView_GetGroupCount ' +
-	        'GUICtrlListView_GetGroupInfo ' +
-	        'GUICtrlListView_GetGroupInfoByIndex ' +
-	        'GUICtrlListView_GetGroupRect ' +
-	        'GUICtrlListView_GetGroupViewEnabled GUICtrlListView_GetHeader ' +
-	        'GUICtrlListView_GetHotCursor GUICtrlListView_GetHotItem ' +
-	        'GUICtrlListView_GetHoverTime GUICtrlListView_GetImageList ' +
-	        'GUICtrlListView_GetISearchString GUICtrlListView_GetItem ' +
-	        'GUICtrlListView_GetItemChecked GUICtrlListView_GetItemCount ' +
-	        'GUICtrlListView_GetItemCut GUICtrlListView_GetItemDropHilited ' +
-	        'GUICtrlListView_GetItemEx GUICtrlListView_GetItemFocused ' +
-	        'GUICtrlListView_GetItemGroupID GUICtrlListView_GetItemImage ' +
-	        'GUICtrlListView_GetItemIndent GUICtrlListView_GetItemParam ' +
-	        'GUICtrlListView_GetItemPosition ' +
-	        'GUICtrlListView_GetItemPositionX ' +
-	        'GUICtrlListView_GetItemPositionY GUICtrlListView_GetItemRect ' +
-	        'GUICtrlListView_GetItemRectEx GUICtrlListView_GetItemSelected ' +
-	        'GUICtrlListView_GetItemSpacing GUICtrlListView_GetItemSpacingX ' +
-	        'GUICtrlListView_GetItemSpacingY GUICtrlListView_GetItemState ' +
-	        'GUICtrlListView_GetItemStateImage GUICtrlListView_GetItemText ' +
-	        'GUICtrlListView_GetItemTextArray ' +
-	        'GUICtrlListView_GetItemTextString GUICtrlListView_GetNextItem ' +
-	        'GUICtrlListView_GetNumberOfWorkAreas GUICtrlListView_GetOrigin ' +
-	        'GUICtrlListView_GetOriginX GUICtrlListView_GetOriginY ' +
-	        'GUICtrlListView_GetOutlineColor ' +
-	        'GUICtrlListView_GetSelectedColumn ' +
-	        'GUICtrlListView_GetSelectedCount ' +
-	        'GUICtrlListView_GetSelectedIndices ' +
-	        'GUICtrlListView_GetSelectionMark GUICtrlListView_GetStringWidth ' +
-	        'GUICtrlListView_GetSubItemRect GUICtrlListView_GetTextBkColor ' +
-	        'GUICtrlListView_GetTextColor GUICtrlListView_GetToolTips ' +
-	        'GUICtrlListView_GetTopIndex GUICtrlListView_GetUnicodeFormat ' +
-	        'GUICtrlListView_GetView GUICtrlListView_GetViewDetails ' +
-	        'GUICtrlListView_GetViewLarge GUICtrlListView_GetViewList ' +
-	        'GUICtrlListView_GetViewRect GUICtrlListView_GetViewSmall ' +
-	        'GUICtrlListView_GetViewTile GUICtrlListView_HideColumn ' +
-	        'GUICtrlListView_HitTest GUICtrlListView_InsertColumn ' +
-	        'GUICtrlListView_InsertGroup GUICtrlListView_InsertItem ' +
-	        'GUICtrlListView_JustifyColumn GUICtrlListView_MapIDToIndex ' +
-	        'GUICtrlListView_MapIndexToID GUICtrlListView_RedrawItems ' +
-	        'GUICtrlListView_RegisterSortCallBack ' +
-	        'GUICtrlListView_RemoveAllGroups GUICtrlListView_RemoveGroup ' +
-	        'GUICtrlListView_Scroll GUICtrlListView_SetBkColor ' +
-	        'GUICtrlListView_SetBkImage GUICtrlListView_SetCallBackMask ' +
-	        'GUICtrlListView_SetColumn GUICtrlListView_SetColumnOrder ' +
-	        'GUICtrlListView_SetColumnOrderArray ' +
-	        'GUICtrlListView_SetColumnWidth ' +
-	        'GUICtrlListView_SetExtendedListViewStyle ' +
-	        'GUICtrlListView_SetGroupInfo GUICtrlListView_SetHotItem ' +
-	        'GUICtrlListView_SetHoverTime GUICtrlListView_SetIconSpacing ' +
-	        'GUICtrlListView_SetImageList GUICtrlListView_SetItem ' +
-	        'GUICtrlListView_SetItemChecked GUICtrlListView_SetItemCount ' +
-	        'GUICtrlListView_SetItemCut GUICtrlListView_SetItemDropHilited ' +
-	        'GUICtrlListView_SetItemEx GUICtrlListView_SetItemFocused ' +
-	        'GUICtrlListView_SetItemGroupID GUICtrlListView_SetItemImage ' +
-	        'GUICtrlListView_SetItemIndent GUICtrlListView_SetItemParam ' +
-	        'GUICtrlListView_SetItemPosition ' +
-	        'GUICtrlListView_SetItemPosition32 ' +
-	        'GUICtrlListView_SetItemSelected GUICtrlListView_SetItemState ' +
-	        'GUICtrlListView_SetItemStateImage GUICtrlListView_SetItemText ' +
-	        'GUICtrlListView_SetOutlineColor ' +
-	        'GUICtrlListView_SetSelectedColumn ' +
-	        'GUICtrlListView_SetSelectionMark GUICtrlListView_SetTextBkColor ' +
-	        'GUICtrlListView_SetTextColor GUICtrlListView_SetToolTips ' +
-	        'GUICtrlListView_SetUnicodeFormat GUICtrlListView_SetView ' +
-	        'GUICtrlListView_SetWorkAreas GUICtrlListView_SimpleSort ' +
-	        'GUICtrlListView_SortItems GUICtrlListView_SubItemHitTest ' +
-	        'GUICtrlListView_UnRegisterSortCallBack GUICtrlMenu_AddMenuItem ' +
-	        'GUICtrlMenu_AppendMenu GUICtrlMenu_CalculatePopupWindowPosition ' +
-	        'GUICtrlMenu_CheckMenuItem GUICtrlMenu_CheckRadioItem ' +
-	        'GUICtrlMenu_CreateMenu GUICtrlMenu_CreatePopup ' +
-	        'GUICtrlMenu_DeleteMenu GUICtrlMenu_DestroyMenu ' +
-	        'GUICtrlMenu_DrawMenuBar GUICtrlMenu_EnableMenuItem ' +
-	        'GUICtrlMenu_FindItem GUICtrlMenu_FindParent ' +
-	        'GUICtrlMenu_GetItemBmp GUICtrlMenu_GetItemBmpChecked ' +
-	        'GUICtrlMenu_GetItemBmpUnchecked GUICtrlMenu_GetItemChecked ' +
-	        'GUICtrlMenu_GetItemCount GUICtrlMenu_GetItemData ' +
-	        'GUICtrlMenu_GetItemDefault GUICtrlMenu_GetItemDisabled ' +
-	        'GUICtrlMenu_GetItemEnabled GUICtrlMenu_GetItemGrayed ' +
-	        'GUICtrlMenu_GetItemHighlighted GUICtrlMenu_GetItemID ' +
-	        'GUICtrlMenu_GetItemInfo GUICtrlMenu_GetItemRect ' +
-	        'GUICtrlMenu_GetItemRectEx GUICtrlMenu_GetItemState ' +
-	        'GUICtrlMenu_GetItemStateEx GUICtrlMenu_GetItemSubMenu ' +
-	        'GUICtrlMenu_GetItemText GUICtrlMenu_GetItemType ' +
-	        'GUICtrlMenu_GetMenu GUICtrlMenu_GetMenuBackground ' +
-	        'GUICtrlMenu_GetMenuBarInfo GUICtrlMenu_GetMenuContextHelpID ' +
-	        'GUICtrlMenu_GetMenuData GUICtrlMenu_GetMenuDefaultItem ' +
-	        'GUICtrlMenu_GetMenuHeight GUICtrlMenu_GetMenuInfo ' +
-	        'GUICtrlMenu_GetMenuStyle GUICtrlMenu_GetSystemMenu ' +
-	        'GUICtrlMenu_InsertMenuItem GUICtrlMenu_InsertMenuItemEx ' +
-	        'GUICtrlMenu_IsMenu GUICtrlMenu_LoadMenu ' +
-	        'GUICtrlMenu_MapAccelerator GUICtrlMenu_MenuItemFromPoint ' +
-	        'GUICtrlMenu_RemoveMenu GUICtrlMenu_SetItemBitmaps ' +
-	        'GUICtrlMenu_SetItemBmp GUICtrlMenu_SetItemBmpChecked ' +
-	        'GUICtrlMenu_SetItemBmpUnchecked GUICtrlMenu_SetItemChecked ' +
-	        'GUICtrlMenu_SetItemData GUICtrlMenu_SetItemDefault ' +
-	        'GUICtrlMenu_SetItemDisabled GUICtrlMenu_SetItemEnabled ' +
-	        'GUICtrlMenu_SetItemGrayed GUICtrlMenu_SetItemHighlighted ' +
-	        'GUICtrlMenu_SetItemID GUICtrlMenu_SetItemInfo ' +
-	        'GUICtrlMenu_SetItemState GUICtrlMenu_SetItemSubMenu ' +
-	        'GUICtrlMenu_SetItemText GUICtrlMenu_SetItemType ' +
-	        'GUICtrlMenu_SetMenu GUICtrlMenu_SetMenuBackground ' +
-	        'GUICtrlMenu_SetMenuContextHelpID GUICtrlMenu_SetMenuData ' +
-	        'GUICtrlMenu_SetMenuDefaultItem GUICtrlMenu_SetMenuHeight ' +
-	        'GUICtrlMenu_SetMenuInfo GUICtrlMenu_SetMenuStyle ' +
-	        'GUICtrlMenu_TrackPopupMenu GUICtrlMonthCal_Create ' +
-	        'GUICtrlMonthCal_Destroy GUICtrlMonthCal_GetCalendarBorder ' +
-	        'GUICtrlMonthCal_GetCalendarCount GUICtrlMonthCal_GetColor ' +
-	        'GUICtrlMonthCal_GetColorArray GUICtrlMonthCal_GetCurSel ' +
-	        'GUICtrlMonthCal_GetCurSelStr GUICtrlMonthCal_GetFirstDOW ' +
-	        'GUICtrlMonthCal_GetFirstDOWStr GUICtrlMonthCal_GetMaxSelCount ' +
-	        'GUICtrlMonthCal_GetMaxTodayWidth ' +
-	        'GUICtrlMonthCal_GetMinReqHeight GUICtrlMonthCal_GetMinReqRect ' +
-	        'GUICtrlMonthCal_GetMinReqRectArray ' +
-	        'GUICtrlMonthCal_GetMinReqWidth GUICtrlMonthCal_GetMonthDelta ' +
-	        'GUICtrlMonthCal_GetMonthRange GUICtrlMonthCal_GetMonthRangeMax ' +
-	        'GUICtrlMonthCal_GetMonthRangeMaxStr ' +
-	        'GUICtrlMonthCal_GetMonthRangeMin ' +
-	        'GUICtrlMonthCal_GetMonthRangeMinStr ' +
-	        'GUICtrlMonthCal_GetMonthRangeSpan GUICtrlMonthCal_GetRange ' +
-	        'GUICtrlMonthCal_GetRangeMax GUICtrlMonthCal_GetRangeMaxStr ' +
-	        'GUICtrlMonthCal_GetRangeMin GUICtrlMonthCal_GetRangeMinStr ' +
-	        'GUICtrlMonthCal_GetSelRange GUICtrlMonthCal_GetSelRangeMax ' +
-	        'GUICtrlMonthCal_GetSelRangeMaxStr ' +
-	        'GUICtrlMonthCal_GetSelRangeMin ' +
-	        'GUICtrlMonthCal_GetSelRangeMinStr GUICtrlMonthCal_GetToday ' +
-	        'GUICtrlMonthCal_GetTodayStr GUICtrlMonthCal_GetUnicodeFormat ' +
-	        'GUICtrlMonthCal_HitTest GUICtrlMonthCal_SetCalendarBorder ' +
-	        'GUICtrlMonthCal_SetColor GUICtrlMonthCal_SetCurSel ' +
-	        'GUICtrlMonthCal_SetDayState GUICtrlMonthCal_SetFirstDOW ' +
-	        'GUICtrlMonthCal_SetMaxSelCount GUICtrlMonthCal_SetMonthDelta ' +
-	        'GUICtrlMonthCal_SetRange GUICtrlMonthCal_SetSelRange ' +
-	        'GUICtrlMonthCal_SetToday GUICtrlMonthCal_SetUnicodeFormat ' +
-	        'GUICtrlRebar_AddBand GUICtrlRebar_AddToolBarBand ' +
-	        'GUICtrlRebar_BeginDrag GUICtrlRebar_Create ' +
-	        'GUICtrlRebar_DeleteBand GUICtrlRebar_Destroy ' +
-	        'GUICtrlRebar_DragMove GUICtrlRebar_EndDrag ' +
-	        'GUICtrlRebar_GetBandBackColor GUICtrlRebar_GetBandBorders ' +
-	        'GUICtrlRebar_GetBandBordersEx GUICtrlRebar_GetBandChildHandle ' +
-	        'GUICtrlRebar_GetBandChildSize GUICtrlRebar_GetBandCount ' +
-	        'GUICtrlRebar_GetBandForeColor GUICtrlRebar_GetBandHeaderSize ' +
-	        'GUICtrlRebar_GetBandID GUICtrlRebar_GetBandIdealSize ' +
-	        'GUICtrlRebar_GetBandLength GUICtrlRebar_GetBandLParam ' +
-	        'GUICtrlRebar_GetBandMargins GUICtrlRebar_GetBandMarginsEx ' +
-	        'GUICtrlRebar_GetBandRect GUICtrlRebar_GetBandRectEx ' +
-	        'GUICtrlRebar_GetBandStyle GUICtrlRebar_GetBandStyleBreak ' +
-	        'GUICtrlRebar_GetBandStyleChildEdge ' +
-	        'GUICtrlRebar_GetBandStyleFixedBMP ' +
-	        'GUICtrlRebar_GetBandStyleFixedSize ' +
-	        'GUICtrlRebar_GetBandStyleGripperAlways ' +
-	        'GUICtrlRebar_GetBandStyleHidden ' +
-	        'GUICtrlRebar_GetBandStyleHideTitle ' +
-	        'GUICtrlRebar_GetBandStyleNoGripper ' +
-	        'GUICtrlRebar_GetBandStyleTopAlign ' +
-	        'GUICtrlRebar_GetBandStyleUseChevron ' +
-	        'GUICtrlRebar_GetBandStyleVariableHeight ' +
-	        'GUICtrlRebar_GetBandText GUICtrlRebar_GetBarHeight ' +
-	        'GUICtrlRebar_GetBarInfo GUICtrlRebar_GetBKColor ' +
-	        'GUICtrlRebar_GetColorScheme GUICtrlRebar_GetRowCount ' +
-	        'GUICtrlRebar_GetRowHeight GUICtrlRebar_GetTextColor ' +
-	        'GUICtrlRebar_GetToolTips GUICtrlRebar_GetUnicodeFormat ' +
-	        'GUICtrlRebar_HitTest GUICtrlRebar_IDToIndex ' +
-	        'GUICtrlRebar_MaximizeBand GUICtrlRebar_MinimizeBand ' +
-	        'GUICtrlRebar_MoveBand GUICtrlRebar_SetBandBackColor ' +
-	        'GUICtrlRebar_SetBandForeColor GUICtrlRebar_SetBandHeaderSize ' +
-	        'GUICtrlRebar_SetBandID GUICtrlRebar_SetBandIdealSize ' +
-	        'GUICtrlRebar_SetBandLength GUICtrlRebar_SetBandLParam ' +
-	        'GUICtrlRebar_SetBandStyle GUICtrlRebar_SetBandStyleBreak ' +
-	        'GUICtrlRebar_SetBandStyleChildEdge ' +
-	        'GUICtrlRebar_SetBandStyleFixedBMP ' +
-	        'GUICtrlRebar_SetBandStyleFixedSize ' +
-	        'GUICtrlRebar_SetBandStyleGripperAlways ' +
-	        'GUICtrlRebar_SetBandStyleHidden ' +
-	        'GUICtrlRebar_SetBandStyleHideTitle ' +
-	        'GUICtrlRebar_SetBandStyleNoGripper ' +
-	        'GUICtrlRebar_SetBandStyleTopAlign ' +
-	        'GUICtrlRebar_SetBandStyleUseChevron ' +
-	        'GUICtrlRebar_SetBandStyleVariableHeight ' +
-	        'GUICtrlRebar_SetBandText GUICtrlRebar_SetBarInfo ' +
-	        'GUICtrlRebar_SetBKColor GUICtrlRebar_SetColorScheme ' +
-	        'GUICtrlRebar_SetTextColor GUICtrlRebar_SetToolTips ' +
-	        'GUICtrlRebar_SetUnicodeFormat GUICtrlRebar_ShowBand ' +
-	        'GUICtrlRichEdit_AppendText GUICtrlRichEdit_AutoDetectURL ' +
-	        'GUICtrlRichEdit_CanPaste GUICtrlRichEdit_CanPasteSpecial ' +
-	        'GUICtrlRichEdit_CanRedo GUICtrlRichEdit_CanUndo ' +
-	        'GUICtrlRichEdit_ChangeFontSize GUICtrlRichEdit_Copy ' +
-	        'GUICtrlRichEdit_Create GUICtrlRichEdit_Cut ' +
-	        'GUICtrlRichEdit_Deselect GUICtrlRichEdit_Destroy ' +
-	        'GUICtrlRichEdit_EmptyUndoBuffer GUICtrlRichEdit_FindText ' +
-	        'GUICtrlRichEdit_FindTextInRange GUICtrlRichEdit_GetBkColor ' +
-	        'GUICtrlRichEdit_GetCharAttributes ' +
-	        'GUICtrlRichEdit_GetCharBkColor GUICtrlRichEdit_GetCharColor ' +
-	        'GUICtrlRichEdit_GetCharPosFromXY ' +
-	        'GUICtrlRichEdit_GetCharPosOfNextWord ' +
-	        'GUICtrlRichEdit_GetCharPosOfPreviousWord ' +
-	        'GUICtrlRichEdit_GetCharWordBreakInfo ' +
-	        'GUICtrlRichEdit_GetFirstCharPosOnLine GUICtrlRichEdit_GetFont ' +
-	        'GUICtrlRichEdit_GetLineCount GUICtrlRichEdit_GetLineLength ' +
-	        'GUICtrlRichEdit_GetLineNumberFromCharPos ' +
-	        'GUICtrlRichEdit_GetNextRedo GUICtrlRichEdit_GetNextUndo ' +
-	        'GUICtrlRichEdit_GetNumberOfFirstVisibleLine ' +
-	        'GUICtrlRichEdit_GetParaAlignment ' +
-	        'GUICtrlRichEdit_GetParaAttributes GUICtrlRichEdit_GetParaBorder ' +
-	        'GUICtrlRichEdit_GetParaIndents GUICtrlRichEdit_GetParaNumbering ' +
-	        'GUICtrlRichEdit_GetParaShading GUICtrlRichEdit_GetParaSpacing ' +
-	        'GUICtrlRichEdit_GetParaTabStops GUICtrlRichEdit_GetPasswordChar ' +
-	        'GUICtrlRichEdit_GetRECT GUICtrlRichEdit_GetScrollPos ' +
-	        'GUICtrlRichEdit_GetSel GUICtrlRichEdit_GetSelAA ' +
-	        'GUICtrlRichEdit_GetSelText GUICtrlRichEdit_GetSpaceUnit ' +
-	        'GUICtrlRichEdit_GetText GUICtrlRichEdit_GetTextInLine ' +
-	        'GUICtrlRichEdit_GetTextInRange GUICtrlRichEdit_GetTextLength ' +
-	        'GUICtrlRichEdit_GetVersion GUICtrlRichEdit_GetXYFromCharPos ' +
-	        'GUICtrlRichEdit_GetZoom GUICtrlRichEdit_GotoCharPos ' +
-	        'GUICtrlRichEdit_HideSelection GUICtrlRichEdit_InsertText ' +
-	        'GUICtrlRichEdit_IsModified GUICtrlRichEdit_IsTextSelected ' +
-	        'GUICtrlRichEdit_Paste GUICtrlRichEdit_PasteSpecial ' +
-	        'GUICtrlRichEdit_PauseRedraw GUICtrlRichEdit_Redo ' +
-	        'GUICtrlRichEdit_ReplaceText GUICtrlRichEdit_ResumeRedraw ' +
-	        'GUICtrlRichEdit_ScrollLineOrPage GUICtrlRichEdit_ScrollLines ' +
-	        'GUICtrlRichEdit_ScrollToCaret GUICtrlRichEdit_SetBkColor ' +
-	        'GUICtrlRichEdit_SetCharAttributes ' +
-	        'GUICtrlRichEdit_SetCharBkColor GUICtrlRichEdit_SetCharColor ' +
-	        'GUICtrlRichEdit_SetEventMask GUICtrlRichEdit_SetFont ' +
-	        'GUICtrlRichEdit_SetLimitOnText GUICtrlRichEdit_SetModified ' +
-	        'GUICtrlRichEdit_SetParaAlignment ' +
-	        'GUICtrlRichEdit_SetParaAttributes GUICtrlRichEdit_SetParaBorder ' +
-	        'GUICtrlRichEdit_SetParaIndents GUICtrlRichEdit_SetParaNumbering ' +
-	        'GUICtrlRichEdit_SetParaShading GUICtrlRichEdit_SetParaSpacing ' +
-	        'GUICtrlRichEdit_SetParaTabStops GUICtrlRichEdit_SetPasswordChar ' +
-	        'GUICtrlRichEdit_SetReadOnly GUICtrlRichEdit_SetRECT ' +
-	        'GUICtrlRichEdit_SetScrollPos GUICtrlRichEdit_SetSel ' +
-	        'GUICtrlRichEdit_SetSpaceUnit GUICtrlRichEdit_SetTabStops ' +
-	        'GUICtrlRichEdit_SetText GUICtrlRichEdit_SetUndoLimit ' +
-	        'GUICtrlRichEdit_SetZoom GUICtrlRichEdit_StreamFromFile ' +
-	        'GUICtrlRichEdit_StreamFromVar GUICtrlRichEdit_StreamToFile ' +
-	        'GUICtrlRichEdit_StreamToVar GUICtrlRichEdit_Undo ' +
-	        'GUICtrlSlider_ClearSel GUICtrlSlider_ClearTics ' +
-	        'GUICtrlSlider_Create GUICtrlSlider_Destroy ' +
-	        'GUICtrlSlider_GetBuddy GUICtrlSlider_GetChannelRect ' +
-	        'GUICtrlSlider_GetChannelRectEx GUICtrlSlider_GetLineSize ' +
-	        'GUICtrlSlider_GetLogicalTics GUICtrlSlider_GetNumTics ' +
-	        'GUICtrlSlider_GetPageSize GUICtrlSlider_GetPos ' +
-	        'GUICtrlSlider_GetRange GUICtrlSlider_GetRangeMax ' +
-	        'GUICtrlSlider_GetRangeMin GUICtrlSlider_GetSel ' +
-	        'GUICtrlSlider_GetSelEnd GUICtrlSlider_GetSelStart ' +
-	        'GUICtrlSlider_GetThumbLength GUICtrlSlider_GetThumbRect ' +
-	        'GUICtrlSlider_GetThumbRectEx GUICtrlSlider_GetTic ' +
-	        'GUICtrlSlider_GetTicPos GUICtrlSlider_GetToolTips ' +
-	        'GUICtrlSlider_GetUnicodeFormat GUICtrlSlider_SetBuddy ' +
-	        'GUICtrlSlider_SetLineSize GUICtrlSlider_SetPageSize ' +
-	        'GUICtrlSlider_SetPos GUICtrlSlider_SetRange ' +
-	        'GUICtrlSlider_SetRangeMax GUICtrlSlider_SetRangeMin ' +
-	        'GUICtrlSlider_SetSel GUICtrlSlider_SetSelEnd ' +
-	        'GUICtrlSlider_SetSelStart GUICtrlSlider_SetThumbLength ' +
-	        'GUICtrlSlider_SetTic GUICtrlSlider_SetTicFreq ' +
-	        'GUICtrlSlider_SetTipSide GUICtrlSlider_SetToolTips ' +
-	        'GUICtrlSlider_SetUnicodeFormat GUICtrlStatusBar_Create ' +
-	        'GUICtrlStatusBar_Destroy GUICtrlStatusBar_EmbedControl ' +
-	        'GUICtrlStatusBar_GetBorders GUICtrlStatusBar_GetBordersHorz ' +
-	        'GUICtrlStatusBar_GetBordersRect GUICtrlStatusBar_GetBordersVert ' +
-	        'GUICtrlStatusBar_GetCount GUICtrlStatusBar_GetHeight ' +
-	        'GUICtrlStatusBar_GetIcon GUICtrlStatusBar_GetParts ' +
-	        'GUICtrlStatusBar_GetRect GUICtrlStatusBar_GetRectEx ' +
-	        'GUICtrlStatusBar_GetText GUICtrlStatusBar_GetTextFlags ' +
-	        'GUICtrlStatusBar_GetTextLength GUICtrlStatusBar_GetTextLengthEx ' +
-	        'GUICtrlStatusBar_GetTipText GUICtrlStatusBar_GetUnicodeFormat ' +
-	        'GUICtrlStatusBar_GetWidth GUICtrlStatusBar_IsSimple ' +
-	        'GUICtrlStatusBar_Resize GUICtrlStatusBar_SetBkColor ' +
-	        'GUICtrlStatusBar_SetIcon GUICtrlStatusBar_SetMinHeight ' +
-	        'GUICtrlStatusBar_SetParts GUICtrlStatusBar_SetSimple ' +
-	        'GUICtrlStatusBar_SetText GUICtrlStatusBar_SetTipText ' +
-	        'GUICtrlStatusBar_SetUnicodeFormat GUICtrlStatusBar_ShowHide ' +
-	        'GUICtrlTab_ActivateTab GUICtrlTab_ClickTab GUICtrlTab_Create ' +
-	        'GUICtrlTab_DeleteAllItems GUICtrlTab_DeleteItem ' +
-	        'GUICtrlTab_DeselectAll GUICtrlTab_Destroy GUICtrlTab_FindTab ' +
-	        'GUICtrlTab_GetCurFocus GUICtrlTab_GetCurSel ' +
-	        'GUICtrlTab_GetDisplayRect GUICtrlTab_GetDisplayRectEx ' +
-	        'GUICtrlTab_GetExtendedStyle GUICtrlTab_GetImageList ' +
-	        'GUICtrlTab_GetItem GUICtrlTab_GetItemCount ' +
-	        'GUICtrlTab_GetItemImage GUICtrlTab_GetItemParam ' +
-	        'GUICtrlTab_GetItemRect GUICtrlTab_GetItemRectEx ' +
-	        'GUICtrlTab_GetItemState GUICtrlTab_GetItemText ' +
-	        'GUICtrlTab_GetRowCount GUICtrlTab_GetToolTips ' +
-	        'GUICtrlTab_GetUnicodeFormat GUICtrlTab_HighlightItem ' +
-	        'GUICtrlTab_HitTest GUICtrlTab_InsertItem ' +
-	        'GUICtrlTab_RemoveImage GUICtrlTab_SetCurFocus ' +
-	        'GUICtrlTab_SetCurSel GUICtrlTab_SetExtendedStyle ' +
-	        'GUICtrlTab_SetImageList GUICtrlTab_SetItem ' +
-	        'GUICtrlTab_SetItemImage GUICtrlTab_SetItemParam ' +
-	        'GUICtrlTab_SetItemSize GUICtrlTab_SetItemState ' +
-	        'GUICtrlTab_SetItemText GUICtrlTab_SetMinTabWidth ' +
-	        'GUICtrlTab_SetPadding GUICtrlTab_SetToolTips ' +
-	        'GUICtrlTab_SetUnicodeFormat GUICtrlToolbar_AddBitmap ' +
-	        'GUICtrlToolbar_AddButton GUICtrlToolbar_AddButtonSep ' +
-	        'GUICtrlToolbar_AddString GUICtrlToolbar_ButtonCount ' +
-	        'GUICtrlToolbar_CheckButton GUICtrlToolbar_ClickAccel ' +
-	        'GUICtrlToolbar_ClickButton GUICtrlToolbar_ClickIndex ' +
-	        'GUICtrlToolbar_CommandToIndex GUICtrlToolbar_Create ' +
-	        'GUICtrlToolbar_Customize GUICtrlToolbar_DeleteButton ' +
-	        'GUICtrlToolbar_Destroy GUICtrlToolbar_EnableButton ' +
-	        'GUICtrlToolbar_FindToolbar GUICtrlToolbar_GetAnchorHighlight ' +
-	        'GUICtrlToolbar_GetBitmapFlags GUICtrlToolbar_GetButtonBitmap ' +
-	        'GUICtrlToolbar_GetButtonInfo GUICtrlToolbar_GetButtonInfoEx ' +
-	        'GUICtrlToolbar_GetButtonParam GUICtrlToolbar_GetButtonRect ' +
-	        'GUICtrlToolbar_GetButtonRectEx GUICtrlToolbar_GetButtonSize ' +
-	        'GUICtrlToolbar_GetButtonState GUICtrlToolbar_GetButtonStyle ' +
-	        'GUICtrlToolbar_GetButtonText GUICtrlToolbar_GetColorScheme ' +
-	        'GUICtrlToolbar_GetDisabledImageList ' +
-	        'GUICtrlToolbar_GetExtendedStyle GUICtrlToolbar_GetHotImageList ' +
-	        'GUICtrlToolbar_GetHotItem GUICtrlToolbar_GetImageList ' +
-	        'GUICtrlToolbar_GetInsertMark GUICtrlToolbar_GetInsertMarkColor ' +
-	        'GUICtrlToolbar_GetMaxSize GUICtrlToolbar_GetMetrics ' +
-	        'GUICtrlToolbar_GetPadding GUICtrlToolbar_GetRows ' +
-	        'GUICtrlToolbar_GetString GUICtrlToolbar_GetStyle ' +
-	        'GUICtrlToolbar_GetStyleAltDrag ' +
-	        'GUICtrlToolbar_GetStyleCustomErase GUICtrlToolbar_GetStyleFlat ' +
-	        'GUICtrlToolbar_GetStyleList GUICtrlToolbar_GetStyleRegisterDrop ' +
-	        'GUICtrlToolbar_GetStyleToolTips ' +
-	        'GUICtrlToolbar_GetStyleTransparent ' +
-	        'GUICtrlToolbar_GetStyleWrapable GUICtrlToolbar_GetTextRows ' +
-	        'GUICtrlToolbar_GetToolTips GUICtrlToolbar_GetUnicodeFormat ' +
-	        'GUICtrlToolbar_HideButton GUICtrlToolbar_HighlightButton ' +
-	        'GUICtrlToolbar_HitTest GUICtrlToolbar_IndexToCommand ' +
-	        'GUICtrlToolbar_InsertButton GUICtrlToolbar_InsertMarkHitTest ' +
-	        'GUICtrlToolbar_IsButtonChecked GUICtrlToolbar_IsButtonEnabled ' +
-	        'GUICtrlToolbar_IsButtonHidden ' +
-	        'GUICtrlToolbar_IsButtonHighlighted ' +
-	        'GUICtrlToolbar_IsButtonIndeterminate ' +
-	        'GUICtrlToolbar_IsButtonPressed GUICtrlToolbar_LoadBitmap ' +
-	        'GUICtrlToolbar_LoadImages GUICtrlToolbar_MapAccelerator ' +
-	        'GUICtrlToolbar_MoveButton GUICtrlToolbar_PressButton ' +
-	        'GUICtrlToolbar_SetAnchorHighlight GUICtrlToolbar_SetBitmapSize ' +
-	        'GUICtrlToolbar_SetButtonBitMap GUICtrlToolbar_SetButtonInfo ' +
-	        'GUICtrlToolbar_SetButtonInfoEx GUICtrlToolbar_SetButtonParam ' +
-	        'GUICtrlToolbar_SetButtonSize GUICtrlToolbar_SetButtonState ' +
-	        'GUICtrlToolbar_SetButtonStyle GUICtrlToolbar_SetButtonText ' +
-	        'GUICtrlToolbar_SetButtonWidth GUICtrlToolbar_SetCmdID ' +
-	        'GUICtrlToolbar_SetColorScheme ' +
-	        'GUICtrlToolbar_SetDisabledImageList ' +
-	        'GUICtrlToolbar_SetDrawTextFlags GUICtrlToolbar_SetExtendedStyle ' +
-	        'GUICtrlToolbar_SetHotImageList GUICtrlToolbar_SetHotItem ' +
-	        'GUICtrlToolbar_SetImageList GUICtrlToolbar_SetIndent ' +
-	        'GUICtrlToolbar_SetIndeterminate GUICtrlToolbar_SetInsertMark ' +
-	        'GUICtrlToolbar_SetInsertMarkColor GUICtrlToolbar_SetMaxTextRows ' +
-	        'GUICtrlToolbar_SetMetrics GUICtrlToolbar_SetPadding ' +
-	        'GUICtrlToolbar_SetParent GUICtrlToolbar_SetRows ' +
-	        'GUICtrlToolbar_SetStyle GUICtrlToolbar_SetStyleAltDrag ' +
-	        'GUICtrlToolbar_SetStyleCustomErase GUICtrlToolbar_SetStyleFlat ' +
-	        'GUICtrlToolbar_SetStyleList GUICtrlToolbar_SetStyleRegisterDrop ' +
-	        'GUICtrlToolbar_SetStyleToolTips ' +
-	        'GUICtrlToolbar_SetStyleTransparent ' +
-	        'GUICtrlToolbar_SetStyleWrapable GUICtrlToolbar_SetToolTips ' +
-	        'GUICtrlToolbar_SetUnicodeFormat GUICtrlToolbar_SetWindowTheme ' +
-	        'GUICtrlTreeView_Add GUICtrlTreeView_AddChild ' +
-	        'GUICtrlTreeView_AddChildFirst GUICtrlTreeView_AddFirst ' +
-	        'GUICtrlTreeView_BeginUpdate GUICtrlTreeView_ClickItem ' +
-	        'GUICtrlTreeView_Create GUICtrlTreeView_CreateDragImage ' +
-	        'GUICtrlTreeView_CreateSolidBitMap GUICtrlTreeView_Delete ' +
-	        'GUICtrlTreeView_DeleteAll GUICtrlTreeView_DeleteChildren ' +
-	        'GUICtrlTreeView_Destroy GUICtrlTreeView_DisplayRect ' +
-	        'GUICtrlTreeView_DisplayRectEx GUICtrlTreeView_EditText ' +
-	        'GUICtrlTreeView_EndEdit GUICtrlTreeView_EndUpdate ' +
-	        'GUICtrlTreeView_EnsureVisible GUICtrlTreeView_Expand ' +
-	        'GUICtrlTreeView_ExpandedOnce GUICtrlTreeView_FindItem ' +
-	        'GUICtrlTreeView_FindItemEx GUICtrlTreeView_GetBkColor ' +
-	        'GUICtrlTreeView_GetBold GUICtrlTreeView_GetChecked ' +
-	        'GUICtrlTreeView_GetChildCount GUICtrlTreeView_GetChildren ' +
-	        'GUICtrlTreeView_GetCount GUICtrlTreeView_GetCut ' +
-	        'GUICtrlTreeView_GetDropTarget GUICtrlTreeView_GetEditControl ' +
-	        'GUICtrlTreeView_GetExpanded GUICtrlTreeView_GetFirstChild ' +
-	        'GUICtrlTreeView_GetFirstItem GUICtrlTreeView_GetFirstVisible ' +
-	        'GUICtrlTreeView_GetFocused GUICtrlTreeView_GetHeight ' +
-	        'GUICtrlTreeView_GetImageIndex ' +
-	        'GUICtrlTreeView_GetImageListIconHandle ' +
-	        'GUICtrlTreeView_GetIndent GUICtrlTreeView_GetInsertMarkColor ' +
-	        'GUICtrlTreeView_GetISearchString GUICtrlTreeView_GetItemByIndex ' +
-	        'GUICtrlTreeView_GetItemHandle GUICtrlTreeView_GetItemParam ' +
-	        'GUICtrlTreeView_GetLastChild GUICtrlTreeView_GetLineColor ' +
-	        'GUICtrlTreeView_GetNext GUICtrlTreeView_GetNextChild ' +
-	        'GUICtrlTreeView_GetNextSibling GUICtrlTreeView_GetNextVisible ' +
-	        'GUICtrlTreeView_GetNormalImageList ' +
-	        'GUICtrlTreeView_GetParentHandle GUICtrlTreeView_GetParentParam ' +
-	        'GUICtrlTreeView_GetPrev GUICtrlTreeView_GetPrevChild ' +
-	        'GUICtrlTreeView_GetPrevSibling GUICtrlTreeView_GetPrevVisible ' +
-	        'GUICtrlTreeView_GetScrollTime GUICtrlTreeView_GetSelected ' +
-	        'GUICtrlTreeView_GetSelectedImageIndex ' +
-	        'GUICtrlTreeView_GetSelection GUICtrlTreeView_GetSiblingCount ' +
-	        'GUICtrlTreeView_GetState GUICtrlTreeView_GetStateImageIndex ' +
-	        'GUICtrlTreeView_GetStateImageList GUICtrlTreeView_GetText ' +
-	        'GUICtrlTreeView_GetTextColor GUICtrlTreeView_GetToolTips ' +
-	        'GUICtrlTreeView_GetTree GUICtrlTreeView_GetUnicodeFormat ' +
-	        'GUICtrlTreeView_GetVisible GUICtrlTreeView_GetVisibleCount ' +
-	        'GUICtrlTreeView_HitTest GUICtrlTreeView_HitTestEx ' +
-	        'GUICtrlTreeView_HitTestItem GUICtrlTreeView_Index ' +
-	        'GUICtrlTreeView_InsertItem GUICtrlTreeView_IsFirstItem ' +
-	        'GUICtrlTreeView_IsParent GUICtrlTreeView_Level ' +
-	        'GUICtrlTreeView_SelectItem GUICtrlTreeView_SelectItemByIndex ' +
-	        'GUICtrlTreeView_SetBkColor GUICtrlTreeView_SetBold ' +
-	        'GUICtrlTreeView_SetChecked GUICtrlTreeView_SetCheckedByIndex ' +
-	        'GUICtrlTreeView_SetChildren GUICtrlTreeView_SetCut ' +
-	        'GUICtrlTreeView_SetDropTarget GUICtrlTreeView_SetFocused ' +
-	        'GUICtrlTreeView_SetHeight GUICtrlTreeView_SetIcon ' +
-	        'GUICtrlTreeView_SetImageIndex GUICtrlTreeView_SetIndent ' +
-	        'GUICtrlTreeView_SetInsertMark ' +
-	        'GUICtrlTreeView_SetInsertMarkColor ' +
-	        'GUICtrlTreeView_SetItemHeight GUICtrlTreeView_SetItemParam ' +
-	        'GUICtrlTreeView_SetLineColor GUICtrlTreeView_SetNormalImageList ' +
-	        'GUICtrlTreeView_SetScrollTime GUICtrlTreeView_SetSelected ' +
-	        'GUICtrlTreeView_SetSelectedImageIndex GUICtrlTreeView_SetState ' +
-	        'GUICtrlTreeView_SetStateImageIndex ' +
-	        'GUICtrlTreeView_SetStateImageList GUICtrlTreeView_SetText ' +
-	        'GUICtrlTreeView_SetTextColor GUICtrlTreeView_SetToolTips ' +
-	        'GUICtrlTreeView_SetUnicodeFormat GUICtrlTreeView_Sort ' +
-	        'GUIImageList_Add GUIImageList_AddBitmap GUIImageList_AddIcon ' +
-	        'GUIImageList_AddMasked GUIImageList_BeginDrag ' +
-	        'GUIImageList_Copy GUIImageList_Create GUIImageList_Destroy ' +
-	        'GUIImageList_DestroyIcon GUIImageList_DragEnter ' +
-	        'GUIImageList_DragLeave GUIImageList_DragMove ' +
-	        'GUIImageList_Draw GUIImageList_DrawEx GUIImageList_Duplicate ' +
-	        'GUIImageList_EndDrag GUIImageList_GetBkColor ' +
-	        'GUIImageList_GetIcon GUIImageList_GetIconHeight ' +
-	        'GUIImageList_GetIconSize GUIImageList_GetIconSizeEx ' +
-	        'GUIImageList_GetIconWidth GUIImageList_GetImageCount ' +
-	        'GUIImageList_GetImageInfoEx GUIImageList_Remove ' +
-	        'GUIImageList_ReplaceIcon GUIImageList_SetBkColor ' +
-	        'GUIImageList_SetIconSize GUIImageList_SetImageCount ' +
-	        'GUIImageList_Swap GUIScrollBars_EnableScrollBar ' +
-	        'GUIScrollBars_GetScrollBarInfoEx GUIScrollBars_GetScrollBarRect ' +
-	        'GUIScrollBars_GetScrollBarRGState ' +
-	        'GUIScrollBars_GetScrollBarXYLineButton ' +
-	        'GUIScrollBars_GetScrollBarXYThumbBottom ' +
-	        'GUIScrollBars_GetScrollBarXYThumbTop ' +
-	        'GUIScrollBars_GetScrollInfo GUIScrollBars_GetScrollInfoEx ' +
-	        'GUIScrollBars_GetScrollInfoMax GUIScrollBars_GetScrollInfoMin ' +
-	        'GUIScrollBars_GetScrollInfoPage GUIScrollBars_GetScrollInfoPos ' +
-	        'GUIScrollBars_GetScrollInfoTrackPos GUIScrollBars_GetScrollPos ' +
-	        'GUIScrollBars_GetScrollRange GUIScrollBars_Init ' +
-	        'GUIScrollBars_ScrollWindow GUIScrollBars_SetScrollInfo ' +
-	        'GUIScrollBars_SetScrollInfoMax GUIScrollBars_SetScrollInfoMin ' +
-	        'GUIScrollBars_SetScrollInfoPage GUIScrollBars_SetScrollInfoPos ' +
-	        'GUIScrollBars_SetScrollRange GUIScrollBars_ShowScrollBar ' +
-	        'GUIToolTip_Activate GUIToolTip_AddTool GUIToolTip_AdjustRect ' +
-	        'GUIToolTip_BitsToTTF GUIToolTip_Create GUIToolTip_Deactivate ' +
-	        'GUIToolTip_DelTool GUIToolTip_Destroy GUIToolTip_EnumTools ' +
-	        'GUIToolTip_GetBubbleHeight GUIToolTip_GetBubbleSize ' +
-	        'GUIToolTip_GetBubbleWidth GUIToolTip_GetCurrentTool ' +
-	        'GUIToolTip_GetDelayTime GUIToolTip_GetMargin ' +
-	        'GUIToolTip_GetMarginEx GUIToolTip_GetMaxTipWidth ' +
-	        'GUIToolTip_GetText GUIToolTip_GetTipBkColor ' +
-	        'GUIToolTip_GetTipTextColor GUIToolTip_GetTitleBitMap ' +
-	        'GUIToolTip_GetTitleText GUIToolTip_GetToolCount ' +
-	        'GUIToolTip_GetToolInfo GUIToolTip_HitTest ' +
-	        'GUIToolTip_NewToolRect GUIToolTip_Pop GUIToolTip_PopUp ' +
-	        'GUIToolTip_SetDelayTime GUIToolTip_SetMargin ' +
-	        'GUIToolTip_SetMaxTipWidth GUIToolTip_SetTipBkColor ' +
-	        'GUIToolTip_SetTipTextColor GUIToolTip_SetTitle ' +
-	        'GUIToolTip_SetToolInfo GUIToolTip_SetWindowTheme ' +
-	        'GUIToolTip_ToolExists GUIToolTip_ToolToArray ' +
-	        'GUIToolTip_TrackActivate GUIToolTip_TrackPosition ' +
-	        'GUIToolTip_Update GUIToolTip_UpdateTipText HexToString ' +
-	        'IEAction IEAttach IEBodyReadHTML IEBodyReadText ' +
-	        'IEBodyWriteHTML IECreate IECreateEmbedded IEDocGetObj ' +
-	        'IEDocInsertHTML IEDocInsertText IEDocReadHTML ' +
-	        'IEDocWriteHTML IEErrorNotify IEFormElementCheckBoxSelect ' +
-	        'IEFormElementGetCollection IEFormElementGetObjByName ' +
-	        'IEFormElementGetValue IEFormElementOptionSelect ' +
-	        'IEFormElementRadioSelect IEFormElementSetValue ' +
-	        'IEFormGetCollection IEFormGetObjByName IEFormImageClick ' +
-	        'IEFormReset IEFormSubmit IEFrameGetCollection ' +
-	        'IEFrameGetObjByName IEGetObjById IEGetObjByName ' +
-	        'IEHeadInsertEventScript IEImgClick IEImgGetCollection ' +
-	        'IEIsFrameSet IELinkClickByIndex IELinkClickByText ' +
-	        'IELinkGetCollection IELoadWait IELoadWaitTimeout IENavigate ' +
-	        'IEPropertyGet IEPropertySet IEQuit IETableGetCollection ' +
-	        'IETableWriteToArray IETagNameAllGetCollection ' +
-	        'IETagNameGetCollection IE_Example IE_Introduction ' +
-	        'IE_VersionInfo INetExplorerCapable INetGetSource INetMail ' +
-	        'INetSmtpMail IsPressed MathCheckDiv Max MemGlobalAlloc ' +
-	        'MemGlobalFree MemGlobalLock MemGlobalSize MemGlobalUnlock ' +
-	        'MemMoveMemory MemVirtualAlloc MemVirtualAllocEx ' +
-	        'MemVirtualFree MemVirtualFreeEx Min MouseTrap ' +
-	        'NamedPipes_CallNamedPipe NamedPipes_ConnectNamedPipe ' +
-	        'NamedPipes_CreateNamedPipe NamedPipes_CreatePipe ' +
-	        'NamedPipes_DisconnectNamedPipe ' +
-	        'NamedPipes_GetNamedPipeHandleState NamedPipes_GetNamedPipeInfo ' +
-	        'NamedPipes_PeekNamedPipe NamedPipes_SetNamedPipeHandleState ' +
-	        'NamedPipes_TransactNamedPipe NamedPipes_WaitNamedPipe ' +
-	        'Net_Share_ConnectionEnum Net_Share_FileClose ' +
-	        'Net_Share_FileEnum Net_Share_FileGetInfo Net_Share_PermStr ' +
-	        'Net_Share_ResourceStr Net_Share_SessionDel ' +
-	        'Net_Share_SessionEnum Net_Share_SessionGetInfo ' +
-	        'Net_Share_ShareAdd Net_Share_ShareCheck Net_Share_ShareDel ' +
-	        'Net_Share_ShareEnum Net_Share_ShareGetInfo ' +
-	        'Net_Share_ShareSetInfo Net_Share_StatisticsGetSvr ' +
-	        'Net_Share_StatisticsGetWrk Now NowCalc NowCalcDate ' +
-	        'NowDate NowTime PathFull PathGetRelative PathMake ' +
-	        'PathSplit ProcessGetName ProcessGetPriority Radian ' +
-	        'ReplaceStringInFile RunDos ScreenCapture_Capture ' +
-	        'ScreenCapture_CaptureWnd ScreenCapture_SaveImage ' +
-	        'ScreenCapture_SetBMPFormat ScreenCapture_SetJPGQuality ' +
-	        'ScreenCapture_SetTIFColorDepth ScreenCapture_SetTIFCompression ' +
-	        'Security__AdjustTokenPrivileges ' +
-	        'Security__CreateProcessWithToken Security__DuplicateTokenEx ' +
-	        'Security__GetAccountSid Security__GetLengthSid ' +
-	        'Security__GetTokenInformation Security__ImpersonateSelf ' +
-	        'Security__IsValidSid Security__LookupAccountName ' +
-	        'Security__LookupAccountSid Security__LookupPrivilegeValue ' +
-	        'Security__OpenProcessToken Security__OpenThreadToken ' +
-	        'Security__OpenThreadTokenEx Security__SetPrivilege ' +
-	        'Security__SetTokenInformation Security__SidToStringSid ' +
-	        'Security__SidTypeStr Security__StringSidToSid SendMessage ' +
-	        'SendMessageA SetDate SetTime Singleton SoundClose ' +
-	        'SoundLength SoundOpen SoundPause SoundPlay SoundPos ' +
-	        'SoundResume SoundSeek SoundStatus SoundStop ' +
-	        'SQLite_Changes SQLite_Close SQLite_Display2DResult ' +
-	        'SQLite_Encode SQLite_ErrCode SQLite_ErrMsg SQLite_Escape ' +
-	        'SQLite_Exec SQLite_FastEncode SQLite_FastEscape ' +
-	        'SQLite_FetchData SQLite_FetchNames SQLite_GetTable ' +
-	        'SQLite_GetTable2d SQLite_LastInsertRowID SQLite_LibVersion ' +
-	        'SQLite_Open SQLite_Query SQLite_QueryFinalize ' +
-	        'SQLite_QueryReset SQLite_QuerySingleRow SQLite_SafeMode ' +
-	        'SQLite_SetTimeout SQLite_Shutdown SQLite_SQLiteExe ' +
-	        'SQLite_Startup SQLite_TotalChanges StringBetween ' +
-	        'StringExplode StringInsert StringProper StringRepeat ' +
-	        'StringTitleCase StringToHex TCPIpToName TempFile ' +
-	        'TicksToTime Timer_Diff Timer_GetIdleTime Timer_GetTimerID ' +
-	        'Timer_Init Timer_KillAllTimers Timer_KillTimer ' +
-	        'Timer_SetTimer TimeToTicks VersionCompare viClose ' +
-	        'viExecCommand viFindGpib viGpibBusReset viGTL ' +
-	        'viInteractiveControl viOpen viSetAttribute viSetTimeout ' +
-	        'WeekNumberISO WinAPI_AbortPath WinAPI_ActivateKeyboardLayout ' +
-	        'WinAPI_AddClipboardFormatListener WinAPI_AddFontMemResourceEx ' +
-	        'WinAPI_AddFontResourceEx WinAPI_AddIconOverlay ' +
-	        'WinAPI_AddIconTransparency WinAPI_AddMRUString ' +
-	        'WinAPI_AdjustBitmap WinAPI_AdjustTokenPrivileges ' +
-	        'WinAPI_AdjustWindowRectEx WinAPI_AlphaBlend WinAPI_AngleArc ' +
-	        'WinAPI_AnimateWindow WinAPI_Arc WinAPI_ArcTo ' +
-	        'WinAPI_ArrayToStruct WinAPI_AssignProcessToJobObject ' +
-	        'WinAPI_AssocGetPerceivedType WinAPI_AssocQueryString ' +
-	        'WinAPI_AttachConsole WinAPI_AttachThreadInput ' +
-	        'WinAPI_BackupRead WinAPI_BackupReadAbort WinAPI_BackupSeek ' +
-	        'WinAPI_BackupWrite WinAPI_BackupWriteAbort WinAPI_Beep ' +
-	        'WinAPI_BeginBufferedPaint WinAPI_BeginDeferWindowPos ' +
-	        'WinAPI_BeginPaint WinAPI_BeginPath WinAPI_BeginUpdateResource ' +
-	        'WinAPI_BitBlt WinAPI_BringWindowToTop ' +
-	        'WinAPI_BroadcastSystemMessage WinAPI_BrowseForFolderDlg ' +
-	        'WinAPI_BufferedPaintClear WinAPI_BufferedPaintInit ' +
-	        'WinAPI_BufferedPaintSetAlpha WinAPI_BufferedPaintUnInit ' +
-	        'WinAPI_CallNextHookEx WinAPI_CallWindowProc ' +
-	        'WinAPI_CallWindowProcW WinAPI_CascadeWindows ' +
-	        'WinAPI_ChangeWindowMessageFilterEx WinAPI_CharToOem ' +
-	        'WinAPI_ChildWindowFromPointEx WinAPI_ClientToScreen ' +
-	        'WinAPI_ClipCursor WinAPI_CloseDesktop WinAPI_CloseEnhMetaFile ' +
-	        'WinAPI_CloseFigure WinAPI_CloseHandle WinAPI_CloseThemeData ' +
-	        'WinAPI_CloseWindow WinAPI_CloseWindowStation ' +
-	        'WinAPI_CLSIDFromProgID WinAPI_CoInitialize ' +
-	        'WinAPI_ColorAdjustLuma WinAPI_ColorHLSToRGB ' +
-	        'WinAPI_ColorRGBToHLS WinAPI_CombineRgn ' +
-	        'WinAPI_CombineTransform WinAPI_CommandLineToArgv ' +
-	        'WinAPI_CommDlgExtendedError WinAPI_CommDlgExtendedErrorEx ' +
-	        'WinAPI_CompareString WinAPI_CompressBitmapBits ' +
-	        'WinAPI_CompressBuffer WinAPI_ComputeCrc32 ' +
-	        'WinAPI_ConfirmCredentials WinAPI_CopyBitmap WinAPI_CopyCursor ' +
-	        'WinAPI_CopyEnhMetaFile WinAPI_CopyFileEx WinAPI_CopyIcon ' +
-	        'WinAPI_CopyImage WinAPI_CopyRect WinAPI_CopyStruct ' +
-	        'WinAPI_CoTaskMemAlloc WinAPI_CoTaskMemFree ' +
-	        'WinAPI_CoTaskMemRealloc WinAPI_CoUninitialize ' +
-	        'WinAPI_Create32BitHBITMAP WinAPI_Create32BitHICON ' +
-	        'WinAPI_CreateANDBitmap WinAPI_CreateBitmap ' +
-	        'WinAPI_CreateBitmapIndirect WinAPI_CreateBrushIndirect ' +
-	        'WinAPI_CreateBuffer WinAPI_CreateBufferFromStruct ' +
-	        'WinAPI_CreateCaret WinAPI_CreateColorAdjustment ' +
-	        'WinAPI_CreateCompatibleBitmap WinAPI_CreateCompatibleBitmapEx ' +
-	        'WinAPI_CreateCompatibleDC WinAPI_CreateDesktop ' +
-	        'WinAPI_CreateDIB WinAPI_CreateDIBColorTable ' +
-	        'WinAPI_CreateDIBitmap WinAPI_CreateDIBSection ' +
-	        'WinAPI_CreateDirectory WinAPI_CreateDirectoryEx ' +
-	        'WinAPI_CreateEllipticRgn WinAPI_CreateEmptyIcon ' +
-	        'WinAPI_CreateEnhMetaFile WinAPI_CreateEvent WinAPI_CreateFile ' +
-	        'WinAPI_CreateFileEx WinAPI_CreateFileMapping ' +
-	        'WinAPI_CreateFont WinAPI_CreateFontEx ' +
-	        'WinAPI_CreateFontIndirect WinAPI_CreateGUID ' +
-	        'WinAPI_CreateHardLink WinAPI_CreateIcon ' +
-	        'WinAPI_CreateIconFromResourceEx WinAPI_CreateIconIndirect ' +
-	        'WinAPI_CreateJobObject WinAPI_CreateMargins ' +
-	        'WinAPI_CreateMRUList WinAPI_CreateMutex WinAPI_CreateNullRgn ' +
-	        'WinAPI_CreateNumberFormatInfo WinAPI_CreateObjectID ' +
-	        'WinAPI_CreatePen WinAPI_CreatePoint WinAPI_CreatePolygonRgn ' +
-	        'WinAPI_CreateProcess WinAPI_CreateProcessWithToken ' +
-	        'WinAPI_CreateRect WinAPI_CreateRectEx WinAPI_CreateRectRgn ' +
-	        'WinAPI_CreateRectRgnIndirect WinAPI_CreateRoundRectRgn ' +
-	        'WinAPI_CreateSemaphore WinAPI_CreateSize ' +
-	        'WinAPI_CreateSolidBitmap WinAPI_CreateSolidBrush ' +
-	        'WinAPI_CreateStreamOnHGlobal WinAPI_CreateString ' +
-	        'WinAPI_CreateSymbolicLink WinAPI_CreateTransform ' +
-	        'WinAPI_CreateWindowEx WinAPI_CreateWindowStation ' +
-	        'WinAPI_DecompressBuffer WinAPI_DecryptFile ' +
-	        'WinAPI_DeferWindowPos WinAPI_DefineDosDevice ' +
-	        'WinAPI_DefRawInputProc WinAPI_DefSubclassProc ' +
-	        'WinAPI_DefWindowProc WinAPI_DefWindowProcW WinAPI_DeleteDC ' +
-	        'WinAPI_DeleteEnhMetaFile WinAPI_DeleteFile ' +
-	        'WinAPI_DeleteObject WinAPI_DeleteObjectID ' +
-	        'WinAPI_DeleteVolumeMountPoint WinAPI_DeregisterShellHookWindow ' +
-	        'WinAPI_DestroyCaret WinAPI_DestroyCursor WinAPI_DestroyIcon ' +
-	        'WinAPI_DestroyWindow WinAPI_DeviceIoControl ' +
-	        'WinAPI_DisplayStruct WinAPI_DllGetVersion WinAPI_DllInstall ' +
-	        'WinAPI_DllUninstall WinAPI_DPtoLP WinAPI_DragAcceptFiles ' +
-	        'WinAPI_DragFinish WinAPI_DragQueryFileEx ' +
-	        'WinAPI_DragQueryPoint WinAPI_DrawAnimatedRects ' +
-	        'WinAPI_DrawBitmap WinAPI_DrawEdge WinAPI_DrawFocusRect ' +
-	        'WinAPI_DrawFrameControl WinAPI_DrawIcon WinAPI_DrawIconEx ' +
-	        'WinAPI_DrawLine WinAPI_DrawShadowText WinAPI_DrawText ' +
-	        'WinAPI_DrawThemeBackground WinAPI_DrawThemeEdge ' +
-	        'WinAPI_DrawThemeIcon WinAPI_DrawThemeParentBackground ' +
-	        'WinAPI_DrawThemeText WinAPI_DrawThemeTextEx ' +
-	        'WinAPI_DuplicateEncryptionInfoFile WinAPI_DuplicateHandle ' +
-	        'WinAPI_DuplicateTokenEx WinAPI_DwmDefWindowProc ' +
-	        'WinAPI_DwmEnableBlurBehindWindow WinAPI_DwmEnableComposition ' +
-	        'WinAPI_DwmExtendFrameIntoClientArea ' +
-	        'WinAPI_DwmGetColorizationColor ' +
-	        'WinAPI_DwmGetColorizationParameters ' +
-	        'WinAPI_DwmGetWindowAttribute WinAPI_DwmInvalidateIconicBitmaps ' +
-	        'WinAPI_DwmIsCompositionEnabled ' +
-	        'WinAPI_DwmQueryThumbnailSourceSize WinAPI_DwmRegisterThumbnail ' +
-	        'WinAPI_DwmSetColorizationParameters ' +
-	        'WinAPI_DwmSetIconicLivePreviewBitmap ' +
-	        'WinAPI_DwmSetIconicThumbnail WinAPI_DwmSetWindowAttribute ' +
-	        'WinAPI_DwmUnregisterThumbnail ' +
-	        'WinAPI_DwmUpdateThumbnailProperties WinAPI_DWordToFloat ' +
-	        'WinAPI_DWordToInt WinAPI_EjectMedia WinAPI_Ellipse ' +
-	        'WinAPI_EmptyWorkingSet WinAPI_EnableWindow WinAPI_EncryptFile ' +
-	        'WinAPI_EncryptionDisable WinAPI_EndBufferedPaint ' +
-	        'WinAPI_EndDeferWindowPos WinAPI_EndPaint WinAPI_EndPath ' +
-	        'WinAPI_EndUpdateResource WinAPI_EnumChildProcess ' +
-	        'WinAPI_EnumChildWindows WinAPI_EnumDesktops ' +
-	        'WinAPI_EnumDesktopWindows WinAPI_EnumDeviceDrivers ' +
-	        'WinAPI_EnumDisplayDevices WinAPI_EnumDisplayMonitors ' +
-	        'WinAPI_EnumDisplaySettings WinAPI_EnumDllProc ' +
-	        'WinAPI_EnumFiles WinAPI_EnumFileStreams ' +
-	        'WinAPI_EnumFontFamilies WinAPI_EnumHardLinks ' +
-	        'WinAPI_EnumMRUList WinAPI_EnumPageFiles ' +
-	        'WinAPI_EnumProcessHandles WinAPI_EnumProcessModules ' +
-	        'WinAPI_EnumProcessThreads WinAPI_EnumProcessWindows ' +
-	        'WinAPI_EnumRawInputDevices WinAPI_EnumResourceLanguages ' +
-	        'WinAPI_EnumResourceNames WinAPI_EnumResourceTypes ' +
-	        'WinAPI_EnumSystemGeoID WinAPI_EnumSystemLocales ' +
-	        'WinAPI_EnumUILanguages WinAPI_EnumWindows ' +
-	        'WinAPI_EnumWindowsPopup WinAPI_EnumWindowStations ' +
-	        'WinAPI_EnumWindowsTop WinAPI_EqualMemory WinAPI_EqualRect ' +
-	        'WinAPI_EqualRgn WinAPI_ExcludeClipRect ' +
-	        'WinAPI_ExpandEnvironmentStrings WinAPI_ExtCreatePen ' +
-	        'WinAPI_ExtCreateRegion WinAPI_ExtFloodFill WinAPI_ExtractIcon ' +
-	        'WinAPI_ExtractIconEx WinAPI_ExtSelectClipRgn ' +
-	        'WinAPI_FatalAppExit WinAPI_FatalExit ' +
-	        'WinAPI_FileEncryptionStatus WinAPI_FileExists ' +
-	        'WinAPI_FileIconInit WinAPI_FileInUse WinAPI_FillMemory ' +
-	        'WinAPI_FillPath WinAPI_FillRect WinAPI_FillRgn ' +
-	        'WinAPI_FindClose WinAPI_FindCloseChangeNotification ' +
-	        'WinAPI_FindExecutable WinAPI_FindFirstChangeNotification ' +
-	        'WinAPI_FindFirstFile WinAPI_FindFirstFileName ' +
-	        'WinAPI_FindFirstStream WinAPI_FindNextChangeNotification ' +
-	        'WinAPI_FindNextFile WinAPI_FindNextFileName ' +
-	        'WinAPI_FindNextStream WinAPI_FindResource ' +
-	        'WinAPI_FindResourceEx WinAPI_FindTextDlg WinAPI_FindWindow ' +
-	        'WinAPI_FlashWindow WinAPI_FlashWindowEx WinAPI_FlattenPath ' +
-	        'WinAPI_FloatToDWord WinAPI_FloatToInt WinAPI_FlushFileBuffers ' +
-	        'WinAPI_FlushFRBuffer WinAPI_FlushViewOfFile ' +
-	        'WinAPI_FormatDriveDlg WinAPI_FormatMessage WinAPI_FrameRect ' +
-	        'WinAPI_FrameRgn WinAPI_FreeLibrary WinAPI_FreeMemory ' +
-	        'WinAPI_FreeMRUList WinAPI_FreeResource WinAPI_GdiComment ' +
-	        'WinAPI_GetActiveWindow WinAPI_GetAllUsersProfileDirectory ' +
-	        'WinAPI_GetAncestor WinAPI_GetApplicationRestartSettings ' +
-	        'WinAPI_GetArcDirection WinAPI_GetAsyncKeyState ' +
-	        'WinAPI_GetBinaryType WinAPI_GetBitmapBits ' +
-	        'WinAPI_GetBitmapDimension WinAPI_GetBitmapDimensionEx ' +
-	        'WinAPI_GetBkColor WinAPI_GetBkMode WinAPI_GetBoundsRect ' +
-	        'WinAPI_GetBrushOrg WinAPI_GetBufferedPaintBits ' +
-	        'WinAPI_GetBufferedPaintDC WinAPI_GetBufferedPaintTargetDC ' +
-	        'WinAPI_GetBufferedPaintTargetRect WinAPI_GetBValue ' +
-	        'WinAPI_GetCaretBlinkTime WinAPI_GetCaretPos WinAPI_GetCDType ' +
-	        'WinAPI_GetClassInfoEx WinAPI_GetClassLongEx ' +
-	        'WinAPI_GetClassName WinAPI_GetClientHeight ' +
-	        'WinAPI_GetClientRect WinAPI_GetClientWidth ' +
-	        'WinAPI_GetClipboardSequenceNumber WinAPI_GetClipBox ' +
-	        'WinAPI_GetClipCursor WinAPI_GetClipRgn ' +
-	        'WinAPI_GetColorAdjustment WinAPI_GetCompressedFileSize ' +
-	        'WinAPI_GetCompression WinAPI_GetConnectedDlg ' +
-	        'WinAPI_GetCurrentDirectory WinAPI_GetCurrentHwProfile ' +
-	        'WinAPI_GetCurrentObject WinAPI_GetCurrentPosition ' +
-	        'WinAPI_GetCurrentProcess ' +
-	        'WinAPI_GetCurrentProcessExplicitAppUserModelID ' +
-	        'WinAPI_GetCurrentProcessID WinAPI_GetCurrentThemeName ' +
-	        'WinAPI_GetCurrentThread WinAPI_GetCurrentThreadId ' +
-	        'WinAPI_GetCursor WinAPI_GetCursorInfo WinAPI_GetDateFormat ' +
-	        'WinAPI_GetDC WinAPI_GetDCEx WinAPI_GetDefaultPrinter ' +
-	        'WinAPI_GetDefaultUserProfileDirectory WinAPI_GetDesktopWindow ' +
-	        'WinAPI_GetDeviceCaps WinAPI_GetDeviceDriverBaseName ' +
-	        'WinAPI_GetDeviceDriverFileName WinAPI_GetDeviceGammaRamp ' +
-	        'WinAPI_GetDIBColorTable WinAPI_GetDIBits ' +
-	        'WinAPI_GetDiskFreeSpaceEx WinAPI_GetDlgCtrlID ' +
-	        'WinAPI_GetDlgItem WinAPI_GetDllDirectory ' +
-	        'WinAPI_GetDriveBusType WinAPI_GetDriveGeometryEx ' +
-	        'WinAPI_GetDriveNumber WinAPI_GetDriveType ' +
-	        'WinAPI_GetDurationFormat WinAPI_GetEffectiveClientRect ' +
-	        'WinAPI_GetEnhMetaFile WinAPI_GetEnhMetaFileBits ' +
-	        'WinAPI_GetEnhMetaFileDescription WinAPI_GetEnhMetaFileDimension ' +
-	        'WinAPI_GetEnhMetaFileHeader WinAPI_GetErrorMessage ' +
-	        'WinAPI_GetErrorMode WinAPI_GetExitCodeProcess ' +
-	        'WinAPI_GetExtended WinAPI_GetFileAttributes WinAPI_GetFileID ' +
-	        'WinAPI_GetFileInformationByHandle ' +
-	        'WinAPI_GetFileInformationByHandleEx WinAPI_GetFilePointerEx ' +
-	        'WinAPI_GetFileSizeEx WinAPI_GetFileSizeOnDisk ' +
-	        'WinAPI_GetFileTitle WinAPI_GetFileType ' +
-	        'WinAPI_GetFileVersionInfo WinAPI_GetFinalPathNameByHandle ' +
-	        'WinAPI_GetFinalPathNameByHandleEx WinAPI_GetFocus ' +
-	        'WinAPI_GetFontMemoryResourceInfo WinAPI_GetFontName ' +
-	        'WinAPI_GetFontResourceInfo WinAPI_GetForegroundWindow ' +
-	        'WinAPI_GetFRBuffer WinAPI_GetFullPathName WinAPI_GetGeoInfo ' +
-	        'WinAPI_GetGlyphOutline WinAPI_GetGraphicsMode ' +
-	        'WinAPI_GetGuiResources WinAPI_GetGUIThreadInfo ' +
-	        'WinAPI_GetGValue WinAPI_GetHandleInformation ' +
-	        'WinAPI_GetHGlobalFromStream WinAPI_GetIconDimension ' +
-	        'WinAPI_GetIconInfo WinAPI_GetIconInfoEx WinAPI_GetIdleTime ' +
-	        'WinAPI_GetKeyboardLayout WinAPI_GetKeyboardLayoutList ' +
-	        'WinAPI_GetKeyboardState WinAPI_GetKeyboardType ' +
-	        'WinAPI_GetKeyNameText WinAPI_GetKeyState ' +
-	        'WinAPI_GetLastActivePopup WinAPI_GetLastError ' +
-	        'WinAPI_GetLastErrorMessage WinAPI_GetLayeredWindowAttributes ' +
-	        'WinAPI_GetLocaleInfo WinAPI_GetLogicalDrives ' +
-	        'WinAPI_GetMapMode WinAPI_GetMemorySize ' +
-	        'WinAPI_GetMessageExtraInfo WinAPI_GetModuleFileNameEx ' +
-	        'WinAPI_GetModuleHandle WinAPI_GetModuleHandleEx ' +
-	        'WinAPI_GetModuleInformation WinAPI_GetMonitorInfo ' +
-	        'WinAPI_GetMousePos WinAPI_GetMousePosX WinAPI_GetMousePosY ' +
-	        'WinAPI_GetMUILanguage WinAPI_GetNumberFormat WinAPI_GetObject ' +
-	        'WinAPI_GetObjectID WinAPI_GetObjectInfoByHandle ' +
-	        'WinAPI_GetObjectNameByHandle WinAPI_GetObjectType ' +
-	        'WinAPI_GetOpenFileName WinAPI_GetOutlineTextMetrics ' +
-	        'WinAPI_GetOverlappedResult WinAPI_GetParent ' +
-	        'WinAPI_GetParentProcess WinAPI_GetPerformanceInfo ' +
-	        'WinAPI_GetPEType WinAPI_GetPhysicallyInstalledSystemMemory ' +
-	        'WinAPI_GetPixel WinAPI_GetPolyFillMode WinAPI_GetPosFromRect ' +
-	        'WinAPI_GetPriorityClass WinAPI_GetProcAddress ' +
-	        'WinAPI_GetProcessAffinityMask WinAPI_GetProcessCommandLine ' +
-	        'WinAPI_GetProcessFileName WinAPI_GetProcessHandleCount ' +
-	        'WinAPI_GetProcessID WinAPI_GetProcessIoCounters ' +
-	        'WinAPI_GetProcessMemoryInfo WinAPI_GetProcessName ' +
-	        'WinAPI_GetProcessShutdownParameters WinAPI_GetProcessTimes ' +
-	        'WinAPI_GetProcessUser WinAPI_GetProcessWindowStation ' +
-	        'WinAPI_GetProcessWorkingDirectory WinAPI_GetProfilesDirectory ' +
-	        'WinAPI_GetPwrCapabilities WinAPI_GetRawInputBuffer ' +
-	        'WinAPI_GetRawInputBufferLength WinAPI_GetRawInputData ' +
-	        'WinAPI_GetRawInputDeviceInfo WinAPI_GetRegionData ' +
-	        'WinAPI_GetRegisteredRawInputDevices ' +
-	        'WinAPI_GetRegKeyNameByHandle WinAPI_GetRgnBox WinAPI_GetROP2 ' +
-	        'WinAPI_GetRValue WinAPI_GetSaveFileName WinAPI_GetShellWindow ' +
-	        'WinAPI_GetStartupInfo WinAPI_GetStdHandle ' +
-	        'WinAPI_GetStockObject WinAPI_GetStretchBltMode ' +
-	        'WinAPI_GetString WinAPI_GetSysColor WinAPI_GetSysColorBrush ' +
-	        'WinAPI_GetSystemDefaultLangID WinAPI_GetSystemDefaultLCID ' +
-	        'WinAPI_GetSystemDefaultUILanguage WinAPI_GetSystemDEPPolicy ' +
-	        'WinAPI_GetSystemInfo WinAPI_GetSystemMetrics ' +
-	        'WinAPI_GetSystemPowerStatus WinAPI_GetSystemTimes ' +
-	        'WinAPI_GetSystemWow64Directory WinAPI_GetTabbedTextExtent ' +
-	        'WinAPI_GetTempFileName WinAPI_GetTextAlign ' +
-	        'WinAPI_GetTextCharacterExtra WinAPI_GetTextColor ' +
-	        'WinAPI_GetTextExtentPoint32 WinAPI_GetTextFace ' +
-	        'WinAPI_GetTextMetrics WinAPI_GetThemeAppProperties ' +
-	        'WinAPI_GetThemeBackgroundContentRect ' +
-	        'WinAPI_GetThemeBackgroundExtent WinAPI_GetThemeBackgroundRegion ' +
-	        'WinAPI_GetThemeBitmap WinAPI_GetThemeBool ' +
-	        'WinAPI_GetThemeColor WinAPI_GetThemeDocumentationProperty ' +
-	        'WinAPI_GetThemeEnumValue WinAPI_GetThemeFilename ' +
-	        'WinAPI_GetThemeFont WinAPI_GetThemeInt WinAPI_GetThemeMargins ' +
-	        'WinAPI_GetThemeMetric WinAPI_GetThemePartSize ' +
-	        'WinAPI_GetThemePosition WinAPI_GetThemePropertyOrigin ' +
-	        'WinAPI_GetThemeRect WinAPI_GetThemeString ' +
-	        'WinAPI_GetThemeSysBool WinAPI_GetThemeSysColor ' +
-	        'WinAPI_GetThemeSysColorBrush WinAPI_GetThemeSysFont ' +
-	        'WinAPI_GetThemeSysInt WinAPI_GetThemeSysSize ' +
-	        'WinAPI_GetThemeSysString WinAPI_GetThemeTextExtent ' +
-	        'WinAPI_GetThemeTextMetrics WinAPI_GetThemeTransitionDuration ' +
-	        'WinAPI_GetThreadDesktop WinAPI_GetThreadErrorMode ' +
-	        'WinAPI_GetThreadLocale WinAPI_GetThreadUILanguage ' +
-	        'WinAPI_GetTickCount WinAPI_GetTickCount64 ' +
-	        'WinAPI_GetTimeFormat WinAPI_GetTopWindow ' +
-	        'WinAPI_GetUDFColorMode WinAPI_GetUpdateRect ' +
-	        'WinAPI_GetUpdateRgn WinAPI_GetUserDefaultLangID ' +
-	        'WinAPI_GetUserDefaultLCID WinAPI_GetUserDefaultUILanguage ' +
-	        'WinAPI_GetUserGeoID WinAPI_GetUserObjectInformation ' +
-	        'WinAPI_GetVersion WinAPI_GetVersionEx ' +
-	        'WinAPI_GetVolumeInformation WinAPI_GetVolumeInformationByHandle ' +
-	        'WinAPI_GetVolumeNameForVolumeMountPoint WinAPI_GetWindow ' +
-	        'WinAPI_GetWindowDC WinAPI_GetWindowDisplayAffinity ' +
-	        'WinAPI_GetWindowExt WinAPI_GetWindowFileName ' +
-	        'WinAPI_GetWindowHeight WinAPI_GetWindowInfo ' +
-	        'WinAPI_GetWindowLong WinAPI_GetWindowOrg ' +
-	        'WinAPI_GetWindowPlacement WinAPI_GetWindowRect ' +
-	        'WinAPI_GetWindowRgn WinAPI_GetWindowRgnBox ' +
-	        'WinAPI_GetWindowSubclass WinAPI_GetWindowText ' +
-	        'WinAPI_GetWindowTheme WinAPI_GetWindowThreadProcessId ' +
-	        'WinAPI_GetWindowWidth WinAPI_GetWorkArea ' +
-	        'WinAPI_GetWorldTransform WinAPI_GetXYFromPoint ' +
-	        'WinAPI_GlobalMemoryStatus WinAPI_GradientFill ' +
-	        'WinAPI_GUIDFromString WinAPI_GUIDFromStringEx WinAPI_HashData ' +
-	        'WinAPI_HashString WinAPI_HiByte WinAPI_HideCaret ' +
-	        'WinAPI_HiDWord WinAPI_HiWord WinAPI_InflateRect ' +
-	        'WinAPI_InitMUILanguage WinAPI_InProcess ' +
-	        'WinAPI_IntersectClipRect WinAPI_IntersectRect ' +
-	        'WinAPI_IntToDWord WinAPI_IntToFloat WinAPI_InvalidateRect ' +
-	        'WinAPI_InvalidateRgn WinAPI_InvertANDBitmap ' +
-	        'WinAPI_InvertColor WinAPI_InvertRect WinAPI_InvertRgn ' +
-	        'WinAPI_IOCTL WinAPI_IsAlphaBitmap WinAPI_IsBadCodePtr ' +
-	        'WinAPI_IsBadReadPtr WinAPI_IsBadStringPtr ' +
-	        'WinAPI_IsBadWritePtr WinAPI_IsChild WinAPI_IsClassName ' +
-	        'WinAPI_IsDoorOpen WinAPI_IsElevated WinAPI_IsHungAppWindow ' +
-	        'WinAPI_IsIconic WinAPI_IsInternetConnected ' +
-	        'WinAPI_IsLoadKBLayout WinAPI_IsMemory ' +
-	        'WinAPI_IsNameInExpression WinAPI_IsNetworkAlive ' +
-	        'WinAPI_IsPathShared WinAPI_IsProcessInJob ' +
-	        'WinAPI_IsProcessorFeaturePresent WinAPI_IsRectEmpty ' +
-	        'WinAPI_IsThemeActive ' +
-	        'WinAPI_IsThemeBackgroundPartiallyTransparent ' +
-	        'WinAPI_IsThemePartDefined WinAPI_IsValidLocale ' +
-	        'WinAPI_IsWindow WinAPI_IsWindowEnabled WinAPI_IsWindowUnicode ' +
-	        'WinAPI_IsWindowVisible WinAPI_IsWow64Process ' +
-	        'WinAPI_IsWritable WinAPI_IsZoomed WinAPI_Keybd_Event ' +
-	        'WinAPI_KillTimer WinAPI_LineDDA WinAPI_LineTo ' +
-	        'WinAPI_LoadBitmap WinAPI_LoadCursor WinAPI_LoadCursorFromFile ' +
-	        'WinAPI_LoadIcon WinAPI_LoadIconMetric ' +
-	        'WinAPI_LoadIconWithScaleDown WinAPI_LoadImage ' +
-	        'WinAPI_LoadIndirectString WinAPI_LoadKeyboardLayout ' +
-	        'WinAPI_LoadLibrary WinAPI_LoadLibraryEx WinAPI_LoadMedia ' +
-	        'WinAPI_LoadResource WinAPI_LoadShell32Icon WinAPI_LoadString ' +
-	        'WinAPI_LoadStringEx WinAPI_LoByte WinAPI_LocalFree ' +
-	        'WinAPI_LockDevice WinAPI_LockFile WinAPI_LockResource ' +
-	        'WinAPI_LockWindowUpdate WinAPI_LockWorkStation WinAPI_LoDWord ' +
-	        'WinAPI_LongMid WinAPI_LookupIconIdFromDirectoryEx ' +
-	        'WinAPI_LoWord WinAPI_LPtoDP WinAPI_MAKELANGID ' +
-	        'WinAPI_MAKELCID WinAPI_MakeLong WinAPI_MakeQWord ' +
-	        'WinAPI_MakeWord WinAPI_MapViewOfFile WinAPI_MapVirtualKey ' +
-	        'WinAPI_MaskBlt WinAPI_MessageBeep WinAPI_MessageBoxCheck ' +
-	        'WinAPI_MessageBoxIndirect WinAPI_MirrorIcon ' +
-	        'WinAPI_ModifyWorldTransform WinAPI_MonitorFromPoint ' +
-	        'WinAPI_MonitorFromRect WinAPI_MonitorFromWindow ' +
-	        'WinAPI_Mouse_Event WinAPI_MoveFileEx WinAPI_MoveMemory ' +
-	        'WinAPI_MoveTo WinAPI_MoveToEx WinAPI_MoveWindow ' +
-	        'WinAPI_MsgBox WinAPI_MulDiv WinAPI_MultiByteToWideChar ' +
-	        'WinAPI_MultiByteToWideCharEx WinAPI_NtStatusToDosError ' +
-	        'WinAPI_OemToChar WinAPI_OffsetClipRgn WinAPI_OffsetPoints ' +
-	        'WinAPI_OffsetRect WinAPI_OffsetRgn WinAPI_OffsetWindowOrg ' +
-	        'WinAPI_OpenDesktop WinAPI_OpenFileById WinAPI_OpenFileDlg ' +
-	        'WinAPI_OpenFileMapping WinAPI_OpenIcon ' +
-	        'WinAPI_OpenInputDesktop WinAPI_OpenJobObject WinAPI_OpenMutex ' +
-	        'WinAPI_OpenProcess WinAPI_OpenProcessToken ' +
-	        'WinAPI_OpenSemaphore WinAPI_OpenThemeData ' +
-	        'WinAPI_OpenWindowStation WinAPI_PageSetupDlg ' +
-	        'WinAPI_PaintDesktop WinAPI_PaintRgn WinAPI_ParseURL ' +
-	        'WinAPI_ParseUserName WinAPI_PatBlt WinAPI_PathAddBackslash ' +
-	        'WinAPI_PathAddExtension WinAPI_PathAppend ' +
-	        'WinAPI_PathBuildRoot WinAPI_PathCanonicalize ' +
-	        'WinAPI_PathCommonPrefix WinAPI_PathCompactPath ' +
-	        'WinAPI_PathCompactPathEx WinAPI_PathCreateFromUrl ' +
-	        'WinAPI_PathFindExtension WinAPI_PathFindFileName ' +
-	        'WinAPI_PathFindNextComponent WinAPI_PathFindOnPath ' +
-	        'WinAPI_PathGetArgs WinAPI_PathGetCharType ' +
-	        'WinAPI_PathGetDriveNumber WinAPI_PathIsContentType ' +
-	        'WinAPI_PathIsDirectory WinAPI_PathIsDirectoryEmpty ' +
-	        'WinAPI_PathIsExe WinAPI_PathIsFileSpec ' +
-	        'WinAPI_PathIsLFNFileSpec WinAPI_PathIsRelative ' +
-	        'WinAPI_PathIsRoot WinAPI_PathIsSameRoot ' +
-	        'WinAPI_PathIsSystemFolder WinAPI_PathIsUNC ' +
-	        'WinAPI_PathIsUNCServer WinAPI_PathIsUNCServerShare ' +
-	        'WinAPI_PathMakeSystemFolder WinAPI_PathMatchSpec ' +
-	        'WinAPI_PathParseIconLocation WinAPI_PathRelativePathTo ' +
-	        'WinAPI_PathRemoveArgs WinAPI_PathRemoveBackslash ' +
-	        'WinAPI_PathRemoveExtension WinAPI_PathRemoveFileSpec ' +
-	        'WinAPI_PathRenameExtension WinAPI_PathSearchAndQualify ' +
-	        'WinAPI_PathSkipRoot WinAPI_PathStripPath ' +
-	        'WinAPI_PathStripToRoot WinAPI_PathToRegion ' +
-	        'WinAPI_PathUndecorate WinAPI_PathUnExpandEnvStrings ' +
-	        'WinAPI_PathUnmakeSystemFolder WinAPI_PathUnquoteSpaces ' +
-	        'WinAPI_PathYetAnotherMakeUniqueName WinAPI_PickIconDlg ' +
-	        'WinAPI_PlayEnhMetaFile WinAPI_PlaySound WinAPI_PlgBlt ' +
-	        'WinAPI_PointFromRect WinAPI_PolyBezier WinAPI_PolyBezierTo ' +
-	        'WinAPI_PolyDraw WinAPI_Polygon WinAPI_PostMessage ' +
-	        'WinAPI_PrimaryLangId WinAPI_PrintDlg WinAPI_PrintDlgEx ' +
-	        'WinAPI_PrintWindow WinAPI_ProgIDFromCLSID WinAPI_PtInRect ' +
-	        'WinAPI_PtInRectEx WinAPI_PtInRegion WinAPI_PtVisible ' +
-	        'WinAPI_QueryDosDevice WinAPI_QueryInformationJobObject ' +
-	        'WinAPI_QueryPerformanceCounter WinAPI_QueryPerformanceFrequency ' +
-	        'WinAPI_RadialGradientFill WinAPI_ReadDirectoryChanges ' +
-	        'WinAPI_ReadFile WinAPI_ReadProcessMemory WinAPI_Rectangle ' +
-	        'WinAPI_RectInRegion WinAPI_RectIsEmpty WinAPI_RectVisible ' +
-	        'WinAPI_RedrawWindow WinAPI_RegCloseKey ' +
-	        'WinAPI_RegConnectRegistry WinAPI_RegCopyTree ' +
-	        'WinAPI_RegCopyTreeEx WinAPI_RegCreateKey ' +
-	        'WinAPI_RegDeleteEmptyKey WinAPI_RegDeleteKey ' +
-	        'WinAPI_RegDeleteKeyValue WinAPI_RegDeleteTree ' +
-	        'WinAPI_RegDeleteTreeEx WinAPI_RegDeleteValue ' +
-	        'WinAPI_RegDisableReflectionKey WinAPI_RegDuplicateHKey ' +
-	        'WinAPI_RegEnableReflectionKey WinAPI_RegEnumKey ' +
-	        'WinAPI_RegEnumValue WinAPI_RegFlushKey ' +
-	        'WinAPI_RegisterApplicationRestart WinAPI_RegisterClass ' +
-	        'WinAPI_RegisterClassEx WinAPI_RegisterHotKey ' +
-	        'WinAPI_RegisterPowerSettingNotification ' +
-	        'WinAPI_RegisterRawInputDevices WinAPI_RegisterShellHookWindow ' +
-	        'WinAPI_RegisterWindowMessage WinAPI_RegLoadMUIString ' +
-	        'WinAPI_RegNotifyChangeKeyValue WinAPI_RegOpenKey ' +
-	        'WinAPI_RegQueryInfoKey WinAPI_RegQueryLastWriteTime ' +
-	        'WinAPI_RegQueryMultipleValues WinAPI_RegQueryReflectionKey ' +
-	        'WinAPI_RegQueryValue WinAPI_RegRestoreKey WinAPI_RegSaveKey ' +
-	        'WinAPI_RegSetValue WinAPI_ReleaseCapture WinAPI_ReleaseDC ' +
-	        'WinAPI_ReleaseMutex WinAPI_ReleaseSemaphore ' +
-	        'WinAPI_ReleaseStream WinAPI_RemoveClipboardFormatListener ' +
-	        'WinAPI_RemoveDirectory WinAPI_RemoveFontMemResourceEx ' +
-	        'WinAPI_RemoveFontResourceEx WinAPI_RemoveWindowSubclass ' +
-	        'WinAPI_ReOpenFile WinAPI_ReplaceFile WinAPI_ReplaceTextDlg ' +
-	        'WinAPI_ResetEvent WinAPI_RestartDlg WinAPI_RestoreDC ' +
-	        'WinAPI_RGB WinAPI_RotatePoints WinAPI_RoundRect ' +
-	        'WinAPI_SaveDC WinAPI_SaveFileDlg WinAPI_SaveHBITMAPToFile ' +
-	        'WinAPI_SaveHICONToFile WinAPI_ScaleWindowExt ' +
-	        'WinAPI_ScreenToClient WinAPI_SearchPath WinAPI_SelectClipPath ' +
-	        'WinAPI_SelectClipRgn WinAPI_SelectObject ' +
-	        'WinAPI_SendMessageTimeout WinAPI_SetActiveWindow ' +
-	        'WinAPI_SetArcDirection WinAPI_SetBitmapBits ' +
-	        'WinAPI_SetBitmapDimensionEx WinAPI_SetBkColor ' +
-	        'WinAPI_SetBkMode WinAPI_SetBoundsRect WinAPI_SetBrushOrg ' +
-	        'WinAPI_SetCapture WinAPI_SetCaretBlinkTime WinAPI_SetCaretPos ' +
-	        'WinAPI_SetClassLongEx WinAPI_SetColorAdjustment ' +
-	        'WinAPI_SetCompression WinAPI_SetCurrentDirectory ' +
-	        'WinAPI_SetCurrentProcessExplicitAppUserModelID WinAPI_SetCursor ' +
-	        'WinAPI_SetDCBrushColor WinAPI_SetDCPenColor ' +
-	        'WinAPI_SetDefaultPrinter WinAPI_SetDeviceGammaRamp ' +
-	        'WinAPI_SetDIBColorTable WinAPI_SetDIBits ' +
-	        'WinAPI_SetDIBitsToDevice WinAPI_SetDllDirectory ' +
-	        'WinAPI_SetEndOfFile WinAPI_SetEnhMetaFileBits ' +
-	        'WinAPI_SetErrorMode WinAPI_SetEvent WinAPI_SetFileAttributes ' +
-	        'WinAPI_SetFileInformationByHandleEx WinAPI_SetFilePointer ' +
-	        'WinAPI_SetFilePointerEx WinAPI_SetFileShortName ' +
-	        'WinAPI_SetFileValidData WinAPI_SetFocus WinAPI_SetFont ' +
-	        'WinAPI_SetForegroundWindow WinAPI_SetFRBuffer ' +
-	        'WinAPI_SetGraphicsMode WinAPI_SetHandleInformation ' +
-	        'WinAPI_SetInformationJobObject WinAPI_SetKeyboardLayout ' +
-	        'WinAPI_SetKeyboardState WinAPI_SetLastError ' +
-	        'WinAPI_SetLayeredWindowAttributes WinAPI_SetLocaleInfo ' +
-	        'WinAPI_SetMapMode WinAPI_SetMessageExtraInfo WinAPI_SetParent ' +
-	        'WinAPI_SetPixel WinAPI_SetPolyFillMode ' +
-	        'WinAPI_SetPriorityClass WinAPI_SetProcessAffinityMask ' +
-	        'WinAPI_SetProcessShutdownParameters ' +
-	        'WinAPI_SetProcessWindowStation WinAPI_SetRectRgn ' +
-	        'WinAPI_SetROP2 WinAPI_SetSearchPathMode ' +
-	        'WinAPI_SetStretchBltMode WinAPI_SetSysColors ' +
-	        'WinAPI_SetSystemCursor WinAPI_SetTextAlign ' +
-	        'WinAPI_SetTextCharacterExtra WinAPI_SetTextColor ' +
-	        'WinAPI_SetTextJustification WinAPI_SetThemeAppProperties ' +
-	        'WinAPI_SetThreadDesktop WinAPI_SetThreadErrorMode ' +
-	        'WinAPI_SetThreadExecutionState WinAPI_SetThreadLocale ' +
-	        'WinAPI_SetThreadUILanguage WinAPI_SetTimer ' +
-	        'WinAPI_SetUDFColorMode WinAPI_SetUserGeoID ' +
-	        'WinAPI_SetUserObjectInformation WinAPI_SetVolumeMountPoint ' +
-	        'WinAPI_SetWindowDisplayAffinity WinAPI_SetWindowExt ' +
-	        'WinAPI_SetWindowLong WinAPI_SetWindowOrg ' +
-	        'WinAPI_SetWindowPlacement WinAPI_SetWindowPos ' +
-	        'WinAPI_SetWindowRgn WinAPI_SetWindowsHookEx ' +
-	        'WinAPI_SetWindowSubclass WinAPI_SetWindowText ' +
-	        'WinAPI_SetWindowTheme WinAPI_SetWinEventHook ' +
-	        'WinAPI_SetWorldTransform WinAPI_SfcIsFileProtected ' +
-	        'WinAPI_SfcIsKeyProtected WinAPI_ShellAboutDlg ' +
-	        'WinAPI_ShellAddToRecentDocs WinAPI_ShellChangeNotify ' +
-	        'WinAPI_ShellChangeNotifyDeregister ' +
-	        'WinAPI_ShellChangeNotifyRegister WinAPI_ShellCreateDirectory ' +
-	        'WinAPI_ShellEmptyRecycleBin WinAPI_ShellExecute ' +
-	        'WinAPI_ShellExecuteEx WinAPI_ShellExtractAssociatedIcon ' +
-	        'WinAPI_ShellExtractIcon WinAPI_ShellFileOperation ' +
-	        'WinAPI_ShellFlushSFCache WinAPI_ShellGetFileInfo ' +
-	        'WinAPI_ShellGetIconOverlayIndex WinAPI_ShellGetImageList ' +
-	        'WinAPI_ShellGetKnownFolderIDList WinAPI_ShellGetKnownFolderPath ' +
-	        'WinAPI_ShellGetLocalizedName WinAPI_ShellGetPathFromIDList ' +
-	        'WinAPI_ShellGetSetFolderCustomSettings WinAPI_ShellGetSettings ' +
-	        'WinAPI_ShellGetSpecialFolderLocation ' +
-	        'WinAPI_ShellGetSpecialFolderPath WinAPI_ShellGetStockIconInfo ' +
-	        'WinAPI_ShellILCreateFromPath WinAPI_ShellNotifyIcon ' +
-	        'WinAPI_ShellNotifyIconGetRect WinAPI_ShellObjectProperties ' +
-	        'WinAPI_ShellOpenFolderAndSelectItems WinAPI_ShellOpenWithDlg ' +
-	        'WinAPI_ShellQueryRecycleBin ' +
-	        'WinAPI_ShellQueryUserNotificationState ' +
-	        'WinAPI_ShellRemoveLocalizedName WinAPI_ShellRestricted ' +
-	        'WinAPI_ShellSetKnownFolderPath WinAPI_ShellSetLocalizedName ' +
-	        'WinAPI_ShellSetSettings WinAPI_ShellStartNetConnectionDlg ' +
-	        'WinAPI_ShellUpdateImage WinAPI_ShellUserAuthenticationDlg ' +
-	        'WinAPI_ShellUserAuthenticationDlgEx WinAPI_ShortToWord ' +
-	        'WinAPI_ShowCaret WinAPI_ShowCursor WinAPI_ShowError ' +
-	        'WinAPI_ShowLastError WinAPI_ShowMsg WinAPI_ShowOwnedPopups ' +
-	        'WinAPI_ShowWindow WinAPI_ShutdownBlockReasonCreate ' +
-	        'WinAPI_ShutdownBlockReasonDestroy ' +
-	        'WinAPI_ShutdownBlockReasonQuery WinAPI_SizeOfResource ' +
-	        'WinAPI_StretchBlt WinAPI_StretchDIBits ' +
-	        'WinAPI_StrFormatByteSize WinAPI_StrFormatByteSizeEx ' +
-	        'WinAPI_StrFormatKBSize WinAPI_StrFromTimeInterval ' +
-	        'WinAPI_StringFromGUID WinAPI_StringLenA WinAPI_StringLenW ' +
-	        'WinAPI_StrLen WinAPI_StrokeAndFillPath WinAPI_StrokePath ' +
-	        'WinAPI_StructToArray WinAPI_SubLangId WinAPI_SubtractRect ' +
-	        'WinAPI_SwapDWord WinAPI_SwapQWord WinAPI_SwapWord ' +
-	        'WinAPI_SwitchColor WinAPI_SwitchDesktop ' +
-	        'WinAPI_SwitchToThisWindow WinAPI_SystemParametersInfo ' +
-	        'WinAPI_TabbedTextOut WinAPI_TerminateJobObject ' +
-	        'WinAPI_TerminateProcess WinAPI_TextOut WinAPI_TileWindows ' +
-	        'WinAPI_TrackMouseEvent WinAPI_TransparentBlt ' +
-	        'WinAPI_TwipsPerPixelX WinAPI_TwipsPerPixelY ' +
-	        'WinAPI_UnhookWindowsHookEx WinAPI_UnhookWinEvent ' +
-	        'WinAPI_UnionRect WinAPI_UnionStruct WinAPI_UniqueHardwareID ' +
-	        'WinAPI_UnloadKeyboardLayout WinAPI_UnlockFile ' +
-	        'WinAPI_UnmapViewOfFile WinAPI_UnregisterApplicationRestart ' +
-	        'WinAPI_UnregisterClass WinAPI_UnregisterHotKey ' +
-	        'WinAPI_UnregisterPowerSettingNotification ' +
-	        'WinAPI_UpdateLayeredWindow WinAPI_UpdateLayeredWindowEx ' +
-	        'WinAPI_UpdateLayeredWindowIndirect WinAPI_UpdateResource ' +
-	        'WinAPI_UpdateWindow WinAPI_UrlApplyScheme ' +
-	        'WinAPI_UrlCanonicalize WinAPI_UrlCombine WinAPI_UrlCompare ' +
-	        'WinAPI_UrlCreateFromPath WinAPI_UrlFixup WinAPI_UrlGetPart ' +
-	        'WinAPI_UrlHash WinAPI_UrlIs WinAPI_UserHandleGrantAccess ' +
-	        'WinAPI_ValidateRect WinAPI_ValidateRgn WinAPI_VerQueryRoot ' +
-	        'WinAPI_VerQueryValue WinAPI_VerQueryValueEx ' +
-	        'WinAPI_WaitForInputIdle WinAPI_WaitForMultipleObjects ' +
-	        'WinAPI_WaitForSingleObject WinAPI_WideCharToMultiByte ' +
-	        'WinAPI_WidenPath WinAPI_WindowFromDC WinAPI_WindowFromPoint ' +
-	        'WinAPI_WordToShort WinAPI_Wow64EnableWow64FsRedirection ' +
-	        'WinAPI_WriteConsole WinAPI_WriteFile ' +
-	        'WinAPI_WriteProcessMemory WinAPI_ZeroMemory ' +
-	        'WinNet_AddConnection WinNet_AddConnection2 ' +
-	        'WinNet_AddConnection3 WinNet_CancelConnection ' +
-	        'WinNet_CancelConnection2 WinNet_CloseEnum ' +
-	        'WinNet_ConnectionDialog WinNet_ConnectionDialog1 ' +
-	        'WinNet_DisconnectDialog WinNet_DisconnectDialog1 ' +
-	        'WinNet_EnumResource WinNet_GetConnection ' +
-	        'WinNet_GetConnectionPerformance WinNet_GetLastError ' +
-	        'WinNet_GetNetworkInformation WinNet_GetProviderName ' +
-	        'WinNet_GetResourceInformation WinNet_GetResourceParent ' +
-	        'WinNet_GetUniversalName WinNet_GetUser WinNet_OpenEnum ' +
-	        'WinNet_RestoreConnection WinNet_UseConnection Word_Create ' +
-	        'Word_DocAdd Word_DocAttach Word_DocClose Word_DocExport ' +
-	        'Word_DocFind Word_DocFindReplace Word_DocGet ' +
-	        'Word_DocLinkAdd Word_DocLinkGet Word_DocOpen ' +
-	        'Word_DocPictureAdd Word_DocPrint Word_DocRangeSet ' +
-	        'Word_DocSave Word_DocSaveAs Word_DocTableRead ' +
-	        'Word_DocTableWrite Word_Quit',
+	        BUILT_IN =
+	          'Abs ACos AdlibRegister AdlibUnRegister Asc AscW ASin Assign ATan AutoItSetOption AutoItWinGetTitle AutoItWinSetTitle Beep Binary BinaryLen BinaryMid BinaryToString BitAND BitNOT BitOR BitRotate BitShift BitXOR BlockInput Break Call CDTray Ceiling Chr ChrW ClipGet ClipPut ConsoleRead ConsoleWrite ConsoleWriteError ControlClick ControlCommand ControlDisable ControlEnable ControlFocus ControlGetFocus ControlGetHandle ControlGetPos ControlGetText ControlHide ControlListView ControlMove ControlSend ControlSetText ControlShow ControlTreeView Cos Dec DirCopy DirCreate DirGetSize DirMove DirRemove DllCall DllCallAddress DllCallbackFree DllCallbackGetPtr DllCallbackRegister DllClose DllOpen DllStructCreate DllStructGetData DllStructGetPtr DllStructGetSize DllStructSetData DriveGetDrive DriveGetFileSystem DriveGetLabel DriveGetSerial DriveGetType DriveMapAdd DriveMapDel DriveMapGet DriveSetLabel DriveSpaceFree DriveSpaceTotal DriveStatus EnvGet EnvSet EnvUpdate Eval Execute Exp FileChangeDir FileClose FileCopy FileCreateNTFSLink FileCreateShortcut FileDelete FileExists FileFindFirstFile FileFindNextFile FileFlush FileGetAttrib FileGetEncoding FileGetLongName FileGetPos FileGetShortcut FileGetShortName FileGetSize FileGetTime FileGetVersion FileInstall FileMove FileOpen FileOpenDialog FileRead FileReadLine FileReadToArray FileRecycle FileRecycleEmpty FileSaveDialog FileSelectFolder FileSetAttrib FileSetEnd FileSetPos FileSetTime FileWrite FileWriteLine Floor FtpSetProxy FuncName GUICreate GUICtrlCreateAvi GUICtrlCreateButton GUICtrlCreateCheckbox GUICtrlCreateCombo GUICtrlCreateContextMenu GUICtrlCreateDate GUICtrlCreateDummy GUICtrlCreateEdit GUICtrlCreateGraphic GUICtrlCreateGroup GUICtrlCreateIcon GUICtrlCreateInput GUICtrlCreateLabel GUICtrlCreateList GUICtrlCreateListView GUICtrlCreateListViewItem GUICtrlCreateMenu GUICtrlCreateMenuItem GUICtrlCreateMonthCal GUICtrlCreateObj GUICtrlCreatePic GUICtrlCreateProgress GUICtrlCreateRadio GUICtrlCreateSlider GUICtrlCreateTab GUICtrlCreateTabItem GUICtrlCreateTreeView GUICtrlCreateTreeViewItem GUICtrlCreateUpdown GUICtrlDelete GUICtrlGetHandle GUICtrlGetState GUICtrlRead GUICtrlRecvMsg GUICtrlRegisterListViewSort GUICtrlSendMsg GUICtrlSendToDummy GUICtrlSetBkColor GUICtrlSetColor GUICtrlSetCursor GUICtrlSetData GUICtrlSetDefBkColor GUICtrlSetDefColor GUICtrlSetFont GUICtrlSetGraphic GUICtrlSetImage GUICtrlSetLimit GUICtrlSetOnEvent GUICtrlSetPos GUICtrlSetResizing GUICtrlSetState GUICtrlSetStyle GUICtrlSetTip GUIDelete GUIGetCursorInfo GUIGetMsg GUIGetStyle GUIRegisterMsg GUISetAccelerators GUISetBkColor GUISetCoord GUISetCursor GUISetFont GUISetHelp GUISetIcon GUISetOnEvent GUISetState GUISetStyle GUIStartGroup GUISwitch Hex HotKeySet HttpSetProxy HttpSetUserAgent HWnd InetClose InetGet InetGetInfo InetGetSize InetRead IniDelete IniRead IniReadSection IniReadSectionNames IniRenameSection IniWrite IniWriteSection InputBox Int IsAdmin IsArray IsBinary IsBool IsDeclared IsDllStruct IsFloat IsFunc IsHWnd IsInt IsKeyword IsNumber IsObj IsPtr IsString Log MemGetStats Mod MouseClick MouseClickDrag MouseDown MouseGetCursor MouseGetPos MouseMove MouseUp MouseWheel MsgBox Number ObjCreate ObjCreateInterface ObjEvent ObjGet ObjName OnAutoItExitRegister OnAutoItExitUnRegister Ping PixelChecksum PixelGetColor PixelSearch ProcessClose ProcessExists ProcessGetStats ProcessList ProcessSetPriority ProcessWait ProcessWaitClose ProgressOff ProgressOn ProgressSet Ptr Random RegDelete RegEnumKey RegEnumVal RegRead RegWrite Round Run RunAs RunAsWait RunWait Send SendKeepActive SetError SetExtended ShellExecute ShellExecuteWait Shutdown Sin Sleep SoundPlay SoundSetWaveVolume SplashImageOn SplashOff SplashTextOn Sqrt SRandom StatusbarGetText StderrRead StdinWrite StdioClose StdoutRead String StringAddCR StringCompare StringFormat StringFromASCIIArray StringInStr StringIsAlNum StringIsAlpha StringIsASCII StringIsDigit StringIsFloat StringIsInt StringIsLower StringIsSpace StringIsUpper StringIsXDigit StringLeft StringLen StringLower StringMid StringRegExp StringRegExpReplace StringReplace StringReverse StringRight StringSplit StringStripCR StringStripWS StringToASCIIArray StringToBinary StringTrimLeft StringTrimRight StringUpper Tan TCPAccept TCPCloseSocket TCPConnect TCPListen TCPNameToIP TCPRecv TCPSend TCPShutdown, UDPShutdown TCPStartup, UDPStartup TimerDiff TimerInit ToolTip TrayCreateItem TrayCreateMenu TrayGetMsg TrayItemDelete TrayItemGetHandle TrayItemGetState TrayItemGetText TrayItemSetOnEvent TrayItemSetState TrayItemSetText TraySetClick TraySetIcon TraySetOnEvent TraySetPauseIcon TraySetState TraySetToolTip TrayTip UBound UDPBind UDPCloseSocket UDPOpen UDPRecv UDPSend VarGetType WinActivate WinActive WinClose WinExists WinFlash WinGetCaretPos WinGetClassList WinGetClientSize WinGetHandle WinGetPos WinGetProcess WinGetState WinGetText WinGetTitle WinKill WinList WinMenuSelectItem WinMinimizeAll WinMinimizeAllUndo WinMove WinSetOnTop WinSetState WinSetTitle WinSetTrans WinWait',
 
 	        COMMENT = {
 	            variants: [
@@ -23392,37 +22743,7 @@
 	            className: 'meta',
 	            begin: '#',
 	            end: '$',
-	            keywords: {'meta-keyword': 'include include-once NoTrayIcon OnAutoItStartRegister RequireAdmin pragma ' +
-	                'Au3Stripper_Ignore_Funcs Au3Stripper_Ignore_Variables ' +
-	                'Au3Stripper_Off Au3Stripper_On Au3Stripper_Parameters ' +
-	                'AutoIt3Wrapper_Add_Constants AutoIt3Wrapper_Au3Check_Parameters ' +
-	                'AutoIt3Wrapper_Au3Check_Stop_OnWarning AutoIt3Wrapper_Aut2Exe ' +
-	                'AutoIt3Wrapper_AutoIt3 AutoIt3Wrapper_AutoIt3Dir ' +
-	                'AutoIt3Wrapper_Change2CUI AutoIt3Wrapper_Compile_Both ' +
-	                'AutoIt3Wrapper_Compression AutoIt3Wrapper_EndIf ' +
-	                'AutoIt3Wrapper_Icon AutoIt3Wrapper_If_Compile ' +
-	                'AutoIt3Wrapper_If_Run AutoIt3Wrapper_Jump_To_First_Error ' +
-	                'AutoIt3Wrapper_OutFile AutoIt3Wrapper_OutFile_Type ' +
-	                'AutoIt3Wrapper_OutFile_X64 AutoIt3Wrapper_PlugIn_Funcs ' +
-	                'AutoIt3Wrapper_Res_Comment Autoit3Wrapper_Res_Compatibility ' +
-	                'AutoIt3Wrapper_Res_Description AutoIt3Wrapper_Res_Field ' +
-	                'AutoIt3Wrapper_Res_File_Add AutoIt3Wrapper_Res_FileVersion ' +
-	                'AutoIt3Wrapper_Res_FileVersion_AutoIncrement ' +
-	                'AutoIt3Wrapper_Res_Icon_Add AutoIt3Wrapper_Res_Language ' +
-	                'AutoIt3Wrapper_Res_LegalCopyright ' +
-	                'AutoIt3Wrapper_Res_ProductVersion ' +
-	                'AutoIt3Wrapper_Res_requestedExecutionLevel ' +
-	                'AutoIt3Wrapper_Res_SaveSource AutoIt3Wrapper_Run_After ' +
-	                'AutoIt3Wrapper_Run_Au3Check AutoIt3Wrapper_Run_Au3Stripper ' +
-	                'AutoIt3Wrapper_Run_Before AutoIt3Wrapper_Run_Debug_Mode ' +
-	                'AutoIt3Wrapper_Run_SciTE_Minimized ' +
-	                'AutoIt3Wrapper_Run_SciTE_OutputPane_Minimized ' +
-	                'AutoIt3Wrapper_Run_Tidy AutoIt3Wrapper_ShowProgress ' +
-	                'AutoIt3Wrapper_Testing AutoIt3Wrapper_Tidy_Stop_OnError ' +
-	                'AutoIt3Wrapper_UPX_Parameters AutoIt3Wrapper_UseUPX ' +
-	                'AutoIt3Wrapper_UseX64 AutoIt3Wrapper_Version ' +
-	                'AutoIt3Wrapper_Versioning AutoIt3Wrapper_Versioning_Parameters ' +
-	                'Tidy_Off Tidy_On Tidy_Parameters EndRegion Region'},
+	            keywords: {'meta-keyword': 'comments include include-once NoTrayIcon OnAutoItStartRegister pragma compile RequireAdmin'},
 	            contains: [{
 	                    begin: /\\\n/,
 	                    relevance: 0
@@ -23508,7 +22829,7 @@
 	};
 
 /***/ },
-/* 180 */
+/* 183 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -23574,7 +22895,7 @@
 	};
 
 /***/ },
-/* 181 */
+/* 184 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -23609,7 +22930,7 @@
 	};
 
 /***/ },
-/* 182 */
+/* 185 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -23688,7 +23009,7 @@
 	};
 
 /***/ },
-/* 183 */
+/* 186 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -23743,7 +23064,40 @@
 	};
 
 /***/ },
-/* 184 */
+/* 187 */
+/***/ function(module, exports) {
+
+	module.exports = function(hljs){
+	  return {
+	    contains: [
+	      // Attribute
+	      {
+	        className: 'attribute',
+	        begin: /</, end: />/
+	      },
+	      // Specific
+	      {
+	        begin: /::=/,
+	        starts: {
+	          end: /$/,
+	          contains: [
+	            {
+	              begin: /</, end: />/
+	            },
+	            // Common
+	            hljs.C_LINE_COMMENT_MODE,
+	            hljs.C_BLOCK_COMMENT_MODE,
+	            hljs.APOS_STRING_MODE,
+	            hljs.QUOTE_STRING_MODE
+	          ]
+	        }
+	      }
+	    ]
+	  };
+	};
+
+/***/ },
+/* 188 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs){
@@ -23784,7 +23138,7 @@
 	};
 
 /***/ },
-/* 185 */
+/* 189 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -23868,7 +23222,7 @@
 	};
 
 /***/ },
-/* 186 */
+/* 190 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -23921,7 +23275,7 @@
 	};
 
 /***/ },
-/* 187 */
+/* 191 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -23992,7 +23346,7 @@
 	};
 
 /***/ },
-/* 188 */
+/* 192 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -24062,7 +23416,7 @@
 	  var HINT_COL = hljs.COMMENT('\\^\\{', '\\}');
 	  var KEY = {
 	    className: 'symbol',
-	    begin: '[:]' + SYMBOL_RE
+	    begin: '[:]{1,2}' + SYMBOL_RE
 	  };
 	  var LIST = {
 	    begin: '\\(', end: '\\)'
@@ -24091,7 +23445,7 @@
 	};
 
 /***/ },
-/* 189 */
+/* 193 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -24110,7 +23464,7 @@
 	};
 
 /***/ },
-/* 190 */
+/* 194 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -24152,7 +23506,7 @@
 	};
 
 /***/ },
-/* 191 */
+/* 195 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -24295,7 +23649,78 @@
 	};
 
 /***/ },
-/* 192 */
+/* 196 */
+/***/ function(module, exports) {
+
+	module.exports = function(hljs) {
+	  return {
+	    keywords: {
+	      keyword:
+	        '_ as at cofix else end exists exists2 fix for forall fun if IF in let ' +
+	        'match mod Prop return Set then Type using where with ' +
+	        'Abort About Add Admit Admitted All Arguments Assumptions Axiom Back BackTo ' +
+	        'Backtrack Bind Blacklist Canonical Cd Check Class Classes Close Coercion ' +
+	        'Coercions CoFixpoint CoInductive Collection Combined Compute Conjecture ' +
+	        'Conjectures Constant constr Constraint Constructors Context Corollary ' +
+	        'CreateHintDb Cut Declare Defined Definition Delimit Dependencies Dependent' +
+	        'Derive Drop eauto End Equality Eval Example Existential Existentials ' +
+	        'Existing Export exporting Extern Extract Extraction Fact Field Fields File ' +
+	        'Fixpoint Focus for From Function Functional Generalizable Global Goal Grab ' +
+	        'Grammar Graph Guarded Heap Hint HintDb Hints Hypotheses Hypothesis ident ' +
+	        'Identity If Immediate Implicit Import Include Inductive Infix Info Initial ' +
+	        'Inline Inspect Instance Instances Intro Intros Inversion Inversion_clear ' +
+	        'Language Left Lemma Let Libraries Library Load LoadPath Local Locate Ltac ML ' +
+	        'Mode Module Modules Monomorphic Morphism Next NoInline Notation Obligation ' +
+	        'Obligations Opaque Open Optimize Options Parameter Parameters Parametric ' +
+	        'Path Paths pattern Polymorphic Preterm Print Printing Program Projections ' +
+	        'Proof Proposition Pwd Qed Quit Rec Record Recursive Redirect Relation Remark ' +
+	        'Remove Require Reserved Reset Resolve Restart Rewrite Right Ring Rings Save ' +
+	        'Scheme Scope Scopes Script Search SearchAbout SearchHead SearchPattern ' +
+	        'SearchRewrite Section Separate Set Setoid Show Solve Sorted Step Strategies ' +
+	        'Strategy Structure SubClass Table Tables Tactic Term Test Theorem Time ' +
+	        'Timeout Transparent Type Typeclasses Types Undelimit Undo Unfocus Unfocused ' +
+	        'Unfold Universe Universes Unset Unshelve using Variable Variables Variant ' +
+	        'Verbose Visibility where with',
+	      built_in:
+	        'abstract absurd admit after apply as assert assumption at auto autorewrite ' +
+	        'autounfold before bottom btauto by case case_eq cbn cbv change ' +
+	        'classical_left classical_right clear clearbody cofix compare compute ' +
+	        'congruence constr_eq constructor contradict contradiction cut cutrewrite ' +
+	        'cycle decide decompose dependent destruct destruction dintuition ' +
+	        'discriminate discrR do double dtauto eapply eassumption eauto ecase ' +
+	        'econstructor edestruct ediscriminate eelim eexact eexists einduction ' +
+	        'einjection eleft elim elimtype enough equality erewrite eright ' +
+	        'esimplify_eq esplit evar exact exactly_once exfalso exists f_equal fail ' +
+	        'field field_simplify field_simplify_eq first firstorder fix fold fourier ' +
+	        'functional generalize generalizing gfail give_up has_evar hnf idtac in ' +
+	        'induction injection instantiate intro intro_pattern intros intuition ' +
+	        'inversion inversion_clear is_evar is_var lapply lazy left lia lra move ' +
+	        'native_compute nia nsatz omega once pattern pose progress proof psatz quote ' +
+	        'record red refine reflexivity remember rename repeat replace revert ' +
+	        'revgoals rewrite rewrite_strat right ring ring_simplify rtauto set ' +
+	        'setoid_reflexivity setoid_replace setoid_rewrite setoid_symmetry ' +
+	        'setoid_transitivity shelve shelve_unifiable simpl simple simplify_eq solve ' +
+	        'specialize split split_Rabs split_Rmult stepl stepr subst sum swap ' +
+	        'symmetry tactic tauto time timeout top transitivity trivial try tryif ' +
+	        'unfold unify until using vm_compute with'
+	    },
+	    contains: [
+	      hljs.QUOTE_STRING_MODE,
+	      hljs.COMMENT('\\(\\*', '\\*\\)'),
+	      hljs.C_NUMBER_MODE,
+	      {
+	        className: 'type',
+	        excludeBegin: true,
+	        begin: '\\|\\s*',
+	        end: '\\w+'
+	      },
+	      {begin: /[-=]>/} // relevance booster
+	    ]
+	  };
+	};
+
+/***/ },
+/* 197 */
 /***/ function(module, exports) {
 
 	module.exports = function cos (hljs) {
@@ -24320,59 +23745,51 @@
 	    relevance: 0
 	  };
 
-	  var COS_KEYWORDS = {
-	    keyword: [
+	  var COS_KEYWORDS =
+	    'property parameter class classmethod clientmethod extends as break ' +
+	    'catch close continue do d|0 else elseif for goto halt hang h|0 if job ' +
+	    'j|0 kill k|0 lock l|0 merge new open quit q|0 read r|0 return set s|0 ' +
+	    'tcommit throw trollback try tstart use view while write w|0 xecute x|0 ' +
+	    'zkill znspace zn ztrap zwrite zw zzdump zzwrite print zbreak zinsert ' +
+	    'zload zprint zremove zsave zzprint mv mvcall mvcrt mvdim mvprint zquit ' +
+	    'zsync ascii';
 
-	      "property", "parameter", "class", "classmethod", "clientmethod", "extends",
-	      "as", "break", "catch", "close", "continue", "do", "d", "else",
-	      "elseif", "for", "goto", "halt", "hang", "h", "if", "job",
-	      "j", "kill", "k", "lock", "l", "merge", "new", "open", "quit",
-	      "q", "read", "r", "return", "set", "s", "tcommit", "throw",
-	      "trollback", "try", "tstart", "use", "view", "while", "write",
-	      "w", "xecute", "x", "zkill", "znspace", "zn", "ztrap", "zwrite",
-	      "zw", "zzdump", "zzwrite", "print", "zbreak", "zinsert", "zload",
-	      "zprint", "zremove", "zsave", "zzprint", "mv", "mvcall", "mvcrt",
-	      "mvdim", "mvprint", "zquit", "zsync", "ascii"
+	    // registered function - no need in them due to all functions are highlighted,
+	    // but I'll just leave this here.
 
-	      // registered function - no need in them due to all functions are highlighted,
-	      // but I'll just leave this here.
-
-	      //"$bit", "$bitcount",
-	      //"$bitfind", "$bitlogic", "$case", "$char", "$classmethod", "$classname",
-	      //"$compile", "$data", "$decimal", "$double", "$extract", "$factor",
-	      //"$find", "$fnumber", "$get", "$increment", "$inumber", "$isobject",
-	      //"$isvaliddouble", "$isvalidnum", "$justify", "$length", "$list",
-	      //"$listbuild", "$listdata", "$listfind", "$listfromstring", "$listget",
-	      //"$listlength", "$listnext", "$listsame", "$listtostring", "$listvalid",
-	      //"$locate", "$match", "$method", "$name", "$nconvert", "$next",
-	      //"$normalize", "$now", "$number", "$order", "$parameter", "$piece",
-	      //"$prefetchoff", "$prefetchon", "$property", "$qlength", "$qsubscript",
-	      //"$query", "$random", "$replace", "$reverse", "$sconvert", "$select",
-	      //"$sortbegin", "$sortend", "$stack", "$text", "$translate", "$view",
-	      //"$wascii", "$wchar", "$wextract", "$wfind", "$wiswide", "$wlength",
-	      //"$wreverse", "$xecute", "$zabs", "$zarccos", "$zarcsin", "$zarctan",
-	      //"$zcos", "$zcot", "$zcsc", "$zdate", "$zdateh", "$zdatetime",
-	      //"$zdatetimeh", "$zexp", "$zhex", "$zln", "$zlog", "$zpower", "$zsec",
-	      //"$zsin", "$zsqr", "$ztan", "$ztime", "$ztimeh", "$zboolean",
-	      //"$zconvert", "$zcrc", "$zcyc", "$zdascii", "$zdchar", "$zf",
-	      //"$ziswide", "$zlascii", "$zlchar", "$zname", "$zposition", "$zqascii",
-	      //"$zqchar", "$zsearch", "$zseek", "$zstrip", "$zwascii", "$zwchar",
-	      //"$zwidth", "$zwpack", "$zwbpack", "$zwunpack", "$zwbunpack", "$zzenkaku",
-	      //"$change", "$mv", "$mvat", "$mvfmt", "$mvfmts", "$mviconv",
-	      //"$mviconvs", "$mvinmat", "$mvlover", "$mvoconv", "$mvoconvs", "$mvraise",
-	      //"$mvtrans", "$mvv", "$mvname", "$zbitand", "$zbitcount", "$zbitfind",
-	      //"$zbitget", "$zbitlen", "$zbitnot", "$zbitor", "$zbitset", "$zbitstr",
-	      //"$zbitxor", "$zincrement", "$znext", "$zorder", "$zprevious", "$zsort",
-	      //"device", "$ecode", "$estack", "$etrap", "$halt", "$horolog",
-	      //"$io", "$job", "$key", "$namespace", "$principal", "$quit", "$roles",
-	      //"$storage", "$system", "$test", "$this", "$tlevel", "$username",
-	      //"$x", "$y", "$za", "$zb", "$zchild", "$zeof", "$zeos", "$zerror",
-	      //"$zhorolog", "$zio", "$zjob", "$zmode", "$znspace", "$zparent", "$zpi",
-	      //"$zpos", "$zreference", "$zstorage", "$ztimestamp", "$ztimezone",
-	      //"$ztrap", "$zversion"
-
-	    ].join(" ")
-	  };
+	    //"$bit", "$bitcount",
+	    //"$bitfind", "$bitlogic", "$case", "$char", "$classmethod", "$classname",
+	    //"$compile", "$data", "$decimal", "$double", "$extract", "$factor",
+	    //"$find", "$fnumber", "$get", "$increment", "$inumber", "$isobject",
+	    //"$isvaliddouble", "$isvalidnum", "$justify", "$length", "$list",
+	    //"$listbuild", "$listdata", "$listfind", "$listfromstring", "$listget",
+	    //"$listlength", "$listnext", "$listsame", "$listtostring", "$listvalid",
+	    //"$locate", "$match", "$method", "$name", "$nconvert", "$next",
+	    //"$normalize", "$now", "$number", "$order", "$parameter", "$piece",
+	    //"$prefetchoff", "$prefetchon", "$property", "$qlength", "$qsubscript",
+	    //"$query", "$random", "$replace", "$reverse", "$sconvert", "$select",
+	    //"$sortbegin", "$sortend", "$stack", "$text", "$translate", "$view",
+	    //"$wascii", "$wchar", "$wextract", "$wfind", "$wiswide", "$wlength",
+	    //"$wreverse", "$xecute", "$zabs", "$zarccos", "$zarcsin", "$zarctan",
+	    //"$zcos", "$zcot", "$zcsc", "$zdate", "$zdateh", "$zdatetime",
+	    //"$zdatetimeh", "$zexp", "$zhex", "$zln", "$zlog", "$zpower", "$zsec",
+	    //"$zsin", "$zsqr", "$ztan", "$ztime", "$ztimeh", "$zboolean",
+	    //"$zconvert", "$zcrc", "$zcyc", "$zdascii", "$zdchar", "$zf",
+	    //"$ziswide", "$zlascii", "$zlchar", "$zname", "$zposition", "$zqascii",
+	    //"$zqchar", "$zsearch", "$zseek", "$zstrip", "$zwascii", "$zwchar",
+	    //"$zwidth", "$zwpack", "$zwbpack", "$zwunpack", "$zwbunpack", "$zzenkaku",
+	    //"$change", "$mv", "$mvat", "$mvfmt", "$mvfmts", "$mviconv",
+	    //"$mviconvs", "$mvinmat", "$mvlover", "$mvoconv", "$mvoconvs", "$mvraise",
+	    //"$mvtrans", "$mvv", "$mvname", "$zbitand", "$zbitcount", "$zbitfind",
+	    //"$zbitget", "$zbitlen", "$zbitnot", "$zbitor", "$zbitset", "$zbitstr",
+	    //"$zbitxor", "$zincrement", "$znext", "$zorder", "$zprevious", "$zsort",
+	    //"device", "$ecode", "$estack", "$etrap", "$halt", "$horolog",
+	    //"$io", "$job", "$key", "$namespace", "$principal", "$quit", "$roles",
+	    //"$storage", "$system", "$test", "$this", "$tlevel", "$username",
+	    //"$x", "$y", "$za", "$zb", "$zchild", "$zeof", "$zeos", "$zerror",
+	    //"$zhorolog", "$zio", "$zjob", "$zmode", "$znspace", "$zparent", "$zpi",
+	    //"$zpos", "$zreference", "$zstorage", "$ztimestamp", "$ztimezone",
+	    //"$ztrap", "$zversion"
 
 	  return {
 	    case_insensitive: true,
@@ -24431,169 +23848,7 @@
 	};
 
 /***/ },
-/* 193 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	  var CPP_PRIMATIVE_TYPES = {
-	    className: 'keyword',
-	    begin: '\\b[a-z\\d_]*_t\\b'
-	  };
-
-	  var STRINGS = {
-	    className: 'string',
-	    variants: [
-	      hljs.inherit(hljs.QUOTE_STRING_MODE, { begin: '((u8?|U)|L)?"' }),
-	      {
-	        begin: '(u8?|U)?R"', end: '"',
-	        contains: [hljs.BACKSLASH_ESCAPE]
-	      },
-	      {
-	        begin: '\'\\\\?.', end: '\'',
-	        illegal: '.'
-	      }
-	    ]
-	  };
-
-	  var NUMBERS = {
-	    className: 'number',
-	    variants: [
-	      { begin: '\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)' },
-	      { begin: hljs.C_NUMBER_RE }
-	    ],
-	    relevance: 0
-	  };
-
-	  var PREPROCESSOR =       {
-	    className: 'meta',
-	    begin: '#', end: '$',
-	    keywords: {'meta-keyword': 'if else elif endif define undef warning error line ' +
-	                  'pragma ifdef ifndef'},
-	    contains: [
-	      {
-	        begin: /\\\n/, relevance: 0
-	      },
-	      {
-	        beginKeywords: 'include', end: '$',
-	        keywords: {'meta-keyword': 'include'},
-	        contains: [
-	          hljs.inherit(STRINGS, {className: 'meta-string'}),
-	          {
-	            className: 'meta-string',
-	            begin: '<', end: '>',
-	            illegal: '\\n',
-	          }
-	        ]
-	      },
-	      STRINGS,
-	      hljs.C_LINE_COMMENT_MODE,
-	      hljs.C_BLOCK_COMMENT_MODE
-	    ]
-	  };
-
-	  var FUNCTION_TITLE = hljs.IDENT_RE + '\\s*\\(';
-
-	  var CPP_KEYWORDS = {
-	    keyword: 'int float while private char catch export virtual operator sizeof ' +
-	      'dynamic_cast|10 typedef const_cast|10 const struct for static_cast|10 union namespace ' +
-	      'unsigned long volatile static protected bool template mutable if public friend ' +
-	      'do goto auto void enum else break extern using class asm case typeid ' +
-	      'short reinterpret_cast|10 default double register explicit signed typename try this ' +
-	      'switch continue inline delete alignof constexpr decltype ' +
-	      'noexcept static_assert thread_local restrict _Bool complex _Complex _Imaginary ' +
-	      'atomic_bool atomic_char atomic_schar ' +
-	      'atomic_uchar atomic_short atomic_ushort atomic_int atomic_uint atomic_long atomic_ulong atomic_llong ' +
-	      'atomic_ullong',
-	    built_in: 'std string cin cout cerr clog stdin stdout stderr stringstream istringstream ostringstream ' +
-	      'auto_ptr deque list queue stack vector map set bitset multiset multimap unordered_set ' +
-	      'unordered_map unordered_multiset unordered_multimap array shared_ptr abort abs acos ' +
-	      'asin atan2 atan calloc ceil cosh cos exit exp fabs floor fmod fprintf fputs free frexp ' +
-	      'fscanf isalnum isalpha iscntrl isdigit isgraph islower isprint ispunct isspace isupper ' +
-	      'isxdigit tolower toupper labs ldexp log10 log malloc realloc memchr memcmp memcpy memset modf pow ' +
-	      'printf putchar puts scanf sinh sin snprintf sprintf sqrt sscanf strcat strchr strcmp ' +
-	      'strcpy strcspn strlen strncat strncmp strncpy strpbrk strrchr strspn strstr tanh tan ' +
-	      'vfprintf vprintf vsprintf endl initializer_list unique_ptr',
-	    literal: 'true false nullptr NULL'
-	  };
-
-	  var EXPRESSION_CONTAINS = [
-	    CPP_PRIMATIVE_TYPES,
-	    hljs.C_LINE_COMMENT_MODE,
-	    hljs.C_BLOCK_COMMENT_MODE,
-	    NUMBERS,
-	    STRINGS
-	  ];
-
-	  return {
-	    aliases: ['c', 'cc', 'h', 'c++', 'h++', 'hpp'],
-	    keywords: CPP_KEYWORDS,
-	    illegal: '</',
-	    contains: EXPRESSION_CONTAINS.concat([
-	      PREPROCESSOR,
-	      {
-	        begin: '\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<', end: '>',
-	        keywords: CPP_KEYWORDS,
-	        contains: ['self', CPP_PRIMATIVE_TYPES]
-	      },
-	      {
-	        begin: hljs.IDENT_RE + '::',
-	        keywords: CPP_KEYWORDS
-	      },
-	      {
-	        // This mode covers expression context where we can't expect a function
-	        // definition and shouldn't highlight anything that looks like one:
-	        // `return some()`, `else if()`, `(x*sum(1, 2))`
-	        variants: [
-	          {begin: /=/, end: /;/},
-	          {begin: /\(/, end: /\)/},
-	          {beginKeywords: 'new throw return else', end: /;/}
-	        ],
-	        keywords: CPP_KEYWORDS,
-	        contains: EXPRESSION_CONTAINS.concat([
-	          {
-	            begin: /\(/, end: /\)/,
-	            contains: EXPRESSION_CONTAINS.concat(['self']),
-	            relevance: 0
-	          }
-	        ]),
-	        relevance: 0
-	      },
-	      {
-	        className: 'function',
-	        begin: '(' + hljs.IDENT_RE + '[\\*&\\s]+)+' + FUNCTION_TITLE,
-	        returnBegin: true, end: /[{;=]/,
-	        excludeEnd: true,
-	        keywords: CPP_KEYWORDS,
-	        illegal: /[^\w\s\*&]/,
-	        contains: [
-	          {
-	            begin: FUNCTION_TITLE, returnBegin: true,
-	            contains: [hljs.TITLE_MODE],
-	            relevance: 0
-	          },
-	          {
-	            className: 'params',
-	            begin: /\(/, end: /\)/,
-	            keywords: CPP_KEYWORDS,
-	            relevance: 0,
-	            contains: [
-	              hljs.C_LINE_COMMENT_MODE,
-	              hljs.C_BLOCK_COMMENT_MODE,
-	              STRINGS,
-	              NUMBERS
-	            ]
-	          },
-	          hljs.C_LINE_COMMENT_MODE,
-	          hljs.C_BLOCK_COMMENT_MODE,
-	          PREPROCESSOR
-	        ]
-	      }
-	    ])
-	  };
-	};
-
-/***/ },
-/* 194 */
+/* 198 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -24691,7 +23946,7 @@
 	};
 
 /***/ },
-/* 195 */
+/* 199 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -24719,8 +23974,7 @@
 	      {begin: '\\{\\{', end: '\\}\\}'},
 	      {begin: '\\{%', end: '%\\}'}
 	    ],
-	    keywords: CRYSTAL_KEYWORDS,
-	    relevance: 10
+	    keywords: CRYSTAL_KEYWORDS
 	  };
 
 	  function recursiveParen(begin, end) {
@@ -24873,7 +24127,7 @@
 	};
 
 /***/ },
-/* 196 */
+/* 200 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -24886,13 +24140,69 @@
 	      'object operator out override params private protected public readonly ref sbyte ' +
 	      'sealed short sizeof stackalloc static string struct switch this try typeof ' +
 	      'uint ulong unchecked unsafe ushort using virtual volatile void while async ' +
-	      'protected public private internal ' +
+	      'nameof ' +
 	      // Contextual keywords.
 	      'ascending descending from get group into join let orderby partial select set value var ' +
 	      'where yield',
 	    literal:
 	      'null false true'
 	  };
+
+	  var VERBATIM_STRING = {
+	    className: 'string',
+	    begin: '@"', end: '"',
+	    contains: [{begin: '""'}]
+	  };
+	  var VERBATIM_STRING_NO_LF = hljs.inherit(VERBATIM_STRING, {illegal: /\n/});
+	  var SUBST = {
+	    className: 'subst',
+	    begin: '{', end: '}',
+	    keywords: KEYWORDS
+	  };
+	  var SUBST_NO_LF = hljs.inherit(SUBST, {illegal: /\n/});
+	  var INTERPOLATED_STRING = {
+	    className: 'string',
+	    begin: /\$"/, end: '"',
+	    illegal: /\n/,
+	    contains: [{begin: '{{'}, {begin: '}}'}, hljs.BACKSLASH_ESCAPE, SUBST_NO_LF]
+	  };
+	  var INTERPOLATED_VERBATIM_STRING = {
+	    className: 'string',
+	    begin: /\$@"/, end: '"',
+	    contains: [{begin: '{{'}, {begin: '}}'}, {begin: '""'}, SUBST]
+	  };
+	  var INTERPOLATED_VERBATIM_STRING_NO_LF = hljs.inherit(INTERPOLATED_VERBATIM_STRING, {
+	    illegal: /\n/,
+	    contains: [{begin: '{{'}, {begin: '}}'}, {begin: '""'}, SUBST_NO_LF]
+	  });
+	  SUBST.contains = [
+	    INTERPOLATED_VERBATIM_STRING,
+	    INTERPOLATED_STRING,
+	    VERBATIM_STRING,
+	    hljs.APOS_STRING_MODE,
+	    hljs.QUOTE_STRING_MODE,
+	    hljs.C_NUMBER_MODE,
+	    hljs.C_BLOCK_COMMENT_MODE
+	  ];
+	  SUBST_NO_LF.contains = [
+	    INTERPOLATED_VERBATIM_STRING_NO_LF,
+	    INTERPOLATED_STRING,
+	    VERBATIM_STRING_NO_LF,
+	    hljs.APOS_STRING_MODE,
+	    hljs.QUOTE_STRING_MODE,
+	    hljs.C_NUMBER_MODE,
+	    hljs.inherit(hljs.C_BLOCK_COMMENT_MODE, {illegal: /\n/})
+	  ];
+	  var STRING = {
+	    variants: [
+	      INTERPOLATED_VERBATIM_STRING,
+	      INTERPOLATED_STRING,
+	      VERBATIM_STRING,
+	      hljs.APOS_STRING_MODE,
+	      hljs.QUOTE_STRING_MODE
+	    ]
+	  };
+
 	  var TYPE_IDENT_RE = hljs.IDENT_RE + '(<' + hljs.IDENT_RE + '>)?(\\[\\])?';
 	  return {
 	    aliases: ['csharp'],
@@ -24929,13 +24239,7 @@
 	        begin: '#', end: '$',
 	        keywords: {'meta-keyword': 'if else elif endif define undef warning error line region endregion pragma checksum'}
 	      },
-	      {
-	        className: 'string',
-	        begin: '@"', end: '"',
-	        contains: [{begin: '""'}]
-	      },
-	      hljs.APOS_STRING_MODE,
-	      hljs.QUOTE_STRING_MODE,
+	      STRING,
 	      hljs.C_NUMBER_MODE,
 	      {
 	        beginKeywords: 'class interface', end: /[{;=]/,
@@ -24980,8 +24284,7 @@
 	            keywords: KEYWORDS,
 	            relevance: 0,
 	            contains: [
-	              hljs.APOS_STRING_MODE,
-	              hljs.QUOTE_STRING_MODE,
+	              STRING,
 	              hljs.C_NUMBER_MODE,
 	              hljs.C_BLOCK_COMMENT_MODE
 	            ]
@@ -24995,7 +24298,7 @@
 	};
 
 /***/ },
-/* 197 */
+/* 201 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -25021,7 +24324,7 @@
 	};
 
 /***/ },
-/* 198 */
+/* 202 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -25130,7 +24433,7 @@
 	};
 
 /***/ },
-/* 199 */
+/* 203 */
 /***/ function(module, exports) {
 
 	module.exports = /**
@@ -25392,7 +24695,7 @@
 	};
 
 /***/ },
-/* 200 */
+/* 204 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -25484,17 +24787,18 @@
 	        relevance: 10
 	      },
 	      {
-	        begin: '^\\[\.+\\]:',
+	        begin: /^\[[^\n]+\]:/,
 	        returnBegin: true,
 	        contains: [
 	          {
 	            className: 'symbol',
-	            begin: '\\[', end: '\\]:',
-	            excludeBegin: true, excludeEnd: true,
-	            starts: {
-	              className: 'link',
-	              end: '$'
-	            }
+	            begin: /\[/, end: /\]/,
+	            excludeBegin: true, excludeEnd: true
+	          },
+	          {
+	            className: 'link',
+	            begin: /:\s*/, end: /$/,
+	            excludeBegin: true
 	          }
 	        ]
 	      }
@@ -25503,7 +24807,7 @@
 	};
 
 /***/ },
-/* 201 */
+/* 205 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -25608,7 +24912,7 @@
 	};
 
 /***/ },
-/* 202 */
+/* 206 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -25680,7 +24984,7 @@
 	};
 
 /***/ },
-/* 203 */
+/* 207 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -25700,10 +25004,10 @@
 	        className: 'comment',
 	        variants: [
 	          {begin: /Index: /, end: /$/},
-	          {begin: /=====/, end: /=====$/},
-	          {begin: /^\-\-\-/, end: /$/},
+	          {begin: /={3,}/, end: /$/},
+	          {begin: /^\-{3}/, end: /$/},
 	          {begin: /^\*{3} /, end: /$/},
-	          {begin: /^\+\+\+/, end: /$/},
+	          {begin: /^\+{3}/, end: /$/},
 	          {begin: /\*{5}/, end: /\*{5}$/}
 	        ]
 	      },
@@ -25724,7 +25028,7 @@
 	};
 
 /***/ },
-/* 204 */
+/* 208 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -25792,7 +25096,7 @@
 	};
 
 /***/ },
-/* 205 */
+/* 209 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -25804,7 +25108,7 @@
 	        'LOC MX NAPTR NS NSEC NSEC3 NSEC3PARAM PTR RRSIG RP SIG SOA SRV SSHFP TA TKEY TLSA TSIG TXT'
 	    },
 	    contains: [
-	      hljs.COMMENT(';', '$'),
+	      hljs.COMMENT(';', '$', {relevance: 0}),
 	      {
 	        className: 'meta',
 	        begin: /^\$(TTL|GENERATE|INCLUDE|ORIGIN)\b/
@@ -25825,7 +25129,7 @@
 	};
 
 /***/ },
-/* 206 */
+/* 210 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -25858,7 +25162,7 @@
 	};
 
 /***/ },
-/* 207 */
+/* 211 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -25914,7 +25218,58 @@
 	};
 
 /***/ },
-/* 208 */
+/* 212 */
+/***/ function(module, exports) {
+
+	module.exports = function(hljs) {
+	  var QUOTED_PROPERTY = {
+	    className: 'string',
+	    begin: /"/, end: /"/
+	  };
+	  var APOS_PROPERTY = {
+	    className: 'string',
+	    begin: /'/, end: /'/
+	  };
+	  var UNQUOTED_PROPERTY = {
+	    className: 'string',
+	    begin: '[\\w-?]+:\\w+', end: '\\W',
+	    relevance: 0
+	  };
+	  var VALUELESS_PROPERTY = {
+	    className: 'string',
+	    begin: '\\w+-?\\w+', end: '\\W',
+	    relevance: 0
+	  };
+
+	  return {
+	    keywords: 'dsconfig',
+	    contains: [
+	      {
+	        className: 'keyword',
+	        begin: '^dsconfig', end: '\\s', excludeEnd: true,
+	        relevance: 10
+	      },
+	      {
+	        className: 'built_in',
+	        begin: '(list|create|get|set|delete)-(\\w+)', end: '\\s', excludeEnd: true,
+	        illegal: '!@#$%^&*()',
+	        relevance: 10
+	      },
+	      {
+	        className: 'built_in',
+	        begin: '--(\\w+)', end: '\\s', excludeEnd: true
+	      },
+	      QUOTED_PROPERTY,
+	      APOS_PROPERTY,
+	      UNQUOTED_PROPERTY,
+	      VALUELESS_PROPERTY,
+	      hljs.HASH_COMMENT_MODE
+	    ]
+	  };
+	};
+
+/***/ },
+/* 213 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -25958,7 +25313,7 @@
 	          {
 	            className: 'meta-string',
 	            begin: '<', end: '>',
-	            illegal: '\\n',
+	            illegal: '\\n'
 	          }
 	        ]
 	      },
@@ -25980,7 +25335,7 @@
 
 	  var DTS_LABEL = {
 	    className: 'symbol',
-	    begin: '^\\s*[a-zA-Z_][a-zA-Z\\d_]*:',
+	    begin: '^\\s*[a-zA-Z_][a-zA-Z\\d_]*:'
 	  };
 
 	  var DTS_CELL_PROPERTY = {
@@ -25989,8 +25344,8 @@
 	    end: '>',
 	    contains: [
 	      NUMBERS,
-	      DTS_REFERENCE,
-	    ],
+	      DTS_REFERENCE
+	    ]
 	  };
 
 	  var DTS_NODE = {
@@ -25998,7 +25353,7 @@
 	    begin: /[a-zA-Z_][a-zA-Z\d_@]*\s{/,
 	    end: /[{;=]/,
 	    returnBegin: true,
-	    excludeEnd: true,
+	    excludeEnd: true
 	  };
 
 	  var DTS_ROOT_NODE = {
@@ -26015,8 +25370,8 @@
 	      hljs.C_LINE_COMMENT_MODE,
 	      hljs.C_BLOCK_COMMENT_MODE,
 	      NUMBERS,
-	      STRINGS,
-	    ],
+	      STRINGS
+	    ]
 	  };
 
 	  return {
@@ -26035,14 +25390,14 @@
 	      PREPROCESSOR,
 	      {
 	        begin: hljs.IDENT_RE + '::',
-	        keywords: "",
-	      },
+	        keywords: ""
+	      }
 	    ]
 	  };
 	};
 
 /***/ },
-/* 209 */
+/* 214 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26078,7 +25433,7 @@
 	};
 
 /***/ },
-/* 210 */
+/* 215 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26118,7 +25473,7 @@
 	  };
 	  var CLASS = hljs.inherit(FUNCTION, {
 	    className: 'class',
-	    beginKeywords: 'defmodule defrecord', end: /\bdo\b|$|;/
+	    beginKeywords: 'defimpl defmodule defprotocol defrecord', end: /\bdo\b|$|;/
 	  });
 	  var ELIXIR_DEFAULT_CONTAINS = [
 	    STRING,
@@ -26179,7 +25534,7 @@
 	};
 
 /***/ },
-/* 211 */
+/* 216 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26219,14 +25574,14 @@
 	  return {
 	    keywords:
 	      'let in if then else case of where module import exposing ' +
-	      'type alias as infix infixl infixr port',
+	      'type alias as infix infixl infixr port effect command',
 	    contains: [
 
 	      // Top-level constructions.
 
 	      {
-	        beginKeywords: 'module', end: 'where',
-	        keywords: 'module where',
+	        beginKeywords: 'port effect module', end: 'exposing',
+	        keywords: 'port effect module where command exposing',
 	        contains: [LIST, COMMENT],
 	        illegal: '\\W\\.|;'
 	      },
@@ -26266,7 +25621,7 @@
 	};
 
 /***/ },
-/* 212 */
+/* 217 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26443,7 +25798,7 @@
 	};
 
 /***/ },
-/* 213 */
+/* 218 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26462,7 +25817,7 @@
 	};
 
 /***/ },
-/* 214 */
+/* 219 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26512,7 +25867,7 @@
 	};
 
 /***/ },
-/* 215 */
+/* 220 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26662,7 +26017,59 @@
 	};
 
 /***/ },
-/* 216 */
+/* 221 */
+/***/ function(module, exports) {
+
+	module.exports = function(hljs) {
+	  return {
+	    aliases: ['xlsx', 'xls'],
+	    case_insensitive: true,
+	    lexemes: /[a-zA-Z][\w\.]*/,
+	    // built-in functions imported from https://web.archive.org/web/20160513042710/https://support.office.com/en-us/article/Excel-functions-alphabetical-b3944572-255d-4efb-bb96-c6d90033e188
+	    keywords: {
+	        built_in: 'ABS ACCRINT ACCRINTM ACOS ACOSH ACOT ACOTH AGGREGATE ADDRESS AMORDEGRC AMORLINC AND ARABIC AREAS ASC ASIN ASINH ATAN ATAN2 ATANH AVEDEV AVERAGE AVERAGEA AVERAGEIF AVERAGEIFS BAHTTEXT BASE BESSELI BESSELJ BESSELK BESSELY BETADIST BETA.DIST BETAINV BETA.INV BIN2DEC BIN2HEX BIN2OCT BINOMDIST BINOM.DIST BINOM.DIST.RANGE BINOM.INV BITAND BITLSHIFT BITOR BITRSHIFT BITXOR CALL CEILING CEILING.MATH CEILING.PRECISE CELL CHAR CHIDIST CHIINV CHITEST CHISQ.DIST CHISQ.DIST.RT CHISQ.INV CHISQ.INV.RT CHISQ.TEST CHOOSE CLEAN CODE COLUMN COLUMNS COMBIN COMBINA COMPLEX CONCAT CONCATENATE CONFIDENCE CONFIDENCE.NORM CONFIDENCE.T CONVERT CORREL COS COSH COT COTH COUNT COUNTA COUNTBLANK COUNTIF COUNTIFS COUPDAYBS COUPDAYS COUPDAYSNC COUPNCD COUPNUM COUPPCD COVAR COVARIANCE.P COVARIANCE.S CRITBINOM CSC CSCH CUBEKPIMEMBER CUBEMEMBER CUBEMEMBERPROPERTY CUBERANKEDMEMBER CUBESET CUBESETCOUNT CUBEVALUE CUMIPMT CUMPRINC DATE DATEDIF DATEVALUE DAVERAGE DAY DAYS DAYS360 DB DBCS DCOUNT DCOUNTA DDB DEC2BIN DEC2HEX DEC2OCT DECIMAL DEGREES DELTA DEVSQ DGET DISC DMAX DMIN DOLLAR DOLLARDE DOLLARFR DPRODUCT DSTDEV DSTDEVP DSUM DURATION DVAR DVARP EDATE EFFECT ENCODEURL EOMONTH ERF ERF.PRECISE ERFC ERFC.PRECISE ERROR.TYPE EUROCONVERT EVEN EXACT EXP EXPON.DIST EXPONDIST FACT FACTDOUBLE FALSE|0 F.DIST FDIST F.DIST.RT FILTERXML FIND FINDB F.INV F.INV.RT FINV FISHER FISHERINV FIXED FLOOR FLOOR.MATH FLOOR.PRECISE FORECAST FORECAST.ETS FORECAST.ETS.CONFINT FORECAST.ETS.SEASONALITY FORECAST.ETS.STAT FORECAST.LINEAR FORMULATEXT FREQUENCY F.TEST FTEST FV FVSCHEDULE GAMMA GAMMA.DIST GAMMADIST GAMMA.INV GAMMAINV GAMMALN GAMMALN.PRECISE GAUSS GCD GEOMEAN GESTEP GETPIVOTDATA GROWTH HARMEAN HEX2BIN HEX2DEC HEX2OCT HLOOKUP HOUR HYPERLINK HYPGEOM.DIST HYPGEOMDIST IF|0 IFERROR IFNA IFS IMABS IMAGINARY IMARGUMENT IMCONJUGATE IMCOS IMCOSH IMCOT IMCSC IMCSCH IMDIV IMEXP IMLN IMLOG10 IMLOG2 IMPOWER IMPRODUCT IMREAL IMSEC IMSECH IMSIN IMSINH IMSQRT IMSUB IMSUM IMTAN INDEX INDIRECT INFO INT INTERCEPT INTRATE IPMT IRR ISBLANK ISERR ISERROR ISEVEN ISFORMULA ISLOGICAL ISNA ISNONTEXT ISNUMBER ISODD ISREF ISTEXT ISO.CEILING ISOWEEKNUM ISPMT JIS KURT LARGE LCM LEFT LEFTB LEN LENB LINEST LN LOG LOG10 LOGEST LOGINV LOGNORM.DIST LOGNORMDIST LOGNORM.INV LOOKUP LOWER MATCH MAX MAXA MAXIFS MDETERM MDURATION MEDIAN MID MIDBs MIN MINIFS MINA MINUTE MINVERSE MIRR MMULT MOD MODE MODE.MULT MODE.SNGL MONTH MROUND MULTINOMIAL MUNIT N NA NEGBINOM.DIST NEGBINOMDIST NETWORKDAYS NETWORKDAYS.INTL NOMINAL NORM.DIST NORMDIST NORMINV NORM.INV NORM.S.DIST NORMSDIST NORM.S.INV NORMSINV NOT NOW NPER NPV NUMBERVALUE OCT2BIN OCT2DEC OCT2HEX ODD ODDFPRICE ODDFYIELD ODDLPRICE ODDLYIELD OFFSET OR PDURATION PEARSON PERCENTILE.EXC PERCENTILE.INC PERCENTILE PERCENTRANK.EXC PERCENTRANK.INC PERCENTRANK PERMUT PERMUTATIONA PHI PHONETIC PI PMT POISSON.DIST POISSON POWER PPMT PRICE PRICEDISC PRICEMAT PROB PRODUCT PROPER PV QUARTILE QUARTILE.EXC QUARTILE.INC QUOTIENT RADIANS RAND RANDBETWEEN RANK.AVG RANK.EQ RANK RATE RECEIVED REGISTER.ID REPLACE REPLACEB REPT RIGHT RIGHTB ROMAN ROUND ROUNDDOWN ROUNDUP ROW ROWS RRI RSQ RTD SEARCH SEARCHB SEC SECH SECOND SERIESSUM SHEET SHEETS SIGN SIN SINH SKEW SKEW.P SLN SLOPE SMALL SQL.REQUEST SQRT SQRTPI STANDARDIZE STDEV STDEV.P STDEV.S STDEVA STDEVP STDEVPA STEYX SUBSTITUTE SUBTOTAL SUM SUMIF SUMIFS SUMPRODUCT SUMSQ SUMX2MY2 SUMX2PY2 SUMXMY2 SWITCH SYD T TAN TANH TBILLEQ TBILLPRICE TBILLYIELD T.DIST T.DIST.2T T.DIST.RT TDIST TEXT TEXTJOIN TIME TIMEVALUE T.INV T.INV.2T TINV TODAY TRANSPOSE TREND TRIM TRIMMEAN TRUE|0 TRUNC T.TEST TTEST TYPE UNICHAR UNICODE UPPER VALUE VAR VAR.P VAR.S VARA VARP VARPA VDB VLOOKUP WEBSERVICE WEEKDAY WEEKNUM WEIBULL WEIBULL.DIST WORKDAY WORKDAY.INTL XIRR XNPV XOR YEAR YEARFRAC YIELD YIELDDISC YIELDMAT Z.TEST ZTEST'
+	    },
+	    contains: [
+	      {
+	        /* matches a beginning equal sign found in Excel formula examples */ 
+	        begin: /^=/,
+	        end: /[^=]/, returnEnd: true, illegal: /=/, /* only allow single equal sign at front of line */
+	        relevance: 10
+	      },
+	      /* technically, there can be more than 2 letters in column names, but this prevents conflict with some keywords */
+	      {
+	        /* matches a reference to a single cell */
+	        className: 'symbol',
+	        begin: /\b[A-Z]{1,2}\d+\b/,
+	        end: /[^\d]/, excludeEnd: true,
+	        relevance: 0
+	      },
+	      {
+	        /* matches a reference to a range of cells */
+	        className: 'symbol',
+	        begin: /[A-Z]{0,2}\d*:[A-Z]{0,2}\d*/,
+	        relevance: 0
+	      },
+	      hljs.BACKSLASH_ESCAPE,
+	      hljs.QUOTE_STRING_MODE,
+	      {
+	        className: 'number',
+	        begin: hljs.NUMBER_RE + '(%)?',
+	        relevance: 0
+	      },
+	      /* Excel formula comments are done by putting the comment in a function call to N() */
+	      hljs.COMMENT(/\bN\(/,/\)/,
+	      {
+	        excludeBegin: true,
+	        excludeEnd: true,
+	        illegal: /\n/
+	      })
+	    ]
+	  };
+	};
+
+/***/ },
+/* 222 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26695,7 +26102,7 @@
 	};
 
 /***/ },
-/* 217 */
+/* 223 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26770,7 +26177,7 @@
 	};
 
 /***/ },
-/* 218 */
+/* 224 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26833,7 +26240,7 @@
 	};
 
 /***/ },
-/* 219 */
+/* 225 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -26907,6 +26314,7 @@
 	      {
 	        className: 'comment',
 	        begin: /([ ]*[a-z0-9&#*=?@>\\<:\-,()$\[\]_.{}!+%^]+)+/,
+	        relevance: 0
 	      },
 	    ],
 	  };
@@ -26990,7 +26398,7 @@
 	};
 
 /***/ },
-/* 220 */
+/* 226 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -27216,7 +26624,7 @@
 	};
 
 /***/ },
-/* 221 */
+/* 227 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -27287,7 +26695,7 @@
 	};
 
 /***/ },
-/* 222 */
+/* 228 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -27328,7 +26736,7 @@
 	};
 
 /***/ },
-/* 223 */
+/* 229 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -27449,7 +26857,7 @@
 	};
 
 /***/ },
-/* 224 */
+/* 230 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -27471,27 +26879,43 @@
 	    contains: [
 	      hljs.C_LINE_COMMENT_MODE,
 	      hljs.C_BLOCK_COMMENT_MODE,
-	      hljs.QUOTE_STRING_MODE,
 	      {
 	        className: 'string',
-	        begin: '\'', end: '[^\\\\]\''
-	      },
-	      {
-	        className: 'string',
-	        begin: '`', end: '`'
+	        variants: [
+	          hljs.QUOTE_STRING_MODE,
+	          {begin: '\'', end: '[^\\\\]\''},
+	          {begin: '`', end: '`'},
+	        ]
 	      },
 	      {
 	        className: 'number',
-	        begin: hljs.C_NUMBER_RE + '[dflsi]?',
-	        relevance: 0
+	        variants: [
+	          {begin: hljs.C_NUMBER_RE + '[dflsi]', relevance: 1},
+	          hljs.C_NUMBER_MODE
+	        ]
 	      },
-	      hljs.C_NUMBER_MODE
+	      {
+	        begin: /:=/ // relevance booster
+	      },
+	      {
+	        className: 'function',
+	        beginKeywords: 'func', end: /\s*\{/, excludeEnd: true,
+	        contains: [
+	          hljs.TITLE_MODE,
+	          {
+	            className: 'params',
+	            begin: /\(/, end: /\)/,
+	            keywords: GO_KEYWORDS,
+	            illegal: /["']/
+	          }
+	        ]
+	      }
 	    ]
 	  };
 	};
 
 /***/ },
-/* 225 */
+/* 231 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -27518,7 +26942,7 @@
 	};
 
 /***/ },
-/* 226 */
+/* 232 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -27557,7 +26981,7 @@
 	};
 
 /***/ },
-/* 227 */
+/* 233 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -27655,7 +27079,7 @@
 	};
 
 /***/ },
-/* 228 */
+/* 234 */
 /***/ function(module, exports) {
 
 	module.exports = // TODO support filter tags like :javascript, support inline HTML
@@ -27766,7 +27190,7 @@
 	};
 
 /***/ },
-/* 229 */
+/* 235 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -27804,7 +27228,7 @@
 	};
 
 /***/ },
-/* 230 */
+/* 236 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -27930,7 +27354,7 @@
 	};
 
 /***/ },
-/* 231 */
+/* 237 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -27992,7 +27416,7 @@
 	};
 
 /***/ },
-/* 232 */
+/* 238 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28042,7 +27466,7 @@
 	};
 
 /***/ },
-/* 233 */
+/* 239 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28117,7 +27541,7 @@
 	};
 
 /***/ },
-/* 234 */
+/* 240 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28162,7 +27586,7 @@
 	};
 
 /***/ },
-/* 235 */
+/* 241 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28223,7 +27647,7 @@
 	};
 
 /***/ },
-/* 236 */
+/* 242 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28293,7 +27717,7 @@
 	};
 
 /***/ },
-/* 237 */
+/* 243 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28373,7 +27797,7 @@
 	};
 
 /***/ },
-/* 238 */
+/* 244 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28484,7 +27908,7 @@
 	};
 
 /***/ },
-/* 239 */
+/* 245 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28602,7 +28026,7 @@
 	};
 
 /***/ },
-/* 240 */
+/* 246 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28643,7 +28067,7 @@
 	};
 
 /***/ },
-/* 241 */
+/* 247 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28825,7 +28249,7 @@
 	};
 
 /***/ },
-/* 242 */
+/* 248 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -29003,7 +28427,7 @@
 	};
 
 /***/ },
-/* 243 */
+/* 249 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -29175,7 +28599,34 @@
 	};
 
 /***/ },
-/* 244 */
+/* 250 */
+/***/ function(module, exports) {
+
+	module.exports = function(hljs) {
+	  return {
+	    contains: [
+	      {
+	        className: 'attribute',
+	        begin: '^dn', end: ': ', excludeEnd: true,
+	        starts: {end: '$', relevance: 0},
+	        relevance: 10
+	      },
+	      {
+	        className: 'attribute',
+	        begin: '^\\w', end: ': ', excludeEnd: true,
+	        starts: {end: '$', relevance: 0}
+	      },
+	      {
+	        className: 'literal',
+	        begin: '^-', end: '$'
+	      },
+	      hljs.HASH_COMMENT_MODE
+	    ]
+	  };
+	};
+
+/***/ },
+/* 251 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -29319,7 +28770,7 @@
 	};
 
 /***/ },
-/* 245 */
+/* 252 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -29426,7 +28877,7 @@
 	};
 
 /***/ },
-/* 246 */
+/* 253 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -29587,7 +29038,7 @@
 	};
 
 /***/ },
-/* 247 */
+/* 254 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -29740,7 +29191,94 @@
 	};
 
 /***/ },
-/* 248 */
+/* 255 */
+/***/ function(module, exports) {
+
+	module.exports = function(hljs) {
+
+	    var LSL_STRING_ESCAPE_CHARS = {
+	        className: 'subst',
+	        begin: /\\[tn"\\]/
+	    };
+
+	    var LSL_STRINGS = {
+	        className: 'string',
+	        begin: '"',
+	        end: '"',
+	        contains: [
+	            LSL_STRING_ESCAPE_CHARS
+	        ]
+	    };
+
+	    var LSL_NUMBERS = {
+	        className: 'number',
+	        begin: hljs.C_NUMBER_RE
+	    };
+
+	    var LSL_CONSTANTS = {
+	        className: 'literal',
+	        variants: [
+	            {
+	                begin: '\\b(?:PI|TWO_PI|PI_BY_TWO|DEG_TO_RAD|RAD_TO_DEG|SQRT2)\\b'
+	            },
+	            {
+	                begin: '\\b(?:XP_ERROR_(?:EXPERIENCES_DISABLED|EXPERIENCE_(?:DISABLED|SUSPENDED)|INVALID_(?:EXPERIENCE|PARAMETERS)|KEY_NOT_FOUND|MATURITY_EXCEEDED|NONE|NOT_(?:FOUND|PERMITTED(?:_LAND)?)|NO_EXPERIENCE|QUOTA_EXCEEDED|RETRY_UPDATE|STORAGE_EXCEPTION|STORE_DISABLED|THROTTLED|UNKNOWN_ERROR)|JSON_APPEND|STATUS_(?:PHYSICS|ROTATE_[XYZ]|PHANTOM|SANDBOX|BLOCK_GRAB(?:_OBJECT)?|(?:DIE|RETURN)_AT_EDGE|CAST_SHADOWS|OK|MALFORMED_PARAMS|TYPE_MISMATCH|BOUNDS_ERROR|NOT_(?:FOUND|SUPPORTED)|INTERNAL_ERROR|WHITELIST_FAILED)|AGENT(?:_(?:BY_(?:LEGACY_|USER)NAME|FLYING|ATTACHMENTS|SCRIPTED|MOUSELOOK|SITTING|ON_OBJECT|AWAY|WALKING|IN_AIR|TYPING|CROUCHING|BUSY|ALWAYS_RUN|AUTOPILOT|LIST_(?:PARCEL(?:_OWNER)?|REGION)))?|CAMERA_(?:PITCH|DISTANCE|BEHINDNESS_(?:ANGLE|LAG)|(?:FOCUS|POSITION)(?:_(?:THRESHOLD|LOCKED|LAG))?|FOCUS_OFFSET|ACTIVE)|ANIM_ON|LOOP|REVERSE|PING_PONG|SMOOTH|ROTATE|SCALE|ALL_SIDES|LINK_(?:ROOT|SET|ALL_(?:OTHERS|CHILDREN)|THIS)|ACTIVE|PASS(?:IVE|_(?:ALWAYS|IF_NOT_HANDLED|NEVER))|SCRIPTED|CONTROL_(?:FWD|BACK|(?:ROT_)?(?:LEFT|RIGHT)|UP|DOWN|(?:ML_)?LBUTTON)|PERMISSION_(?:RETURN_OBJECTS|DEBIT|OVERRIDE_ANIMATIONS|SILENT_ESTATE_MANAGEMENT|TAKE_CONTROLS|TRIGGER_ANIMATION|ATTACH|CHANGE_LINKS|(?:CONTROL|TRACK)_CAMERA|TELEPORT)|INVENTORY_(?:TEXTURE|SOUND|OBJECT|SCRIPT|LANDMARK|CLOTHING|NOTECARD|BODYPART|ANIMATION|GESTURE|ALL|NONE)|CHANGED_(?:INVENTORY|COLOR|SHAPE|SCALE|TEXTURE|LINK|ALLOWED_DROP|OWNER|REGION(?:_START)?|TELEPORT|MEDIA)|OBJECT_(?:CLICK_ACTION|HOVER_HEIGHT|LAST_OWNER_ID|(?:PHYSICS|SERVER|STREAMING)_COST|UNKNOWN_DETAIL|CHARACTER_TIME|PHANTOM|PHYSICS|TEMP_ON_REZ|NAME|DESC|POS|PRIM_(?:COUNT|EQUIVALENCE)|RETURN_(?:PARCEL(?:_OWNER)?|REGION)|REZZER_KEY|ROO?T|VELOCITY|OMEGA|OWNER|GROUP|CREATOR|ATTACHED_POINT|RENDER_WEIGHT|(?:BODY_SHAPE|PATHFINDING)_TYPE|(?:RUNNING|TOTAL)_SCRIPT_COUNT|TOTAL_INVENTORY_COUNT|SCRIPT_(?:MEMORY|TIME))|TYPE_(?:INTEGER|FLOAT|STRING|KEY|VECTOR|ROTATION|INVALID)|(?:DEBUG|PUBLIC)_CHANNEL|ATTACH_(?:AVATAR_CENTER|CHEST|HEAD|BACK|PELVIS|MOUTH|CHIN|NECK|NOSE|BELLY|[LR](?:SHOULDER|HAND|FOOT|EAR|EYE|[UL](?:ARM|LEG)|HIP)|(?:LEFT|RIGHT)_PEC|HUD_(?:CENTER_[12]|TOP_(?:RIGHT|CENTER|LEFT)|BOTTOM(?:_(?:RIGHT|LEFT))?)|[LR]HAND_RING1|TAIL_(?:BASE|TIP)|[LR]WING|FACE_(?:JAW|[LR]EAR|[LR]EYE|TOUNGE)|GROIN|HIND_[LR]FOOT)|LAND_(?:LEVEL|RAISE|LOWER|SMOOTH|NOISE|REVERT)|DATA_(?:ONLINE|NAME|BORN|SIM_(?:POS|STATUS|RATING)|PAYINFO)|PAYMENT_INFO_(?:ON_FILE|USED)|REMOTE_DATA_(?:CHANNEL|REQUEST|REPLY)|PSYS_(?:PART_(?:BF_(?:ZERO|ONE(?:_MINUS_(?:DEST_COLOR|SOURCE_(ALPHA|COLOR)))?|DEST_COLOR|SOURCE_(ALPHA|COLOR))|BLEND_FUNC_(DEST|SOURCE)|FLAGS|(?:START|END)_(?:COLOR|ALPHA|SCALE|GLOW)|MAX_AGE|(?:RIBBON|WIND|INTERP_(?:COLOR|SCALE)|BOUNCE|FOLLOW_(?:SRC|VELOCITY)|TARGET_(?:POS|LINEAR)|EMISSIVE)_MASK)|SRC_(?:MAX_AGE|PATTERN|ANGLE_(?:BEGIN|END)|BURST_(?:RATE|PART_COUNT|RADIUS|SPEED_(?:MIN|MAX))|ACCEL|TEXTURE|TARGET_KEY|OMEGA|PATTERN_(?:DROP|EXPLODE|ANGLE(?:_CONE(?:_EMPTY)?)?)))|VEHICLE_(?:REFERENCE_FRAME|TYPE_(?:NONE|SLED|CAR|BOAT|AIRPLANE|BALLOON)|(?:LINEAR|ANGULAR)_(?:FRICTION_TIMESCALE|MOTOR_DIRECTION)|LINEAR_MOTOR_OFFSET|HOVER_(?:HEIGHT|EFFICIENCY|TIMESCALE)|BUOYANCY|(?:LINEAR|ANGULAR)_(?:DEFLECTION_(?:EFFICIENCY|TIMESCALE)|MOTOR_(?:DECAY_)?TIMESCALE)|VERTICAL_ATTRACTION_(?:EFFICIENCY|TIMESCALE)|BANKING_(?:EFFICIENCY|MIX|TIMESCALE)|FLAG_(?:NO_DEFLECTION_UP|LIMIT_(?:ROLL_ONLY|MOTOR_UP)|HOVER_(?:(?:WATER|TERRAIN|UP)_ONLY|GLOBAL_HEIGHT)|MOUSELOOK_(?:STEER|BANK)|CAMERA_DECOUPLED))|PRIM_(?:ALPHA_MODE(?:_(?:BLEND|EMISSIVE|MASK|NONE))?|NORMAL|SPECULAR|TYPE(?:_(?:BOX|CYLINDER|PRISM|SPHERE|TORUS|TUBE|RING|SCULPT))?|HOLE_(?:DEFAULT|CIRCLE|SQUARE|TRIANGLE)|MATERIAL(?:_(?:STONE|METAL|GLASS|WOOD|FLESH|PLASTIC|RUBBER))?|SHINY_(?:NONE|LOW|MEDIUM|HIGH)|BUMP_(?:NONE|BRIGHT|DARK|WOOD|BARK|BRICKS|CHECKER|CONCRETE|TILE|STONE|DISKS|GRAVEL|BLOBS|SIDING|LARGETILE|STUCCO|SUCTION|WEAVE)|TEXGEN_(?:DEFAULT|PLANAR)|SCULPT_(?:TYPE_(?:SPHERE|TORUS|PLANE|CYLINDER|MASK)|FLAG_(?:MIRROR|INVERT))|PHYSICS(?:_(?:SHAPE_(?:CONVEX|NONE|PRIM|TYPE)))?|(?:POS|ROT)_LOCAL|SLICE|TEXT|FLEXIBLE|POINT_LIGHT|TEMP_ON_REZ|PHANTOM|POSITION|SIZE|ROTATION|TEXTURE|NAME|OMEGA|DESC|LINK_TARGET|COLOR|BUMP_SHINY|FULLBRIGHT|TEXGEN|GLOW|MEDIA_(?:ALT_IMAGE_ENABLE|CONTROLS|(?:CURRENT|HOME)_URL|AUTO_(?:LOOP|PLAY|SCALE|ZOOM)|FIRST_CLICK_INTERACT|(?:WIDTH|HEIGHT)_PIXELS|WHITELIST(?:_ENABLE)?|PERMS_(?:INTERACT|CONTROL)|PARAM_MAX|CONTROLS_(?:STANDARD|MINI)|PERM_(?:NONE|OWNER|GROUP|ANYONE)|MAX_(?:URL_LENGTH|WHITELIST_(?:SIZE|COUNT)|(?:WIDTH|HEIGHT)_PIXELS)))|MASK_(?:BASE|OWNER|GROUP|EVERYONE|NEXT)|PERM_(?:TRANSFER|MODIFY|COPY|MOVE|ALL)|PARCEL_(?:MEDIA_COMMAND_(?:STOP|PAUSE|PLAY|LOOP|TEXTURE|URL|TIME|AGENT|UNLOAD|AUTO_ALIGN|TYPE|SIZE|DESC|LOOP_SET)|FLAG_(?:ALLOW_(?:FLY|(?:GROUP_)?SCRIPTS|LANDMARK|TERRAFORM|DAMAGE|CREATE_(?:GROUP_)?OBJECTS)|USE_(?:ACCESS_(?:GROUP|LIST)|BAN_LIST|LAND_PASS_LIST)|LOCAL_SOUND_ONLY|RESTRICT_PUSHOBJECT|ALLOW_(?:GROUP|ALL)_OBJECT_ENTRY)|COUNT_(?:TOTAL|OWNER|GROUP|OTHER|SELECTED|TEMP)|DETAILS_(?:NAME|DESC|OWNER|GROUP|AREA|ID|SEE_AVATARS))|LIST_STAT_(?:MAX|MIN|MEAN|MEDIAN|STD_DEV|SUM(?:_SQUARES)?|NUM_COUNT|GEOMETRIC_MEAN|RANGE)|PAY_(?:HIDE|DEFAULT)|REGION_FLAG_(?:ALLOW_DAMAGE|FIXED_SUN|BLOCK_TERRAFORM|SANDBOX|DISABLE_(?:COLLISIONS|PHYSICS)|BLOCK_FLY|ALLOW_DIRECT_TELEPORT|RESTRICT_PUSHOBJECT)|HTTP_(?:METHOD|MIMETYPE|BODY_(?:MAXLENGTH|TRUNCATED)|CUSTOM_HEADER|PRAGMA_NO_CACHE|VERBOSE_THROTTLE|VERIFY_CERT)|STRING_(?:TRIM(?:_(?:HEAD|TAIL))?)|CLICK_ACTION_(?:NONE|TOUCH|SIT|BUY|PAY|OPEN(?:_MEDIA)?|PLAY|ZOOM)|TOUCH_INVALID_FACE|PROFILE_(?:NONE|SCRIPT_MEMORY)|RC_(?:DATA_FLAGS|DETECT_PHANTOM|GET_(?:LINK_NUM|NORMAL|ROOT_KEY)|MAX_HITS|REJECT_(?:TYPES|AGENTS|(?:NON)?PHYSICAL|LAND))|RCERR_(?:CAST_TIME_EXCEEDED|SIM_PERF_LOW|UNKNOWN)|ESTATE_ACCESS_(?:ALLOWED_(?:AGENT|GROUP)_(?:ADD|REMOVE)|BANNED_AGENT_(?:ADD|REMOVE))|DENSITY|FRICTION|RESTITUTION|GRAVITY_MULTIPLIER|KFM_(?:COMMAND|CMD_(?:PLAY|STOP|PAUSE)|MODE|FORWARD|LOOP|PING_PONG|REVERSE|DATA|ROTATION|TRANSLATION)|ERR_(?:GENERIC|PARCEL_PERMISSIONS|MALFORMED_PARAMS|RUNTIME_PERMISSIONS|THROTTLED)|CHARACTER_(?:CMD_(?:(?:SMOOTH_)?STOP|JUMP)|DESIRED_(?:TURN_)?SPEED|RADIUS|STAY_WITHIN_PARCEL|LENGTH|ORIENTATION|ACCOUNT_FOR_SKIPPED_FRAMES|AVOIDANCE_MODE|TYPE(?:_(?:[ABCD]|NONE))?|MAX_(?:DECEL|TURN_RADIUS|(?:ACCEL|SPEED)))|PURSUIT_(?:OFFSET|FUZZ_FACTOR|GOAL_TOLERANCE|INTERCEPT)|REQUIRE_LINE_OF_SIGHT|FORCE_DIRECT_PATH|VERTICAL|HORIZONTAL|AVOID_(?:CHARACTERS|DYNAMIC_OBSTACLES|NONE)|PU_(?:EVADE_(?:HIDDEN|SPOTTED)|FAILURE_(?:DYNAMIC_PATHFINDING_DISABLED|INVALID_(?:GOAL|START)|NO_(?:NAVMESH|VALID_DESTINATION)|OTHER|TARGET_GONE|(?:PARCEL_)?UNREACHABLE)|(?:GOAL|SLOWDOWN_DISTANCE)_REACHED)|TRAVERSAL_TYPE(?:_(?:FAST|NONE|SLOW))?|CONTENT_TYPE_(?:ATOM|FORM|HTML|JSON|LLSD|RSS|TEXT|XHTML|XML)|GCNP_(?:RADIUS|STATIC)|(?:PATROL|WANDER)_PAUSE_AT_WAYPOINTS|OPT_(?:AVATAR|CHARACTER|EXCLUSION_VOLUME|LEGACY_LINKSET|MATERIAL_VOLUME|OTHER|STATIC_OBSTACLE|WALKABLE)|SIM_STAT_PCT_CHARS_STEPPED)\\b'
+	            },
+	            {
+	                begin: '\\b(?:FALSE|TRUE)\\b'
+	            },
+	            {
+	                begin: '\\b(?:ZERO_ROTATION)\\b'
+	            },
+	            {
+	                begin: '\\b(?:EOF|JSON_(?:ARRAY|DELETE|FALSE|INVALID|NULL|NUMBER|OBJECT|STRING|TRUE)|NULL_KEY|TEXTURE_(?:BLANK|DEFAULT|MEDIA|PLYWOOD|TRANSPARENT)|URL_REQUEST_(?:GRANTED|DENIED))\\b'
+	            },
+	            {
+	                begin: '\\b(?:ZERO_VECTOR|TOUCH_INVALID_(?:TEXCOORD|VECTOR))\\b'
+	            }
+	        ]
+	    };
+
+	    var LSL_FUNCTIONS = {
+	        className: 'built_in',
+	        begin: '\\b(?:ll(?:AgentInExperience|(?:Create|DataSize|Delete|KeyCount|Keys|Read|Update)KeyValue|GetExperience(?:Details|ErrorMessage)|ReturnObjectsBy(?:ID|Owner)|Json(?:2List|[GS]etValue|ValueType)|Sin|Cos|Tan|Atan2|Sqrt|Pow|Abs|Fabs|Frand|Floor|Ceil|Round|Vec(?:Mag|Norm|Dist)|Rot(?:Between|2(?:Euler|Fwd|Left|Up))|(?:Euler|Axes)2Rot|Whisper|(?:Region|Owner)?Say|Shout|Listen(?:Control|Remove)?|Sensor(?:Repeat|Remove)?|Detected(?:Name|Key|Owner|Type|Pos|Vel|Grab|Rot|Group|LinkNumber)|Die|Ground|Wind|(?:[GS]et)(?:AnimationOverride|MemoryLimit|PrimMediaParams|ParcelMusicURL|Object(?:Desc|Name)|PhysicsMaterial|Status|Scale|Color|Alpha|Texture|Pos|Rot|Force|Torque)|ResetAnimationOverride|(?:Scale|Offset|Rotate)Texture|(?:Rot)?Target(?:Remove)?|(?:Stop)?MoveToTarget|Apply(?:Rotational)?Impulse|Set(?:KeyframedMotion|ContentType|RegionPos|(?:Angular)?Velocity|Buoyancy|HoverHeight|ForceAndTorque|TimerEvent|ScriptState|Damage|TextureAnim|Sound(?:Queueing|Radius)|Vehicle(?:Type|(?:Float|Vector|Rotation)Param)|(?:Touch|Sit)?Text|Camera(?:Eye|At)Offset|PrimitiveParams|ClickAction|Link(?:Alpha|Color|PrimitiveParams(?:Fast)?|Texture(?:Anim)?|Camera|Media)|RemoteScriptAccessPin|PayPrice|LocalRot)|ScaleByFactor|Get(?:(?:Max|Min)ScaleFactor|ClosestNavPoint|StaticPath|SimStats|Env|PrimitiveParams|Link(?:PrimitiveParams|Number(?:OfSides)?|Key|Name|Media)|HTTPHeader|FreeURLs|Object(?:Details|PermMask|PrimCount)|Parcel(?:MaxPrims|Details|Prim(?:Count|Owners))|Attached(?:List)?|(?:SPMax|Free|Used)Memory|Region(?:Name|TimeDilation|FPS|Corner|AgentCount)|Root(?:Position|Rotation)|UnixTime|(?:Parcel|Region)Flags|(?:Wall|GMT)clock|SimulatorHostname|BoundingBox|GeometricCenter|Creator|NumberOf(?:Prims|NotecardLines|Sides)|Animation(?:List)?|(?:Camera|Local)(?:Pos|Rot)|Vel|Accel|Omega|Time(?:stamp|OfDay)|(?:Object|CenterOf)?Mass|MassMKS|Energy|Owner|(?:Owner)?Key|SunDirection|Texture(?:Offset|Scale|Rot)|Inventory(?:Number|Name|Key|Type|Creator|PermMask)|Permissions(?:Key)?|StartParameter|List(?:Length|EntryType)|Date|Agent(?:Size|Info|Language|List)|LandOwnerAt|NotecardLine|Script(?:Name|State))|(?:Get|Reset|GetAndReset)Time|PlaySound(?:Slave)?|LoopSound(?:Master|Slave)?|(?:Trigger|Stop|Preload)Sound|(?:(?:Get|Delete)Sub|Insert)String|To(?:Upper|Lower)|Give(?:InventoryList|Money)|RezObject|(?:Stop)?LookAt|Sleep|CollisionFilter|(?:Take|Release)Controls|DetachFromAvatar|AttachToAvatar(?:Temp)?|InstantMessage|(?:GetNext)?Email|StopHover|MinEventDelay|RotLookAt|String(?:Length|Trim)|(?:Start|Stop)Animation|TargetOmega|Request(?:Experience)?Permissions|(?:Create|Break)Link|BreakAllLinks|(?:Give|Remove)Inventory|Water|PassTouches|Request(?:Agent|Inventory)Data|TeleportAgent(?:Home|GlobalCoords)?|ModifyLand|CollisionSound|ResetScript|MessageLinked|PushObject|PassCollisions|AxisAngle2Rot|Rot2(?:Axis|Angle)|A(?:cos|sin)|AngleBetween|AllowInventoryDrop|SubStringIndex|List2(?:CSV|Integer|Json|Float|String|Key|Vector|Rot|List(?:Strided)?)|DeleteSubList|List(?:Statistics|Sort|Randomize|(?:Insert|Find|Replace)List)|EdgeOfWorld|AdjustSoundVolume|Key2Name|TriggerSoundLimited|EjectFromLand|(?:CSV|ParseString)2List|OverMyLand|SameGroup|UnSit|Ground(?:Slope|Normal|Contour)|GroundRepel|(?:Set|Remove)VehicleFlags|(?:AvatarOn)?(?:Link)?SitTarget|Script(?:Danger|Profiler)|Dialog|VolumeDetect|ResetOtherScript|RemoteLoadScriptPin|(?:Open|Close)RemoteDataChannel|SendRemoteData|RemoteDataReply|(?:Integer|String)ToBase64|XorBase64|Log(?:10)?|Base64To(?:String|Integer)|ParseStringKeepNulls|RezAtRoot|RequestSimulatorData|ForceMouselook|(?:Load|Release|(?:E|Une)scape)URL|ParcelMedia(?:CommandList|Query)|ModPow|MapDestination|(?:RemoveFrom|AddTo|Reset)Land(?:Pass|Ban)List|(?:Set|Clear)CameraParams|HTTP(?:Request|Response)|TextBox|DetectedTouch(?:UV|Face|Pos|(?:N|Bin)ormal|ST)|(?:MD5|SHA1|DumpList2)String|Request(?:Secure)?URL|Clear(?:Prim|Link)Media|(?:Link)?ParticleSystem|(?:Get|Request)(?:Username|DisplayName)|RegionSayTo|CastRay|GenerateKey|TransferLindenDollars|ManageEstateAccess|(?:Create|Delete)Character|ExecCharacterCmd|Evade|FleeFrom|NavigateTo|PatrolPoints|Pursue|UpdateCharacter|WanderWithin))\\b'
+	    };
+
+	    return {
+	        illegal: ':',
+	        contains: [
+	            LSL_STRINGS,
+	            {
+	                className: 'comment',
+	                variants: [
+	                    hljs.COMMENT('//', '$'),
+	                    hljs.COMMENT('/\\*', '\\*/')
+	                ]
+	            },
+	            LSL_NUMBERS,
+	            {
+	                className: 'section',
+	                variants: [
+	                    {
+	                        begin: '\\b(?:state|default)\\b'
+	                    },
+	                    {
+	                        begin: '\\b(?:state_(?:entry|exit)|touch(?:_(?:start|end))?|(?:land_)?collision(?:_(?:start|end))?|timer|listen|(?:no_)?sensor|control|(?:not_)?at_(?:rot_)?target|money|email|experience_permissions(?:_denied)?|run_time_permissions|changed|attach|dataserver|moving_(?:start|end)|link_message|(?:on|object)_rez|remote_data|http_re(?:sponse|quest)|path_update|transaction_result)\\b'
+	                    }
+	                ]
+	            },
+	            LSL_FUNCTIONS,
+	            LSL_CONSTANTS,
+	            {
+	                className: 'type',
+	                begin: '\\b(?:integer|float|string|key|vector|quaternion|rotation|list)\\b'
+	            }
+	        ]
+	    };
+	};
+
+/***/ },
+/* 256 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -29800,7 +29338,7 @@
 	};
 
 /***/ },
-/* 249 */
+/* 257 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -29849,7 +29387,7 @@
 	};
 
 /***/ },
-/* 250 */
+/* 258 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -29911,7 +29449,7 @@
 	};
 
 /***/ },
-/* 251 */
+/* 259 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30003,7 +29541,7 @@
 	};
 
 /***/ },
-/* 252 */
+/* 260 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30407,12 +29945,13 @@
 	          }
 	        ]
 	      }
-	    ]
+	    ],
+	    illegal: /@/
 	  }
 	};
 
 /***/ },
-/* 253 */
+/* 261 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30641,7 +30180,7 @@
 	};
 
 /***/ },
-/* 254 */
+/* 262 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30727,7 +30266,7 @@
 	};
 
 /***/ },
-/* 255 */
+/* 263 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30817,7 +30356,7 @@
 	};
 
 /***/ },
-/* 256 */
+/* 264 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30840,7 +30379,7 @@
 	};
 
 /***/ },
-/* 257 */
+/* 265 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31001,7 +30540,7 @@
 	};
 
 /***/ },
-/* 258 */
+/* 266 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31030,7 +30569,7 @@
 	};
 
 /***/ },
-/* 259 */
+/* 267 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31109,7 +30648,7 @@
 	};
 
 /***/ },
-/* 260 */
+/* 268 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31225,7 +30764,7 @@
 	};
 
 /***/ },
-/* 261 */
+/* 269 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31322,7 +30861,7 @@
 	};
 
 /***/ },
-/* 262 */
+/* 270 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31381,7 +30920,7 @@
 	};
 
 /***/ },
-/* 263 */
+/* 271 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31434,7 +30973,7 @@
 	};
 
 /***/ },
-/* 264 */
+/* 272 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31524,13 +31063,13 @@
 	};
 
 /***/ },
-/* 265 */
+/* 273 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  var API_CLASS = {
 	    className: 'built_in',
-	    begin: '(AV|CA|CF|CG|CI|MK|MP|NS|UI|XC)\\w+',
+	    begin: '\\b(AV|CA|CF|CG|CI|CL|CM|CN|CT|MK|MP|MTK|MTL|NS|SCN|SK|UI|WK|XC)\\w+',
 	  };
 	  var OBJC_KEYWORDS = {
 	    keyword:
@@ -31542,7 +31081,20 @@
 	      'nonatomic super unichar IBOutlet IBAction strong weak copy ' +
 	      'in out inout bycopy byref oneway __strong __weak __block __autoreleasing ' +
 	      '@private @protected @public @try @property @end @throw @catch @finally ' +
-	      '@autoreleasepool @synthesize @dynamic @selector @optional @required',
+	      '@autoreleasepool @synthesize @dynamic @selector @optional @required ' +
+	      '@encode @package @import @defs @compatibility_alias ' +
+	      '__bridge __bridge_transfer __bridge_retained __bridge_retain ' +
+	      '__covariant __contravariant __kindof ' +
+	      '_Nonnull _Nullable _Null_unspecified ' +
+	      '__FUNCTION__ __PRETTY_FUNCTION__ __attribute__ ' +
+	      'getter setter retain unsafe_unretained ' +
+	      'nonnull nullable null_unspecified null_resettable class instancetype ' +
+	      'NS_DESIGNATED_INITIALIZER NS_UNAVAILABLE NS_REQUIRES_SUPER ' +
+	      'NS_RETURNS_INNER_POINTER NS_INLINE NS_AVAILABLE NS_DEPRECATED ' +
+	      'NS_ENUM NS_OPTIONS NS_SWIFT_UNAVAILABLE ' +
+	      'NS_ASSUME_NONNULL_BEGIN NS_ASSUME_NONNULL_END ' +
+	      'NS_REFINED_FOR_SWIFT NS_SWIFT_NAME NS_SWIFT_NOTHROW ' +
+	      'NS_DURING NS_HANDLER NS_ENDHANDLER NS_VALUERETURN NS_VOIDRETURN',
 	    literal:
 	      'false true FALSE TRUE nil YES NO NULL',
 	    built_in:
@@ -31606,7 +31158,7 @@
 	};
 
 /***/ },
-/* 266 */
+/* 274 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31681,7 +31233,7 @@
 	};
 
 /***/ },
-/* 267 */
+/* 275 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31742,7 +31294,7 @@
 	};
 
 /***/ },
-/* 268 */
+/* 276 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31816,7 +31368,7 @@
 	};
 
 /***/ },
-/* 269 */
+/* 277 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31868,7 +31420,7 @@
 	};
 
 /***/ },
-/* 270 */
+/* 278 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31924,7 +31476,7 @@
 	};
 
 /***/ },
-/* 271 */
+/* 279 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32000,6 +31552,9 @@
 	        ]
 	      },
 	      PREPROCESSOR,
+	      {
+	        className: 'keyword', begin: /\$this\b/
+	      },
 	      VARIABLE,
 	      {
 	        // swallow composed identifiers to avoid parsing them as keywords
@@ -32052,11 +31607,106 @@
 	};
 
 /***/ },
-/* 272 */
+/* 280 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
-	  var backtickEscape = {
+	  var KEYWORDS = {
+	    keyword:
+	      'actor addressof and as be break class compile_error compile_intrinsic' +
+	      'consume continue delegate digestof do else elseif embed end error' +
+	      'for fun if ifdef in interface is isnt lambda let match new not object' +
+	      'or primitive recover repeat return struct then trait try type until ' +
+	      'use var where while with xor',
+	    meta:
+	      'iso val tag trn box ref',
+	    literal:
+	      'this false true'
+	  };
+
+	  var TRIPLE_QUOTE_STRING_MODE = {
+	    className: 'string',
+	    begin: '"""', end: '"""',
+	    relevance: 10
+	  };
+
+	  var QUOTE_STRING_MODE = {
+	    className: 'string',
+	    begin: '"', end: '"',
+	    contains: [hljs.BACKSLASH_ESCAPE]
+	  };
+
+	  var SINGLE_QUOTE_CHAR_MODE = {
+	    className: 'string',
+	    begin: '\'', end: '\'',
+	    contains: [hljs.BACKSLASH_ESCAPE],
+	    relevance: 0
+	  };
+
+	  var TYPE_NAME = {
+	    className: 'type',
+	    begin: '\\b_?[A-Z][\\w]*',
+	    relevance: 0
+	  };
+
+	  var PRIMED_NAME = {
+	    begin: hljs.IDENT_RE + '\'', relevance: 0
+	  };
+
+	  var CLASS = {
+	    className: 'class',
+	    beginKeywords: 'class actor', end: '$',
+	    contains: [
+	      hljs.TITLE_MODE,
+	      hljs.C_LINE_COMMENT_MODE
+	    ]
+	  }
+
+	  var FUNCTION = {
+	    className: 'function',
+	    beginKeywords: 'new fun', end: '=>',
+	    contains: [
+	      hljs.TITLE_MODE,
+	      {
+	        begin: /\(/, end: /\)/,
+	        contains: [
+	          TYPE_NAME,
+	          PRIMED_NAME,
+	          hljs.C_NUMBER_MODE,
+	          hljs.C_BLOCK_COMMENT_MODE
+	        ]
+	      },
+	      {
+	        begin: /:/, endsWithParent: true,
+	        contains: [TYPE_NAME]
+	      },
+	      hljs.C_LINE_COMMENT_MODE
+	    ]
+	  }
+
+	  return {
+	    keywords: KEYWORDS,
+	    contains: [
+	      CLASS,
+	      FUNCTION,
+	      TYPE_NAME,
+	      TRIPLE_QUOTE_STRING_MODE,
+	      QUOTE_STRING_MODE,
+	      SINGLE_QUOTE_CHAR_MODE,
+	      PRIMED_NAME,
+	      hljs.C_NUMBER_MODE,
+	      hljs.C_LINE_COMMENT_MODE,
+	      hljs.C_BLOCK_COMMENT_MODE
+	    ]
+	  };
+	};
+
+/***/ },
+/* 281 */
+/***/ function(module, exports) {
+
+	module.exports = function(hljs) {
+	  var BACKTICK_ESCAPE = {
 	    begin: '`[\\s\\S]',
 	    relevance: 0
 	  };
@@ -32072,9 +31722,12 @@
 	  };
 	  var QUOTE_STRING = {
 	    className: 'string',
-	    begin: /"/, end: /"/,
+	    variants: [
+	      { begin: /"/, end: /"/ },
+	      { begin: /@"/, end: /^"@/ }
+	    ],
 	    contains: [
-	      backtickEscape,
+	      BACKTICK_ESCAPE,
 	      VAR,
 	      {
 	        className: 'variable',
@@ -32084,8 +31737,33 @@
 	  };
 	  var APOS_STRING = {
 	    className: 'string',
-	    begin: /'/, end: /'/
+	    variants: [
+	      { begin: /'/, end: /'/ },
+	      { begin: /@'/, end: /^'@/ }
+	    ]
 	  };
+
+	  var PS_HELPTAGS = {
+	    className: 'doctag',
+	    variants: [
+	      /* no paramater help tags */ 
+	      { begin: /\.(synopsis|description|example|inputs|outputs|notes|link|component|role|functionality)/ },
+	      /* one parameter help tags */
+	      { begin: /\.(parameter|forwardhelptargetname|forwardhelpcategory|remotehelprunspace|externalhelp)\s+\S+/ }
+	    ]
+	  };
+	  var PS_COMMENT = hljs.inherit(
+	    hljs.COMMENT(null, null),
+	    {
+	      variants: [
+	        /* single-line comment */
+	        { begin: /#/, end: /$/ },
+	        /* multi-line comment */
+	        { begin: /<#/, end: /#>/ }
+	      ],
+	      contains: [PS_HELPTAGS]
+	    }
+	  );
 
 	  return {
 	    aliases: ['ps'],
@@ -32093,22 +31771,23 @@
 	    case_insensitive: true,
 	    keywords: {
 	      keyword: 'if else foreach return function do while until elseif begin for trap data dynamicparam end break throw param continue finally in switch exit filter try process catch',
-	      built_in: 'Add-Content Add-History Add-Member Add-PSSnapin Clear-Content Clear-Item Clear-Item Property Clear-Variable Compare-Object ConvertFrom-SecureString Convert-Path ConvertTo-Html ConvertTo-SecureString Copy-Item Copy-ItemProperty Export-Alias Export-Clixml Export-Console Export-Csv ForEach-Object Format-Custom Format-List Format-Table Format-Wide Get-Acl Get-Alias Get-AuthenticodeSignature Get-ChildItem Get-Command Get-Content Get-Credential Get-Culture Get-Date Get-EventLog Get-ExecutionPolicy Get-Help Get-History Get-Host Get-Item Get-ItemProperty Get-Location Get-Member Get-PfxCertificate Get-Process Get-PSDrive Get-PSProvider Get-PSSnapin Get-Service Get-TraceSource Get-UICulture Get-Unique Get-Variable Get-WmiObject Group-Object Import-Alias Import-Clixml Import-Csv Invoke-Expression Invoke-History Invoke-Item Join-Path Measure-Command Measure-Object Move-Item Move-ItemProperty New-Alias New-Item New-ItemProperty New-Object New-PSDrive New-Service New-TimeSpan New-Variable Out-Default Out-File Out-Host Out-Null Out-Printer Out-String Pop-Location Push-Location Read-Host Remove-Item Remove-ItemProperty Remove-PSDrive Remove-PSSnapin Remove-Variable Rename-Item Rename-ItemProperty Resolve-Path Restart-Service Resume-Service Select-Object Select-String Set-Acl Set-Alias Set-AuthenticodeSignature Set-Content Set-Date Set-ExecutionPolicy Set-Item Set-ItemProperty Set-Location Set-PSDebug Set-Service Set-TraceSource Set-Variable Sort-Object Split-Path Start-Service Start-Sleep Start-Transcript Stop-Process Stop-Service Stop-Transcript Suspend-Service Tee-Object Test-Path Trace-Command Update-FormatData Update-TypeData Where-Object Write-Debug Write-Error Write-Host Write-Output Write-Progress Write-Verbose Write-Warning',
+	      built_in: 'Add-Computer Add-Content Add-History Add-JobTrigger Add-Member Add-PSSnapin Add-Type Checkpoint-Computer Clear-Content Clear-EventLog Clear-History Clear-Host Clear-Item Clear-ItemProperty Clear-Variable Compare-Object Complete-Transaction Connect-PSSession Connect-WSMan Convert-Path ConvertFrom-Csv ConvertFrom-Json ConvertFrom-SecureString ConvertFrom-StringData ConvertTo-Csv ConvertTo-Html ConvertTo-Json ConvertTo-SecureString ConvertTo-Xml Copy-Item Copy-ItemProperty Debug-Process Disable-ComputerRestore Disable-JobTrigger Disable-PSBreakpoint Disable-PSRemoting Disable-PSSessionConfiguration Disable-WSManCredSSP Disconnect-PSSession Disconnect-WSMan Disable-ScheduledJob Enable-ComputerRestore Enable-JobTrigger Enable-PSBreakpoint Enable-PSRemoting Enable-PSSessionConfiguration Enable-ScheduledJob Enable-WSManCredSSP Enter-PSSession Exit-PSSession Export-Alias Export-Clixml Export-Console Export-Counter Export-Csv Export-FormatData Export-ModuleMember Export-PSSession ForEach-Object Format-Custom Format-List Format-Table Format-Wide Get-Acl Get-Alias Get-AuthenticodeSignature Get-ChildItem Get-Command Get-ComputerRestorePoint Get-Content Get-ControlPanelItem Get-Counter Get-Credential Get-Culture Get-Date Get-Event Get-EventLog Get-EventSubscriber Get-ExecutionPolicy Get-FormatData Get-Host Get-HotFix Get-Help Get-History Get-IseSnippet Get-Item Get-ItemProperty Get-Job Get-JobTrigger Get-Location Get-Member Get-Module Get-PfxCertificate Get-Process Get-PSBreakpoint Get-PSCallStack Get-PSDrive Get-PSProvider Get-PSSession Get-PSSessionConfiguration Get-PSSnapin Get-Random Get-ScheduledJob Get-ScheduledJobOption Get-Service Get-TraceSource Get-Transaction Get-TypeData Get-UICulture Get-Unique Get-Variable Get-Verb Get-WinEvent Get-WmiObject Get-WSManCredSSP Get-WSManInstance Group-Object Import-Alias Import-Clixml Import-Counter Import-Csv Import-IseSnippet Import-LocalizedData Import-PSSession Import-Module Invoke-AsWorkflow Invoke-Command Invoke-Expression Invoke-History Invoke-Item Invoke-RestMethod Invoke-WebRequest Invoke-WmiMethod Invoke-WSManAction Join-Path Limit-EventLog Measure-Command Measure-Object Move-Item Move-ItemProperty New-Alias New-Event New-EventLog New-IseSnippet New-Item New-ItemProperty New-JobTrigger New-Object New-Module New-ModuleManifest New-PSDrive New-PSSession New-PSSessionConfigurationFile New-PSSessionOption New-PSTransportOption New-PSWorkflowExecutionOption New-PSWorkflowSession New-ScheduledJobOption New-Service New-TimeSpan New-Variable New-WebServiceProxy New-WinEvent New-WSManInstance New-WSManSessionOption Out-Default Out-File Out-GridView Out-Host Out-Null Out-Printer Out-String Pop-Location Push-Location Read-Host Receive-Job Register-EngineEvent Register-ObjectEvent Register-PSSessionConfiguration Register-ScheduledJob Register-WmiEvent Remove-Computer Remove-Event Remove-EventLog Remove-Item Remove-ItemProperty Remove-Job Remove-JobTrigger Remove-Module Remove-PSBreakpoint Remove-PSDrive Remove-PSSession Remove-PSSnapin Remove-TypeData Remove-Variable Remove-WmiObject Remove-WSManInstance Rename-Computer Rename-Item Rename-ItemProperty Reset-ComputerMachinePassword Resolve-Path Restart-Computer Restart-Service Restore-Computer Resume-Job Resume-Service Save-Help Select-Object Select-String Select-Xml Send-MailMessage Set-Acl Set-Alias Set-AuthenticodeSignature Set-Content Set-Date Set-ExecutionPolicy Set-Item Set-ItemProperty Set-JobTrigger Set-Location Set-PSBreakpoint Set-PSDebug Set-PSSessionConfiguration Set-ScheduledJob Set-ScheduledJobOption Set-Service Set-StrictMode Set-TraceSource Set-Variable Set-WmiInstance Set-WSManInstance Set-WSManQuickConfig Show-Command Show-ControlPanelItem Show-EventLog Sort-Object Split-Path Start-Job Start-Process Start-Service Start-Sleep Start-Transaction Start-Transcript Stop-Computer Stop-Job Stop-Process Stop-Service Stop-Transcript Suspend-Job Suspend-Service Tee-Object Test-ComputerSecureChannel Test-Connection Test-ModuleManifest Test-Path Test-PSSessionConfigurationFile Trace-Command Unblock-File Undo-Transaction Unregister-Event Unregister-PSSessionConfiguration Unregister-ScheduledJob Update-FormatData Update-Help Update-List Update-TypeData Use-Transaction Wait-Event Wait-Job Wait-Process Where-Object Write-Debug Write-Error Write-EventLog Write-Host Write-Output Write-Progress Write-Verbose Write-Warning',
 	      nomarkup: '-ne -eq -lt -gt -ge -le -not -like -notlike -match -notmatch -contains -notcontains -in -notin -replace'
 	    },
 	    contains: [
-	      hljs.HASH_COMMENT_MODE,
+	      BACKTICK_ESCAPE,
 	      hljs.NUMBER_MODE,
 	      QUOTE_STRING,
 	      APOS_STRING,
 	      LITERAL,
-	      VAR
+	      VAR,
+	      PS_COMMENT
 	    ]
 	  };
 	};
 
 /***/ },
-/* 273 */
+/* 282 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32160,7 +31839,7 @@
 	};
 
 /***/ },
-/* 274 */
+/* 283 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32194,7 +31873,7 @@
 	};
 
 /***/ },
-/* 275 */
+/* 284 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32286,7 +31965,7 @@
 	};
 
 /***/ },
-/* 276 */
+/* 285 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32326,7 +32005,7 @@
 	};
 
 /***/ },
-/* 277 */
+/* 286 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32445,7 +32124,69 @@
 	};
 
 /***/ },
-/* 278 */
+/* 287 */
+/***/ function(module, exports) {
+
+	module.exports = // Base deafult colors in PB IDE: background: #FFFFDF; foreground: #000000;
+
+	function(hljs) {
+	  var STRINGS = { // PB IDE color: #0080FF (Azure Radiance)
+	    className: 'string',
+	    begin: '(~)?"', end: '"',
+	    illegal: '\\n'
+	  };
+	  var CONSTANTS = { // PB IDE color: #924B72 (Cannon Pink)
+	    //  "#" + a letter or underscore + letters, digits or underscores + (optional) "$"
+	    className: 'symbol',
+	    begin: '#[a-zA-Z_]\\w*\\$?'
+	  };
+
+	  return {
+	    aliases: ['pb', 'pbi'],
+	    keywords: // PB IDE color: #006666 (Blue Stone) + Bold
+	      // The following keywords list was taken and adapted from GuShH's PureBasic language file for GeSHi...
+	      'And As Break CallDebugger Case CompilerCase CompilerDefault CompilerElse CompilerEndIf CompilerEndSelect ' +
+	      'CompilerError CompilerIf CompilerSelect Continue Data DataSection EndDataSection Debug DebugLevel ' +
+	      'Default Define Dim DisableASM DisableDebugger DisableExplicit Else ElseIf EnableASM ' +
+	      'EnableDebugger EnableExplicit End EndEnumeration EndIf EndImport EndInterface EndMacro EndProcedure ' +
+	      'EndSelect EndStructure EndStructureUnion EndWith Enumeration Extends FakeReturn For Next ForEach ' +
+	      'ForEver Global Gosub Goto If Import ImportC IncludeBinary IncludeFile IncludePath Interface Macro ' +
+	      'NewList Not Or ProcedureReturn Protected Prototype ' +
+	      'PrototypeC Read ReDim Repeat Until Restore Return Select Shared Static Step Structure StructureUnion ' +
+	      'Swap To Wend While With XIncludeFile XOr ' +
+	      'Procedure ProcedureC ProcedureCDLL ProcedureDLL Declare DeclareC DeclareCDLL DeclareDLL',
+	    contains: [
+	      // COMMENTS | PB IDE color: #00AAAA (Persian Green)
+	      hljs.COMMENT(';', '$', {relevance: 0}),
+
+	      { // PROCEDURES DEFINITIONS
+	        className: 'function',
+	        begin: '\\b(Procedure|Declare)(C|CDLL|DLL)?\\b',
+	        end: '\\(',
+	        excludeEnd: true,
+	        returnBegin: true,
+	        contains: [
+	          { // PROCEDURE KEYWORDS | PB IDE color: #006666 (Blue Stone) + Bold
+	            className: 'keyword',
+	            begin: '(Procedure|Declare)(C|CDLL|DLL)?',
+	            excludeEnd: true
+	          },
+	          { // PROCEDURE RETURN TYPE SETTING | PB IDE color: #000000 (Black)
+	            className: 'type',
+	            begin: '\\.\\w*'
+	            // end: ' ',
+	          },
+	          hljs.UNDERSCORE_TITLE_MODE // PROCEDURE NAME | PB IDE color: #006666 (Blue Stone)
+	        ]
+	      },
+	      STRINGS,
+	      CONSTANTS
+	    ]
+	  };
+	};
+
+/***/ },
+/* 288 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32541,7 +32282,7 @@
 	};
 
 /***/ },
-/* 279 */
+/* 289 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32568,7 +32309,7 @@
 	};
 
 /***/ },
-/* 280 */
+/* 290 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32741,7 +32482,7 @@
 	};
 
 /***/ },
-/* 281 */
+/* 291 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32815,7 +32556,7 @@
 	};
 
 /***/ },
-/* 282 */
+/* 292 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32846,7 +32587,7 @@
 	};
 
 /***/ },
-/* 283 */
+/* 293 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32917,7 +32658,7 @@
 	};
 
 /***/ },
-/* 284 */
+/* 294 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32957,7 +32698,7 @@
 	};
 
 /***/ },
-/* 285 */
+/* 295 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33022,7 +32763,7 @@
 	};
 
 /***/ },
-/* 286 */
+/* 296 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33033,9 +32774,9 @@
 	    'alignof as be box break const continue crate do else enum extern ' +
 	    'false fn for if impl in let loop match mod mut offsetof once priv ' +
 	    'proc pub pure ref return self Self sizeof static struct super trait true ' +
-	    'type typeof unsafe unsized use virtual while where yield move ' +
-	    'int i8 i16 i32 i64 ' +
-	    'uint u8 u32 u64 ' +
+	    'type typeof unsafe unsized use virtual while where yield move default ' +
+	    'int i8 i16 i32 i64 isize ' +
+	    'uint u8 u32 u64 usize ' +
 	    'float f32 f64 ' +
 	    'str char bool'
 	  var BUILTINS =
@@ -33125,11 +32866,6 @@
 	        keywords: {built_in: BUILTINS}
 	      },
 	      {
-	        className: 'params',
-	        begin: /\|/, end: /\|/,
-	        keywords: KEYWORDS
-	      },
-	      {
 	        begin: '->'
 	      }
 	    ]
@@ -33137,7 +32873,7 @@
 	};
 
 /***/ },
-/* 287 */
+/* 297 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33256,7 +32992,7 @@
 	};
 
 /***/ },
-/* 288 */
+/* 298 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33401,7 +33137,7 @@
 	};
 
 /***/ },
-/* 289 */
+/* 299 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33459,7 +33195,7 @@
 	};
 
 /***/ },
-/* 290 */
+/* 300 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33561,7 +33297,7 @@
 	};
 
 /***/ },
-/* 291 */
+/* 301 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33621,7 +33357,7 @@
 	};
 
 /***/ },
-/* 292 */
+/* 302 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33675,7 +33411,7 @@
 	};
 
 /***/ },
-/* 293 */
+/* 303 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33745,85 +33481,27 @@
 	};
 
 /***/ },
-/* 294 */
+/* 304 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
-	  var allCommands = ['!', '-', '+', '!=', '%', '&&', '*', '/', '=', '==', '>', '>=', '<', '<=', 'or', 'plus', '^', ':', '>>', 'abs', 'accTime', 'acos', 'action', 'actionKeys', 'actionKeysImages', 'actionKeysNames', 'actionKeysNamesArray', 'actionName', 'activateAddons', 'activatedAddons', 'activateKey', 'addAction', 'addBackpack', 'addBackpackCargo', 'addBackpackCargoGlobal', 'addBackpackGlobal', 'addCamShake', 'addCuratorAddons', 'addCuratorCameraArea', 'addCuratorEditableObjects', 'addCuratorEditingArea', 'addCuratorPoints', 'addEditorObject', 'addEventHandler', 'addGoggles', 'addGroupIcon', 'addHandgunItem', 'addHeadgear', 'addItem', 'addItemCargo', 'addItemCargoGlobal', 'addItemPool', 'addItemToBackpack', 'addItemToUniform', 'addItemToVest', 'addLiveStats', 'addMagazine', 'addMagazine array', 'addMagazineAmmoCargo', 'addMagazineCargo', 'addMagazineCargoGlobal', 'addMagazineGlobal', 'addMagazinePool', 'addMagazines', 'addMagazineTurret', 'addMenu', 'addMenuItem', 'addMissionEventHandler', 'addMPEventHandler', 'addMusicEventHandler', 'addPrimaryWeaponItem', 'addPublicVariableEventHandler', 'addRating', 'addResources', 'addScore', 'addScoreSide', 'addSecondaryWeaponItem', 'addSwitchableUnit', 'addTeamMember', 'addToRemainsCollector', 'addUniform', 'addVehicle', 'addVest', 'addWaypoint', 'addWeapon', 'addWeaponCargo', 'addWeaponCargoGlobal', 'addWeaponGlobal', 'addWeaponPool', 'addWeaponTurret', 'agent', 'agents', 'AGLToASL', 'aimedAtTarget', 'aimPos', 'airDensityRTD', 'airportSide', 'AISFinishHeal', 'alive', 'allControls', 'allCurators', 'allDead', 'allDeadMen', 'allDisplays', 'allGroups', 'allMapMarkers', 'allMines', 'allMissionObjects', 'allow3DMode', 'allowCrewInImmobile', 'allowCuratorLogicIgnoreAreas', 'allowDamage', 'allowDammage', 'allowFileOperations', 'allowFleeing', 'allowGetIn', 'allPlayers', 'allSites', 'allTurrets', 'allUnits', 'allUnitsUAV', 'allVariables', 'ammo', 'and', 'animate', 'animateDoor', 'animationPhase', 'animationState', 'append', 'armoryPoints', 'arrayIntersect', 'asin', 'ASLToAGL', 'ASLToATL', 'assert', 'assignAsCargo', 'assignAsCargoIndex', 'assignAsCommander', 'assignAsDriver', 'assignAsGunner', 'assignAsTurret', 'assignCurator', 'assignedCargo', 'assignedCommander', 'assignedDriver', 'assignedGunner', 'assignedItems', 'assignedTarget', 'assignedTeam', 'assignedVehicle', 'assignedVehicleRole', 'assignItem', 'assignTeam', 'assignToAirport', 'atan', 'atan2', 'atg', 'ATLToASL', 'attachedObject', 'attachedObjects', 'attachedTo', 'attachObject', 'attachTo', 'attackEnabled', 'backpack', 'backpackCargo', 'backpackContainer', 'backpackItems', 'backpackMagazines', 'backpackSpaceFor', 'behaviour', 'benchmark', 'binocular', 'blufor', 'boundingBox', 'boundingBoxReal', 'boundingCenter', 'breakOut', 'breakTo', 'briefingName', 'buildingExit', 'buildingPos', 'buttonAction', 'buttonSetAction', 'cadetMode', 'call', 'callExtension', 'camCommand', 'camCommit', 'camCommitPrepared', 'camCommitted', 'camConstuctionSetParams', 'camCreate', 'camDestroy', 'cameraEffect', 'cameraEffectEnableHUD', 'cameraInterest', 'cameraOn', 'cameraView', 'campaignConfigFile', 'camPreload', 'camPreloaded', 'camPrepareBank', 'camPrepareDir', 'camPrepareDive', 'camPrepareFocus', 'camPrepareFov', 'camPrepareFovRange', 'camPreparePos', 'camPrepareRelPos', 'camPrepareTarget', 'camSetBank', 'camSetDir', 'camSetDive', 'camSetFocus', 'camSetFov', 'camSetFovRange', 'camSetPos', 'camSetRelPos', 'camSetTarget', 'camTarget', 'camUseNVG', 'canAdd', 'canAddItemToBackpack', 'canAddItemToUniform', 'canAddItemToVest', 'cancelSimpleTaskDestination', 'canFire', 'canMove', 'canSlingLoad', 'canStand', 'canUnloadInCombat', 'captive', 'captiveNum', 'case', 'catch', 'cbChecked', 'cbSetChecked', 'ceil', 'cheatsEnabled', 'checkAIFeature', 'civilian', 'className', 'clearAllItemsFromBackpack', 'clearBackpackCargo', 'clearBackpackCargoGlobal', 'clearGroupIcons', 'clearItemCargo', 'clearItemCargoGlobal', 'clearItemPool', 'clearMagazineCargo', 'clearMagazineCargoGlobal', 'clearMagazinePool', 'clearOverlay', 'clearRadio', 'clearWeaponCargo', 'clearWeaponCargoGlobal', 'clearWeaponPool', 'closeDialog', 'closeDisplay', 'closeOverlay', 'collapseObjectTree', 'combatMode', 'commandArtilleryFire', 'commandChat', 'commander', 'commandFire', 'commandFollow', 'commandFSM', 'commandGetOut', 'commandingMenu', 'commandMove', 'commandRadio', 'commandStop', 'commandTarget', 'commandWatch', 'comment', 'commitOverlay', 'compile', 'compileFinal', 'completedFSM', 'composeText', 'configClasses', 'configFile', 'configHierarchy', 'configName', 'configProperties', 'configSourceMod', 'configSourceModList', 'connectTerminalToUAV', 'controlNull', 'controlsGroupCtrl', 'copyFromClipboard', 'copyToClipboard', 'copyWaypoints', 'cos', 'count', 'countEnemy', 'countFriendly', 'countSide', 'countType', 'countUnknown', 'createAgent', 'createCenter', 'createDialog', 'createDiaryLink', 'createDiaryRecord', 'createDiarySubject', 'createDisplay', 'createGearDialog', 'createGroup', 'createGuardedPoint', 'createLocation', 'createMarker', 'createMarkerLocal', 'createMenu', 'createMine', 'createMissionDisplay', 'createSimpleTask', 'createSite', 'createSoundSource', 'createTask', 'createTeam', 'createTrigger', 'createUnit', 'createUnit array', 'createVehicle', 'createVehicle array', 'createVehicleCrew', 'createVehicleLocal', 'crew', 'ctrlActivate', 'ctrlAddEventHandler', 'ctrlAutoScrollDelay', 'ctrlAutoScrollRewind', 'ctrlAutoScrollSpeed', 'ctrlChecked', 'ctrlClassName', 'ctrlCommit', 'ctrlCommitted', 'ctrlCreate', 'ctrlDelete', 'ctrlEnable', 'ctrlEnabled', 'ctrlFade', 'ctrlHTMLLoaded', 'ctrlIDC', 'ctrlIDD', 'ctrlMapAnimAdd', 'ctrlMapAnimClear', 'ctrlMapAnimCommit', 'ctrlMapAnimDone', 'ctrlMapCursor', 'ctrlMapMouseOver', 'ctrlMapScale', 'ctrlMapScreenToWorld', 'ctrlMapWorldToScreen', 'ctrlModel', 'ctrlModelDirAndUp', 'ctrlModelScale', 'ctrlParent', 'ctrlPosition', 'ctrlRemoveAllEventHandlers', 'ctrlRemoveEventHandler', 'ctrlScale', 'ctrlSetActiveColor', 'ctrlSetAutoScrollDelay', 'ctrlSetAutoScrollRewind', 'ctrlSetAutoScrollSpeed', 'ctrlSetBackgroundColor', 'ctrlSetChecked', 'ctrlSetEventHandler', 'ctrlSetFade', 'ctrlSetFocus', 'ctrlSetFont', 'ctrlSetFontH1', 'ctrlSetFontH1B', 'ctrlSetFontH2', 'ctrlSetFontH2B', 'ctrlSetFontH3', 'ctrlSetFontH3B', 'ctrlSetFontH4', 'ctrlSetFontH4B', 'ctrlSetFontH5', 'ctrlSetFontH5B', 'ctrlSetFontH6', 'ctrlSetFontH6B', 'ctrlSetFontHeight', 'ctrlSetFontHeightH1', 'ctrlSetFontHeightH2', 'ctrlSetFontHeightH3', 'ctrlSetFontHeightH4', 'ctrlSetFontHeightH5', 'ctrlSetFontHeightH6', 'ctrlSetFontP', 'ctrlSetFontPB', 'ctrlSetForegroundColor', 'ctrlSetModel', 'ctrlSetModelDirAndUp', 'ctrlSetModelScale', 'ctrlSetPosition', 'ctrlSetScale', 'ctrlSetStructuredText', 'ctrlSetText', 'ctrlSetTextColor', 'ctrlSetTooltip', 'ctrlSetTooltipColorBox', 'ctrlSetTooltipColorShade', 'ctrlSetTooltipColorText', 'ctrlShow', 'ctrlShown', 'ctrlText', 'ctrlTextHeight', 'ctrlType', 'ctrlVisible', 'curatorAddons', 'curatorCamera', 'curatorCameraArea', 'curatorCameraAreaCeiling', 'curatorCoef', 'curatorEditableObjects', 'curatorEditingArea', 'curatorEditingAreaType', 'curatorMouseOver', 'curatorPoints', 'curatorRegisteredObjects', 'curatorSelected', 'curatorWaypointCost', 'currentChannel', 'currentCommand', 'currentMagazine', 'currentMagazineDetail', 'currentMagazineDetailTurret', 'currentMagazineTurret', 'currentMuzzle', 'currentNamespace', 'currentTask', 'currentTasks', 'currentThrowable', 'currentVisionMode', 'currentWaypoint', 'currentWeapon', 'currentWeaponMode', 'currentWeaponTurret', 'currentZeroing', 'cursorTarget', 'customChat', 'customRadio', 'cutFadeOut', 'cutObj', 'cutRsc', 'cutText', 'damage', 'date', 'dateToNumber', 'daytime', 'deActivateKey', 'debriefingText', 'debugFSM', 'debugLog', 'default', 'deg', 'deleteAt', 'deleteCenter', 'deleteCollection', 'deleteEditorObject', 'deleteGroup', 'deleteIdentity', 'deleteLocation', 'deleteMarker', 'deleteMarkerLocal', 'deleteRange', 'deleteResources', 'deleteSite', 'deleteStatus', 'deleteTeam', 'deleteVehicle', 'deleteVehicleCrew', 'deleteWaypoint', 'detach', 'detectedMines', 'diag activeMissionFSMs', 'diag activeSQFScripts', 'diag activeSQSScripts', 'diag captureFrame', 'diag captureSlowFrame', 'diag fps', 'diag fpsMin', 'diag frameNo', 'diag log', 'diag logSlowFrame', 'diag tickTime', 'dialog', 'diarySubjectExists', 'didJIP', 'didJIPOwner', 'difficulty', 'difficultyEnabled', 'difficultyEnabledRTD', 'direction', 'directSay', 'disableAI', 'disableCollisionWith', 'disableConversation', 'disableDebriefingStats', 'disableSerialization', 'disableTIEquipment', 'disableUAVConnectability', 'disableUserInput', 'displayAddEventHandler', 'displayCtrl', 'displayNull', 'displayRemoveAllEventHandlers', 'displayRemoveEventHandler', 'displaySetEventHandler', 'dissolveTeam', 'distance', 'distance2D', 'distanceSqr', 'distributionRegion', 'do', 'doArtilleryFire', 'doFire', 'doFollow', 'doFSM', 'doGetOut', 'doMove', 'doorPhase', 'doStop', 'doTarget', 'doWatch', 'drawArrow', 'drawEllipse', 'drawIcon', 'drawIcon3D', 'drawLine', 'drawLine3D', 'drawLink', 'drawLocation', 'drawRectangle', 'driver', 'drop', 'east', 'echo', 'editObject', 'editorSetEventHandler', 'effectiveCommander', 'else', 'emptyPositions', 'enableAI', 'enableAIFeature', 'enableAttack', 'enableCamShake', 'enableCaustics', 'enableCollisionWith', 'enableCopilot', 'enableDebriefingStats', 'enableDiagLegend', 'enableEndDialog', 'enableEngineArtillery', 'enableEnvironment', 'enableFatigue', 'enableGunLights', 'enableIRLasers', 'enableMimics', 'enablePersonTurret', 'enableRadio', 'enableReload', 'enableRopeAttach', 'enableSatNormalOnDetail', 'enableSaving', 'enableSentences', 'enableSimulation', 'enableSimulationGlobal', 'enableTeamSwitch', 'enableUAVConnectability', 'enableUAVWaypoints', 'endLoadingScreen', 'endMission', 'engineOn', 'enginesIsOnRTD', 'enginesRpmRTD', 'enginesTorqueRTD', 'entities', 'estimatedEndServerTime', 'estimatedTimeLeft', 'evalObjectArgument', 'everyBackpack', 'everyContainer', 'exec', 'execEditorScript', 'execFSM', 'execVM', 'exit', 'exitWith', 'exp', 'expectedDestination', 'eyeDirection', 'eyePos', 'face', 'faction', 'fadeMusic', 'fadeRadio', 'fadeSound', 'fadeSpeech', 'failMission', 'false', 'fillWeaponsFromPool', 'find', 'findCover', 'findDisplay', 'findEditorObject', 'findEmptyPosition', 'findEmptyPositionReady', 'findNearestEnemy', 'finishMissionInit', 'finite', 'fire', 'fireAtTarget', 'firstBackpack', 'flag', 'flagOwner', 'fleeing', 'floor', 'flyInHeight', 'fog', 'fogForecast', 'fogParams', 'for', 'forceAddUniform', 'forceEnd', 'forceMap', 'forceRespawn', 'forceSpeed', 'forceWalk', 'forceWeaponFire', 'forceWeatherChange', 'forEach', 'forEachMember', 'forEachMemberAgent', 'forEachMemberTeam', 'format', 'formation', 'formationDirection', 'formationLeader', 'formationMembers', 'formationPosition', 'formationTask', 'formatText', 'formLeader', 'freeLook', 'from', 'fromEditor', 'fuel', 'fullCrew', 'gearSlotAmmoCount', 'gearSlotData', 'getAllHitPointsDamage', 'getAmmoCargo', 'getArray', 'getArtilleryAmmo', 'getArtilleryComputerSettings', 'getArtilleryETA', 'getAssignedCuratorLogic', 'getAssignedCuratorUnit', 'getBackpackCargo', 'getBleedingRemaining', 'getBurningValue', 'getCargoIndex', 'getCenterOfMass', 'getClientState', 'getConnectedUAV', 'getDammage', 'getDescription', 'getDir', 'getDirVisual', 'getDLCs', 'getEditorCamera', 'getEditorMode', 'getEditorObjectScope', 'getElevationOffset', 'getFatigue', 'getFriend', 'getFSMVariable', 'getFuelCargo', 'getGroupIcon', 'getGroupIconParams', 'getGroupIcons', 'getHideFrom', 'getHit', 'getHitIndex', 'getHitPointDamage', 'getItemCargo', 'getMagazineCargo', 'getMarkerColor', 'getMarkerPos', 'getMarkerSize', 'getMarkerType', 'getMass', 'getModelInfo', 'getNumber', 'getObjectArgument', 'getObjectChildren', 'getObjectDLC', 'getObjectMaterials', 'getObjectProxy', 'getObjectTextures', 'getObjectType', 'getObjectViewDistance', 'getOxygenRemaining', 'getPersonUsedDLCs', 'getPlayerChannel', 'getPlayerUID', 'getPos', 'getPosASL', 'getPosASLVisual', 'getPosASLW', 'getPosATL', 'getPosATLVisual', 'getPosVisual', 'getPosWorld', 'getRepairCargo', 'getResolution', 'getShadowDistance', 'getSlingLoad', 'getSpeed', 'getSuppression', 'getTerrainHeightASL', 'getText', 'getVariable', 'getWeaponCargo', 'getWPPos', 'glanceAt', 'globalChat', 'globalRadio', 'goggles', 'goto', 'group', 'groupChat', 'groupFromNetId', 'groupIconSelectable', 'groupIconsVisible', 'groupId', 'groupOwner', 'groupRadio', 'groupSelectedUnits', 'groupSelectUnit', 'grpNull', 'gunner', 'gusts', 'halt', 'handgunItems', 'handgunMagazine', 'handgunWeapon', 'handsHit', 'hasInterface', 'hasWeapon', 'hcAllGroups', 'hcGroupParams', 'hcLeader', 'hcRemoveAllGroups', 'hcRemoveGroup', 'hcSelected', 'hcSelectGroup', 'hcSetGroup', 'hcShowBar', 'hcShownBar', 'headgear', 'hideBody', 'hideObject', 'hideObjectGlobal', 'hint', 'hintC', 'hintCadet', 'hintSilent', 'hmd', 'hostMission', 'htmlLoad', 'HUDMovementLevels', 'humidity', 'if', 'image', 'importAllGroups', 'importance', 'in', 'incapacitatedState', 'independent', 'inflame', 'inflamed', 'inGameUISetEventHandler', 'inheritsFrom', 'initAmbientLife', 'inputAction', 'inRangeOfArtillery', 'insertEditorObject', 'intersect', 'isAbleToBreathe', 'isAgent', 'isArray', 'isAutoHoverOn', 'isAutonomous', 'isAutotest', 'isBleeding', 'isBurning', 'isClass', 'isCollisionLightOn', 'isCopilotEnabled', 'isDedicated', 'isDLCAvailable', 'isEngineOn', 'isEqualTo', 'isFlashlightOn', 'isFlatEmpty', 'isForcedWalk', 'isFormationLeader', 'isHidden', 'isInRemainsCollector', 'isInstructorFigureEnabled', 'isIRLaserOn', 'isKeyActive', 'isKindOf', 'isLightOn', 'isLocalized', 'isManualFire', 'isMarkedForCollection', 'isMultiplayer', 'isNil', 'isNull', 'isNumber', 'isObjectHidden', 'isObjectRTD', 'isOnRoad', 'isPipEnabled', 'isPlayer', 'isRealTime', 'isServer', 'isShowing3DIcons', 'isSteamMission', 'isStreamFriendlyUIEnabled', 'isText', 'isTouchingGround', 'isTurnedOut', 'isTutHintsEnabled', 'isUAVConnectable', 'isUAVConnected', 'isUniformAllowed', 'isWalking', 'isWeaponDeployed', 'isWeaponRested', 'itemCargo', 'items', 'itemsWithMagazines', 'join', 'joinAs', 'joinAsSilent', 'joinSilent', 'joinString', 'kbAddDatabase', 'kbAddDatabaseTargets', 'kbAddTopic', 'kbHasTopic', 'kbReact', 'kbRemoveTopic', 'kbTell', 'kbWasSaid', 'keyImage', 'keyName', 'knowsAbout', 'land', 'landAt', 'landResult', 'language', 'laserTarget', 'lbAdd', 'lbClear', 'lbColor', 'lbCurSel', 'lbData', 'lbDelete', 'lbIsSelected', 'lbPicture', 'lbSelection', 'lbSetColor', 'lbSetCurSel', 'lbSetData', 'lbSetPicture', 'lbSetPictureColor', 'lbSetPictureColorDisabled', 'lbSetPictureColorSelected', 'lbSetSelectColor', 'lbSetSelectColorRight', 'lbSetSelected', 'lbSetTooltip', 'lbSetValue', 'lbSize', 'lbSort', 'lbSortByValue', 'lbText', 'lbValue', 'leader', 'leaderboardDeInit', 'leaderboardGetRows', 'leaderboardInit', 'leaveVehicle', 'libraryCredits', 'libraryDisclaimers', 'lifeState', 'lightAttachObject', 'lightDetachObject', 'lightIsOn', 'lightnings', 'limitSpeed', 'linearConversion', 'lineBreak', 'lineIntersects', 'lineIntersectsObjs', 'lineIntersectsSurfaces', 'lineIntersectsWith', 'linkItem', 'list', 'listObjects', 'ln', 'lnbAddArray', 'lnbAddColumn', 'lnbAddRow', 'lnbClear', 'lnbColor', 'lnbCurSelRow', 'lnbData', 'lnbDeleteColumn', 'lnbDeleteRow', 'lnbGetColumnsPosition', 'lnbPicture', 'lnbSetColor', 'lnbSetColumnsPos', 'lnbSetCurSelRow', 'lnbSetData', 'lnbSetPicture', 'lnbSetText', 'lnbSetValue', 'lnbSize', 'lnbText', 'lnbValue', 'load', 'loadAbs', 'loadBackpack', 'loadFile', 'loadGame', 'loadIdentity', 'loadMagazine', 'loadOverlay', 'loadStatus', 'loadUniform', 'loadVest', 'local', 'localize', 'locationNull', 'locationPosition', 'lock', 'lockCameraTo', 'lockCargo', 'lockDriver', 'locked', 'lockedCargo', 'lockedDriver', 'lockedTurret', 'lockTurret', 'lockWP', 'log', 'logEntities', 'lookAt', 'lookAtPos', 'magazineCargo', 'magazines', 'magazinesAllTurrets', 'magazinesAmmo', 'magazinesAmmoCargo', 'magazinesAmmoFull', 'magazinesDetail', 'magazinesDetailBackpack', 'magazinesDetailUniform', 'magazinesDetailVest', 'magazinesTurret', 'magazineTurretAmmo', 'mapAnimAdd', 'mapAnimClear', 'mapAnimCommit', 'mapAnimDone', 'mapCenterOnCamera', 'mapGridPosition', 'markAsFinishedOnSteam', 'markerAlpha', 'markerBrush', 'markerColor', 'markerDir', 'markerPos', 'markerShape', 'markerSize', 'markerText', 'markerType', 'max', 'members', 'min', 'mineActive', 'mineDetectedBy', 'missionConfigFile', 'missionName', 'missionNamespace', 'missionStart', 'mod', 'modelToWorld', 'modelToWorldVisual', 'moonIntensity', 'morale', 'move', 'moveInAny', 'moveInCargo', 'moveInCommander', 'moveInDriver', 'moveInGunner', 'moveInTurret', 'moveObjectToEnd', 'moveOut', 'moveTime', 'moveTo', 'moveToCompleted', 'moveToFailed', 'musicVolume', 'name', 'name location', 'nameSound', 'nearEntities', 'nearestBuilding', 'nearestLocation', 'nearestLocations', 'nearestLocationWithDubbing', 'nearestObject', 'nearestObjects', 'nearObjects', 'nearObjectsReady', 'nearRoads', 'nearSupplies', 'nearTargets', 'needReload', 'netId', 'netObjNull', 'newOverlay', 'nextMenuItemIndex', 'nextWeatherChange', 'nil', 'nMenuItems', 'not', 'numberToDate', 'objectCurators', 'objectFromNetId', 'objectParent', 'objNull', 'objStatus', 'onBriefingGroup', 'onBriefingNotes', 'onBriefingPlan', 'onBriefingTeamSwitch', 'onCommandModeChanged', 'onDoubleClick', 'onEachFrame', 'onGroupIconClick', 'onGroupIconOverEnter', 'onGroupIconOverLeave', 'onHCGroupSelectionChanged', 'onMapSingleClick', 'onPlayerConnected', 'onPlayerDisconnected', 'onPreloadFinished', 'onPreloadStarted', 'onShowNewObject', 'onTeamSwitch', 'openCuratorInterface', 'openMap', 'openYoutubeVideo', 'opfor', 'or', 'orderGetIn', 'overcast', 'overcastForecast', 'owner', 'param', 'params', 'parseNumber', 'parseText', 'parsingNamespace', 'particlesQuality', 'pi', 'pickWeaponPool', 'pitch', 'playableSlotsNumber', 'playableUnits', 'playAction', 'playActionNow', 'player', 'playerRespawnTime', 'playerSide', 'playersNumber', 'playGesture', 'playMission', 'playMove', 'playMoveNow', 'playMusic', 'playScriptedMission', 'playSound', 'playSound3D', 'position', 'positionCameraToWorld', 'posScreenToWorld', 'posWorldToScreen', 'ppEffectAdjust', 'ppEffectCommit', 'ppEffectCommitted', 'ppEffectCreate', 'ppEffectDestroy', 'ppEffectEnable', 'ppEffectForceInNVG', 'precision', 'preloadCamera', 'preloadObject', 'preloadSound', 'preloadTitleObj', 'preloadTitleRsc', 'preprocessFile', 'preprocessFileLineNumbers', 'primaryWeapon', 'primaryWeaponItems', 'primaryWeaponMagazine', 'priority', 'private', 'processDiaryLink', 'productVersion', 'profileName', 'profileNamespace', 'profileNameSteam', 'progressLoadingScreen', 'progressPosition', 'progressSetPosition', 'publicVariable', 'publicVariableClient', 'publicVariableServer', 'pushBack', 'putWeaponPool', 'queryItemsPool', 'queryMagazinePool', 'queryWeaponPool', 'rad', 'radioChannelAdd', 'radioChannelCreate', 'radioChannelRemove', 'radioChannelSetCallSign', 'radioChannelSetLabel', 'radioVolume', 'rain', 'rainbow', 'random', 'rank', 'rankId', 'rating', 'rectangular', 'registeredTasks', 'registerTask', 'reload', 'reloadEnabled', 'remoteControl', 'remoteExec', 'remoteExecCall', 'removeAction', 'removeAllActions', 'removeAllAssignedItems', 'removeAllContainers', 'removeAllCuratorAddons', 'removeAllCuratorCameraAreas', 'removeAllCuratorEditingAreas', 'removeAllEventHandlers', 'removeAllHandgunItems', 'removeAllItems', 'removeAllItemsWithMagazines', 'removeAllMissionEventHandlers', 'removeAllMPEventHandlers', 'removeAllMusicEventHandlers', 'removeAllPrimaryWeaponItems', 'removeAllWeapons', 'removeBackpack', 'removeBackpackGlobal', 'removeCuratorAddons', 'removeCuratorCameraArea', 'removeCuratorEditableObjects', 'removeCuratorEditingArea', 'removeDrawIcon', 'removeDrawLinks', 'removeEventHandler', 'removeFromRemainsCollector', 'removeGoggles', 'removeGroupIcon', 'removeHandgunItem', 'removeHeadgear', 'removeItem', 'removeItemFromBackpack', 'removeItemFromUniform', 'removeItemFromVest', 'removeItems', 'removeMagazine', 'removeMagazineGlobal', 'removeMagazines', 'removeMagazinesTurret', 'removeMagazineTurret', 'removeMenuItem', 'removeMissionEventHandler', 'removeMPEventHandler', 'removeMusicEventHandler', 'removePrimaryWeaponItem', 'removeSecondaryWeaponItem', 'removeSimpleTask', 'removeSwitchableUnit', 'removeTeamMember', 'removeUniform', 'removeVest', 'removeWeapon', 'removeWeaponGlobal', 'removeWeaponTurret', 'requiredVersion', 'resetCamShake', 'resetSubgroupDirection', 'resistance', 'resize', 'resources', 'respawnVehicle', 'restartEditorCamera', 'reveal', 'revealMine', 'reverse', 'reversedMouseY', 'roadsConnectedTo', 'roleDescription', 'ropeAttachedObjects', 'ropeAttachedTo', 'ropeAttachEnabled', 'ropeAttachTo', 'ropeCreate', 'ropeCut', 'ropeEndPosition', 'ropeLength', 'ropes', 'ropeUnwind', 'ropeUnwound', 'rotorsForcesRTD', 'rotorsRpmRTD', 'round', 'runInitScript', 'safeZoneH', 'safeZoneW', 'safeZoneWAbs', 'safeZoneX', 'safeZoneXAbs', 'safeZoneY', 'saveGame', 'saveIdentity', 'saveJoysticks', 'saveOverlay', 'saveProfileNamespace', 'saveStatus', 'saveVar', 'savingEnabled', 'say', 'say2D', 'say3D', 'scopeName', 'score', 'scoreSide', 'screenToWorld', 'scriptDone', 'scriptName', 'scriptNull', 'scudState', 'secondaryWeapon', 'secondaryWeaponItems', 'secondaryWeaponMagazine', 'select', 'selectBestPlaces', 'selectDiarySubject', 'selectedEditorObjects', 'selectEditorObject', 'selectionPosition', 'selectLeader', 'selectNoPlayer', 'selectPlayer', 'selectWeapon', 'selectWeaponTurret', 'sendAUMessage', 'sendSimpleCommand', 'sendTask', 'sendTaskResult', 'sendUDPMessage', 'serverCommand', 'serverCommandAvailable', 'serverCommandExecutable', 'serverName', 'serverTime', 'set', 'setAccTime', 'setAirportSide', 'setAmmo', 'setAmmoCargo', 'setAperture', 'setApertureNew', 'setArmoryPoints', 'setAttributes', 'setAutonomous', 'setBehaviour', 'setBleedingRemaining', 'setCameraInterest', 'setCamShakeDefParams', 'setCamShakeParams', 'setCamUseTi', 'setCaptive', 'setCenterOfMass', 'setCollisionLight', 'setCombatMode', 'setCompassOscillation', 'setCuratorCameraAreaCeiling', 'setCuratorCoef', 'setCuratorEditingAreaType', 'setCuratorWaypointCost', 'setCurrentChannel', 'setCurrentTask', 'setCurrentWaypoint', 'setDamage', 'setDammage', 'setDate', 'setDebriefingText', 'setDefaultCamera', 'setDestination', 'setDetailMapBlendPars', 'setDir', 'setDirection', 'setDrawIcon', 'setDropInterval', 'setEditorMode', 'setEditorObjectScope', 'setEffectCondition', 'setFace', 'setFaceAnimation', 'setFatigue', 'setFlagOwner', 'setFlagSide', 'setFlagTexture', 'setFog', 'setFog array', 'setFormation', 'setFormationTask', 'setFormDir', 'setFriend', 'setFromEditor', 'setFSMVariable', 'setFuel', 'setFuelCargo', 'setGroupIcon', 'setGroupIconParams', 'setGroupIconsSelectable', 'setGroupIconsVisible', 'setGroupId', 'setGroupIdGlobal', 'setGroupOwner', 'setGusts', 'setHideBehind', 'setHit', 'setHitIndex', 'setHitPointDamage', 'setHorizonParallaxCoef', 'setHUDMovementLevels', 'setIdentity', 'setImportance', 'setLeader', 'setLightAmbient', 'setLightAttenuation', 'setLightBrightness', 'setLightColor', 'setLightDayLight', 'setLightFlareMaxDistance', 'setLightFlareSize', 'setLightIntensity', 'setLightnings', 'setLightUseFlare', 'setLocalWindParams', 'setMagazineTurretAmmo', 'setMarkerAlpha', 'setMarkerAlphaLocal', 'setMarkerBrush', 'setMarkerBrushLocal', 'setMarkerColor', 'setMarkerColorLocal', 'setMarkerDir', 'setMarkerDirLocal', 'setMarkerPos', 'setMarkerPosLocal', 'setMarkerShape', 'setMarkerShapeLocal', 'setMarkerSize', 'setMarkerSizeLocal', 'setMarkerText', 'setMarkerTextLocal', 'setMarkerType', 'setMarkerTypeLocal', 'setMass', 'setMimic', 'setMousePosition', 'setMusicEffect', 'setMusicEventHandler', 'setName', 'setNameSound', 'setObjectArguments', 'setObjectMaterial', 'setObjectProxy', 'setObjectTexture', 'setObjectTextureGlobal', 'setObjectViewDistance', 'setOvercast', 'setOwner', 'setOxygenRemaining', 'setParticleCircle', 'setParticleClass', 'setParticleFire', 'setParticleParams', 'setParticleRandom', 'setPilotLight', 'setPiPEffect', 'setPitch', 'setPlayable', 'setPlayerRespawnTime', 'setPos', 'setPosASL', 'setPosASL2', 'setPosASLW', 'setPosATL', 'setPosition', 'setPosWorld', 'setRadioMsg', 'setRain', 'setRainbow', 'setRandomLip', 'setRank', 'setRectangular', 'setRepairCargo', 'setShadowDistance', 'setSide', 'setSimpleTaskDescription', 'setSimpleTaskDestination', 'setSimpleTaskTarget', 'setSimulWeatherLayers', 'setSize', 'setSkill', 'setSkill array', 'setSlingLoad', 'setSoundEffect', 'setSpeaker', 'setSpeech', 'setSpeedMode', 'setStatValue', 'setSuppression', 'setSystemOfUnits', 'setTargetAge', 'setTaskResult', 'setTaskState', 'setTerrainGrid', 'setText', 'setTimeMultiplier', 'setTitleEffect', 'setTriggerActivation', 'setTriggerArea', 'setTriggerStatements', 'setTriggerText', 'setTriggerTimeout', 'setTriggerType', 'setType', 'setUnconscious', 'setUnitAbility', 'setUnitPos', 'setUnitPosWeak', 'setUnitRank', 'setUnitRecoilCoefficient', 'setUnloadInCombat', 'setUserActionText', 'setVariable', 'setVectorDir', 'setVectorDirAndUp', 'setVectorUp', 'setVehicleAmmo', 'setVehicleAmmoDef', 'setVehicleArmor', 'setVehicleId', 'setVehicleLock', 'setVehiclePosition', 'setVehicleTiPars', 'setVehicleVarName', 'setVelocity', 'setVelocityTransformation', 'setViewDistance', 'setVisibleIfTreeCollapsed', 'setWaves', 'setWaypointBehaviour', 'setWaypointCombatMode', 'setWaypointCompletionRadius', 'setWaypointDescription', 'setWaypointFormation', 'setWaypointHousePosition', 'setWaypointLoiterRadius', 'setWaypointLoiterType', 'setWaypointName', 'setWaypointPosition', 'setWaypointScript', 'setWaypointSpeed', 'setWaypointStatements', 'setWaypointTimeout', 'setWaypointType', 'setWaypointVisible', 'setWeaponReloadingTime', 'setWind', 'setWindDir', 'setWindForce', 'setWindStr', 'setWPPos', 'show3DIcons', 'showChat', 'showCinemaBorder', 'showCommandingMenu', 'showCompass', 'showCuratorCompass', 'showGPS', 'showHUD', 'showLegend', 'showMap', 'shownArtilleryComputer', 'shownChat', 'shownCompass', 'shownCuratorCompass', 'showNewEditorObject', 'shownGPS', 'shownHUD', 'shownMap', 'shownPad', 'shownRadio', 'shownUAVFeed', 'shownWarrant', 'shownWatch', 'showPad', 'showRadio', 'showSubtitles', 'showUAVFeed', 'showWarrant', 'showWatch', 'showWaypoint', 'side', 'sideChat', 'sideEnemy', 'sideFriendly', 'sideLogic', 'sideRadio', 'sideUnknown', 'simpleTasks', 'simulationEnabled', 'simulCloudDensity', 'simulCloudOcclusion', 'simulInClouds', 'simulWeatherSync', 'sin', 'size', 'sizeOf', 'skill', 'skillFinal', 'skipTime', 'sleep', 'sliderPosition', 'sliderRange', 'sliderSetPosition', 'sliderSetRange', 'sliderSetSpeed', 'sliderSpeed', 'slingLoadAssistantShown', 'soldierMagazines', 'someAmmo', 'sort', 'soundVolume', 'spawn', 'speaker', 'speed', 'speedMode', 'splitString', 'sqrt', 'squadParams', 'stance', 'startLoadingScreen', 'step', 'stop', 'stopped', 'str', 'sunOrMoon', 'supportInfo', 'suppressFor', 'surfaceIsWater', 'surfaceNormal', 'surfaceType', 'swimInDepth', 'switch', 'switchableUnits', 'switchAction', 'switchCamera', 'switchGesture', 'switchLight', 'switchMove', 'synchronizedObjects', 'synchronizedTriggers', 'synchronizedWaypoints', 'synchronizeObjectsAdd', 'synchronizeObjectsRemove', 'synchronizeTrigger', 'synchronizeWaypoint', 'synchronizeWaypoint trigger', 'systemChat', 'systemOfUnits', 'tan', 'targetKnowledge', 'targetsAggregate', 'targetsQuery', 'taskChildren', 'taskCompleted', 'taskDescription', 'taskDestination', 'taskHint', 'taskNull', 'taskParent', 'taskResult', 'taskState', 'teamMember', 'teamMemberNull', 'teamName', 'teams', 'teamSwitch', 'teamSwitchEnabled', 'teamType', 'terminate', 'terrainIntersect', 'terrainIntersectASL', 'text', 'text location', 'textLog', 'textLogFormat', 'tg', 'then', 'throw', 'time', 'timeMultiplier', 'titleCut', 'titleFadeOut', 'titleObj', 'titleRsc', 'titleText', 'to', 'toArray', 'toLower', 'toString', 'toUpper', 'triggerActivated', 'triggerActivation', 'triggerArea', 'triggerAttachedVehicle', 'triggerAttachObject', 'triggerAttachVehicle', 'triggerStatements', 'triggerText', 'triggerTimeout', 'triggerTimeoutCurrent', 'triggerType', 'true', 'try', 'turretLocal', 'turretOwner', 'turretUnit', 'tvAdd', 'tvClear', 'tvCollapse', 'tvCount', 'tvCurSel', 'tvData', 'tvDelete', 'tvExpand', 'tvPicture', 'tvSetCurSel', 'tvSetData', 'tvSetPicture', 'tvSetPictureColor', 'tvSetTooltip', 'tvSetValue', 'tvSort', 'tvSortByValue', 'tvText', 'tvValue', 'type', 'typeName', 'typeOf', 'UAVControl', 'uiNamespace', 'uiSleep', 'unassignCurator', 'unassignItem', 'unassignTeam', 'unassignVehicle', 'underwater', 'uniform', 'uniformContainer', 'uniformItems', 'uniformMagazines', 'unitAddons', 'unitBackpack', 'unitPos', 'unitReady', 'unitRecoilCoefficient', 'units', 'unitsBelowHeight', 'unlinkItem', 'unlockAchievement', 'unregisterTask', 'updateDrawIcon', 'updateMenuItem', 'updateObjectTree', 'useAudioTimeForMoves', 'vectorAdd', 'vectorCos', 'vectorCrossProduct', 'vectorDiff', 'vectorDir', 'vectorDirVisual', 'vectorDistance', 'vectorDistanceSqr', 'vectorDotProduct', 'vectorFromTo', 'vectorMagnitude', 'vectorMagnitudeSqr', 'vectorMultiply', 'vectorNormalized', 'vectorUp', 'vectorUpVisual', 'vehicle', 'vehicleChat', 'vehicleRadio', 'vehicles', 'vehicleVarName', 'velocity', 'velocityModelSpace', 'verifySignature', 'vest', 'vestContainer', 'vestItems', 'vestMagazines', 'viewDistance', 'visibleCompass', 'visibleGPS', 'visibleMap', 'visiblePosition', 'visiblePositionASL', 'visibleWatch', 'waitUntil', 'waves', 'waypointAttachedObject', 'waypointAttachedVehicle', 'waypointAttachObject', 'waypointAttachVehicle', 'waypointBehaviour', 'waypointCombatMode', 'waypointCompletionRadius', 'waypointDescription', 'waypointFormation', 'waypointHousePosition', 'waypointLoiterRadius', 'waypointLoiterType', 'waypointName', 'waypointPosition', 'waypoints', 'waypointScript', 'waypointsEnabledUAV', 'waypointShow', 'waypointSpeed', 'waypointStatements', 'waypointTimeout', 'waypointTimeoutCurrent', 'waypointType', 'waypointVisible', 'weaponAccessories', 'weaponCargo', 'weaponDirection', 'weaponLowered', 'weapons', 'weaponsItems', 'weaponsItemsCargo', 'weaponState', 'weaponsTurret', 'weightRTD', 'west', 'WFSideText', 'while', 'wind', 'windDir', 'windStr', 'wingsForcesRTD', 'with', 'worldName', 'worldSize', 'worldToModel', 'worldToModelVisual', 'worldToScreen'];
-	  var control = ['case', 'catch', 'default', 'do', 'else', 'exit', 'exitWith|5', 'for', 'forEach', 'from', 'if', 'switch', 'then', 'throw', 'to', 'try', 'while', 'with'];
-	  var operators = ['!', '-', '+', '!=', '%', '&&', '*', '/', '=', '==', '>', '>=', '<', '<=', '^', ':', '>>'];
-	  var specials = ['_forEachIndex|10', '_this|10', '_x|10'];
-	  var literals = ['true', 'false', 'nil'];
-	  var builtins = allCommands.filter(function (command) {
-	    return control.indexOf(command) == -1 &&
-	        literals.indexOf(command) == -1 &&
-	        operators.indexOf(command) == -1;
-	  });
-	  //Note: operators will not be treated as builtins due to the lexeme rules
-	  builtins = builtins.concat(specials);
+	  var CPP = hljs.getLanguage('cpp').exports;
 
 	  // In SQF strings, quotes matching the start are escaped by adding a consecutive.
 	  // Example of single escaped quotes: " "" " and  ' '' '.
 	  var STRINGS = {
 	    className: 'string',
-	    relevance: 0,
 	    variants: [
 	      {
 	        begin: '"',
 	        end: '"',
-	        contains: [{begin: '""'}]
+	        contains: [{begin: '""', relevance: 0}]
 	      },
 	      {
 	        begin: '\'',
 	        end: '\'',
-	        contains: [{begin: '\'\''}]
+	        contains: [{begin: '\'\'', relevance: 0}]
 	      }
-	    ]
-	  };
-
-	  var NUMBERS = {
-	    className: 'number',
-	    begin: hljs.NUMBER_RE,
-	    relevance: 0
-	  };
-
-	  // Preprocessor definitions borrowed from C++
-	  var PREPROCESSOR_STRINGS = {
-	    className: 'string',
-	    variants: [
-	      hljs.QUOTE_STRING_MODE,
-	      {
-	        begin: '\'\\\\?.', end: '\'',
-	        illegal: '.'
-	      }
-	    ]
-	  };
-
-	  var PREPROCESSOR =       {
-	    className: 'meta',
-	    begin: '#', end: '$',
-	    keywords: {'meta-keyword': 'if else elif endif define undef warning error line ' +
-	              'pragma ifdef ifndef'},
-	    contains: [
-	      {
-	        begin: /\\\n/, relevance: 0
-	      },
-	      {
-	        beginKeywords: 'include', end: '$',
-	        keywords: {'meta-keyword': 'include'},
-	        contains: [
-	          PREPROCESSOR_STRINGS,
-	          {
-	            className: 'meta-string',
-	            begin: '<', end: '>',
-	            illegal: '\\n'
-	          }
-	        ]
-	      },
-	      PREPROCESSOR_STRINGS,
-	      NUMBERS,
-	      hljs.C_LINE_COMMENT_MODE,
-	      hljs.C_BLOCK_COMMENT_MODE
 	    ]
 	  };
 
@@ -33831,22 +33509,444 @@
 	    aliases: ['sqf'],
 	    case_insensitive: true,
 	    keywords: {
-	      keyword: control.join(' '),
-	      built_in: builtins.join(' '),
-	      literal: literals.join(' ')
+	      keyword:
+	        'case catch default do else exit exitWith for forEach from if ' +
+	        'switch then throw to try while with',
+	      built_in:
+	        'or plus abs accTime acos action actionKeys actionKeysImages ' +
+	        'actionKeysNames actionKeysNamesArray actionName activateAddons ' +
+	        'activatedAddons activateKey addAction addBackpack addBackpackCargo ' +
+	        'addBackpackCargoGlobal addBackpackGlobal addCamShake ' +
+	        'addCuratorAddons addCuratorCameraArea addCuratorEditableObjects ' +
+	        'addCuratorEditingArea addCuratorPoints addEditorObject ' +
+	        'addEventHandler addGoggles addGroupIcon addHandgunItem addHeadgear ' +
+	        'addItem addItemCargo addItemCargoGlobal addItemPool ' +
+	        'addItemToBackpack addItemToUniform addItemToVest addLiveStats ' +
+	        'addMagazine addMagazine array addMagazineAmmoCargo ' +
+	        'addMagazineCargo addMagazineCargoGlobal addMagazineGlobal ' +
+	        'addMagazinePool addMagazines addMagazineTurret addMenu addMenuItem ' +
+	        'addMissionEventHandler addMPEventHandler addMusicEventHandler ' +
+	        'addPrimaryWeaponItem addPublicVariableEventHandler addRating ' +
+	        'addResources addScore addScoreSide addSecondaryWeaponItem ' +
+	        'addSwitchableUnit addTeamMember addToRemainsCollector addUniform ' +
+	        'addVehicle addVest addWaypoint addWeapon addWeaponCargo ' +
+	        'addWeaponCargoGlobal addWeaponGlobal addWeaponPool addWeaponTurret ' +
+	        'agent agents AGLToASL aimedAtTarget aimPos airDensityRTD ' +
+	        'airportSide AISFinishHeal alive allControls allCurators allDead ' +
+	        'allDeadMen allDisplays allGroups allMapMarkers allMines ' +
+	        'allMissionObjects allow3DMode allowCrewInImmobile ' +
+	        'allowCuratorLogicIgnoreAreas allowDamage allowDammage ' +
+	        'allowFileOperations allowFleeing allowGetIn allPlayers allSites ' +
+	        'allTurrets allUnits allUnitsUAV allVariables ammo and animate ' +
+	        'animateDoor animationPhase animationState append armoryPoints ' +
+	        'arrayIntersect asin ASLToAGL ASLToATL assert assignAsCargo ' +
+	        'assignAsCargoIndex assignAsCommander assignAsDriver assignAsGunner ' +
+	        'assignAsTurret assignCurator assignedCargo assignedCommander ' +
+	        'assignedDriver assignedGunner assignedItems assignedTarget ' +
+	        'assignedTeam assignedVehicle assignedVehicleRole assignItem ' +
+	        'assignTeam assignToAirport atan atan2 atg ATLToASL attachedObject ' +
+	        'attachedObjects attachedTo attachObject attachTo attackEnabled ' +
+	        'backpack backpackCargo backpackContainer backpackItems ' +
+	        'backpackMagazines backpackSpaceFor behaviour benchmark binocular ' +
+	        'blufor boundingBox boundingBoxReal boundingCenter breakOut breakTo ' +
+	        'briefingName buildingExit buildingPos buttonAction buttonSetAction ' +
+	        'cadetMode call callExtension camCommand camCommit ' +
+	        'camCommitPrepared camCommitted camConstuctionSetParams camCreate ' +
+	        'camDestroy cameraEffect cameraEffectEnableHUD cameraInterest ' +
+	        'cameraOn cameraView campaignConfigFile camPreload camPreloaded ' +
+	        'camPrepareBank camPrepareDir camPrepareDive camPrepareFocus ' +
+	        'camPrepareFov camPrepareFovRange camPreparePos camPrepareRelPos ' +
+	        'camPrepareTarget camSetBank camSetDir camSetDive camSetFocus ' +
+	        'camSetFov camSetFovRange camSetPos camSetRelPos camSetTarget ' +
+	        'camTarget camUseNVG canAdd canAddItemToBackpack ' +
+	        'canAddItemToUniform canAddItemToVest cancelSimpleTaskDestination ' +
+	        'canFire canMove canSlingLoad canStand canUnloadInCombat captive ' +
+	        'captiveNum cbChecked cbSetChecked ceil cheatsEnabled ' +
+	        'checkAIFeature civilian className clearAllItemsFromBackpack ' +
+	        'clearBackpackCargo clearBackpackCargoGlobal clearGroupIcons ' +
+	        'clearItemCargo clearItemCargoGlobal clearItemPool ' +
+	        'clearMagazineCargo clearMagazineCargoGlobal clearMagazinePool ' +
+	        'clearOverlay clearRadio clearWeaponCargo clearWeaponCargoGlobal ' +
+	        'clearWeaponPool closeDialog closeDisplay closeOverlay ' +
+	        'collapseObjectTree combatMode commandArtilleryFire commandChat ' +
+	        'commander commandFire commandFollow commandFSM commandGetOut ' +
+	        'commandingMenu commandMove commandRadio commandStop commandTarget ' +
+	        'commandWatch comment commitOverlay compile compileFinal ' +
+	        'completedFSM composeText configClasses configFile configHierarchy ' +
+	        'configName configProperties configSourceMod configSourceModList ' +
+	        'connectTerminalToUAV controlNull controlsGroupCtrl ' +
+	        'copyFromClipboard copyToClipboard copyWaypoints cos count ' +
+	        'countEnemy countFriendly countSide countType countUnknown ' +
+	        'createAgent createCenter createDialog createDiaryLink ' +
+	        'createDiaryRecord createDiarySubject createDisplay ' +
+	        'createGearDialog createGroup createGuardedPoint createLocation ' +
+	        'createMarker createMarkerLocal createMenu createMine ' +
+	        'createMissionDisplay createSimpleTask createSite createSoundSource ' +
+	        'createTask createTeam createTrigger createUnit createUnit array ' +
+	        'createVehicle createVehicle array createVehicleCrew ' +
+	        'createVehicleLocal crew ctrlActivate ctrlAddEventHandler ' +
+	        'ctrlAutoScrollDelay ctrlAutoScrollRewind ctrlAutoScrollSpeed ' +
+	        'ctrlChecked ctrlClassName ctrlCommit ctrlCommitted ctrlCreate ' +
+	        'ctrlDelete ctrlEnable ctrlEnabled ctrlFade ctrlHTMLLoaded ctrlIDC ' +
+	        'ctrlIDD ctrlMapAnimAdd ctrlMapAnimClear ctrlMapAnimCommit ' +
+	        'ctrlMapAnimDone ctrlMapCursor ctrlMapMouseOver ctrlMapScale ' +
+	        'ctrlMapScreenToWorld ctrlMapWorldToScreen ctrlModel ' +
+	        'ctrlModelDirAndUp ctrlModelScale ctrlParent ctrlPosition ' +
+	        'ctrlRemoveAllEventHandlers ctrlRemoveEventHandler ctrlScale ' +
+	        'ctrlSetActiveColor ctrlSetAutoScrollDelay ctrlSetAutoScrollRewind ' +
+	        'ctrlSetAutoScrollSpeed ctrlSetBackgroundColor ctrlSetChecked ' +
+	        'ctrlSetEventHandler ctrlSetFade ctrlSetFocus ctrlSetFont ' +
+	        'ctrlSetFontH1 ctrlSetFontH1B ctrlSetFontH2 ctrlSetFontH2B ' +
+	        'ctrlSetFontH3 ctrlSetFontH3B ctrlSetFontH4 ctrlSetFontH4B ' +
+	        'ctrlSetFontH5 ctrlSetFontH5B ctrlSetFontH6 ctrlSetFontH6B ' +
+	        'ctrlSetFontHeight ctrlSetFontHeightH1 ctrlSetFontHeightH2 ' +
+	        'ctrlSetFontHeightH3 ctrlSetFontHeightH4 ctrlSetFontHeightH5 ' +
+	        'ctrlSetFontHeightH6 ctrlSetFontP ctrlSetFontPB ' +
+	        'ctrlSetForegroundColor ctrlSetModel ctrlSetModelDirAndUp ' +
+	        'ctrlSetModelScale ctrlSetPosition ctrlSetScale ' +
+	        'ctrlSetStructuredText ctrlSetText ctrlSetTextColor ctrlSetTooltip ' +
+	        'ctrlSetTooltipColorBox ctrlSetTooltipColorShade ' +
+	        'ctrlSetTooltipColorText ctrlShow ctrlShown ctrlText ctrlTextHeight ' +
+	        'ctrlType ctrlVisible curatorAddons curatorCamera curatorCameraArea ' +
+	        'curatorCameraAreaCeiling curatorCoef curatorEditableObjects ' +
+	        'curatorEditingArea curatorEditingAreaType curatorMouseOver ' +
+	        'curatorPoints curatorRegisteredObjects curatorSelected ' +
+	        'curatorWaypointCost currentChannel currentCommand currentMagazine ' +
+	        'currentMagazineDetail currentMagazineDetailTurret ' +
+	        'currentMagazineTurret currentMuzzle currentNamespace currentTask ' +
+	        'currentTasks currentThrowable currentVisionMode currentWaypoint ' +
+	        'currentWeapon currentWeaponMode currentWeaponTurret currentZeroing ' +
+	        'cursorTarget customChat customRadio cutFadeOut cutObj cutRsc ' +
+	        'cutText damage date dateToNumber daytime deActivateKey ' +
+	        'debriefingText debugFSM debugLog deg deleteAt deleteCenter ' +
+	        'deleteCollection deleteEditorObject deleteGroup deleteIdentity ' +
+	        'deleteLocation deleteMarker deleteMarkerLocal deleteRange ' +
+	        'deleteResources deleteSite deleteStatus deleteTeam deleteVehicle ' +
+	        'deleteVehicleCrew deleteWaypoint detach detectedMines ' +
+	        'diag activeMissionFSMs diag activeSQFScripts diag activeSQSScripts ' +
+	        'diag captureFrame diag captureSlowFrame diag fps diag fpsMin ' +
+	        'diag frameNo diag log diag logSlowFrame diag tickTime dialog ' +
+	        'diarySubjectExists didJIP didJIPOwner difficulty difficultyEnabled ' +
+	        'difficultyEnabledRTD direction directSay disableAI ' +
+	        'disableCollisionWith disableConversation disableDebriefingStats ' +
+	        'disableSerialization disableTIEquipment disableUAVConnectability ' +
+	        'disableUserInput displayAddEventHandler displayCtrl displayNull ' +
+	        'displayRemoveAllEventHandlers displayRemoveEventHandler ' +
+	        'displaySetEventHandler dissolveTeam distance distance2D ' +
+	        'distanceSqr distributionRegion doArtilleryFire doFire doFollow ' +
+	        'doFSM doGetOut doMove doorPhase doStop doTarget doWatch drawArrow ' +
+	        'drawEllipse drawIcon drawIcon3D drawLine drawLine3D drawLink ' +
+	        'drawLocation drawRectangle driver drop east echo editObject ' +
+	        'editorSetEventHandler effectiveCommander emptyPositions enableAI ' +
+	        'enableAIFeature enableAttack enableCamShake enableCaustics ' +
+	        'enableCollisionWith enableCopilot enableDebriefingStats ' +
+	        'enableDiagLegend enableEndDialog enableEngineArtillery ' +
+	        'enableEnvironment enableFatigue enableGunLights enableIRLasers ' +
+	        'enableMimics enablePersonTurret enableRadio enableReload ' +
+	        'enableRopeAttach enableSatNormalOnDetail enableSaving ' +
+	        'enableSentences enableSimulation enableSimulationGlobal ' +
+	        'enableTeamSwitch enableUAVConnectability enableUAVWaypoints ' +
+	        'endLoadingScreen endMission engineOn enginesIsOnRTD enginesRpmRTD ' +
+	        'enginesTorqueRTD entities estimatedEndServerTime estimatedTimeLeft ' +
+	        'evalObjectArgument everyBackpack everyContainer exec ' +
+	        'execEditorScript execFSM execVM exp expectedDestination ' +
+	        'eyeDirection eyePos face faction fadeMusic fadeRadio fadeSound ' +
+	        'fadeSpeech failMission fillWeaponsFromPool find findCover ' +
+	        'findDisplay findEditorObject findEmptyPosition ' +
+	        'findEmptyPositionReady findNearestEnemy finishMissionInit finite ' +
+	        'fire fireAtTarget firstBackpack flag flagOwner fleeing floor ' +
+	        'flyInHeight fog fogForecast fogParams forceAddUniform forceEnd ' +
+	        'forceMap forceRespawn forceSpeed forceWalk forceWeaponFire ' +
+	        'forceWeatherChange forEachMember forEachMemberAgent ' +
+	        'forEachMemberTeam format formation formationDirection ' +
+	        'formationLeader formationMembers formationPosition formationTask ' +
+	        'formatText formLeader freeLook fromEditor fuel fullCrew ' +
+	        'gearSlotAmmoCount gearSlotData getAllHitPointsDamage getAmmoCargo ' +
+	        'getArray getArtilleryAmmo getArtilleryComputerSettings ' +
+	        'getArtilleryETA getAssignedCuratorLogic getAssignedCuratorUnit ' +
+	        'getBackpackCargo getBleedingRemaining getBurningValue ' +
+	        'getCargoIndex getCenterOfMass getClientState getConnectedUAV ' +
+	        'getDammage getDescription getDir getDirVisual getDLCs ' +
+	        'getEditorCamera getEditorMode getEditorObjectScope ' +
+	        'getElevationOffset getFatigue getFriend getFSMVariable ' +
+	        'getFuelCargo getGroupIcon getGroupIconParams getGroupIcons ' +
+	        'getHideFrom getHit getHitIndex getHitPointDamage getItemCargo ' +
+	        'getMagazineCargo getMarkerColor getMarkerPos getMarkerSize ' +
+	        'getMarkerType getMass getModelInfo getNumber getObjectArgument ' +
+	        'getObjectChildren getObjectDLC getObjectMaterials getObjectProxy ' +
+	        'getObjectTextures getObjectType getObjectViewDistance ' +
+	        'getOxygenRemaining getPersonUsedDLCs getPlayerChannel getPlayerUID ' +
+	        'getPos getPosASL getPosASLVisual getPosASLW getPosATL ' +
+	        'getPosATLVisual getPosVisual getPosWorld getRepairCargo ' +
+	        'getResolution getShadowDistance getSlingLoad getSpeed ' +
+	        'getSuppression getTerrainHeightASL getText getVariable ' +
+	        'getWeaponCargo getWPPos glanceAt globalChat globalRadio goggles ' +
+	        'goto group groupChat groupFromNetId groupIconSelectable ' +
+	        'groupIconsVisible groupId groupOwner groupRadio groupSelectedUnits ' +
+	        'groupSelectUnit grpNull gunner gusts halt handgunItems ' +
+	        'handgunMagazine handgunWeapon handsHit hasInterface hasWeapon ' +
+	        'hcAllGroups hcGroupParams hcLeader hcRemoveAllGroups hcRemoveGroup ' +
+	        'hcSelected hcSelectGroup hcSetGroup hcShowBar hcShownBar headgear ' +
+	        'hideBody hideObject hideObjectGlobal hint hintC hintCadet ' +
+	        'hintSilent hmd hostMission htmlLoad HUDMovementLevels humidity ' +
+	        'image importAllGroups importance in incapacitatedState independent ' +
+	        'inflame inflamed inGameUISetEventHandler inheritsFrom ' +
+	        'initAmbientLife inputAction inRangeOfArtillery insertEditorObject ' +
+	        'intersect isAbleToBreathe isAgent isArray isAutoHoverOn ' +
+	        'isAutonomous isAutotest isBleeding isBurning isClass ' +
+	        'isCollisionLightOn isCopilotEnabled isDedicated isDLCAvailable ' +
+	        'isEngineOn isEqualTo isFlashlightOn isFlatEmpty isForcedWalk ' +
+	        'isFormationLeader isHidden isInRemainsCollector ' +
+	        'isInstructorFigureEnabled isIRLaserOn isKeyActive isKindOf ' +
+	        'isLightOn isLocalized isManualFire isMarkedForCollection ' +
+	        'isMultiplayer isNil isNull isNumber isObjectHidden isObjectRTD ' +
+	        'isOnRoad isPipEnabled isPlayer isRealTime isServer ' +
+	        'isShowing3DIcons isSteamMission isStreamFriendlyUIEnabled isText ' +
+	        'isTouchingGround isTurnedOut isTutHintsEnabled isUAVConnectable ' +
+	        'isUAVConnected isUniformAllowed isWalking isWeaponDeployed ' +
+	        'isWeaponRested itemCargo items itemsWithMagazines join joinAs ' +
+	        'joinAsSilent joinSilent joinString kbAddDatabase ' +
+	        'kbAddDatabaseTargets kbAddTopic kbHasTopic kbReact kbRemoveTopic ' +
+	        'kbTell kbWasSaid keyImage keyName knowsAbout land landAt ' +
+	        'landResult language laserTarget lbAdd lbClear lbColor lbCurSel ' +
+	        'lbData lbDelete lbIsSelected lbPicture lbSelection lbSetColor ' +
+	        'lbSetCurSel lbSetData lbSetPicture lbSetPictureColor ' +
+	        'lbSetPictureColorDisabled lbSetPictureColorSelected ' +
+	        'lbSetSelectColor lbSetSelectColorRight lbSetSelected lbSetTooltip ' +
+	        'lbSetValue lbSize lbSort lbSortByValue lbText lbValue leader ' +
+	        'leaderboardDeInit leaderboardGetRows leaderboardInit leaveVehicle ' +
+	        'libraryCredits libraryDisclaimers lifeState lightAttachObject ' +
+	        'lightDetachObject lightIsOn lightnings limitSpeed linearConversion ' +
+	        'lineBreak lineIntersects lineIntersectsObjs lineIntersectsSurfaces ' +
+	        'lineIntersectsWith linkItem list listObjects ln lnbAddArray ' +
+	        'lnbAddColumn lnbAddRow lnbClear lnbColor lnbCurSelRow lnbData ' +
+	        'lnbDeleteColumn lnbDeleteRow lnbGetColumnsPosition lnbPicture ' +
+	        'lnbSetColor lnbSetColumnsPos lnbSetCurSelRow lnbSetData ' +
+	        'lnbSetPicture lnbSetText lnbSetValue lnbSize lnbText lnbValue load ' +
+	        'loadAbs loadBackpack loadFile loadGame loadIdentity loadMagazine ' +
+	        'loadOverlay loadStatus loadUniform loadVest local localize ' +
+	        'locationNull locationPosition lock lockCameraTo lockCargo ' +
+	        'lockDriver locked lockedCargo lockedDriver lockedTurret lockTurret ' +
+	        'lockWP log logEntities lookAt lookAtPos magazineCargo magazines ' +
+	        'magazinesAllTurrets magazinesAmmo magazinesAmmoCargo ' +
+	        'magazinesAmmoFull magazinesDetail magazinesDetailBackpack ' +
+	        'magazinesDetailUniform magazinesDetailVest magazinesTurret ' +
+	        'magazineTurretAmmo mapAnimAdd mapAnimClear mapAnimCommit ' +
+	        'mapAnimDone mapCenterOnCamera mapGridPosition ' +
+	        'markAsFinishedOnSteam markerAlpha markerBrush markerColor ' +
+	        'markerDir markerPos markerShape markerSize markerText markerType ' +
+	        'max members min mineActive mineDetectedBy missionConfigFile ' +
+	        'missionName missionNamespace missionStart mod modelToWorld ' +
+	        'modelToWorldVisual moonIntensity morale move moveInAny moveInCargo ' +
+	        'moveInCommander moveInDriver moveInGunner moveInTurret ' +
+	        'moveObjectToEnd moveOut moveTime moveTo moveToCompleted ' +
+	        'moveToFailed musicVolume name name location nameSound nearEntities ' +
+	        'nearestBuilding nearestLocation nearestLocations ' +
+	        'nearestLocationWithDubbing nearestObject nearestObjects ' +
+	        'nearObjects nearObjectsReady nearRoads nearSupplies nearTargets ' +
+	        'needReload netId netObjNull newOverlay nextMenuItemIndex ' +
+	        'nextWeatherChange nMenuItems not numberToDate objectCurators ' +
+	        'objectFromNetId objectParent objNull objStatus onBriefingGroup ' +
+	        'onBriefingNotes onBriefingPlan onBriefingTeamSwitch ' +
+	        'onCommandModeChanged onDoubleClick onEachFrame onGroupIconClick ' +
+	        'onGroupIconOverEnter onGroupIconOverLeave ' +
+	        'onHCGroupSelectionChanged onMapSingleClick onPlayerConnected ' +
+	        'onPlayerDisconnected onPreloadFinished onPreloadStarted ' +
+	        'onShowNewObject onTeamSwitch openCuratorInterface openMap ' +
+	        'openYoutubeVideo opfor or orderGetIn overcast overcastForecast ' +
+	        'owner param params parseNumber parseText parsingNamespace ' +
+	        'particlesQuality pi pickWeaponPool pitch playableSlotsNumber ' +
+	        'playableUnits playAction playActionNow player playerRespawnTime ' +
+	        'playerSide playersNumber playGesture playMission playMove ' +
+	        'playMoveNow playMusic playScriptedMission playSound playSound3D ' +
+	        'position positionCameraToWorld posScreenToWorld posWorldToScreen ' +
+	        'ppEffectAdjust ppEffectCommit ppEffectCommitted ppEffectCreate ' +
+	        'ppEffectDestroy ppEffectEnable ppEffectForceInNVG precision ' +
+	        'preloadCamera preloadObject preloadSound preloadTitleObj ' +
+	        'preloadTitleRsc preprocessFile preprocessFileLineNumbers ' +
+	        'primaryWeapon primaryWeaponItems primaryWeaponMagazine priority ' +
+	        'private processDiaryLink productVersion profileName ' +
+	        'profileNamespace profileNameSteam progressLoadingScreen ' +
+	        'progressPosition progressSetPosition publicVariable ' +
+	        'publicVariableClient publicVariableServer pushBack putWeaponPool ' +
+	        'queryItemsPool queryMagazinePool queryWeaponPool rad ' +
+	        'radioChannelAdd radioChannelCreate radioChannelRemove ' +
+	        'radioChannelSetCallSign radioChannelSetLabel radioVolume rain ' +
+	        'rainbow random rank rankId rating rectangular registeredTasks ' +
+	        'registerTask reload reloadEnabled remoteControl remoteExec ' +
+	        'remoteExecCall removeAction removeAllActions ' +
+	        'removeAllAssignedItems removeAllContainers removeAllCuratorAddons ' +
+	        'removeAllCuratorCameraAreas removeAllCuratorEditingAreas ' +
+	        'removeAllEventHandlers removeAllHandgunItems removeAllItems ' +
+	        'removeAllItemsWithMagazines removeAllMissionEventHandlers ' +
+	        'removeAllMPEventHandlers removeAllMusicEventHandlers ' +
+	        'removeAllPrimaryWeaponItems removeAllWeapons removeBackpack ' +
+	        'removeBackpackGlobal removeCuratorAddons removeCuratorCameraArea ' +
+	        'removeCuratorEditableObjects removeCuratorEditingArea ' +
+	        'removeDrawIcon removeDrawLinks removeEventHandler ' +
+	        'removeFromRemainsCollector removeGoggles removeGroupIcon ' +
+	        'removeHandgunItem removeHeadgear removeItem removeItemFromBackpack ' +
+	        'removeItemFromUniform removeItemFromVest removeItems ' +
+	        'removeMagazine removeMagazineGlobal removeMagazines ' +
+	        'removeMagazinesTurret removeMagazineTurret removeMenuItem ' +
+	        'removeMissionEventHandler removeMPEventHandler ' +
+	        'removeMusicEventHandler removePrimaryWeaponItem ' +
+	        'removeSecondaryWeaponItem removeSimpleTask removeSwitchableUnit ' +
+	        'removeTeamMember removeUniform removeVest removeWeapon ' +
+	        'removeWeaponGlobal removeWeaponTurret requiredVersion ' +
+	        'resetCamShake resetSubgroupDirection resistance resize resources ' +
+	        'respawnVehicle restartEditorCamera reveal revealMine reverse ' +
+	        'reversedMouseY roadsConnectedTo roleDescription ' +
+	        'ropeAttachedObjects ropeAttachedTo ropeAttachEnabled ropeAttachTo ' +
+	        'ropeCreate ropeCut ropeEndPosition ropeLength ropes ropeUnwind ' +
+	        'ropeUnwound rotorsForcesRTD rotorsRpmRTD round runInitScript ' +
+	        'safeZoneH safeZoneW safeZoneWAbs safeZoneX safeZoneXAbs safeZoneY ' +
+	        'saveGame saveIdentity saveJoysticks saveOverlay ' +
+	        'saveProfileNamespace saveStatus saveVar savingEnabled say say2D ' +
+	        'say3D scopeName score scoreSide screenToWorld scriptDone ' +
+	        'scriptName scriptNull scudState secondaryWeapon ' +
+	        'secondaryWeaponItems secondaryWeaponMagazine select ' +
+	        'selectBestPlaces selectDiarySubject selectedEditorObjects ' +
+	        'selectEditorObject selectionPosition selectLeader selectNoPlayer ' +
+	        'selectPlayer selectWeapon selectWeaponTurret sendAUMessage ' +
+	        'sendSimpleCommand sendTask sendTaskResult sendUDPMessage ' +
+	        'serverCommand serverCommandAvailable serverCommandExecutable ' +
+	        'serverName serverTime set setAccTime setAirportSide setAmmo ' +
+	        'setAmmoCargo setAperture setApertureNew setArmoryPoints ' +
+	        'setAttributes setAutonomous setBehaviour setBleedingRemaining ' +
+	        'setCameraInterest setCamShakeDefParams setCamShakeParams ' +
+	        'setCamUseTi setCaptive setCenterOfMass setCollisionLight ' +
+	        'setCombatMode setCompassOscillation setCuratorCameraAreaCeiling ' +
+	        'setCuratorCoef setCuratorEditingAreaType setCuratorWaypointCost ' +
+	        'setCurrentChannel setCurrentTask setCurrentWaypoint setDamage ' +
+	        'setDammage setDate setDebriefingText setDefaultCamera ' +
+	        'setDestination setDetailMapBlendPars setDir setDirection ' +
+	        'setDrawIcon setDropInterval setEditorMode setEditorObjectScope ' +
+	        'setEffectCondition setFace setFaceAnimation setFatigue ' +
+	        'setFlagOwner setFlagSide setFlagTexture setFog setFog array ' +
+	        'setFormation setFormationTask setFormDir setFriend setFromEditor ' +
+	        'setFSMVariable setFuel setFuelCargo setGroupIcon ' +
+	        'setGroupIconParams setGroupIconsSelectable setGroupIconsVisible ' +
+	        'setGroupId setGroupIdGlobal setGroupOwner setGusts setHideBehind ' +
+	        'setHit setHitIndex setHitPointDamage setHorizonParallaxCoef ' +
+	        'setHUDMovementLevels setIdentity setImportance setLeader ' +
+	        'setLightAmbient setLightAttenuation setLightBrightness ' +
+	        'setLightColor setLightDayLight setLightFlareMaxDistance ' +
+	        'setLightFlareSize setLightIntensity setLightnings setLightUseFlare ' +
+	        'setLocalWindParams setMagazineTurretAmmo setMarkerAlpha ' +
+	        'setMarkerAlphaLocal setMarkerBrush setMarkerBrushLocal ' +
+	        'setMarkerColor setMarkerColorLocal setMarkerDir setMarkerDirLocal ' +
+	        'setMarkerPos setMarkerPosLocal setMarkerShape setMarkerShapeLocal ' +
+	        'setMarkerSize setMarkerSizeLocal setMarkerText setMarkerTextLocal ' +
+	        'setMarkerType setMarkerTypeLocal setMass setMimic setMousePosition ' +
+	        'setMusicEffect setMusicEventHandler setName setNameSound ' +
+	        'setObjectArguments setObjectMaterial setObjectProxy ' +
+	        'setObjectTexture setObjectTextureGlobal setObjectViewDistance ' +
+	        'setOvercast setOwner setOxygenRemaining setParticleCircle ' +
+	        'setParticleClass setParticleFire setParticleParams ' +
+	        'setParticleRandom setPilotLight setPiPEffect setPitch setPlayable ' +
+	        'setPlayerRespawnTime setPos setPosASL setPosASL2 setPosASLW ' +
+	        'setPosATL setPosition setPosWorld setRadioMsg setRain setRainbow ' +
+	        'setRandomLip setRank setRectangular setRepairCargo ' +
+	        'setShadowDistance setSide setSimpleTaskDescription ' +
+	        'setSimpleTaskDestination setSimpleTaskTarget setSimulWeatherLayers ' +
+	        'setSize setSkill setSkill array setSlingLoad setSoundEffect ' +
+	        'setSpeaker setSpeech setSpeedMode setStatValue setSuppression ' +
+	        'setSystemOfUnits setTargetAge setTaskResult setTaskState ' +
+	        'setTerrainGrid setText setTimeMultiplier setTitleEffect ' +
+	        'setTriggerActivation setTriggerArea setTriggerStatements ' +
+	        'setTriggerText setTriggerTimeout setTriggerType setType ' +
+	        'setUnconscious setUnitAbility setUnitPos setUnitPosWeak ' +
+	        'setUnitRank setUnitRecoilCoefficient setUnloadInCombat ' +
+	        'setUserActionText setVariable setVectorDir setVectorDirAndUp ' +
+	        'setVectorUp setVehicleAmmo setVehicleAmmoDef setVehicleArmor ' +
+	        'setVehicleId setVehicleLock setVehiclePosition setVehicleTiPars ' +
+	        'setVehicleVarName setVelocity setVelocityTransformation ' +
+	        'setViewDistance setVisibleIfTreeCollapsed setWaves ' +
+	        'setWaypointBehaviour setWaypointCombatMode ' +
+	        'setWaypointCompletionRadius setWaypointDescription ' +
+	        'setWaypointFormation setWaypointHousePosition ' +
+	        'setWaypointLoiterRadius setWaypointLoiterType setWaypointName ' +
+	        'setWaypointPosition setWaypointScript setWaypointSpeed ' +
+	        'setWaypointStatements setWaypointTimeout setWaypointType ' +
+	        'setWaypointVisible setWeaponReloadingTime setWind setWindDir ' +
+	        'setWindForce setWindStr setWPPos show3DIcons showChat ' +
+	        'showCinemaBorder showCommandingMenu showCompass showCuratorCompass ' +
+	        'showGPS showHUD showLegend showMap shownArtilleryComputer ' +
+	        'shownChat shownCompass shownCuratorCompass showNewEditorObject ' +
+	        'shownGPS shownHUD shownMap shownPad shownRadio shownUAVFeed ' +
+	        'shownWarrant shownWatch showPad showRadio showSubtitles ' +
+	        'showUAVFeed showWarrant showWatch showWaypoint side sideChat ' +
+	        'sideEnemy sideFriendly sideLogic sideRadio sideUnknown simpleTasks ' +
+	        'simulationEnabled simulCloudDensity simulCloudOcclusion ' +
+	        'simulInClouds simulWeatherSync sin size sizeOf skill skillFinal ' +
+	        'skipTime sleep sliderPosition sliderRange sliderSetPosition ' +
+	        'sliderSetRange sliderSetSpeed sliderSpeed slingLoadAssistantShown ' +
+	        'soldierMagazines someAmmo sort soundVolume spawn speaker speed ' +
+	        'speedMode splitString sqrt squadParams stance startLoadingScreen ' +
+	        'step stop stopped str sunOrMoon supportInfo suppressFor ' +
+	        'surfaceIsWater surfaceNormal surfaceType swimInDepth ' +
+	        'switchableUnits switchAction switchCamera switchGesture ' +
+	        'switchLight switchMove synchronizedObjects synchronizedTriggers ' +
+	        'synchronizedWaypoints synchronizeObjectsAdd ' +
+	        'synchronizeObjectsRemove synchronizeTrigger synchronizeWaypoint ' +
+	        'synchronizeWaypoint trigger systemChat systemOfUnits tan ' +
+	        'targetKnowledge targetsAggregate targetsQuery taskChildren ' +
+	        'taskCompleted taskDescription taskDestination taskHint taskNull ' +
+	        'taskParent taskResult taskState teamMember teamMemberNull teamName ' +
+	        'teams teamSwitch teamSwitchEnabled teamType terminate ' +
+	        'terrainIntersect terrainIntersectASL text text location textLog ' +
+	        'textLogFormat tg time timeMultiplier titleCut titleFadeOut ' +
+	        'titleObj titleRsc titleText toArray toLower toString toUpper ' +
+	        'triggerActivated triggerActivation triggerArea ' +
+	        'triggerAttachedVehicle triggerAttachObject triggerAttachVehicle ' +
+	        'triggerStatements triggerText triggerTimeout triggerTimeoutCurrent ' +
+	        'triggerType turretLocal turretOwner turretUnit tvAdd tvClear ' +
+	        'tvCollapse tvCount tvCurSel tvData tvDelete tvExpand tvPicture ' +
+	        'tvSetCurSel tvSetData tvSetPicture tvSetPictureColor tvSetTooltip ' +
+	        'tvSetValue tvSort tvSortByValue tvText tvValue type typeName ' +
+	        'typeOf UAVControl uiNamespace uiSleep unassignCurator unassignItem ' +
+	        'unassignTeam unassignVehicle underwater uniform uniformContainer ' +
+	        'uniformItems uniformMagazines unitAddons unitBackpack unitPos ' +
+	        'unitReady unitRecoilCoefficient units unitsBelowHeight unlinkItem ' +
+	        'unlockAchievement unregisterTask updateDrawIcon updateMenuItem ' +
+	        'updateObjectTree useAudioTimeForMoves vectorAdd vectorCos ' +
+	        'vectorCrossProduct vectorDiff vectorDir vectorDirVisual ' +
+	        'vectorDistance vectorDistanceSqr vectorDotProduct vectorFromTo ' +
+	        'vectorMagnitude vectorMagnitudeSqr vectorMultiply vectorNormalized ' +
+	        'vectorUp vectorUpVisual vehicle vehicleChat vehicleRadio vehicles ' +
+	        'vehicleVarName velocity velocityModelSpace verifySignature vest ' +
+	        'vestContainer vestItems vestMagazines viewDistance visibleCompass ' +
+	        'visibleGPS visibleMap visiblePosition visiblePositionASL ' +
+	        'visibleWatch waitUntil waves waypointAttachedObject ' +
+	        'waypointAttachedVehicle waypointAttachObject waypointAttachVehicle ' +
+	        'waypointBehaviour waypointCombatMode waypointCompletionRadius ' +
+	        'waypointDescription waypointFormation waypointHousePosition ' +
+	        'waypointLoiterRadius waypointLoiterType waypointName ' +
+	        'waypointPosition waypoints waypointScript waypointsEnabledUAV ' +
+	        'waypointShow waypointSpeed waypointStatements waypointTimeout ' +
+	        'waypointTimeoutCurrent waypointType waypointVisible ' +
+	        'weaponAccessories weaponCargo weaponDirection weaponLowered ' +
+	        'weapons weaponsItems weaponsItemsCargo weaponState weaponsTurret ' +
+	        'weightRTD west WFSideText wind windDir windStr wingsForcesRTD ' +
+	        'worldName worldSize worldToModel worldToModelVisual worldToScreen ' +
+	        '_forEachIndex _this _x',
+	      literal:
+	        'true false nil'
 	    },
 	    contains: [
 	      hljs.C_LINE_COMMENT_MODE,
 	      hljs.C_BLOCK_COMMENT_MODE,
-	      NUMBERS,
+	      hljs.NUMBER_MODE,
 	      STRINGS,
-	      PREPROCESSOR
-	    ]
+	      CPP.preprocessor
+	    ],
+	    illegal: /#/
 	  };
 	};
 
 /***/ },
-/* 295 */
+/* 305 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34010,7 +34110,7 @@
 	};
 
 /***/ },
-/* 296 */
+/* 306 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34097,14 +34197,14 @@
 	};
 
 /***/ },
-/* 297 */
+/* 307 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  return {
 	    aliases: ['do', 'ado'],
 	    case_insensitive: true,
-	    keywords: 'if else in foreach for forv forva forval forvalu forvalue forvalues by bys bysort xi quietly qui capture about ac ac_7 acprplot acprplot_7 adjust ado adopath adoupdate alpha ameans an ano anov anova anova_estat anova_terms anovadef aorder ap app appe appen append arch arch_dr arch_estat arch_p archlm areg areg_p args arima arima_dr arima_estat arima_p as asmprobit asmprobit_estat asmprobit_lf asmprobit_mfx__dlg asmprobit_p ass asse asser assert avplot avplot_7 avplots avplots_7 bcskew0 bgodfrey binreg bip0_lf biplot bipp_lf bipr_lf bipr_p biprobit bitest bitesti bitowt blogit bmemsize boot bootsamp bootstrap bootstrap_8 boxco_l boxco_p boxcox boxcox_6 boxcox_p bprobit br break brier bro brow brows browse brr brrstat bs bs_7 bsampl_w bsample bsample_7 bsqreg bstat bstat_7 bstat_8 bstrap bstrap_7 ca ca_estat ca_p cabiplot camat canon canon_8 canon_8_p canon_estat canon_p cap caprojection capt captu captur capture cat cc cchart cchart_7 cci cd censobs_table centile cf char chdir checkdlgfiles checkestimationsample checkhlpfiles checksum chelp ci cii cl class classutil clear cli clis clist clo clog clog_lf clog_p clogi clogi_sw clogit clogit_lf clogit_p clogitp clogl_sw cloglog clonevar clslistarray cluster cluster_measures cluster_stop cluster_tree cluster_tree_8 clustermat cmdlog cnr cnre cnreg cnreg_p cnreg_sw cnsreg codebook collaps4 collapse colormult_nb colormult_nw compare compress conf confi confir confirm conren cons const constr constra constrai constrain constraint continue contract copy copyright copysource cor corc corr corr2data corr_anti corr_kmo corr_smc corre correl correla correlat correlate corrgram cou coun count cox cox_p cox_sw coxbase coxhaz coxvar cprplot cprplot_7 crc cret cretu cretur creturn cross cs cscript cscript_log csi ct ct_is ctset ctst_5 ctst_st cttost cumsp cumsp_7 cumul cusum cusum_7 cutil d datasig datasign datasigna datasignat datasignatu datasignatur datasignature datetof db dbeta de dec deco decod decode deff des desc descr descri describ describe destring dfbeta dfgls dfuller di di_g dir dirstats dis discard disp disp_res disp_s displ displa display distinct do doe doed doedi doedit dotplot dotplot_7 dprobit drawnorm drop ds ds_util dstdize duplicates durbina dwstat dydx e ed edi edit egen eivreg emdef en enc enco encod encode eq erase ereg ereg_lf ereg_p ereg_sw ereghet ereghet_glf ereghet_glf_sh ereghet_gp ereghet_ilf ereghet_ilf_sh ereghet_ip eret eretu eretur ereturn err erro error est est_cfexist est_cfname est_clickable est_expand est_hold est_table est_unhold est_unholdok estat estat_default estat_summ estat_vce_only esti estimates etodow etof etomdy ex exi exit expand expandcl fac fact facto factor factor_estat factor_p factor_pca_rotated factor_rotate factormat fcast fcast_compute fcast_graph fdades fdadesc fdadescr fdadescri fdadescrib fdadescribe fdasav fdasave fdause fh_st file open file read file close file filefilter fillin find_hlp_file findfile findit findit_7 fit fl fli flis flist for5_0 form forma format fpredict frac_154 frac_adj frac_chk frac_cox frac_ddp frac_dis frac_dv frac_in frac_mun frac_pp frac_pq frac_pv frac_wgt frac_xo fracgen fracplot fracplot_7 fracpoly fracpred fron_ex fron_hn fron_p fron_tn fron_tn2 frontier ftodate ftoe ftomdy ftowdate g gamhet_glf gamhet_gp gamhet_ilf gamhet_ip gamma gamma_d2 gamma_p gamma_sw gammahet gdi_hexagon gdi_spokes ge gen gene gener genera generat generate genrank genstd genvmean gettoken gl gladder gladder_7 glim_l01 glim_l02 glim_l03 glim_l04 glim_l05 glim_l06 glim_l07 glim_l08 glim_l09 glim_l10 glim_l11 glim_l12 glim_lf glim_mu glim_nw1 glim_nw2 glim_nw3 glim_p glim_v1 glim_v2 glim_v3 glim_v4 glim_v5 glim_v6 glim_v7 glm glm_6 glm_p glm_sw glmpred glo glob globa global glogit glogit_8 glogit_p gmeans gnbre_lf gnbreg gnbreg_5 gnbreg_p gomp_lf gompe_sw gomper_p gompertz gompertzhet gomphet_glf gomphet_glf_sh gomphet_gp gomphet_ilf gomphet_ilf_sh gomphet_ip gphdot gphpen gphprint gprefs gprobi_p gprobit gprobit_8 gr gr7 gr_copy gr_current gr_db gr_describe gr_dir gr_draw gr_draw_replay gr_drop gr_edit gr_editviewopts gr_example gr_example2 gr_export gr_print gr_qscheme gr_query gr_read gr_rename gr_replay gr_save gr_set gr_setscheme gr_table gr_undo gr_use graph graph7 grebar greigen greigen_7 greigen_8 grmeanby grmeanby_7 gs_fileinfo gs_filetype gs_graphinfo gs_stat gsort gwood h hadimvo hareg hausman haver he heck_d2 heckma_p heckman heckp_lf heckpr_p heckprob hel help hereg hetpr_lf hetpr_p hetprob hettest hexdump hilite hist hist_7 histogram hlogit hlu hmeans hotel hotelling hprobit hreg hsearch icd9 icd9_ff icd9p iis impute imtest inbase include inf infi infil infile infix inp inpu input ins insheet insp inspe inspec inspect integ inten intreg intreg_7 intreg_p intrg2_ll intrg_ll intrg_ll2 ipolate iqreg ir irf irf_create irfm iri is_svy is_svysum isid istdize ivprob_1_lf ivprob_lf ivprobit ivprobit_p ivreg ivreg_footnote ivtob_1_lf ivtob_lf ivtobit ivtobit_p jackknife jacknife jknife jknife_6 jknife_8 jkstat joinby kalarma1 kap kap_3 kapmeier kappa kapwgt kdensity kdensity_7 keep ksm ksmirnov ktau kwallis l la lab labe label labelbook ladder levels levelsof leverage lfit lfit_p li lincom line linktest lis list lloghet_glf lloghet_glf_sh lloghet_gp lloghet_ilf lloghet_ilf_sh lloghet_ip llogi_sw llogis_p llogist llogistic llogistichet lnorm_lf lnorm_sw lnorma_p lnormal lnormalhet lnormhet_glf lnormhet_glf_sh lnormhet_gp lnormhet_ilf lnormhet_ilf_sh lnormhet_ip lnskew0 loadingplot loc loca local log logi logis_lf logistic logistic_p logit logit_estat logit_p loglogs logrank loneway lookfor lookup lowess lowess_7 lpredict lrecomp lroc lroc_7 lrtest ls lsens lsens_7 lsens_x lstat ltable ltable_7 ltriang lv lvr2plot lvr2plot_7 m ma mac macr macro makecns man manova manova_estat manova_p manovatest mantel mark markin markout marksample mat mat_capp mat_order mat_put_rr mat_rapp mata mata_clear mata_describe mata_drop mata_matdescribe mata_matsave mata_matuse mata_memory mata_mlib mata_mosave mata_rename mata_which matalabel matcproc matlist matname matr matri matrix matrix_input__dlg matstrik mcc mcci md0_ md1_ md1debug_ md2_ md2debug_ mds mds_estat mds_p mdsconfig mdslong mdsmat mdsshepard mdytoe mdytof me_derd mean means median memory memsize meqparse mer merg merge mfp mfx mhelp mhodds minbound mixed_ll mixed_ll_reparm mkassert mkdir mkmat mkspline ml ml_5 ml_adjs ml_bhhhs ml_c_d ml_check ml_clear ml_cnt ml_debug ml_defd ml_e0 ml_e0_bfgs ml_e0_cycle ml_e0_dfp ml_e0i ml_e1 ml_e1_bfgs ml_e1_bhhh ml_e1_cycle ml_e1_dfp ml_e2 ml_e2_cycle ml_ebfg0 ml_ebfr0 ml_ebfr1 ml_ebh0q ml_ebhh0 ml_ebhr0 ml_ebr0i ml_ecr0i ml_edfp0 ml_edfr0 ml_edfr1 ml_edr0i ml_eds ml_eer0i ml_egr0i ml_elf ml_elf_bfgs ml_elf_bhhh ml_elf_cycle ml_elf_dfp ml_elfi ml_elfs ml_enr0i ml_enrr0 ml_erdu0 ml_erdu0_bfgs ml_erdu0_bhhh ml_erdu0_bhhhq ml_erdu0_cycle ml_erdu0_dfp ml_erdu0_nrbfgs ml_exde ml_footnote ml_geqnr ml_grad0 ml_graph ml_hbhhh ml_hd0 ml_hold ml_init ml_inv ml_log ml_max ml_mlout ml_mlout_8 ml_model ml_nb0 ml_opt ml_p ml_plot ml_query ml_rdgrd ml_repor ml_s_e ml_score ml_searc ml_technique ml_unhold mleval mlf_ mlmatbysum mlmatsum mlog mlogi mlogit mlogit_footnote mlogit_p mlopts mlsum mlvecsum mnl0_ mor more mov move mprobit mprobit_lf mprobit_p mrdu0_ mrdu1_ mvdecode mvencode mvreg mvreg_estat n nbreg nbreg_al nbreg_lf nbreg_p nbreg_sw nestreg net newey newey_7 newey_p news nl nl_7 nl_9 nl_9_p nl_p nl_p_7 nlcom nlcom_p nlexp2 nlexp2_7 nlexp2a nlexp2a_7 nlexp3 nlexp3_7 nlgom3 nlgom3_7 nlgom4 nlgom4_7 nlinit nllog3 nllog3_7 nllog4 nllog4_7 nlog_rd nlogit nlogit_p nlogitgen nlogittree nlpred no nobreak noi nois noisi noisil noisily note notes notes_dlg nptrend numlabel numlist odbc old_ver olo olog ologi ologi_sw ologit ologit_p ologitp on one onew onewa oneway op_colnm op_comp op_diff op_inv op_str opr opro oprob oprob_sw oprobi oprobi_p oprobit oprobitp opts_exclusive order orthog orthpoly ou out outf outfi outfil outfile outs outsh outshe outshee outsheet ovtest pac pac_7 palette parse parse_dissim pause pca pca_8 pca_display pca_estat pca_p pca_rotate pcamat pchart pchart_7 pchi pchi_7 pcorr pctile pentium pergram pergram_7 permute permute_8 personal peto_st pkcollapse pkcross pkequiv pkexamine pkexamine_7 pkshape pksumm pksumm_7 pl plo plot plugin pnorm pnorm_7 poisgof poiss_lf poiss_sw poisso_p poisson poisson_estat post postclose postfile postutil pperron pr prais prais_e prais_e2 prais_p predict predictnl preserve print pro prob probi probit probit_estat probit_p proc_time procoverlay procrustes procrustes_estat procrustes_p profiler prog progr progra program prop proportion prtest prtesti pwcorr pwd q\\s qby qbys qchi qchi_7 qladder qladder_7 qnorm qnorm_7 qqplot qqplot_7 qreg qreg_c qreg_p qreg_sw qu quadchk quantile quantile_7 que quer query range ranksum ratio rchart rchart_7 rcof recast reclink recode reg reg3 reg3_p regdw regr regre regre_p2 regres regres_p regress regress_estat regriv_p remap ren rena renam rename renpfix repeat replace report reshape restore ret retu retur return rm rmdir robvar roccomp roccomp_7 roccomp_8 rocf_lf rocfit rocfit_8 rocgold rocplot rocplot_7 roctab roctab_7 rolling rologit rologit_p rot rota rotat rotate rotatemat rreg rreg_p ru run runtest rvfplot rvfplot_7 rvpplot rvpplot_7 sa safesum sample sampsi sav save savedresults saveold sc sca scal scala scalar scatter scm_mine sco scob_lf scob_p scobi_sw scobit scor score scoreplot scoreplot_help scree screeplot screeplot_help sdtest sdtesti se search separate seperate serrbar serrbar_7 serset set set_defaults sfrancia sh she shel shell shewhart shewhart_7 signestimationsample signrank signtest simul simul_7 simulate simulate_8 sktest sleep slogit slogit_d2 slogit_p smooth snapspan so sor sort spearman spikeplot spikeplot_7 spikeplt spline_x split sqreg sqreg_p sret sretu sretur sreturn ssc st st_ct st_hc st_hcd st_hcd_sh st_is st_issys st_note st_promo st_set st_show st_smpl st_subid stack statsby statsby_8 stbase stci stci_7 stcox stcox_estat stcox_fr stcox_fr_ll stcox_p stcox_sw stcoxkm stcoxkm_7 stcstat stcurv stcurve stcurve_7 stdes stem stepwise stereg stfill stgen stir stjoin stmc stmh stphplot stphplot_7 stphtest stphtest_7 stptime strate strate_7 streg streg_sw streset sts sts_7 stset stsplit stsum sttocc sttoct stvary stweib su suest suest_8 sum summ summa summar summari summariz summarize sunflower sureg survcurv survsum svar svar_p svmat svy svy_disp svy_dreg svy_est svy_est_7 svy_estat svy_get svy_gnbreg_p svy_head svy_header svy_heckman_p svy_heckprob_p svy_intreg_p svy_ivreg_p svy_logistic_p svy_logit_p svy_mlogit_p svy_nbreg_p svy_ologit_p svy_oprobit_p svy_poisson_p svy_probit_p svy_regress_p svy_sub svy_sub_7 svy_x svy_x_7 svy_x_p svydes svydes_8 svygen svygnbreg svyheckman svyheckprob svyintreg svyintreg_7 svyintrg svyivreg svylc svylog_p svylogit svymarkout svymarkout_8 svymean svymlog svymlogit svynbreg svyolog svyologit svyoprob svyoprobit svyopts svypois svypois_7 svypoisson svyprobit svyprobt svyprop svyprop_7 svyratio svyreg svyreg_p svyregress svyset svyset_7 svyset_8 svytab svytab_7 svytest svytotal sw sw_8 swcnreg swcox swereg swilk swlogis swlogit swologit swoprbt swpois swprobit swqreg swtobit swweib symmetry symmi symplot symplot_7 syntax sysdescribe sysdir sysuse szroeter ta tab tab1 tab2 tab_or tabd tabdi tabdis tabdisp tabi table tabodds tabodds_7 tabstat tabu tabul tabula tabulat tabulate te tempfile tempname tempvar tes test testnl testparm teststd tetrachoric time_it timer tis tob tobi tobit tobit_p tobit_sw token tokeni tokeniz tokenize tostring total translate translator transmap treat_ll treatr_p treatreg trim trnb_cons trnb_mean trpoiss_d2 trunc_ll truncr_p truncreg tsappend tset tsfill tsline tsline_ex tsreport tsrevar tsrline tsset tssmooth tsunab ttest ttesti tut_chk tut_wait tutorial tw tware_st two twoway twoway__fpfit_serset twoway__function_gen twoway__histogram_gen twoway__ipoint_serset twoway__ipoints_serset twoway__kdensity_gen twoway__lfit_serset twoway__normgen_gen twoway__pci_serset twoway__qfit_serset twoway__scatteri_serset twoway__sunflower_gen twoway_ksm_serset ty typ type typeof u unab unabbrev unabcmd update us use uselabel var var_mkcompanion var_p varbasic varfcast vargranger varirf varirf_add varirf_cgraph varirf_create varirf_ctable varirf_describe varirf_dir varirf_drop varirf_erase varirf_graph varirf_ograph varirf_rename varirf_set varirf_table varlist varlmar varnorm varsoc varstable varstable_w varstable_w2 varwle vce vec vec_fevd vec_mkphi vec_p vec_p_w vecirf_create veclmar veclmar_w vecnorm vecnorm_w vecrank vecstable verinst vers versi versio version view viewsource vif vwls wdatetof webdescribe webseek webuse weib1_lf weib2_lf weib_lf weib_lf0 weibhet_glf weibhet_glf_sh weibhet_glfa weibhet_glfa_sh weibhet_gp weibhet_ilf weibhet_ilf_sh weibhet_ilfa weibhet_ilfa_sh weibhet_ip weibu_sw weibul_p weibull weibull_c weibull_s weibullhet wh whelp whi which whil while wilc_st wilcoxon win wind windo window winexec wntestb wntestb_7 wntestq xchart xchart_7 xcorr xcorr_7 xi xi_6 xmlsav xmlsave xmluse xpose xsh xshe xshel xshell xt_iis xt_tis xtab_p xtabond xtbin_p xtclog xtcloglog xtcloglog_8 xtcloglog_d2 xtcloglog_pa_p xtcloglog_re_p xtcnt_p xtcorr xtdata xtdes xtfront_p xtfrontier xtgee xtgee_elink xtgee_estat xtgee_makeivar xtgee_p xtgee_plink xtgls xtgls_p xthaus xthausman xtht_p xthtaylor xtile xtint_p xtintreg xtintreg_8 xtintreg_d2 xtintreg_p xtivp_1 xtivp_2 xtivreg xtline xtline_ex xtlogit xtlogit_8 xtlogit_d2 xtlogit_fe_p xtlogit_pa_p xtlogit_re_p xtmixed xtmixed_estat xtmixed_p xtnb_fe xtnb_lf xtnbreg xtnbreg_pa_p xtnbreg_refe_p xtpcse xtpcse_p xtpois xtpoisson xtpoisson_d2 xtpoisson_pa_p xtpoisson_refe_p xtpred xtprobit xtprobit_8 xtprobit_d2 xtprobit_re_p xtps_fe xtps_lf xtps_ren xtps_ren_8 xtrar_p xtrc xtrc_p xtrchh xtrefe_p xtreg xtreg_be xtreg_fe xtreg_ml xtreg_pa_p xtreg_re xtregar xtrere_p xtset xtsf_ll xtsf_llti xtsum xttab xttest0 xttobit xttobit_8 xttobit_p xttrans yx yxview__barlike_draw yxview_area_draw yxview_bar_draw yxview_dot_draw yxview_dropline_draw yxview_function_draw yxview_iarrow_draw yxview_ilabels_draw yxview_normal_draw yxview_pcarrow_draw yxview_pcbarrow_draw yxview_pccapsym_draw yxview_pcscatter_draw yxview_pcspike_draw yxview_rarea_draw yxview_rbar_draw yxview_rbarm_draw yxview_rcap_draw yxview_rcapsym_draw yxview_rconnected_draw yxview_rline_draw yxview_rscatter_draw yxview_rspike_draw yxview_spike_draw yxview_sunflower_draw zap_s zinb zinb_llf zinb_plf zip zip_llf zip_p zip_plf zt_ct_5 zt_hc_5 zt_hcd_5 zt_is_5 zt_iss_5 zt_sho_5 zt_smp_5 ztbase_5 ztcox_5 ztdes_5 ztereg_5 ztfill_5 ztgen_5 ztir_5 ztjoin_5 ztnb ztnb_p ztp ztp_p zts_5 ztset_5 ztspli_5 ztsum_5 zttoct_5 ztvary_5 ztweib_5',
+	    keywords: 'if else in foreach for forv forva forval forvalu forvalue forvalues by bys bysort xi quietly qui capture about ac ac_7 acprplot acprplot_7 adjust ado adopath adoupdate alpha ameans an ano anov anova anova_estat anova_terms anovadef aorder ap app appe appen append arch arch_dr arch_estat arch_p archlm areg areg_p args arima arima_dr arima_estat arima_p as asmprobit asmprobit_estat asmprobit_lf asmprobit_mfx__dlg asmprobit_p ass asse asser assert avplot avplot_7 avplots avplots_7 bcskew0 bgodfrey binreg bip0_lf biplot bipp_lf bipr_lf bipr_p biprobit bitest bitesti bitowt blogit bmemsize boot bootsamp bootstrap bootstrap_8 boxco_l boxco_p boxcox boxcox_6 boxcox_p bprobit br break brier bro brow brows browse brr brrstat bs bs_7 bsampl_w bsample bsample_7 bsqreg bstat bstat_7 bstat_8 bstrap bstrap_7 ca ca_estat ca_p cabiplot camat canon canon_8 canon_8_p canon_estat canon_p cap caprojection capt captu captur capture cat cc cchart cchart_7 cci cd censobs_table centile cf char chdir checkdlgfiles checkestimationsample checkhlpfiles checksum chelp ci cii cl class classutil clear cli clis clist clo clog clog_lf clog_p clogi clogi_sw clogit clogit_lf clogit_p clogitp clogl_sw cloglog clonevar clslistarray cluster cluster_measures cluster_stop cluster_tree cluster_tree_8 clustermat cmdlog cnr cnre cnreg cnreg_p cnreg_sw cnsreg codebook collaps4 collapse colormult_nb colormult_nw compare compress conf confi confir confirm conren cons const constr constra constrai constrain constraint continue contract copy copyright copysource cor corc corr corr2data corr_anti corr_kmo corr_smc corre correl correla correlat correlate corrgram cou coun count cox cox_p cox_sw coxbase coxhaz coxvar cprplot cprplot_7 crc cret cretu cretur creturn cross cs cscript cscript_log csi ct ct_is ctset ctst_5 ctst_st cttost cumsp cumsp_7 cumul cusum cusum_7 cutil d|0 datasig datasign datasigna datasignat datasignatu datasignatur datasignature datetof db dbeta de dec deco decod decode deff des desc descr descri describ describe destring dfbeta dfgls dfuller di di_g dir dirstats dis discard disp disp_res disp_s displ displa display distinct do doe doed doedi doedit dotplot dotplot_7 dprobit drawnorm drop ds ds_util dstdize duplicates durbina dwstat dydx e|0 ed edi edit egen eivreg emdef en enc enco encod encode eq erase ereg ereg_lf ereg_p ereg_sw ereghet ereghet_glf ereghet_glf_sh ereghet_gp ereghet_ilf ereghet_ilf_sh ereghet_ip eret eretu eretur ereturn err erro error est est_cfexist est_cfname est_clickable est_expand est_hold est_table est_unhold est_unholdok estat estat_default estat_summ estat_vce_only esti estimates etodow etof etomdy ex exi exit expand expandcl fac fact facto factor factor_estat factor_p factor_pca_rotated factor_rotate factormat fcast fcast_compute fcast_graph fdades fdadesc fdadescr fdadescri fdadescrib fdadescribe fdasav fdasave fdause fh_st file open file read file close file filefilter fillin find_hlp_file findfile findit findit_7 fit fl fli flis flist for5_0 form forma format fpredict frac_154 frac_adj frac_chk frac_cox frac_ddp frac_dis frac_dv frac_in frac_mun frac_pp frac_pq frac_pv frac_wgt frac_xo fracgen fracplot fracplot_7 fracpoly fracpred fron_ex fron_hn fron_p fron_tn fron_tn2 frontier ftodate ftoe ftomdy ftowdate g|0 gamhet_glf gamhet_gp gamhet_ilf gamhet_ip gamma gamma_d2 gamma_p gamma_sw gammahet gdi_hexagon gdi_spokes ge gen gene gener genera generat generate genrank genstd genvmean gettoken gl gladder gladder_7 glim_l01 glim_l02 glim_l03 glim_l04 glim_l05 glim_l06 glim_l07 glim_l08 glim_l09 glim_l10 glim_l11 glim_l12 glim_lf glim_mu glim_nw1 glim_nw2 glim_nw3 glim_p glim_v1 glim_v2 glim_v3 glim_v4 glim_v5 glim_v6 glim_v7 glm glm_6 glm_p glm_sw glmpred glo glob globa global glogit glogit_8 glogit_p gmeans gnbre_lf gnbreg gnbreg_5 gnbreg_p gomp_lf gompe_sw gomper_p gompertz gompertzhet gomphet_glf gomphet_glf_sh gomphet_gp gomphet_ilf gomphet_ilf_sh gomphet_ip gphdot gphpen gphprint gprefs gprobi_p gprobit gprobit_8 gr gr7 gr_copy gr_current gr_db gr_describe gr_dir gr_draw gr_draw_replay gr_drop gr_edit gr_editviewopts gr_example gr_example2 gr_export gr_print gr_qscheme gr_query gr_read gr_rename gr_replay gr_save gr_set gr_setscheme gr_table gr_undo gr_use graph graph7 grebar greigen greigen_7 greigen_8 grmeanby grmeanby_7 gs_fileinfo gs_filetype gs_graphinfo gs_stat gsort gwood h|0 hadimvo hareg hausman haver he heck_d2 heckma_p heckman heckp_lf heckpr_p heckprob hel help hereg hetpr_lf hetpr_p hetprob hettest hexdump hilite hist hist_7 histogram hlogit hlu hmeans hotel hotelling hprobit hreg hsearch icd9 icd9_ff icd9p iis impute imtest inbase include inf infi infil infile infix inp inpu input ins insheet insp inspe inspec inspect integ inten intreg intreg_7 intreg_p intrg2_ll intrg_ll intrg_ll2 ipolate iqreg ir irf irf_create irfm iri is_svy is_svysum isid istdize ivprob_1_lf ivprob_lf ivprobit ivprobit_p ivreg ivreg_footnote ivtob_1_lf ivtob_lf ivtobit ivtobit_p jackknife jacknife jknife jknife_6 jknife_8 jkstat joinby kalarma1 kap kap_3 kapmeier kappa kapwgt kdensity kdensity_7 keep ksm ksmirnov ktau kwallis l|0 la lab labe label labelbook ladder levels levelsof leverage lfit lfit_p li lincom line linktest lis list lloghet_glf lloghet_glf_sh lloghet_gp lloghet_ilf lloghet_ilf_sh lloghet_ip llogi_sw llogis_p llogist llogistic llogistichet lnorm_lf lnorm_sw lnorma_p lnormal lnormalhet lnormhet_glf lnormhet_glf_sh lnormhet_gp lnormhet_ilf lnormhet_ilf_sh lnormhet_ip lnskew0 loadingplot loc loca local log logi logis_lf logistic logistic_p logit logit_estat logit_p loglogs logrank loneway lookfor lookup lowess lowess_7 lpredict lrecomp lroc lroc_7 lrtest ls lsens lsens_7 lsens_x lstat ltable ltable_7 ltriang lv lvr2plot lvr2plot_7 m|0 ma mac macr macro makecns man manova manova_estat manova_p manovatest mantel mark markin markout marksample mat mat_capp mat_order mat_put_rr mat_rapp mata mata_clear mata_describe mata_drop mata_matdescribe mata_matsave mata_matuse mata_memory mata_mlib mata_mosave mata_rename mata_which matalabel matcproc matlist matname matr matri matrix matrix_input__dlg matstrik mcc mcci md0_ md1_ md1debug_ md2_ md2debug_ mds mds_estat mds_p mdsconfig mdslong mdsmat mdsshepard mdytoe mdytof me_derd mean means median memory memsize meqparse mer merg merge mfp mfx mhelp mhodds minbound mixed_ll mixed_ll_reparm mkassert mkdir mkmat mkspline ml ml_5 ml_adjs ml_bhhhs ml_c_d ml_check ml_clear ml_cnt ml_debug ml_defd ml_e0 ml_e0_bfgs ml_e0_cycle ml_e0_dfp ml_e0i ml_e1 ml_e1_bfgs ml_e1_bhhh ml_e1_cycle ml_e1_dfp ml_e2 ml_e2_cycle ml_ebfg0 ml_ebfr0 ml_ebfr1 ml_ebh0q ml_ebhh0 ml_ebhr0 ml_ebr0i ml_ecr0i ml_edfp0 ml_edfr0 ml_edfr1 ml_edr0i ml_eds ml_eer0i ml_egr0i ml_elf ml_elf_bfgs ml_elf_bhhh ml_elf_cycle ml_elf_dfp ml_elfi ml_elfs ml_enr0i ml_enrr0 ml_erdu0 ml_erdu0_bfgs ml_erdu0_bhhh ml_erdu0_bhhhq ml_erdu0_cycle ml_erdu0_dfp ml_erdu0_nrbfgs ml_exde ml_footnote ml_geqnr ml_grad0 ml_graph ml_hbhhh ml_hd0 ml_hold ml_init ml_inv ml_log ml_max ml_mlout ml_mlout_8 ml_model ml_nb0 ml_opt ml_p ml_plot ml_query ml_rdgrd ml_repor ml_s_e ml_score ml_searc ml_technique ml_unhold mleval mlf_ mlmatbysum mlmatsum mlog mlogi mlogit mlogit_footnote mlogit_p mlopts mlsum mlvecsum mnl0_ mor more mov move mprobit mprobit_lf mprobit_p mrdu0_ mrdu1_ mvdecode mvencode mvreg mvreg_estat n|0 nbreg nbreg_al nbreg_lf nbreg_p nbreg_sw nestreg net newey newey_7 newey_p news nl nl_7 nl_9 nl_9_p nl_p nl_p_7 nlcom nlcom_p nlexp2 nlexp2_7 nlexp2a nlexp2a_7 nlexp3 nlexp3_7 nlgom3 nlgom3_7 nlgom4 nlgom4_7 nlinit nllog3 nllog3_7 nllog4 nllog4_7 nlog_rd nlogit nlogit_p nlogitgen nlogittree nlpred no nobreak noi nois noisi noisil noisily note notes notes_dlg nptrend numlabel numlist odbc old_ver olo olog ologi ologi_sw ologit ologit_p ologitp on one onew onewa oneway op_colnm op_comp op_diff op_inv op_str opr opro oprob oprob_sw oprobi oprobi_p oprobit oprobitp opts_exclusive order orthog orthpoly ou out outf outfi outfil outfile outs outsh outshe outshee outsheet ovtest pac pac_7 palette parse parse_dissim pause pca pca_8 pca_display pca_estat pca_p pca_rotate pcamat pchart pchart_7 pchi pchi_7 pcorr pctile pentium pergram pergram_7 permute permute_8 personal peto_st pkcollapse pkcross pkequiv pkexamine pkexamine_7 pkshape pksumm pksumm_7 pl plo plot plugin pnorm pnorm_7 poisgof poiss_lf poiss_sw poisso_p poisson poisson_estat post postclose postfile postutil pperron pr prais prais_e prais_e2 prais_p predict predictnl preserve print pro prob probi probit probit_estat probit_p proc_time procoverlay procrustes procrustes_estat procrustes_p profiler prog progr progra program prop proportion prtest prtesti pwcorr pwd q\\s qby qbys qchi qchi_7 qladder qladder_7 qnorm qnorm_7 qqplot qqplot_7 qreg qreg_c qreg_p qreg_sw qu quadchk quantile quantile_7 que quer query range ranksum ratio rchart rchart_7 rcof recast reclink recode reg reg3 reg3_p regdw regr regre regre_p2 regres regres_p regress regress_estat regriv_p remap ren rena renam rename renpfix repeat replace report reshape restore ret retu retur return rm rmdir robvar roccomp roccomp_7 roccomp_8 rocf_lf rocfit rocfit_8 rocgold rocplot rocplot_7 roctab roctab_7 rolling rologit rologit_p rot rota rotat rotate rotatemat rreg rreg_p ru run runtest rvfplot rvfplot_7 rvpplot rvpplot_7 sa safesum sample sampsi sav save savedresults saveold sc sca scal scala scalar scatter scm_mine sco scob_lf scob_p scobi_sw scobit scor score scoreplot scoreplot_help scree screeplot screeplot_help sdtest sdtesti se search separate seperate serrbar serrbar_7 serset set set_defaults sfrancia sh she shel shell shewhart shewhart_7 signestimationsample signrank signtest simul simul_7 simulate simulate_8 sktest sleep slogit slogit_d2 slogit_p smooth snapspan so sor sort spearman spikeplot spikeplot_7 spikeplt spline_x split sqreg sqreg_p sret sretu sretur sreturn ssc st st_ct st_hc st_hcd st_hcd_sh st_is st_issys st_note st_promo st_set st_show st_smpl st_subid stack statsby statsby_8 stbase stci stci_7 stcox stcox_estat stcox_fr stcox_fr_ll stcox_p stcox_sw stcoxkm stcoxkm_7 stcstat stcurv stcurve stcurve_7 stdes stem stepwise stereg stfill stgen stir stjoin stmc stmh stphplot stphplot_7 stphtest stphtest_7 stptime strate strate_7 streg streg_sw streset sts sts_7 stset stsplit stsum sttocc sttoct stvary stweib su suest suest_8 sum summ summa summar summari summariz summarize sunflower sureg survcurv survsum svar svar_p svmat svy svy_disp svy_dreg svy_est svy_est_7 svy_estat svy_get svy_gnbreg_p svy_head svy_header svy_heckman_p svy_heckprob_p svy_intreg_p svy_ivreg_p svy_logistic_p svy_logit_p svy_mlogit_p svy_nbreg_p svy_ologit_p svy_oprobit_p svy_poisson_p svy_probit_p svy_regress_p svy_sub svy_sub_7 svy_x svy_x_7 svy_x_p svydes svydes_8 svygen svygnbreg svyheckman svyheckprob svyintreg svyintreg_7 svyintrg svyivreg svylc svylog_p svylogit svymarkout svymarkout_8 svymean svymlog svymlogit svynbreg svyolog svyologit svyoprob svyoprobit svyopts svypois svypois_7 svypoisson svyprobit svyprobt svyprop svyprop_7 svyratio svyreg svyreg_p svyregress svyset svyset_7 svyset_8 svytab svytab_7 svytest svytotal sw sw_8 swcnreg swcox swereg swilk swlogis swlogit swologit swoprbt swpois swprobit swqreg swtobit swweib symmetry symmi symplot symplot_7 syntax sysdescribe sysdir sysuse szroeter ta tab tab1 tab2 tab_or tabd tabdi tabdis tabdisp tabi table tabodds tabodds_7 tabstat tabu tabul tabula tabulat tabulate te tempfile tempname tempvar tes test testnl testparm teststd tetrachoric time_it timer tis tob tobi tobit tobit_p tobit_sw token tokeni tokeniz tokenize tostring total translate translator transmap treat_ll treatr_p treatreg trim trnb_cons trnb_mean trpoiss_d2 trunc_ll truncr_p truncreg tsappend tset tsfill tsline tsline_ex tsreport tsrevar tsrline tsset tssmooth tsunab ttest ttesti tut_chk tut_wait tutorial tw tware_st two twoway twoway__fpfit_serset twoway__function_gen twoway__histogram_gen twoway__ipoint_serset twoway__ipoints_serset twoway__kdensity_gen twoway__lfit_serset twoway__normgen_gen twoway__pci_serset twoway__qfit_serset twoway__scatteri_serset twoway__sunflower_gen twoway_ksm_serset ty typ type typeof u|0 unab unabbrev unabcmd update us use uselabel var var_mkcompanion var_p varbasic varfcast vargranger varirf varirf_add varirf_cgraph varirf_create varirf_ctable varirf_describe varirf_dir varirf_drop varirf_erase varirf_graph varirf_ograph varirf_rename varirf_set varirf_table varlist varlmar varnorm varsoc varstable varstable_w varstable_w2 varwle vce vec vec_fevd vec_mkphi vec_p vec_p_w vecirf_create veclmar veclmar_w vecnorm vecnorm_w vecrank vecstable verinst vers versi versio version view viewsource vif vwls wdatetof webdescribe webseek webuse weib1_lf weib2_lf weib_lf weib_lf0 weibhet_glf weibhet_glf_sh weibhet_glfa weibhet_glfa_sh weibhet_gp weibhet_ilf weibhet_ilf_sh weibhet_ilfa weibhet_ilfa_sh weibhet_ip weibu_sw weibul_p weibull weibull_c weibull_s weibullhet wh whelp whi which whil while wilc_st wilcoxon win wind windo window winexec wntestb wntestb_7 wntestq xchart xchart_7 xcorr xcorr_7 xi xi_6 xmlsav xmlsave xmluse xpose xsh xshe xshel xshell xt_iis xt_tis xtab_p xtabond xtbin_p xtclog xtcloglog xtcloglog_8 xtcloglog_d2 xtcloglog_pa_p xtcloglog_re_p xtcnt_p xtcorr xtdata xtdes xtfront_p xtfrontier xtgee xtgee_elink xtgee_estat xtgee_makeivar xtgee_p xtgee_plink xtgls xtgls_p xthaus xthausman xtht_p xthtaylor xtile xtint_p xtintreg xtintreg_8 xtintreg_d2 xtintreg_p xtivp_1 xtivp_2 xtivreg xtline xtline_ex xtlogit xtlogit_8 xtlogit_d2 xtlogit_fe_p xtlogit_pa_p xtlogit_re_p xtmixed xtmixed_estat xtmixed_p xtnb_fe xtnb_lf xtnbreg xtnbreg_pa_p xtnbreg_refe_p xtpcse xtpcse_p xtpois xtpoisson xtpoisson_d2 xtpoisson_pa_p xtpoisson_refe_p xtpred xtprobit xtprobit_8 xtprobit_d2 xtprobit_re_p xtps_fe xtps_lf xtps_ren xtps_ren_8 xtrar_p xtrc xtrc_p xtrchh xtrefe_p xtreg xtreg_be xtreg_fe xtreg_ml xtreg_pa_p xtreg_re xtregar xtrere_p xtset xtsf_ll xtsf_llti xtsum xttab xttest0 xttobit xttobit_8 xttobit_p xttrans yx yxview__barlike_draw yxview_area_draw yxview_bar_draw yxview_dot_draw yxview_dropline_draw yxview_function_draw yxview_iarrow_draw yxview_ilabels_draw yxview_normal_draw yxview_pcarrow_draw yxview_pcbarrow_draw yxview_pccapsym_draw yxview_pcscatter_draw yxview_pcspike_draw yxview_rarea_draw yxview_rbar_draw yxview_rbarm_draw yxview_rcap_draw yxview_rcapsym_draw yxview_rconnected_draw yxview_rline_draw yxview_rscatter_draw yxview_rspike_draw yxview_spike_draw yxview_sunflower_draw zap_s zinb zinb_llf zinb_plf zip zip_llf zip_p zip_plf zt_ct_5 zt_hc_5 zt_hcd_5 zt_is_5 zt_iss_5 zt_sho_5 zt_smp_5 ztbase_5 ztcox_5 ztdes_5 ztereg_5 ztfill_5 ztgen_5 ztir_5 ztjoin_5 ztnb ztnb_p ztp ztp_p zts_5 ztset_5 ztspli_5 ztsum_5 zttoct_5 ztvary_5 ztweib_5',
 	        contains: [
 	      {
 	        className: 'symbol',
@@ -34139,7 +34239,7 @@
 	};
 
 /***/ },
-/* 298 */
+/* 308 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34190,7 +34290,7 @@
 	};
 
 /***/ },
-/* 299 */
+/* 309 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34648,7 +34748,7 @@
 	};
 
 /***/ },
-/* 300 */
+/* 310 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34720,12 +34820,10 @@
 	        beginKeywords: 'func', end: '{', excludeEnd: true,
 	        contains: [
 	          hljs.inherit(hljs.TITLE_MODE, {
-	            begin: /[A-Za-z$_][0-9A-Za-z$_]*/,
-	            illegal: /\(/
+	            begin: /[A-Za-z$_][0-9A-Za-z$_]*/
 	          }),
 	          {
-	            begin: /</, end: />/,
-	            illegal: />/
+	            begin: /</, end: />/
 	          },
 	          {
 	            className: 'params',
@@ -34771,7 +34869,7 @@
 	};
 
 /***/ },
-/* 301 */
+/* 311 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34819,7 +34917,135 @@
 	};
 
 /***/ },
-/* 302 */
+/* 312 */
+/***/ function(module, exports) {
+
+	module.exports = function(hljs) {
+	  var LITERALS = {literal: '{ } true false yes no Yes No True False null'};
+
+	  var keyPrefix = '^[ \\-]*';
+	  var keyName =  '[a-zA-Z_][\\w\\-]*';
+	  var KEY = {
+	    className: 'attr',
+	    variants: [
+	      { begin: keyPrefix + keyName + ":"},
+	      { begin: keyPrefix + '"' + keyName + '"' + ":"},
+	      { begin: keyPrefix + "'" + keyName + "'" + ":"}
+	    ]
+	  };
+
+	  var TEMPLATE_VARIABLES = {
+	    className: 'template-variable',
+	    variants: [
+	      { begin: '\{\{', end: '\}\}' }, // jinja templates Ansible
+	      { begin: '%\{', end: '\}' } // Ruby i18n
+	    ]
+	  };
+	  var STRING = {
+	    className: 'string',
+	    relevance: 0,
+	    variants: [
+	      {begin: /'/, end: /'/},
+	      {begin: /"/, end: /"/}
+	    ],
+	    contains: [
+	      hljs.BACKSLASH_ESCAPE,
+	      TEMPLATE_VARIABLES
+	    ]
+	  };
+
+	  return {
+	    case_insensitive: true,
+	    aliases: ['yml', 'YAML', 'yaml'],
+	    contains: [
+	      KEY,
+	      {
+	        className: 'meta',
+	        begin: '^---\s*$',
+	        relevance: 10
+	      },
+	      { // multi line string
+	        className: 'string',
+	        begin: '[\\|>] *$',
+	        returnEnd: true,
+	        contains: STRING.contains,
+	        // very simple termination: next hash key
+	        end: KEY.variants[0].begin
+	      },
+	      { // Ruby/Rails erb
+	        begin: '<%[%=-]?', end: '[%-]?%>',
+	        subLanguage: 'ruby',
+	        excludeBegin: true,
+	        excludeEnd: true,
+	        relevance: 0
+	      },
+	      { // data type
+	        className: 'type',
+	        begin: '!!' + hljs.UNDERSCORE_IDENT_RE,
+	      },
+	      { // fragment id &ref
+	        className: 'meta',
+	        begin: '&' + hljs.UNDERSCORE_IDENT_RE + '$',
+	      },
+	      { // fragment reference *ref
+	        className: 'meta',
+	        begin: '\\*' + hljs.UNDERSCORE_IDENT_RE + '$'
+	      },
+	      { // array listing
+	        className: 'bullet',
+	        begin: '^ *-',
+	        relevance: 0
+	      },
+	      STRING,
+	      hljs.HASH_COMMENT_MODE,
+	      hljs.C_NUMBER_MODE
+	    ],
+	    keywords: LITERALS
+	  };
+	};
+
+/***/ },
+/* 313 */
+/***/ function(module, exports) {
+
+	module.exports = function(hljs) {
+	  return {
+	    case_insensitive: true,
+	    contains: [
+	      hljs.HASH_COMMENT_MODE,
+	      // version of format and total amount of testcases
+	      {
+	        className: 'meta',
+	        variants: [
+	          { begin: '^TAP version (\\d+)$' },
+	          { begin: '^1\\.\\.(\\d+)$' }
+	        ],
+	      },
+	      // YAML block
+	      {
+	        begin: '(\s+)?---$', end: '\\.\\.\\.$',
+	        subLanguage: 'yaml',
+	        relevance: 0
+	      },
+		  // testcase number
+	      {
+	        className: 'number',
+	        begin: ' (\\d+) '
+	      },
+		  // testcase status and description
+	      {
+	        className: 'symbol',
+	        variants: [
+	          { begin: '^ok' },
+	          { begin: '^not ok' }
+	        ],
+	      },
+	    ]
+	  };
+	};
+
+/***/ },
+/* 314 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34884,7 +35110,7 @@
 	};
 
 /***/ },
-/* 303 */
+/* 315 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34950,7 +35176,7 @@
 	};
 
 /***/ },
-/* 304 */
+/* 316 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34989,7 +35215,7 @@
 	};
 
 /***/ },
-/* 305 */
+/* 317 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35077,7 +35303,7 @@
 	};
 
 /***/ },
-/* 306 */
+/* 318 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35147,7 +35373,7 @@
 	};
 
 /***/ },
-/* 307 */
+/* 319 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35231,11 +35457,16 @@
 	            illegal: /["'\(]/
 	          }
 	        ],
-	        illegal: /\[|%/,
+	        illegal: /%/,
 	        relevance: 0 // () => {} is more typical in TypeScript
 	      },
 	      {
 	        beginKeywords: 'constructor', end: /\{/, excludeEnd: true
+	      },
+	      { // prevent references like module.id from being higlighted as module definitions
+	        begin: /module\./,
+	        keywords: {built_in: 'module'},
+	        relevance: 0
 	      },
 	      {
 	        beginKeywords: 'module', end: /\{/, excludeEnd: true
@@ -35255,7 +35486,7 @@
 	};
 
 /***/ },
-/* 308 */
+/* 320 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35309,7 +35540,7 @@
 	};
 
 /***/ },
-/* 309 */
+/* 321 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35369,7 +35600,7 @@
 	};
 
 /***/ },
-/* 310 */
+/* 322 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35412,7 +35643,7 @@
 	};
 
 /***/ },
-/* 311 */
+/* 323 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35428,49 +35659,110 @@
 	};
 
 /***/ },
-/* 312 */
+/* 324 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
+	  var SV_KEYWORDS = {
+	    keyword:
+	      'accept_on alias always always_comb always_ff always_latch and assert assign ' +
+	      'assume automatic before begin bind bins binsof bit break buf|0 bufif0 bufif1 ' +
+	      'byte case casex casez cell chandle checker class clocking cmos config const ' +
+	      'constraint context continue cover covergroup coverpoint cross deassign default ' +
+	      'defparam design disable dist do edge else end endcase endchecker endclass ' +
+	      'endclocking endconfig endfunction endgenerate endgroup endinterface endmodule ' +
+	      'endpackage endprimitive endprogram endproperty endspecify endsequence endtable ' +
+	      'endtask enum event eventually expect export extends extern final first_match for ' +
+	      'force foreach forever fork forkjoin function generate|5 genvar global highz0 highz1 ' +
+	      'if iff ifnone ignore_bins illegal_bins implements implies import incdir include ' +
+	      'initial inout input inside instance int integer interconnect interface intersect ' +
+	      'join join_any join_none large let liblist library local localparam logic longint ' +
+	      'macromodule matches medium modport module nand negedge nettype new nexttime nmos ' +
+	      'nor noshowcancelled not notif0 notif1 or output package packed parameter pmos ' +
+	      'posedge primitive priority program property protected pull0 pull1 pulldown pullup ' +
+	      'pulsestyle_ondetect pulsestyle_onevent pure rand randc randcase randsequence rcmos ' +
+	      'real realtime ref reg reject_on release repeat restrict return rnmos rpmos rtran ' +
+	      'rtranif0 rtranif1 s_always s_eventually s_nexttime s_until s_until_with scalared ' +
+	      'sequence shortint shortreal showcancelled signed small soft solve specify specparam ' +
+	      'static string strong strong0 strong1 struct super supply0 supply1 sync_accept_on ' +
+	      'sync_reject_on table tagged task this throughout time timeprecision timeunit tran ' +
+	      'tranif0 tranif1 tri tri0 tri1 triand trior trireg type typedef union unique unique0 ' +
+	      'unsigned until until_with untyped use uwire var vectored virtual void wait wait_order ' +
+	      'wand weak weak0 weak1 while wildcard wire with within wor xnor xor',
+	    literal:
+	      'null',
+	    built_in:
+	      '$finish $stop $exit $fatal $error $warning $info $realtime $time $printtimescale ' +
+	      '$bitstoreal $bitstoshortreal $itor $signed $cast $bits $stime $timeformat ' +
+	      '$realtobits $shortrealtobits $rtoi $unsigned $asserton $assertkill $assertpasson ' +
+	      '$assertfailon $assertnonvacuouson $assertoff $assertcontrol $assertpassoff ' +
+	      '$assertfailoff $assertvacuousoff $isunbounded $sampled $fell $changed $past_gclk ' +
+	      '$fell_gclk $changed_gclk $rising_gclk $steady_gclk $coverage_control ' +
+	      '$coverage_get $coverage_save $set_coverage_db_name $rose $stable $past ' +
+	      '$rose_gclk $stable_gclk $future_gclk $falling_gclk $changing_gclk $display ' +
+	      '$coverage_get_max $coverage_merge $get_coverage $load_coverage_db $typename ' +
+	      '$unpacked_dimensions $left $low $increment $clog2 $ln $log10 $exp $sqrt $pow ' +
+	      '$floor $ceil $sin $cos $tan $countbits $onehot $isunknown $fatal $warning ' +
+	      '$dimensions $right $high $size $asin $acos $atan $atan2 $hypot $sinh $cosh ' +
+	      '$tanh $asinh $acosh $atanh $countones $onehot0 $error $info $random ' +
+	      '$dist_chi_square $dist_erlang $dist_exponential $dist_normal $dist_poisson ' +
+	      '$dist_t $dist_uniform $q_initialize $q_remove $q_exam $async$and$array ' +
+	      '$async$nand$array $async$or$array $async$nor$array $sync$and$array ' +
+	      '$sync$nand$array $sync$or$array $sync$nor$array $q_add $q_full $psprintf ' +
+	      '$async$and$plane $async$nand$plane $async$or$plane $async$nor$plane ' +
+	      '$sync$and$plane $sync$nand$plane $sync$or$plane $sync$nor$plane $system ' +
+	      '$display $displayb $displayh $displayo $strobe $strobeb $strobeh $strobeo ' +
+	      '$write $readmemb $readmemh $writememh $value$plusargs ' +
+	      '$dumpvars $dumpon $dumplimit $dumpports $dumpportson $dumpportslimit ' +
+	      '$writeb $writeh $writeo $monitor $monitorb $monitorh $monitoro $writememb ' +
+	      '$dumpfile $dumpoff $dumpall $dumpflush $dumpportsoff $dumpportsall ' +
+	      '$dumpportsflush $fclose $fdisplay $fdisplayb $fdisplayh $fdisplayo ' +
+	      '$fstrobe $fstrobeb $fstrobeh $fstrobeo $swrite $swriteb $swriteh ' +
+	      '$swriteo $fscanf $fread $fseek $fflush $feof $fopen $fwrite $fwriteb ' +
+	      '$fwriteh $fwriteo $fmonitor $fmonitorb $fmonitorh $fmonitoro $sformat ' +
+	      '$sformatf $fgetc $ungetc $fgets $sscanf $rewind $ftell $ferror'
+	    };
 	  return {
-	    aliases: ['v'],
+	    aliases: ['v', 'sv', 'svh'],
 	    case_insensitive: false,
-	    keywords: {
-	      keyword:
-	        'always and assign begin buf bufif0 bufif1 case casex casez cmos deassign ' +
-	        'default defparam disable edge else end endcase endfunction endmodule ' +
-	        'endprimitive endspecify endtable endtask event for force forever fork ' +
-	        'function if ifnone initial inout input join macromodule module nand ' +
-	        'negedge nmos nor not notif0 notif1 or output parameter pmos posedge ' +
-	        'primitive pulldown pullup rcmos release repeat rnmos rpmos rtran ' +
-	        'rtranif0 rtranif1 specify specparam table task timescale tran ' +
-	        'tranif0 tranif1 wait while xnor xor ' +
-	        // types
-	        'highz0 highz1 integer large medium pull0 pull1 real realtime reg ' +
-	        'scalared signed small strong0 strong1 supply0 supply0 supply1 supply1 ' +
-	        'time tri tri0 tri1 triand trior trireg vectored wand weak0 weak1 wire wor'
-	    },
+	    keywords: SV_KEYWORDS, lexemes: /[\w\$]+/,
 	    contains: [
 	      hljs.C_BLOCK_COMMENT_MODE,
 	      hljs.C_LINE_COMMENT_MODE,
 	      hljs.QUOTE_STRING_MODE,
 	      {
 	        className: 'number',
-	        begin: '(\\b((\\d\'(b|h|o|d|B|H|O|D))[0-9xzXZa-fA-F\_]+))|(\\B((\'(b|h|o|d|B|H|O|D))[0-9xzXZa-fA-F\_]+))|(\\b([0-9xzXZ\_])+)',
 	        contains: [hljs.BACKSLASH_ESCAPE],
-	        relevance: 0
+	        variants: [
+	          {begin: '\\b((\\d+\'(b|h|o|d|B|H|O|D))[0-9xzXZa-fA-F_]+)'},
+	          {begin: '\\B((\'(b|h|o|d|B|H|O|D))[0-9xzXZa-fA-F_]+)'},
+	          {begin: '\\b([0-9_])+', relevance: 0}
+	        ]
 	      },
 	      /* parameters to instances */
 	      {
 	        className: 'variable',
-	        begin: '#\\((?!parameter).+\\)'
+	        variants: [
+	          {begin: '#\\((?!parameter).+\\)'},
+	          {begin: '\\.\\w+', relevance: 0},
+	        ]
+	      },
+	      {
+	        className: 'meta',
+	        begin: '`', end: '$',
+	        keywords: {'meta-keyword': 'define __FILE__ ' +
+	          '__LINE__ begin_keywords celldefine default_nettype define ' +
+	          'else elsif end_keywords endcelldefine endif ifdef ifndef ' +
+	          'include line nounconnected_drive pragma resetall timescale ' +
+	          'unconnected_drive undef undefineall'},
+	        relevance: 0
 	      }
 	    ]
 	  }; // return
 	};
 
 /***/ },
-/* 313 */
+/* 325 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35530,7 +35822,7 @@
 	};
 
 /***/ },
-/* 314 */
+/* 326 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35640,7 +35932,7 @@
 	};
 
 /***/ },
-/* 315 */
+/* 327 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35745,9 +36037,7 @@
 	          // Single-quoted string
 	          { begin: '\'', end: '[^\\\\]\'' },
 	          // Backquoted string
-	          { begin: '`', end: '[^\\\\]`' },
-	          // Section name
-	          { begin: '\\.[A-Za-z0-9]+' }
+	          { begin: '`', end: '[^\\\\]`' }
 	        ],
 	        relevance: 0
 	      },
@@ -35772,13 +36062,17 @@
 	        className: 'subst',
 	        begin: '%!\S+',
 	        relevance: 0
+	      },
+	      {
+	        className: 'meta',
+	        begin: /^\s*\.[\w_-]+/
 	      }
 	    ]
 	  };
 	};
 
 /***/ },
-/* 316 */
+/* 328 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35855,7 +36149,7 @@
 	};
 
 /***/ },
-/* 317 */
+/* 329 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35930,95 +36224,7 @@
 	};
 
 /***/ },
-/* 318 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	  var LITERALS = {literal: '{ } true false yes no Yes No True False null'};
-
-	  var keyPrefix = '^[ \\-]*';
-	  var keyName =  '[a-zA-Z_][\\w\\-]*';
-	  var KEY = {
-	    className: 'attr',
-	    variants: [
-	      { begin: keyPrefix + keyName + ":"},
-	      { begin: keyPrefix + '"' + keyName + '"' + ":"},
-	      { begin: keyPrefix + "'" + keyName + "'" + ":"}
-	    ]
-	  };
-
-	  var TEMPLATE_VARIABLES = {
-	    className: 'template-variable',
-	    variants: [
-	      { begin: '\{\{', end: '\}\}' }, // jinja templates Ansible
-	      { begin: '%\{', end: '\}' } // Ruby i18n
-	    ]
-	  };
-	  var STRING = {
-	    className: 'string',
-	    relevance: 0,
-	    variants: [
-	      {begin: /'/, end: /'/},
-	      {begin: /"/, end: /"/}
-	    ],
-	    contains: [
-	      hljs.BACKSLASH_ESCAPE,
-	      TEMPLATE_VARIABLES
-	    ]
-	  };
-
-	  return {
-	    case_insensitive: true,
-	    aliases: ['yml', 'YAML', 'yaml'],
-	    contains: [
-	      KEY,
-	      {
-	        className: 'meta',
-	        begin: '^---\s*$',
-	        relevance: 10
-	      },
-	      { // multi line string
-	        className: 'string',
-	        begin: '[\\|>] *$',
-	        returnEnd: true,
-	        contains: STRING.contains,
-	        // very simple termination: next hash key
-	        end: KEY.variants[0].begin
-	      },
-	      { // Ruby/Rails erb
-	        begin: '<%[%=-]?', end: '[%-]?%>',
-	        subLanguage: 'ruby',
-	        excludeBegin: true,
-	        excludeEnd: true,
-	        relevance: 0
-	      },
-	      { // data type
-	        className: 'type',
-	        begin: '!!' + hljs.UNDERSCORE_IDENT_RE,
-	      },
-	      { // fragment id &ref
-	        className: 'meta',
-	        begin: '&' + hljs.UNDERSCORE_IDENT_RE + '$',
-	      },
-	      { // fragment reference *ref
-	        className: 'meta',
-	        begin: '\\*' + hljs.UNDERSCORE_IDENT_RE + '$'
-	      },
-	      { // array listing
-	        className: 'bullet',
-	        begin: '^ *-',
-	        relevance: 0
-	      },
-	      STRING,
-	      hljs.HASH_COMMENT_MODE,
-	      hljs.C_NUMBER_MODE
-	    ],
-	    keywords: LITERALS
-	  };
-	};
-
-/***/ },
-/* 319 */
+/* 330 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36129,7 +36335,7 @@
 	};
 
 /***/ },
-/* 320 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36142,11 +36348,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDatepicker = __webpack_require__(321);
+	var _reactDatepicker = __webpack_require__(332);
 
 	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
-	var _moment = __webpack_require__(323);
+	var _moment = __webpack_require__(334);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
@@ -36196,16 +36402,16 @@
 	});
 
 /***/ },
-/* 321 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _date_input = __webpack_require__(322);
+	var _date_input = __webpack_require__(333);
 
 	var _date_input2 = _interopRequireDefault(_date_input);
 
-	var _calendar = __webpack_require__(427);
+	var _calendar = __webpack_require__(438);
 
 	var _calendar2 = _interopRequireDefault(_calendar);
 
@@ -36213,15 +36419,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _tether_component = __webpack_require__(435);
+	var _tether_component = __webpack_require__(446);
 
 	var _tether_component2 = _interopRequireDefault(_tether_component);
 
-	var _classnames2 = __webpack_require__(434);
+	var _classnames2 = __webpack_require__(445);
 
 	var _classnames3 = _interopRequireDefault(_classnames2);
 
-	var _date_utils = __webpack_require__(426);
+	var _date_utils = __webpack_require__(437);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36237,6 +36443,7 @@
 	  displayName: 'DatePicker',
 
 	  propTypes: {
+	    autoComplete: _react2.default.PropTypes.string,
 	    className: _react2.default.PropTypes.string,
 	    dateFormat: _react2.default.PropTypes.string,
 	    dateFormatCalendar: _react2.default.PropTypes.string,
@@ -36246,6 +36453,7 @@
 	    filterDate: _react2.default.PropTypes.func,
 	    id: _react2.default.PropTypes.string,
 	    includeDates: _react2.default.PropTypes.array,
+	    inline: _react2.default.PropTypes.bool,
 	    isClearable: _react2.default.PropTypes.bool,
 	    locale: _react2.default.PropTypes.string,
 	    maxDate: _react2.default.PropTypes.object,
@@ -36254,6 +36462,7 @@
 	    onBlur: _react2.default.PropTypes.func,
 	    onChange: _react2.default.PropTypes.func.isRequired,
 	    onFocus: _react2.default.PropTypes.func,
+	    openToDate: _react2.default.PropTypes.object,
 	    placeholderText: _react2.default.PropTypes.string,
 	    popoverAttachment: _react2.default.PropTypes.string,
 	    popoverTargetAttachment: _react2.default.PropTypes.string,
@@ -36337,7 +36546,7 @@
 	    this.props.onChange(null);
 	  },
 	  renderCalendar: function renderCalendar() {
-	    if (!this.state.open || this.props.disabled) {
+	    if (!this.props.inline && (!this.state.open || this.props.disabled)) {
 	      return null;
 	    }
 	    return _react2.default.createElement(_calendar2.default, {
@@ -36346,6 +36555,7 @@
 	      dateFormat: this.props.dateFormatCalendar,
 	      selected: this.props.selected,
 	      onSelect: this.handleSelect,
+	      openToDate: this.props.openToDate,
 	      minDate: this.props.minDate,
 	      maxDate: this.props.maxDate,
 	      startDate: this.props.startDate,
@@ -36379,6 +36589,7 @@
 	      onChangeDate: this.setSelected,
 	      placeholder: this.props.placeholderText,
 	      disabled: this.props.disabled,
+	      autoComplete: this.props.autoComplete,
 	      className: className,
 	      title: this.props.title,
 	      readOnly: this.props.readOnly,
@@ -36393,37 +36604,43 @@
 	    }
 	  },
 	  render: function render() {
-	    return _react2.default.createElement(
-	      _tether_component2.default,
-	      {
-	        classPrefix: "react-datepicker__tether",
-	        attachment: this.props.popoverAttachment,
-	        targetAttachment: this.props.popoverTargetAttachment,
-	        targetOffset: this.props.popoverTargetOffset,
-	        renderElementTo: this.props.renderCalendarTo,
-	        constraints: this.props.tetherConstraints },
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'react-datepicker__input-container' },
-	        this.renderDateInput(),
-	        this.renderClearButton()
-	      ),
-	      this.renderCalendar()
-	    );
+	    var calendar = this.renderCalendar();
+
+	    if (this.props.inline) {
+	      return calendar;
+	    } else {
+	      return _react2.default.createElement(
+	        _tether_component2.default,
+	        {
+	          classPrefix: "react-datepicker__tether",
+	          attachment: this.props.popoverAttachment,
+	          targetAttachment: this.props.popoverTargetAttachment,
+	          targetOffset: this.props.popoverTargetOffset,
+	          renderElementTo: this.props.renderCalendarTo,
+	          constraints: this.props.tetherConstraints },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'react-datepicker__input-container' },
+	          this.renderDateInput(),
+	          this.renderClearButton()
+	        ),
+	        calendar
+	      );
+	    }
 	  }
 	});
 
 	module.exports = DatePicker;
 
 /***/ },
-/* 322 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _moment = __webpack_require__(323);
+	var _moment = __webpack_require__(334);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
@@ -36431,7 +36648,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _date_utils = __webpack_require__(426);
+	var _date_utils = __webpack_require__(437);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36517,7 +36734,7 @@
 	module.exports = DateInput;
 
 /***/ },
-/* 323 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {//! moment.js
@@ -36918,7 +37135,7 @@
 	                module && module.exports) {
 	            try {
 	                oldLocale = globalLocale._abbr;
-	                __webpack_require__(325)("./" + name);
+	                __webpack_require__(336)("./" + name);
 	                // because defineLocale currently also sets the global locale, we
 	                // want to undo that for lazy loaded locales
 	                locale_locales__getSetGlobalLocale(oldLocale);
@@ -40560,10 +40777,10 @@
 	    return _moment;
 
 	}));
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(324)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(335)(module)))
 
 /***/ },
-/* 324 */
+/* 335 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -40579,210 +40796,210 @@
 
 
 /***/ },
-/* 325 */
+/* 336 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./af": 326,
-		"./af.js": 326,
-		"./ar": 327,
-		"./ar-ma": 328,
-		"./ar-ma.js": 328,
-		"./ar-sa": 329,
-		"./ar-sa.js": 329,
-		"./ar-tn": 330,
-		"./ar-tn.js": 330,
-		"./ar.js": 327,
-		"./az": 331,
-		"./az.js": 331,
-		"./be": 332,
-		"./be.js": 332,
-		"./bg": 333,
-		"./bg.js": 333,
-		"./bn": 334,
-		"./bn.js": 334,
-		"./bo": 335,
-		"./bo.js": 335,
-		"./br": 336,
-		"./br.js": 336,
-		"./bs": 337,
-		"./bs.js": 337,
-		"./ca": 338,
-		"./ca.js": 338,
-		"./cs": 339,
-		"./cs.js": 339,
-		"./cv": 340,
-		"./cv.js": 340,
-		"./cy": 341,
-		"./cy.js": 341,
-		"./da": 342,
-		"./da.js": 342,
-		"./de": 343,
-		"./de-at": 344,
-		"./de-at.js": 344,
-		"./de.js": 343,
-		"./dv": 345,
-		"./dv.js": 345,
-		"./el": 346,
-		"./el.js": 346,
-		"./en-au": 347,
-		"./en-au.js": 347,
-		"./en-ca": 348,
-		"./en-ca.js": 348,
-		"./en-gb": 349,
-		"./en-gb.js": 349,
-		"./en-ie": 350,
-		"./en-ie.js": 350,
-		"./en-nz": 351,
-		"./en-nz.js": 351,
-		"./eo": 352,
-		"./eo.js": 352,
-		"./es": 353,
-		"./es.js": 353,
-		"./et": 354,
-		"./et.js": 354,
-		"./eu": 355,
-		"./eu.js": 355,
-		"./fa": 356,
-		"./fa.js": 356,
-		"./fi": 357,
-		"./fi.js": 357,
-		"./fo": 358,
-		"./fo.js": 358,
-		"./fr": 359,
-		"./fr-ca": 360,
-		"./fr-ca.js": 360,
-		"./fr-ch": 361,
-		"./fr-ch.js": 361,
-		"./fr.js": 359,
-		"./fy": 362,
-		"./fy.js": 362,
-		"./gd": 363,
-		"./gd.js": 363,
-		"./gl": 364,
-		"./gl.js": 364,
-		"./he": 365,
-		"./he.js": 365,
-		"./hi": 366,
-		"./hi.js": 366,
-		"./hr": 367,
-		"./hr.js": 367,
-		"./hu": 368,
-		"./hu.js": 368,
-		"./hy-am": 369,
-		"./hy-am.js": 369,
-		"./id": 370,
-		"./id.js": 370,
-		"./is": 371,
-		"./is.js": 371,
-		"./it": 372,
-		"./it.js": 372,
-		"./ja": 373,
-		"./ja.js": 373,
-		"./jv": 374,
-		"./jv.js": 374,
-		"./ka": 375,
-		"./ka.js": 375,
-		"./kk": 376,
-		"./kk.js": 376,
-		"./km": 377,
-		"./km.js": 377,
-		"./ko": 378,
-		"./ko.js": 378,
-		"./ky": 379,
-		"./ky.js": 379,
-		"./lb": 380,
-		"./lb.js": 380,
-		"./lo": 381,
-		"./lo.js": 381,
-		"./lt": 382,
-		"./lt.js": 382,
-		"./lv": 383,
-		"./lv.js": 383,
-		"./me": 384,
-		"./me.js": 384,
-		"./mk": 385,
-		"./mk.js": 385,
-		"./ml": 386,
-		"./ml.js": 386,
-		"./mr": 387,
-		"./mr.js": 387,
-		"./ms": 388,
-		"./ms-my": 389,
-		"./ms-my.js": 389,
-		"./ms.js": 388,
-		"./my": 390,
-		"./my.js": 390,
-		"./nb": 391,
-		"./nb.js": 391,
-		"./ne": 392,
-		"./ne.js": 392,
-		"./nl": 393,
-		"./nl.js": 393,
-		"./nn": 394,
-		"./nn.js": 394,
-		"./pa-in": 395,
-		"./pa-in.js": 395,
-		"./pl": 396,
-		"./pl.js": 396,
-		"./pt": 397,
-		"./pt-br": 398,
-		"./pt-br.js": 398,
-		"./pt.js": 397,
-		"./ro": 399,
-		"./ro.js": 399,
-		"./ru": 400,
-		"./ru.js": 400,
-		"./se": 401,
-		"./se.js": 401,
-		"./si": 402,
-		"./si.js": 402,
-		"./sk": 403,
-		"./sk.js": 403,
-		"./sl": 404,
-		"./sl.js": 404,
-		"./sq": 405,
-		"./sq.js": 405,
-		"./sr": 406,
-		"./sr-cyrl": 407,
-		"./sr-cyrl.js": 407,
-		"./sr.js": 406,
-		"./ss": 408,
-		"./ss.js": 408,
-		"./sv": 409,
-		"./sv.js": 409,
-		"./sw": 410,
-		"./sw.js": 410,
-		"./ta": 411,
-		"./ta.js": 411,
-		"./te": 412,
-		"./te.js": 412,
-		"./th": 413,
-		"./th.js": 413,
-		"./tl-ph": 414,
-		"./tl-ph.js": 414,
-		"./tlh": 415,
-		"./tlh.js": 415,
-		"./tr": 416,
-		"./tr.js": 416,
-		"./tzl": 417,
-		"./tzl.js": 417,
-		"./tzm": 418,
-		"./tzm-latn": 419,
-		"./tzm-latn.js": 419,
-		"./tzm.js": 418,
-		"./uk": 420,
-		"./uk.js": 420,
-		"./uz": 421,
-		"./uz.js": 421,
-		"./vi": 422,
-		"./vi.js": 422,
-		"./x-pseudo": 423,
-		"./x-pseudo.js": 423,
-		"./zh-cn": 424,
-		"./zh-cn.js": 424,
-		"./zh-tw": 425,
-		"./zh-tw.js": 425
+		"./af": 337,
+		"./af.js": 337,
+		"./ar": 338,
+		"./ar-ma": 339,
+		"./ar-ma.js": 339,
+		"./ar-sa": 340,
+		"./ar-sa.js": 340,
+		"./ar-tn": 341,
+		"./ar-tn.js": 341,
+		"./ar.js": 338,
+		"./az": 342,
+		"./az.js": 342,
+		"./be": 343,
+		"./be.js": 343,
+		"./bg": 344,
+		"./bg.js": 344,
+		"./bn": 345,
+		"./bn.js": 345,
+		"./bo": 346,
+		"./bo.js": 346,
+		"./br": 347,
+		"./br.js": 347,
+		"./bs": 348,
+		"./bs.js": 348,
+		"./ca": 349,
+		"./ca.js": 349,
+		"./cs": 350,
+		"./cs.js": 350,
+		"./cv": 351,
+		"./cv.js": 351,
+		"./cy": 352,
+		"./cy.js": 352,
+		"./da": 353,
+		"./da.js": 353,
+		"./de": 354,
+		"./de-at": 355,
+		"./de-at.js": 355,
+		"./de.js": 354,
+		"./dv": 356,
+		"./dv.js": 356,
+		"./el": 357,
+		"./el.js": 357,
+		"./en-au": 358,
+		"./en-au.js": 358,
+		"./en-ca": 359,
+		"./en-ca.js": 359,
+		"./en-gb": 360,
+		"./en-gb.js": 360,
+		"./en-ie": 361,
+		"./en-ie.js": 361,
+		"./en-nz": 362,
+		"./en-nz.js": 362,
+		"./eo": 363,
+		"./eo.js": 363,
+		"./es": 364,
+		"./es.js": 364,
+		"./et": 365,
+		"./et.js": 365,
+		"./eu": 366,
+		"./eu.js": 366,
+		"./fa": 367,
+		"./fa.js": 367,
+		"./fi": 368,
+		"./fi.js": 368,
+		"./fo": 369,
+		"./fo.js": 369,
+		"./fr": 370,
+		"./fr-ca": 371,
+		"./fr-ca.js": 371,
+		"./fr-ch": 372,
+		"./fr-ch.js": 372,
+		"./fr.js": 370,
+		"./fy": 373,
+		"./fy.js": 373,
+		"./gd": 374,
+		"./gd.js": 374,
+		"./gl": 375,
+		"./gl.js": 375,
+		"./he": 376,
+		"./he.js": 376,
+		"./hi": 377,
+		"./hi.js": 377,
+		"./hr": 378,
+		"./hr.js": 378,
+		"./hu": 379,
+		"./hu.js": 379,
+		"./hy-am": 380,
+		"./hy-am.js": 380,
+		"./id": 381,
+		"./id.js": 381,
+		"./is": 382,
+		"./is.js": 382,
+		"./it": 383,
+		"./it.js": 383,
+		"./ja": 384,
+		"./ja.js": 384,
+		"./jv": 385,
+		"./jv.js": 385,
+		"./ka": 386,
+		"./ka.js": 386,
+		"./kk": 387,
+		"./kk.js": 387,
+		"./km": 388,
+		"./km.js": 388,
+		"./ko": 389,
+		"./ko.js": 389,
+		"./ky": 390,
+		"./ky.js": 390,
+		"./lb": 391,
+		"./lb.js": 391,
+		"./lo": 392,
+		"./lo.js": 392,
+		"./lt": 393,
+		"./lt.js": 393,
+		"./lv": 394,
+		"./lv.js": 394,
+		"./me": 395,
+		"./me.js": 395,
+		"./mk": 396,
+		"./mk.js": 396,
+		"./ml": 397,
+		"./ml.js": 397,
+		"./mr": 398,
+		"./mr.js": 398,
+		"./ms": 399,
+		"./ms-my": 400,
+		"./ms-my.js": 400,
+		"./ms.js": 399,
+		"./my": 401,
+		"./my.js": 401,
+		"./nb": 402,
+		"./nb.js": 402,
+		"./ne": 403,
+		"./ne.js": 403,
+		"./nl": 404,
+		"./nl.js": 404,
+		"./nn": 405,
+		"./nn.js": 405,
+		"./pa-in": 406,
+		"./pa-in.js": 406,
+		"./pl": 407,
+		"./pl.js": 407,
+		"./pt": 408,
+		"./pt-br": 409,
+		"./pt-br.js": 409,
+		"./pt.js": 408,
+		"./ro": 410,
+		"./ro.js": 410,
+		"./ru": 411,
+		"./ru.js": 411,
+		"./se": 412,
+		"./se.js": 412,
+		"./si": 413,
+		"./si.js": 413,
+		"./sk": 414,
+		"./sk.js": 414,
+		"./sl": 415,
+		"./sl.js": 415,
+		"./sq": 416,
+		"./sq.js": 416,
+		"./sr": 417,
+		"./sr-cyrl": 418,
+		"./sr-cyrl.js": 418,
+		"./sr.js": 417,
+		"./ss": 419,
+		"./ss.js": 419,
+		"./sv": 420,
+		"./sv.js": 420,
+		"./sw": 421,
+		"./sw.js": 421,
+		"./ta": 422,
+		"./ta.js": 422,
+		"./te": 423,
+		"./te.js": 423,
+		"./th": 424,
+		"./th.js": 424,
+		"./tl-ph": 425,
+		"./tl-ph.js": 425,
+		"./tlh": 426,
+		"./tlh.js": 426,
+		"./tr": 427,
+		"./tr.js": 427,
+		"./tzl": 428,
+		"./tzl.js": 428,
+		"./tzm": 429,
+		"./tzm-latn": 430,
+		"./tzm-latn.js": 430,
+		"./tzm.js": 429,
+		"./uk": 431,
+		"./uk.js": 431,
+		"./uz": 432,
+		"./uz.js": 432,
+		"./vi": 433,
+		"./vi.js": 433,
+		"./x-pseudo": 434,
+		"./x-pseudo.js": 434,
+		"./zh-cn": 435,
+		"./zh-cn.js": 435,
+		"./zh-tw": 436,
+		"./zh-tw.js": 436
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -40795,11 +41012,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 325;
+	webpackContext.id = 336;
 
 
 /***/ },
-/* 326 */
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -40807,7 +41024,7 @@
 	//! author : Werner Mollentze : https://github.com/wernerm
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -40876,7 +41093,7 @@
 	}));
 
 /***/ },
-/* 327 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -40886,7 +41103,7 @@
 	//! Native plural forms: forabi https://github.com/forabi
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -41017,7 +41234,7 @@
 	}));
 
 /***/ },
-/* 328 */
+/* 339 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -41026,7 +41243,7 @@
 	//! author : Abdel Said : https://github.com/abdelsaid
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -41081,7 +41298,7 @@
 	}));
 
 /***/ },
-/* 329 */
+/* 340 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -41089,7 +41306,7 @@
 	//! author : Suhail Alkowaileet : https://github.com/xsoh
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -41189,14 +41406,14 @@
 	}));
 
 /***/ },
-/* 330 */
+/* 341 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
 	//! locale  : Tunisian Arabic (ar-tn)
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -41251,7 +41468,7 @@
 	}));
 
 /***/ },
-/* 331 */
+/* 342 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -41259,7 +41476,7 @@
 	//! author : topchiyev : https://github.com/topchiyev
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -41360,7 +41577,7 @@
 	}));
 
 /***/ },
-/* 332 */
+/* 343 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -41370,7 +41587,7 @@
 	//! Author : Menelion Elensúle : https://github.com/Oire
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -41498,7 +41715,7 @@
 	}));
 
 /***/ },
-/* 333 */
+/* 344 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -41506,7 +41723,7 @@
 	//! author : Krasen Borisov : https://github.com/kraz
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -41592,7 +41809,7 @@
 	}));
 
 /***/ },
-/* 334 */
+/* 345 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -41600,7 +41817,7 @@
 	//! author : Kaushik Gandhi : https://github.com/kaushikgandhi
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -41715,7 +41932,7 @@
 	}));
 
 /***/ },
-/* 335 */
+/* 346 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -41723,7 +41940,7 @@
 	//! author : Thupten N. Chakrishar : https://github.com/vajradog
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -41838,7 +42055,7 @@
 	}));
 
 /***/ },
-/* 336 */
+/* 347 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -41846,7 +42063,7 @@
 	//! author : Jean-Baptiste Le Duigou : https://github.com/jbleduigou
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -41950,7 +42167,7 @@
 	}));
 
 /***/ },
-/* 337 */
+/* 348 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -41959,7 +42176,7 @@
 	//! based on (hr) translation by Bojan Marković
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -42097,7 +42314,7 @@
 	}));
 
 /***/ },
-/* 338 */
+/* 349 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -42105,7 +42322,7 @@
 	//! author : Juan G. Hurtado : https://github.com/juanghurtado
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -42182,7 +42399,7 @@
 	}));
 
 /***/ },
-/* 339 */
+/* 350 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -42190,7 +42407,7 @@
 	//! author : petrbela : https://github.com/petrbela
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -42357,7 +42574,7 @@
 	}));
 
 /***/ },
-/* 340 */
+/* 351 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -42365,7 +42582,7 @@
 	//! author : Anatoly Mironov : https://github.com/mirontoli
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -42424,7 +42641,7 @@
 	}));
 
 /***/ },
-/* 341 */
+/* 352 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -42432,7 +42649,7 @@
 	//! author : Robert Allen
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -42508,7 +42725,7 @@
 	}));
 
 /***/ },
-/* 342 */
+/* 353 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -42516,7 +42733,7 @@
 	//! author : Ulrik Nielsen : https://github.com/mrbase
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -42572,7 +42789,7 @@
 	}));
 
 /***/ },
-/* 343 */
+/* 354 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -42582,7 +42799,7 @@
 	//! author : Mikolaj Dadela : https://github.com/mik01aj
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -42654,7 +42871,7 @@
 	}));
 
 /***/ },
-/* 344 */
+/* 355 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -42665,7 +42882,7 @@
 	//! author : Mikolaj Dadela : https://github.com/mik01aj
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -42737,7 +42954,7 @@
 	}));
 
 /***/ },
-/* 345 */
+/* 356 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -42745,7 +42962,7 @@
 	//! author : Jawish Hameed : https://github.com/jawish
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -42840,7 +43057,7 @@
 	}));
 
 /***/ },
-/* 346 */
+/* 357 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -42848,7 +43065,7 @@
 	//! author : Aggelos Karalias : https://github.com/mehiel
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -42942,14 +43159,14 @@
 	}));
 
 /***/ },
-/* 347 */
+/* 358 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
 	//! locale : australian english (en-au)
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -43012,7 +43229,7 @@
 	}));
 
 /***/ },
-/* 348 */
+/* 359 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -43020,7 +43237,7 @@
 	//! author : Jonathan Abourbih : https://github.com/jonbca
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -43079,7 +43296,7 @@
 	}));
 
 /***/ },
-/* 349 */
+/* 360 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -43087,7 +43304,7 @@
 	//! author : Chris Gedrim : https://github.com/chrisgedrim
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -43150,7 +43367,7 @@
 	}));
 
 /***/ },
-/* 350 */
+/* 361 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -43158,7 +43375,7 @@
 	//! author : Chris Cartlidge : https://github.com/chriscartlidge
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -43221,14 +43438,14 @@
 	}));
 
 /***/ },
-/* 351 */
+/* 362 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
 	//! locale : New Zealand english (en-nz)
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -43291,7 +43508,7 @@
 	}));
 
 /***/ },
-/* 352 */
+/* 363 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -43301,7 +43518,7 @@
 	//!          Se ne, bonvolu korekti kaj avizi min por ke mi povas lerni!
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -43368,7 +43585,7 @@
 	}));
 
 /***/ },
-/* 353 */
+/* 364 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -43376,7 +43593,7 @@
 	//! author : Julio Napurí : https://github.com/julionc
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -43453,7 +43670,7 @@
 	}));
 
 /***/ },
-/* 354 */
+/* 365 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -43462,7 +43679,7 @@
 	//! improvements : Illimar Tambek : https://github.com/ragulka
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -43537,7 +43754,7 @@
 	}));
 
 /***/ },
-/* 355 */
+/* 366 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -43545,7 +43762,7 @@
 	//! author : Eneko Illarramendi : https://github.com/eillarra
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -43607,7 +43824,7 @@
 	}));
 
 /***/ },
-/* 356 */
+/* 367 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -43615,7 +43832,7 @@
 	//! author : Ebrahim Byagowi : https://github.com/ebraminio
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -43717,7 +43934,7 @@
 	}));
 
 /***/ },
-/* 357 */
+/* 368 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -43725,7 +43942,7 @@
 	//! author : Tarmo Aidantausta : https://github.com/bleadof
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -43828,7 +44045,7 @@
 	}));
 
 /***/ },
-/* 358 */
+/* 369 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -43836,7 +44053,7 @@
 	//! author : Ragnar Johannesen : https://github.com/ragnar123
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -43892,7 +44109,7 @@
 	}));
 
 /***/ },
-/* 359 */
+/* 370 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -43900,7 +44117,7 @@
 	//! author : John Fischer : https://github.com/jfroffice
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -43960,7 +44177,7 @@
 	}));
 
 /***/ },
-/* 360 */
+/* 371 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -43968,7 +44185,7 @@
 	//! author : Jonathan Abourbih : https://github.com/jonbca
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -44024,7 +44241,7 @@
 	}));
 
 /***/ },
-/* 361 */
+/* 372 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -44032,7 +44249,7 @@
 	//! author : Gaspard Bucher : https://github.com/gaspard
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -44092,7 +44309,7 @@
 	}));
 
 /***/ },
-/* 362 */
+/* 373 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -44100,7 +44317,7 @@
 	//! author : Robin van der Vliet : https://github.com/robin0van0der0v
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -44169,7 +44386,7 @@
 	}));
 
 /***/ },
-/* 363 */
+/* 374 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -44177,7 +44394,7 @@
 	//! author : Jon Ashdown : https://github.com/jonashdown
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -44249,7 +44466,7 @@
 	}));
 
 /***/ },
-/* 364 */
+/* 375 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -44257,7 +44474,7 @@
 	//! author : Juan G. Hurtado : https://github.com/juanghurtado
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -44330,7 +44547,7 @@
 	}));
 
 /***/ },
-/* 365 */
+/* 376 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -44340,7 +44557,7 @@
 	//! author : Tal Ater : https://github.com/TalAter
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -44433,7 +44650,7 @@
 	}));
 
 /***/ },
-/* 366 */
+/* 377 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -44441,7 +44658,7 @@
 	//! author : Mayank Singhal : https://github.com/mayanksinghal
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -44561,7 +44778,7 @@
 	}));
 
 /***/ },
-/* 367 */
+/* 378 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -44569,7 +44786,7 @@
 	//! author : Bojan Marković : https://github.com/bmarkovic
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -44710,7 +44927,7 @@
 	}));
 
 /***/ },
-/* 368 */
+/* 379 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -44718,7 +44935,7 @@
 	//! author : Adam Brunner : https://github.com/adambrunner
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -44823,7 +45040,7 @@
 	}));
 
 /***/ },
-/* 369 */
+/* 380 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -44831,7 +45048,7 @@
 	//! author : Armendarabyan : https://github.com/armendarabyan
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -44922,7 +45139,7 @@
 	}));
 
 /***/ },
-/* 370 */
+/* 381 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -44931,7 +45148,7 @@
 	//! reference: http://id.wikisource.org/wiki/Pedoman_Umum_Ejaan_Bahasa_Indonesia_yang_Disempurnakan
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45009,7 +45226,7 @@
 	}));
 
 /***/ },
-/* 371 */
+/* 382 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45017,7 +45234,7 @@
 	//! author : Hinrik Örn Sigurðsson : https://github.com/hinrik
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45140,7 +45357,7 @@
 	}));
 
 /***/ },
-/* 372 */
+/* 383 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45149,7 +45366,7 @@
 	//! author: Mattia Larentis: https://github.com/nostalgiaz
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45214,7 +45431,7 @@
 	}));
 
 /***/ },
-/* 373 */
+/* 384 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45222,7 +45439,7 @@
 	//! author : LI Long : https://github.com/baryon
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45294,7 +45511,7 @@
 	}));
 
 /***/ },
-/* 374 */
+/* 385 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45303,7 +45520,7 @@
 	//! reference: http://jv.wikipedia.org/wiki/Basa_Jawa
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45381,7 +45598,7 @@
 	}));
 
 /***/ },
-/* 375 */
+/* 386 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45389,7 +45606,7 @@
 	//! author : Irakli Janiashvili : https://github.com/irakli-janiashvili
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45474,7 +45691,7 @@
 	}));
 
 /***/ },
-/* 376 */
+/* 387 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45482,7 +45699,7 @@
 	//! authors : Nurlan Rakhimzhanov : https://github.com/nurlan
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45565,7 +45782,7 @@
 	}));
 
 /***/ },
-/* 377 */
+/* 388 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45573,7 +45790,7 @@
 	//! author : Kruy Vanna : https://github.com/kruyvanna
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45627,7 +45844,7 @@
 	}));
 
 /***/ },
-/* 378 */
+/* 389 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45639,7 +45856,7 @@
 	//! - Jeeeyul Lee <jeeeyul@gmail.com>
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45699,7 +45916,7 @@
 	}));
 
 /***/ },
-/* 379 */
+/* 390 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45707,7 +45924,7 @@
 	//! author : Chyngyz Arystan uulu : https://github.com/chyngyz
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45791,7 +46008,7 @@
 	}));
 
 /***/ },
-/* 380 */
+/* 391 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45799,7 +46016,7 @@
 	//! author : mweimerskirch : https://github.com/mweimerskirch, David Raison : https://github.com/kwisatz
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -45931,7 +46148,7 @@
 	}));
 
 /***/ },
-/* 381 */
+/* 392 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -45939,7 +46156,7 @@
 	//! author : Ryan Hart : https://github.com/ryanhart2
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46005,7 +46222,7 @@
 	}));
 
 /***/ },
-/* 382 */
+/* 393 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46013,7 +46230,7 @@
 	//! author : Mindaugas Mozūras : https://github.com/mmozuras
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46125,7 +46342,7 @@
 	}));
 
 /***/ },
-/* 383 */
+/* 394 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46134,7 +46351,7 @@
 	//! author : Jānis Elmeris : https://github.com/JanisE
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46226,7 +46443,7 @@
 	}));
 
 /***/ },
-/* 384 */
+/* 395 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46234,7 +46451,7 @@
 	//! author : Miodrag Nikač <miodrag@restartit.me> : https://github.com/miodragnikac
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46341,7 +46558,7 @@
 	}));
 
 /***/ },
-/* 385 */
+/* 396 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46349,7 +46566,7 @@
 	//! author : Borislav Mickov : https://github.com/B0k0
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46435,7 +46652,7 @@
 	}));
 
 /***/ },
-/* 386 */
+/* 397 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46443,7 +46660,7 @@
 	//! author : Floyd Pink : https://github.com/floydpink
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46520,7 +46737,7 @@
 	}));
 
 /***/ },
-/* 387 */
+/* 398 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46529,7 +46746,7 @@
 	//! author : Vivek Athalye : https://github.com/vnathalye
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46683,7 +46900,7 @@
 	}));
 
 /***/ },
-/* 388 */
+/* 399 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46691,7 +46908,7 @@
 	//! author : Weldan Jamili : https://github.com/weldan
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46769,7 +46986,7 @@
 	}));
 
 /***/ },
-/* 389 */
+/* 400 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46777,7 +46994,7 @@
 	//! author : Weldan Jamili : https://github.com/weldan
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46855,7 +47072,7 @@
 	}));
 
 /***/ },
-/* 390 */
+/* 401 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46863,7 +47080,7 @@
 	//! author : Squar team, mysquar.com
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -46952,7 +47169,7 @@
 	}));
 
 /***/ },
-/* 391 */
+/* 402 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -46961,7 +47178,7 @@
 	//!           Sigurd Gartmann : https://github.com/sigurdga
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47019,7 +47236,7 @@
 	}));
 
 /***/ },
-/* 392 */
+/* 403 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47027,7 +47244,7 @@
 	//! author : suvash : https://github.com/suvash
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47146,7 +47363,7 @@
 	}));
 
 /***/ },
-/* 393 */
+/* 404 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47154,7 +47371,7 @@
 	//! author : Joris Röling : https://github.com/jjupiter
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47223,7 +47440,7 @@
 	}));
 
 /***/ },
-/* 394 */
+/* 405 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47231,7 +47448,7 @@
 	//! author : https://github.com/mechuwind
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47287,7 +47504,7 @@
 	}));
 
 /***/ },
-/* 395 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47295,7 +47512,7 @@
 	//! author : Harpreet Singh : https://github.com/harpreetkhalsagtbit
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47415,7 +47632,7 @@
 	}));
 
 /***/ },
-/* 396 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47423,7 +47640,7 @@
 	//! author : Rafal Hirsz : https://github.com/evoL
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47524,7 +47741,7 @@
 	}));
 
 /***/ },
-/* 397 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47532,7 +47749,7 @@
 	//! author : Jefferson : https://github.com/jalex79
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47593,7 +47810,7 @@
 	}));
 
 /***/ },
-/* 398 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47601,7 +47818,7 @@
 	//! author : Caio Ribeiro Pereira : https://github.com/caio-ribeiro-pereira
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47658,7 +47875,7 @@
 	}));
 
 /***/ },
-/* 399 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47667,7 +47884,7 @@
 	//! author : Valentin Agachi : https://github.com/avaly
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47737,7 +47954,7 @@
 	}));
 
 /***/ },
-/* 400 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47747,7 +47964,7 @@
 	//! author : Коренберг Марк : https://github.com/socketpair
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47916,7 +48133,7 @@
 	}));
 
 /***/ },
-/* 401 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47924,7 +48141,7 @@
 	//! authors : Bård Rolstad Henriksen : https://github.com/karamell
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -47981,7 +48198,7 @@
 	}));
 
 /***/ },
-/* 402 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -47989,7 +48206,7 @@
 	//! author : Sampath Sitinamaluwa : https://github.com/sampathsris
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48056,7 +48273,7 @@
 	}));
 
 /***/ },
-/* 403 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48065,7 +48282,7 @@
 	//! based on work of petrbela : https://github.com/petrbela
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48210,7 +48427,7 @@
 	}));
 
 /***/ },
-/* 404 */
+/* 415 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48218,7 +48435,7 @@
 	//! author : Robert Sedovšek : https://github.com/sedovsek
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48376,7 +48593,7 @@
 	}));
 
 /***/ },
-/* 405 */
+/* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48386,7 +48603,7 @@
 	//! author : Oerd Cukalla : https://github.com/oerd (fixes)
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48450,7 +48667,7 @@
 	}));
 
 /***/ },
-/* 406 */
+/* 417 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48458,7 +48675,7 @@
 	//! author : Milan Janačković<milanjanackovic@gmail.com> : https://github.com/milan-j
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48564,7 +48781,7 @@
 	}));
 
 /***/ },
-/* 407 */
+/* 418 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48572,7 +48789,7 @@
 	//! author : Milan Janačković<milanjanackovic@gmail.com> : https://github.com/milan-j
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48678,7 +48895,7 @@
 	}));
 
 /***/ },
-/* 408 */
+/* 419 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48686,7 +48903,7 @@
 	//! author : Nicolai Davies<mail@nicolai.io> : https://github.com/nicolaidavies
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48771,7 +48988,7 @@
 	}));
 
 /***/ },
-/* 409 */
+/* 420 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48779,7 +48996,7 @@
 	//! author : Jens Alm : https://github.com/ulmus
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48844,7 +49061,7 @@
 	}));
 
 /***/ },
-/* 410 */
+/* 421 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48852,7 +49069,7 @@
 	//! author : Fahad Kassim : https://github.com/fadsel
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -48907,7 +49124,7 @@
 	}));
 
 /***/ },
-/* 411 */
+/* 422 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -48915,7 +49132,7 @@
 	//! author : Arjunkumar Krishnamoorthy : https://github.com/tk120404
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49040,7 +49257,7 @@
 	}));
 
 /***/ },
-/* 412 */
+/* 423 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49048,7 +49265,7 @@
 	//! author : Krishna Chaitanya Thota : https://github.com/kcthota
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49133,7 +49350,7 @@
 	}));
 
 /***/ },
-/* 413 */
+/* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49141,7 +49358,7 @@
 	//! author : Kridsada Thanabulpong : https://github.com/sirn
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49204,7 +49421,7 @@
 	}));
 
 /***/ },
-/* 414 */
+/* 425 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49212,7 +49429,7 @@
 	//! author : Dan Hagman
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49270,7 +49487,7 @@
 	}));
 
 /***/ },
-/* 415 */
+/* 426 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49278,7 +49495,7 @@
 	//! author : Dominika Kruk : https://github.com/amaranthrose
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49394,7 +49611,7 @@
 	}));
 
 /***/ },
-/* 416 */
+/* 427 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49403,7 +49620,7 @@
 	//!           Burak Yiğit Kaya: https://github.com/BYK
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49488,7 +49705,7 @@
 	}));
 
 /***/ },
-/* 417 */
+/* 428 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49496,7 +49713,7 @@
 	//! author : Robin van der Vliet : https://github.com/robin0van0der0v with the help of Iustì Canun
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49583,7 +49800,7 @@
 	}));
 
 /***/ },
-/* 418 */
+/* 429 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49591,7 +49808,7 @@
 	//! author : Abdel Said : https://github.com/abdelsaid
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49645,7 +49862,7 @@
 	}));
 
 /***/ },
-/* 419 */
+/* 430 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49653,7 +49870,7 @@
 	//! author : Abdel Said : https://github.com/abdelsaid
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49707,7 +49924,7 @@
 	}));
 
 /***/ },
-/* 420 */
+/* 431 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49716,7 +49933,7 @@
 	//! Author : Menelion Elensúle : https://github.com/Oire
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49857,7 +50074,7 @@
 	}));
 
 /***/ },
-/* 421 */
+/* 432 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49865,7 +50082,7 @@
 	//! author : Sardor Muminov : https://github.com/muminoff
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -49919,7 +50136,7 @@
 	}));
 
 /***/ },
-/* 422 */
+/* 433 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -49927,7 +50144,7 @@
 	//! author : Bang Nguyen : https://github.com/bangnk
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50002,7 +50219,7 @@
 	}));
 
 /***/ },
-/* 423 */
+/* 434 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50010,7 +50227,7 @@
 	//! author : Andrew Hood : https://github.com/andrewhood125
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50074,7 +50291,7 @@
 	}));
 
 /***/ },
-/* 424 */
+/* 435 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50083,7 +50300,7 @@
 	//! author : Zeno Zeng : https://github.com/zenozeng
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50205,7 +50422,7 @@
 	}));
 
 /***/ },
-/* 425 */
+/* 436 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//! moment.js locale configuration
@@ -50213,7 +50430,7 @@
 	//! author : Ben : https://github.com/ben-lin
 
 	;(function (global, factory) {
-	    true ? factory(__webpack_require__(323)) :
+	    true ? factory(__webpack_require__(334)) :
 	   typeof define === 'function' && define.amd ? define(['moment'], factory) :
 	   factory(global.moment)
 	}(this, function (moment) { 'use strict';
@@ -50310,7 +50527,7 @@
 	}));
 
 /***/ },
-/* 426 */
+/* 437 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50325,7 +50542,7 @@
 	exports.getEffectiveMinDate = getEffectiveMinDate;
 	exports.getEffectiveMaxDate = getEffectiveMaxDate;
 
-	var _moment = __webpack_require__(323);
+	var _moment = __webpack_require__(334);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
@@ -50410,20 +50627,20 @@
 	}
 
 /***/ },
-/* 427 */
+/* 438 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _moment = __webpack_require__(323);
+	var _moment = __webpack_require__(334);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
-	var _year_dropdown = __webpack_require__(428);
+	var _year_dropdown = __webpack_require__(439);
 
 	var _year_dropdown2 = _interopRequireDefault(_year_dropdown);
 
-	var _month = __webpack_require__(431);
+	var _month = __webpack_require__(442);
 
 	var _month2 = _interopRequireDefault(_month);
 
@@ -50431,7 +50648,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _date_utils = __webpack_require__(426);
+	var _date_utils = __webpack_require__(437);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50449,13 +50666,14 @@
 	    minDate: _react2.default.PropTypes.object,
 	    onClickOutside: _react2.default.PropTypes.func.isRequired,
 	    onSelect: _react2.default.PropTypes.func.isRequired,
+	    openToDate: _react2.default.PropTypes.object,
 	    selected: _react2.default.PropTypes.object,
 	    showYearDropdown: _react2.default.PropTypes.bool,
 	    startDate: _react2.default.PropTypes.object,
 	    todayButton: _react2.default.PropTypes.string
 	  },
 
-	  mixins: [__webpack_require__(430)],
+	  mixins: [__webpack_require__(441)],
 
 	  getInitialState: function getInitialState() {
 	    return {
@@ -50473,7 +50691,9 @@
 	    this.props.onClickOutside(event);
 	  },
 	  getDateInView: function getDateInView() {
-	    var selected = this.props.selected;
+	    var _props = this.props;
+	    var selected = _props.selected;
+	    var openToDate = _props.openToDate;
 
 	    var minDate = (0, _date_utils.getEffectiveMinDate)(this.props);
 	    var maxDate = (0, _date_utils.getEffectiveMaxDate)(this.props);
@@ -50484,6 +50704,8 @@
 	      return minDate;
 	    } else if (maxDate && maxDate.isBefore(current)) {
 	      return maxDate;
+	    } else if (openToDate) {
+	      return openToDate;
 	    } else {
 	      return current;
 	    }
@@ -50606,7 +50828,7 @@
 	module.exports = Calendar;
 
 /***/ },
-/* 428 */
+/* 439 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50615,7 +50837,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _year_dropdown_options = __webpack_require__(429);
+	var _year_dropdown_options = __webpack_require__(440);
 
 	var _year_dropdown_options2 = _interopRequireDefault(_year_dropdown_options);
 
@@ -50675,7 +50897,7 @@
 	module.exports = YearDropdown;
 
 /***/ },
-/* 429 */
+/* 440 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50703,7 +50925,7 @@
 	    year: _react2.default.PropTypes.number.isRequired
 	  },
 
-	  mixins: [__webpack_require__(430)],
+	  mixins: [__webpack_require__(441)],
 
 	  getInitialState: function getInitialState() {
 	    return {
@@ -50780,7 +51002,7 @@
 	module.exports = YearDropdownOptions;
 
 /***/ },
-/* 430 */
+/* 441 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -50800,7 +51022,7 @@
 	(function (root, factory) {
 	  if (true) {
 	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(33)], __WEBPACK_AMD_DEFINE_RESULT__ = function(reactDom) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(35)], __WEBPACK_AMD_DEFINE_RESULT__ = function(reactDom) {
 	      return factory(root, reactDom);
 	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if (typeof exports === 'object') {
@@ -50918,7 +51140,7 @@
 
 
 /***/ },
-/* 431 */
+/* 442 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50927,7 +51149,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _week = __webpack_require__(432);
+	var _week = __webpack_require__(443);
 
 	var _week2 = _interopRequireDefault(_week);
 
@@ -50995,7 +51217,7 @@
 	module.exports = Month;
 
 /***/ },
-/* 432 */
+/* 443 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51004,7 +51226,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _day = __webpack_require__(433);
+	var _day = __webpack_require__(444);
 
 	var _day2 = _interopRequireDefault(_day);
 
@@ -51065,12 +51287,12 @@
 	module.exports = Week;
 
 /***/ },
-/* 433 */
+/* 444 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _moment = __webpack_require__(323);
+	var _moment = __webpack_require__(334);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
@@ -51078,11 +51300,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _classnames = __webpack_require__(434);
+	var _classnames = __webpack_require__(445);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _date_utils = __webpack_require__(426);
+	var _date_utils = __webpack_require__(437);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -51155,7 +51377,7 @@
 	module.exports = Day;
 
 /***/ },
-/* 434 */
+/* 445 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -51209,7 +51431,7 @@
 
 
 /***/ },
-/* 435 */
+/* 446 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51220,11 +51442,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(33);
+	var _reactDom = __webpack_require__(35);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _tether = __webpack_require__(436);
+	var _tether = __webpack_require__(447);
 
 	var _tether2 = _interopRequireDefault(_tether);
 
@@ -51382,7 +51604,7 @@
 	module.exports = TetherComponent;
 
 /***/ },
-/* 436 */
+/* 447 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! tether 1.3.1 */
@@ -53144,7 +53366,7 @@
 
 
 /***/ },
-/* 437 */
+/* 448 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53183,7 +53405,7 @@
 	});
 
 /***/ },
-/* 438 */
+/* 449 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53196,11 +53418,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDatepicker = __webpack_require__(321);
+	var _reactDatepicker = __webpack_require__(332);
 
 	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
-	var _moment = __webpack_require__(323);
+	var _moment = __webpack_require__(334);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
@@ -53258,7 +53480,7 @@
 	});
 
 /***/ },
-/* 439 */
+/* 450 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53271,11 +53493,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDatepicker = __webpack_require__(321);
+	var _reactDatepicker = __webpack_require__(332);
 
 	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
-	var _moment = __webpack_require__(323);
+	var _moment = __webpack_require__(334);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
@@ -53330,7 +53552,7 @@
 	});
 
 /***/ },
-/* 440 */
+/* 451 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53343,7 +53565,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDatepicker = __webpack_require__(321);
+	var _reactDatepicker = __webpack_require__(332);
 
 	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
@@ -53375,7 +53597,7 @@
 	});
 
 /***/ },
-/* 441 */
+/* 452 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53388,11 +53610,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDatepicker = __webpack_require__(321);
+	var _reactDatepicker = __webpack_require__(332);
 
 	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
-	var _moment = __webpack_require__(323);
+	var _moment = __webpack_require__(334);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
@@ -53462,7 +53684,7 @@
 	});
 
 /***/ },
-/* 442 */
+/* 453 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53475,7 +53697,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDatepicker = __webpack_require__(321);
+	var _reactDatepicker = __webpack_require__(332);
 
 	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
@@ -53537,7 +53759,7 @@
 	});
 
 /***/ },
-/* 443 */
+/* 454 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53550,11 +53772,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDatepicker = __webpack_require__(321);
+	var _reactDatepicker = __webpack_require__(332);
 
 	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
-	var _moment = __webpack_require__(323);
+	var _moment = __webpack_require__(334);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
@@ -53616,7 +53838,7 @@
 	});
 
 /***/ },
-/* 444 */
+/* 455 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53629,11 +53851,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDatepicker = __webpack_require__(321);
+	var _reactDatepicker = __webpack_require__(332);
 
 	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
-	var _moment = __webpack_require__(323);
+	var _moment = __webpack_require__(334);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
@@ -53695,7 +53917,7 @@
 	});
 
 /***/ },
-/* 445 */
+/* 456 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53708,7 +53930,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDatepicker = __webpack_require__(321);
+	var _reactDatepicker = __webpack_require__(332);
 
 	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
@@ -53774,7 +53996,7 @@
 	});
 
 /***/ },
-/* 446 */
+/* 457 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53787,7 +54009,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDatepicker = __webpack_require__(321);
+	var _reactDatepicker = __webpack_require__(332);
 
 	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
@@ -53850,7 +54072,7 @@
 	});
 
 /***/ },
-/* 447 */
+/* 458 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53863,11 +54085,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDatepicker = __webpack_require__(321);
+	var _reactDatepicker = __webpack_require__(332);
 
 	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
-	var _moment = __webpack_require__(323);
+	var _moment = __webpack_require__(334);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
@@ -53925,7 +54147,7 @@
 	});
 
 /***/ },
-/* 448 */
+/* 459 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53938,7 +54160,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDatepicker = __webpack_require__(321);
+	var _reactDatepicker = __webpack_require__(332);
 
 	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
@@ -54041,7 +54263,7 @@
 	});
 
 /***/ },
-/* 449 */
+/* 460 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54054,11 +54276,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDatepicker = __webpack_require__(321);
+	var _reactDatepicker = __webpack_require__(332);
 
 	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
-	var _moment = __webpack_require__(323);
+	var _moment = __webpack_require__(334);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
@@ -54120,14 +54342,14 @@
 	});
 
 /***/ },
-/* 450 */
+/* 461 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(2);
-	var DatePicker = __webpack_require__(321);
-	var moment = __webpack_require__(323);
+	var DatePicker = __webpack_require__(332);
+	var moment = __webpack_require__(334);
 
 	var DateRange = React.createClass({
 	  displayName: 'DateRange',
@@ -54224,7 +54446,7 @@
 	module.exports = DateRange;
 
 /***/ },
-/* 451 */
+/* 462 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54237,11 +54459,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDatepicker = __webpack_require__(321);
+	var _reactDatepicker = __webpack_require__(332);
 
 	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
-	var _moment = __webpack_require__(323);
+	var _moment = __webpack_require__(334);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
@@ -54295,7 +54517,7 @@
 	});
 
 /***/ },
-/* 452 */
+/* 463 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54308,11 +54530,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDatepicker = __webpack_require__(321);
+	var _reactDatepicker = __webpack_require__(332);
 
 	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
-	var _moment = __webpack_require__(323);
+	var _moment = __webpack_require__(334);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
@@ -54372,7 +54594,7 @@
 	});
 
 /***/ },
-/* 453 */
+/* 464 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54385,11 +54607,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDatepicker = __webpack_require__(321);
+	var _reactDatepicker = __webpack_require__(332);
 
 	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
-	var _moment = __webpack_require__(323);
+	var _moment = __webpack_require__(334);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
@@ -54440,15 +54662,7 @@
 	});
 
 /***/ },
-/* 454 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 455 */
-454,
-/* 456 */
+/* 465 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54461,11 +54675,160 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDatepicker = __webpack_require__(321);
+	var _reactDatepicker = __webpack_require__(332);
 
 	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
-	var _moment = __webpack_require__(323);
+	var _moment = __webpack_require__(334);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _react2.default.createClass({
+	  displayName: 'Inline',
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      startDate: (0, _moment2.default)()
+	    };
+	  },
+	  handleChange: function handleChange(date) {
+	    this.setState({
+	      startDate: date
+	    });
+	  },
+	  render: function render() {
+	    return _react2.default.createElement(
+	      'div',
+	      { className: 'row' },
+	      _react2.default.createElement(
+	        'pre',
+	        { className: 'column example__code' },
+	        _react2.default.createElement(
+	          'code',
+	          { className: 'jsx' },
+	          "<DatePicker",
+	          _react2.default.createElement('br', null),
+	          '    ',
+	          "inline",
+	          _react2.default.createElement('br', null),
+	          '    ',
+	          "selected={this.state.startDate}",
+	          _react2.default.createElement('br', null),
+	          '    ',
+	          "onChange={this.handleChange} />"
+	        )
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'column' },
+	        _react2.default.createElement(_reactDatepicker2.default, {
+	          inline: true,
+	          selected: this.state.startDate,
+	          onChange: this.handleChange })
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 466 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDatepicker = __webpack_require__(332);
+
+	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
+
+	var _moment = __webpack_require__(334);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _react2.default.createClass({
+	  displayName: 'OpenToDate',
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      startDate: null
+	    };
+	  },
+	  handleChange: function handleChange(date) {
+	    this.setState({
+	      startDate: date
+	    });
+	  },
+	  render: function render() {
+	    return _react2.default.createElement(
+	      'div',
+	      { className: 'row' },
+	      _react2.default.createElement(
+	        'pre',
+	        { className: 'column example__code' },
+	        _react2.default.createElement(
+	          'code',
+	          { className: 'jsx' },
+	          "<DatePicker",
+	          _react2.default.createElement('br', null),
+	          "openToDate={moment('1993-09-28')}",
+	          _react2.default.createElement('br', null),
+	          '    ',
+	          "selected={this.state.startDate}",
+	          _react2.default.createElement('br', null),
+	          '    ',
+	          "onChange={this.handleChange} />"
+	        )
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'column' },
+	        _react2.default.createElement(_reactDatepicker2.default, {
+	          openToDate: (0, _moment2.default)('1993-09-28'),
+	          selected: this.state.startDate,
+	          onChange: this.handleChange })
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 467 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 468 */
+467,
+/* 469 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDatepicker = __webpack_require__(332);
+
+	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
+
+	var _moment = __webpack_require__(334);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
