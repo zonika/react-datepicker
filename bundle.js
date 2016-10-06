@@ -37342,6 +37342,9 @@
 	      open: false
 	    };
 	  },
+	  setFocus: function setFocus() {
+	    this.refs.input.focus();
+	  },
 	  setOpen: function setOpen(open) {
 	    this.setState({ open: open });
 	  },
@@ -37358,7 +37361,7 @@
 
 	    this.cancelFocusInput();
 	    this.inputFocusTimeout = (0, _defer2.default)(function () {
-	      return _this.refs.input.focus();
+	      return _this.setFocus();
 	    });
 	  },
 	  handleDropdownFocus: function handleDropdownFocus() {
