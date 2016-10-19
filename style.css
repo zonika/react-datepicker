@@ -191,6 +191,9 @@
   border: 1px solid #aeaeae; }
   .react-datepicker__year-dropdown:hover {
     cursor: pointer; }
+  .react-datepicker__year-dropdown--scrollable {
+    height: 150px;
+    overflow-y: scroll; }
 
 .react-datepicker__year-option {
   line-height: 20px;
