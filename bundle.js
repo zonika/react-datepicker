@@ -36713,11 +36713,16 @@
 
 	var _moment2 = _interopRequireDefault(_moment);
 
+	var _reactOnclickoutside = __webpack_require__(574);
+
+	var _reactOnclickoutside2 = _interopRequireDefault(_reactOnclickoutside);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	var outsideClickIgnoreClass = 'react-datepicker-ignore-onclickoutside';
+	var WrappedCalendar = (0, _reactOnclickoutside2.default)(_calendar2.default);
 
 	/**
 	 * General datepicker component.
@@ -36799,7 +36804,8 @@
 	  },
 	  getInitialState: function getInitialState() {
 	    return {
-	      open: false
+	      open: false,
+	      preventFocus: false
 	    };
 	  },
 	  setFocus: function setFocus() {
@@ -36809,8 +36815,10 @@
 	    this.setState({ open: open });
 	  },
 	  handleFocus: function handleFocus(event) {
-	    this.props.onFocus(event);
-	    this.setOpen(true);
+	    if (!this.state.preventFocus) {
+	      this.props.onFocus(event);
+	      this.setOpen(true);
+	    }
 	  },
 	  cancelFocusInput: function cancelFocusInput() {
 	    clearTimeout(this.inputFocusTimeout);
@@ -36838,6 +36846,15 @@
 	    this.setOpen(false);
 	  },
 	  handleSelect: function handleSelect(date, event) {
+	    var _this2 = this;
+
+	    // Preventing onFocus event to fix issue
+	    // https://github.com/Hacker0x01/react-datepicker/issues/628
+	    this.setState({ preventFocus: true }, function () {
+	      return setTimeout(function () {
+	        return _this2.setState({ preventFocus: false });
+	      }, 50);
+	    });
 	    this.setSelected(date, event);
 	    this.setOpen(false);
 	  },
@@ -36862,7 +36879,7 @@
 	    }
 	  },
 	  onInputKeyDown: function onInputKeyDown(event) {
-	    var copy = (0, _moment2.default)(this.props.selected);
+	    var copy = this.props.selected ? (0, _moment2.default)(this.props.selected) : (0, _moment2.default)();
 	    if (event.key === 'Enter' || event.key === 'Escape') {
 	      event.preventDefault();
 	      this.setOpen(false);
@@ -36902,7 +36919,7 @@
 	    if (!this.props.inline && (!this.state.open || this.props.disabled)) {
 	      return null;
 	    }
-	    return _react2.default.createElement(_calendar2.default, {
+	    return _react2.default.createElement(WrappedCalendar, {
 	      ref: 'calendar',
 	      locale: this.props.locale,
 	      dateFormat: this.props.dateFormatCalendar,
@@ -52229,8 +52246,6 @@
 	    utcOffset: _react2.default.PropTypes.number
 	  },
 
-	  mixins: [__webpack_require__(574)],
-
 	  defaultProps: {
 	    onDropdownFocus: function onDropdownFocus() {}
 	  },
@@ -56347,7 +56362,13 @@
 
 	var _year_dropdown_options2 = _interopRequireDefault(_year_dropdown_options);
 
+	var _reactOnclickoutside = __webpack_require__(574);
+
+	var _reactOnclickoutside2 = _interopRequireDefault(_reactOnclickoutside);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var WrappedYearDropdownOptions = (0, _reactOnclickoutside2.default)(_year_dropdown_options2.default);
 
 	var YearDropdown = _react2.default.createClass({
 	  displayName: 'YearDropdown',
@@ -56406,7 +56427,7 @@
 	    );
 	  },
 	  renderDropdown: function renderDropdown() {
-	    return _react2.default.createElement(_year_dropdown_options2.default, {
+	    return _react2.default.createElement(WrappedYearDropdownOptions, {
 	      ref: 'options',
 	      year: this.props.year,
 	      onChange: this.onChange,
@@ -56481,8 +56502,6 @@
 	    scrollableYearDropdown: _react2.default.PropTypes.bool,
 	    year: _react2.default.PropTypes.number.isRequired
 	  },
-
-	  mixins: [__webpack_require__(574)],
 
 	  getInitialState: function getInitialState() {
 	    return {
@@ -56623,46 +56642,21 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
-	 * A mixin for handling (effectively) onClickOutside for React components.
-	 * Note that we're not intercepting any events in this approach, and we're
-	 * not using double events for capturing and discarding in layers or wrappers.
-	 *
-	 * The idea is that components define function
-	 *
-	 *   handleClickOutside: function() { ... }
-	 *
-	 * If no such function is defined, an error will be thrown, as this means
-	 * either it still needs to be written, or the component should not be using
-	 * this mixing since it will not exhibit onClickOutside behaviour.
-	 *
+	 * A higher-order-component for handling onClickOutside for React components.
 	 */
-	(function (root, factory) {
-	  if (true) {
-	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(29)], __WEBPACK_AMD_DEFINE_RESULT__ = function(reactDom) {
-	      return factory(root, reactDom);
-	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  } else if (typeof exports === 'object') {
-	    // Node. Note that this does not work with strict
-	    // CommonJS, but only CommonJS-like environments
-	    // that support module.exports
-	    module.exports = factory(root, require('react-dom'));
-	  } else {
-	    // Browser globals (root is window)
-	    root.OnClickOutside = factory(root, ReactDOM);
-	  }
-	}(this, function (root, ReactDOM) {
-	  "use strict";
+	(function(root) {
 
-	  // Use a parallel array because we can't use
-	  // objects as keys, they get toString-coerced
+	  // administrative
 	  var registeredComponents = [];
 	  var handlers = [];
-
 	  var IGNORE_CLASS = 'ignore-react-onclickoutside';
+	  var DEFAULT_EVENTS = ['mousedown', 'touchstart'];
 
-	  var isSourceFound = function(source, localNode, ignoreClass) {
-	    if (source === localNode) {
+	  /**
+	   * Check whether some DOM node is our Component's node.
+	   */
+	  var isNodeFound = function(current, componentNode, ignoreClass) {
+	    if (current === componentNode) {
 	      return true;
 	    }
 	    // SVG <use/> elements do not technically reside in the rendered DOM, so
@@ -56671,89 +56665,243 @@
 	    // that case.
 	    // See: http://www.w3.org/TR/SVG11/struct.html#InterfaceSVGUseElement
 	    // Discussion: https://github.com/Pomax/react-onclickoutside/pull/17
-	    if (source.correspondingElement) {
-	      return source.correspondingElement.classList.contains(ignoreClass);
+	    if (current.correspondingElement) {
+	      return current.correspondingElement.classList.contains(ignoreClass);
 	    }
-	    return source.classList.contains(ignoreClass);
+	    return current.classList.contains(ignoreClass);
 	  };
 
-	  return {
-	    componentDidMount: function() {
-	      if(typeof this.handleClickOutside !== "function")
-	        throw new Error("Component lacks a handleClickOutside(event) function for processing outside click events.");
+	  /**
+	   * Generate the event handler that checks whether a clicked DOM node
+	   * is inside of, or lives outside of, our Component's node tree.
+	   */
+	  var generateOutsideCheck = function(componentNode, componentInstance, eventHandler, ignoreClass, preventDefault, stopPropagation) {
+	    return function(evt) {
+	      if (preventDefault) {
+	        evt.preventDefault();
+	      }
+	      if (stopPropagation) {
+	        evt.stopPropagation();
+	      }
+	      var current = evt.target;
+	      var found = false;
+	      // If source=local then this event came from 'somewhere'
+	      // inside and should be ignored. We could handle this with
+	      // a layered approach, too, but that requires going back to
+	      // thinking in terms of Dom node nesting, running counter
+	      // to React's 'you shouldn't care about the DOM' philosophy.
+	      while(current.parentNode) {
+	        found = isNodeFound(current, componentNode, ignoreClass);
+	        if(found) return;
+	        current = current.parentNode;
+	      }
+	      // If element is in a detached DOM, consider it 'not clicked
+	      // outside', as it cannot be known whether it was outside.
+	      if(current !== document) return;
+	      eventHandler(evt);
+	    };
+	  };
 
-	      var fn = this.__outsideClickHandler = (function(localNode, eventHandler, ignoreClass) {
-	        return function(evt) {
-	          evt.stopPropagation();
-	          var source = evt.target;
-	          var found = false;
-	          // If source=local then this event came from "somewhere"
-	          // inside and should be ignored. We could handle this with
-	          // a layered approach, too, but that requires going back to
-	          // thinking in terms of Dom node nesting, running counter
-	          // to React's "you shouldn't care about the DOM" philosophy.
-	          while(source.parentNode) {
-	            found = isSourceFound(source, localNode, ignoreClass);
-	            if(found) return;
-	            source = source.parentNode;
+
+	  /**
+	   * This function generates the HOC function that you'll use
+	   * in order to impart onOutsideClick listening to an
+	   * arbitrary component. It gets called at the end of the
+	   * bootstrapping code to yield an instance of the
+	   * onClickOutsideHOC function defined inside setupHOC().
+	   */
+	  function setupHOC(root, React, ReactDOM) {
+
+	    // The actual Component-wrapping HOC:
+	    return function onClickOutsideHOC(Component, config) {
+	      var wrapComponentWithOnClickOutsideHandling = React.createClass({
+	        statics: {
+	          /**
+	           * Access the wrapped Component's class.
+	           */
+	          getClass: function() {
+	            if (Component.getClass) {
+	              return Component.getClass();
+	            }
+	            return Component;
 	          }
-	          // If element is in detached DOM, consider it not clicked
-	          // outside as it can't be known whether it was outside.
-	          if(source !== document) return;
-	          eventHandler(evt);
+	        },
+
+	        /**
+	         * Access the wrapped Component's instance.
+	         */
+	        getInstance: function() {
+	          return Component.prototype.isReactComponent ? this.refs.instance : this;
+	        },
+
+	        // this is given meaning in componentDidMount
+	        __outsideClickHandler: function() {},
+
+	        /**
+	         * Add click listeners to the current document,
+	         * linked to this component's state.
+	         */
+	        componentDidMount: function() {
+	          // If we are in an environment without a DOM such 
+	          // as shallow rendering or snapshots then we exit 
+	          // early to prevent any unhandled errors being thrown.
+	          if (typeof document === 'undefined' || !document.createElement){
+	            return;
+	          }
+
+	          var instance = this.getInstance();
+	          var clickOutsideHandler;
+
+	          if(config && typeof config.handleClickOutside === 'function') {
+	            clickOutsideHandler = config.handleClickOutside(instance);
+	            if(typeof clickOutsideHandler !== 'function') {
+	              throw new Error('Component lacks a function for processing outside click events specified by the handleClickOutside config option.');
+	            }
+	          } else if(typeof instance.handleClickOutside === 'function') {
+	            if (React.Component.prototype.isPrototypeOf(instance)) {
+	              clickOutsideHandler = instance.handleClickOutside.bind(instance);
+	            } else {
+	              clickOutsideHandler = instance.handleClickOutside;
+	            }
+	          } else if(typeof instance.props.handleClickOutside === 'function') {
+	            clickOutsideHandler = instance.props.handleClickOutside;
+	          } else {
+	            throw new Error('Component lacks a handleClickOutside(event) function for processing outside click events.');
+	          }
+
+	          var fn = this.__outsideClickHandler = generateOutsideCheck(
+	            ReactDOM.findDOMNode(instance),
+	            instance,
+	            clickOutsideHandler,
+	            this.props.outsideClickIgnoreClass || IGNORE_CLASS,
+	            this.props.preventDefault || false,
+	            this.props.stopPropagation || false
+	          );
+
+	          var pos = registeredComponents.length;
+	          registeredComponents.push(this);
+	          handlers[pos] = fn;
+
+	          // If there is a truthy disableOnClickOutside property for this
+	          // component, don't immediately start listening for outside events.
+	          if (!this.props.disableOnClickOutside) {
+	            this.enableOnClickOutside();
+	          }
+	        },
+
+	        /**
+	        * Track for disableOnClickOutside props changes and enable/disable click outside
+	        */
+	        componentWillReceiveProps: function(nextProps) {
+	          if (this.props.disableOnClickOutside && !nextProps.disableOnClickOutside) {
+	            this.enableOnClickOutside();
+	          } else if (!this.props.disableOnClickOutside && nextProps.disableOnClickOutside) {
+	            this.disableOnClickOutside();
+	          }
+	        },
+
+	        /**
+	         * Remove the document's event listeners
+	         */
+	        componentWillUnmount: function() {
+	          this.disableOnClickOutside();
+	          this.__outsideClickHandler = false;
+	          var pos = registeredComponents.indexOf(this);
+	          if( pos>-1) {
+	            // clean up so we don't leak memory
+	            if (handlers[pos]) { handlers.splice(pos, 1); }
+	            registeredComponents.splice(pos, 1);
+	          }
+	        },
+
+	        /**
+	         * Can be called to explicitly enable event listening
+	         * for clicks and touches outside of this element.
+	         */
+	        enableOnClickOutside: function() {
+	          var fn = this.__outsideClickHandler;
+	          if (typeof document !== 'undefined') {
+	            var events = this.props.eventTypes || DEFAULT_EVENTS;
+	            if (!events.forEach) {
+	              events = [events];
+	            }
+	            events.forEach(function (eventName) {
+	              document.addEventListener(eventName, fn);
+	            });
+	          }
+	        },
+
+	        /**
+	         * Can be called to explicitly disable event listening
+	         * for clicks and touches outside of this element.
+	         */
+	        disableOnClickOutside: function() {
+	          var fn = this.__outsideClickHandler;
+	          if (typeof document !== 'undefined') {
+	            var events = this.props.eventTypes || DEFAULT_EVENTS;
+	            if (!events.forEach) {
+	              events = [events];
+	            }
+	            events.forEach(function (eventName) {
+	              document.removeEventListener(eventName, fn);
+	            });
+	          }
+	        },
+
+	        /**
+	         * Pass-through render
+	         */
+	        render: function() {
+	          var passedProps = this.props;
+	          var props = {};
+	          Object.keys(this.props).forEach(function(key) {
+	            props[key] = passedProps[key];
+	          });
+	          if (Component.prototype.isReactComponent) {
+	            props.ref = 'instance';
+	          }
+	          props.disableOnClickOutside = this.disableOnClickOutside;
+	          props.enableOnClickOutside = this.enableOnClickOutside;
+	          return React.createElement(Component, props);
 	        }
-	      }(ReactDOM.findDOMNode(this), this.handleClickOutside, this.props.outsideClickIgnoreClass || IGNORE_CLASS));
+	      });
 
-	      var pos = registeredComponents.length;
-	      registeredComponents.push(this);
-	      handlers[pos] = fn;
+	      // Add display name for React devtools
+	      (function bindWrappedComponentName(c, wrapper) {
+	        var componentName = c.displayName || c.name || 'Component';
+	        wrapper.displayName = 'OnClickOutside(' + componentName + ')';
+	      }(Component, wrapComponentWithOnClickOutsideHandling));
 
-	      // If there is a truthy disableOnClickOutside property for this
-	      // component, don't immediately start listening for outside events.
-	      if (!this.props.disableOnClickOutside) {
-	        this.enableOnClickOutside();
-	      }
-	    },
+	      return wrapComponentWithOnClickOutsideHandling;
+	    };
+	  }
 
-	    componentWillUnmount: function() {
-	      this.disableOnClickOutside();
-	      this.__outsideClickHandler = false;
-	      var pos = registeredComponents.indexOf(this);
-	      if( pos>-1) {
-	        if (handlers[pos]) {
-	          // clean up so we don't leak memory
-	          handlers.splice(pos, 1);
-	          registeredComponents.splice(pos, 1);
-	        }
-	      }
-	    },
-
-	    /**
-	     * Can be called to explicitly enable event listening
-	     * for clicks and touches outside of this element.
-	     */
-	    enableOnClickOutside: function() {
-	      var fn = this.__outsideClickHandler;
-	      if (typeof document !== "undefined") {
-	        document.addEventListener("mousedown", fn);
-	        document.addEventListener("touchstart", fn);
-	      }
-	    },
-
-	    /**
-	     * Can be called to explicitly disable event listening
-	     * for clicks and touches outside of this element.
-	     */
-	    disableOnClickOutside: function() {
-	      var fn = this.__outsideClickHandler;
-	      if (typeof document !== "undefined") {
-	        document.removeEventListener("mousedown", fn);
-	        document.removeEventListener("touchstart", fn);
-	      }
+	  /**
+	   * This function sets up the library in ways that
+	   * work with the various modulde loading solutions
+	   * used in JavaScript land today.
+	   */
+	  function setupBinding(root, factory) {
+	    if (true) {
+	      // AMD. Register as an anonymous module.
+	      !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(2),__webpack_require__(29)], __WEBPACK_AMD_DEFINE_RESULT__ = function(React, ReactDom) {
+	        return factory(root, React, ReactDom);
+	      }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    } else if (typeof exports === 'object') {
+	      // Node. Note that this does not work with strict
+	      // CommonJS, but only CommonJS-like environments
+	      // that support module.exports
+	      module.exports = factory(root, require('react'), require('react-dom'));
+	    } else {
+	      // Browser globals (root is window)
+	      root.onClickOutside = factory(root, React, ReactDOM);
 	    }
-	  };
+	  }
 
-	}));
+	  // Make it all happen
+	  setupBinding(root, setupHOC);
+
+	}(this));
 
 
 /***/ },
