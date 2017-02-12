@@ -161,6 +161,12 @@
     color: #fff; }
     .react-datepicker__day--selected:hover, .react-datepicker__day--in-selecting-range:hover, .react-datepicker__day--in-range:hover {
       background-color: #1d5d90; }
+  .react-datepicker__day--keyboard-selected {
+    border-radius: 0.3rem;
+    background-color: #2a87d0;
+    color: #fff; }
+    .react-datepicker__day--keyboard-selected:hover {
+      background-color: #1d5d90; }
   .react-datepicker__day--in-selecting-range:not(.react-datepicker__day--in-range) {
     background-color: rgba(33, 107, 165, 0.5); }
   .react-datepicker__month--selecting-range .react-datepicker__day--in-range:not(.react-datepicker__day--in-selecting-range) {
@@ -654,6 +660,15 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 .red-border {
   border-color: #f00; }
 
+.rasta-stripes .react-datepicker__week:nth-child(3n+1) {
+  background-color: #215005; }
+
+.rasta-stripes .react-datepicker__week:nth-child(3n+2) {
+  background-color: #eea429; }
+
+.rasta-stripes .react-datepicker__week:nth-child(3n+3) {
+  background-color: #a82a15; }
+
 .example-custom-input {
   cursor: pointer;
   padding: 5px 15px;
@@ -662,6 +677,9 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
   background-color: #216ba5;
   font: inherit;
   color: #fff; }
+
+.example__timezone-selector {
+  margin-left: 10px; }
 
 .hero__content, .wrapper {
   max-width: 1100px;
